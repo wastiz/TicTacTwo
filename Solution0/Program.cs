@@ -1,3 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System;
 
-Console.WriteLine("Hello, World!");
+namespace MyApp
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            bool Switched = true;
+            Console.WriteLine("Hello, World!");
+        }  
+    }
+}
