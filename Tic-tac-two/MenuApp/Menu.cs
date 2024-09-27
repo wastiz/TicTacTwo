@@ -1,83 +1,103 @@
-﻿namespace MenuApp
+﻿using System;
+
+namespace MenuApp
 {
     public class Menu
     {
-        private string activeTab = "New Game";
-        public void Start()
+        public delegate void DelegateEscape();
+        
+        protected string heading = "Tic Tac Two";
+        private string[] mainMenuOptionsArray = new[] { "New Game", "Options", "Exit" };
+        private string[] mainMenuhandlingOptions = new[] { "New Game", "Options", "Exit" };
+        private int activeOptionIndex = 0;
+        private string menuGuidance = "Press \"Esc\" to exit. Press enter to enter option. Move bt arrows";
+        private void handleEscape()
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.WriteLine("Welcome to the Tic Tac Two Game!");
-            Console.WriteLine();
-            Console.WriteLine("New Game");
-            Console.WriteLine("Options");
-            Console.WriteLine("Exit");
-            var pressedKey = Console.ReadKey(true); //true not to display pressed key
-            switch (pressedKey.Key)
+            Console.WriteLine("Exiting the game");
+        }
+
+        public void Start(string[] optionsArray, string[] handlingOptions, int activeOptionIndex, string menuGuidance, DelegateEscape del)
+        {
+            bool exit = false;
+
+            while (!exit)
             {
-                case ConsoleKey.UpArrow:
-                    
-                    break;
-                case ConsoleKey.DownArrow:
-                    
-                    break;
-                case ConsoleKey.LeftArrow:
-                    Console.WriteLine("Вы нажали стрелку влево.");
-                    break;
-                case ConsoleKey.RightArrow:
-                    Console.WriteLine("Вы нажали стрелку вправо.");
-                    break;
-                case ConsoleKey.Escape:
-                    Console.WriteLine("Вы вышли из программы.");
-                    return;
-                default:
-                    Console.WriteLine("Нажата другая клавиша.");
-                    break;
+                DisplayMenuOptions(optionsArray);
+                var pressedKey = Console.ReadKey(true); // true not to display pressed key
+
+                switch (pressedKey.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        activeOptionIndex = (activeOptionIndex == 0) ? optionsArray.Length - 1 : activeOptionIndex - 1;
+                        break;
+
+                    case ConsoleKey.DownArrow:
+                        activeOptionIndex = (activeOptionIndex == optionsArray.Length - 1) ? 0 : activeOptionIndex + 1;
+                        break;
+
+                    case ConsoleKey.Enter:
+                        HandleSelection(handlingOptions); //просто вызывать нужный метод по activeOptionIndex из массива делегатов
+                        break;
+
+                    case ConsoleKey.Escape:
+                        exit = true;
+                        del.Invoke();
+                        break;
+                }
             }
         }
 
-        private void DisplayMenu(string highlighted) 
+        private void DisplayMenuOptions(string[] optionsArray)
         {
-            switch (highlighted)
+            Console.Clear();
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine(heading);
+            Console.WriteLine();
+            
+            for (int i = 0; i < optionsArray.Length; i++)
             {
-                case "New Game":
-                    Console.Clear();
-                    Console.BackgroundColor = ConsoleColor.White;
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.WriteLine("Welcome to the Tic Tac Two Game!");
-                    Console.WriteLine();
+                if (i == activeOptionIndex)
+                {
                     Console.ForegroundColor = ConsoleColor.DarkBlue;
-                    Console.WriteLine("New Game");
+                }
+                else
+                {
                     Console.ForegroundColor = ConsoleColor.Black;
-                    Console.WriteLine("Options");
-                    Console.WriteLine("Exit");
+                }
+
+                Console.WriteLine(optionsArray[i]);
+            }
+            
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+
+        private void HandleSelection(string[] handlingOptions)
+        {
+            for (int i = 0; i < handlingOptions.Length; i++)
+            {
+                if(activeOptionIndex == 0){}
+            }
+            switch (activeOptionIndex)
+            {
+                case 0:
+                    
                     break;
-                case "Options":
+
+                case 1:
                     Console.Clear();
-                    Console.BackgroundColor = ConsoleColor.White;
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.WriteLine("Welcome to the Tic Tac Two Game!");
-                    Console.WriteLine();
-                    Console.WriteLine("New Game");
-                    Console.ForegroundColor = ConsoleColor.DarkBlue;
                     Console.WriteLine("Options");
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.WriteLine("Exit");
                     break;
-                case "Exit":
+
+                case 2:
                     Console.Clear();
-                    Console.BackgroundColor = ConsoleColor.White;
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.WriteLine("Welcome to the Tic Tac Two Game!");
-                    Console.WriteLine();
-                    Console.WriteLine("New Game");
-                    Console.WriteLine("Options");
-                    Console.ForegroundColor = ConsoleColor.DarkBlue;
-                    Console.WriteLine("Exit");
-                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.WriteLine("Exiting...");
+                    Environment.Exit(0);
                     break;
             }
+
+            Console.WriteLine("Press any key to return to main menu...");
+            Console.ReadKey(true);
         }
     }
 }
