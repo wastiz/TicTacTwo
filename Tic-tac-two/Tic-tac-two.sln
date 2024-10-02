@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MenuApp", "MenuApp\MenuApp.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameBrain", "GameBrain\GameBrain.csproj", "{CC1E1C45-A06C-4A89-B940-F5561E7BEC3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridVisualizer", "GridVisualizer\GridVisualizer.csproj", "{36DB4E2D-63A0-474A-86D6-5E49403918FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameVisualizer", "GameVisualizer\GameVisualizer.csproj", "{36DB4E2D-63A0-474A-86D6-5E49403918FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

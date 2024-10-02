@@ -7,7 +7,7 @@ namespace GameBrain
         private Grid grid;
         public void initializeGame()
         {
-            grid = new Grid();   
+            grid = new Grid();
         }
     }
 }

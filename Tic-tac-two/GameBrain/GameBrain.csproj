@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\GridVisualizer\GridVisualizer.csproj" />
+      <ProjectReference Include="..\GameVisualizer\GameVisualizer.csproj" />
     </ItemGroup>
 
 </Project>

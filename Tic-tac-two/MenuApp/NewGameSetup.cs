@@ -11,7 +11,7 @@
 
         private void HandleOneplayer()
         {
-            Console.WriteLine("One player");
+            
         }
 
         private void HandleTwoplayer()
