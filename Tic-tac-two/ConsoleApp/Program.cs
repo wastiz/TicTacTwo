@@ -1,15 +1,15 @@
 ﻿namespace ConsoleApp
 {
-    using MenuApp;
-
     class Program
     {
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
-            // Создаем экземпляры классов MainMenu и NewGameSetup
-            NewGameSetup newGameSetup = new NewGameSetup(null); // Передаем временно null
-            MainMenu mainMenu = new MainMenu(newGameSetup); // Передаем экземпляр NewGameSetup в MainMenu
-            newGameSetup = new NewGameSetup(mainMenu); // Обновляем экземпляр NewGameSetup с MainMenu
+            var mainMenu = new MenuApp.MainMenu();
+            var newGameSetup = new MenuApp.NewGameSetup();
+
+            // Устанавливаем ссылки на объекты после их создания
+            mainMenu.SetNewGameSetup(newGameSetup);
+            newGameSetup.SetMainMenu(mainMenu);
 
             // Запускаем главное меню
             mainMenu.ShowMainMenu();
