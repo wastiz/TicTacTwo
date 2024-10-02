@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ConsoleApp\ConsoleApp.csproj" />
+      <ProjectReference Include="..\MenuApp\MenuApp.csproj" />
+    </ItemGroup>
+
 </Project>

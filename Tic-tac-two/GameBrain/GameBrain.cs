@@ -1,6 +1,13 @@
-﻿namespace GameBrain;
+﻿using GridVisualizer;
 
-public class GameBrain
+namespace GameBrain
 {
-    
+    public class GameBrain
+    {
+        private Grid grid;
+        public void initializeGame()
+        {
+            grid = new Grid();   
+        }
+    }
 }

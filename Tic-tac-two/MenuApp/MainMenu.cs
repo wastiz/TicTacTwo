@@ -3,26 +3,32 @@
    public class MainMenu : Menu
    {
        private NewGameSetup newGameSetup;
+       private Options newOptions;
 
        public void SetNewGameSetup(NewGameSetup setup)
        {
            newGameSetup = setup;
        }
 
+       public void SetOptionsSetup(Options options)
+       {
+           newOptions = options;
+       }
+
        private void HandleNewGame()
        {
            newGameSetup.ShowNewGameSetup();
        }
-
+       
+       private void HandleOptions()
+       {
+           newOptions.ShowOptions();
+       }
+       
        private void HandleExit()
        {
            Console.WriteLine("Exiting the game");
            Environment.Exit(0);
-       }
-
-       private void HandleOptions()
-       {
-           Console.WriteLine("Enter the options you want to play");
        }
 
        private string[] mainMenuOptionsArray = new[] { "New Game", "Options", "Exit" };

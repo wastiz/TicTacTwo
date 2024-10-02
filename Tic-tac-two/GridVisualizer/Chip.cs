@@ -1,4 +1,4 @@
-﻿namespace GameBrain;
+﻿namespace GridVisualizer;
 
 public class Chip
 {

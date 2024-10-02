@@ -1,4 +1,4 @@
-﻿namespace GameBrain;
+﻿namespace GridVisualizer;
 
 public class MovableGrid
 {
@@ -12,4 +12,6 @@ public class MovableGrid
         this.column = column;
         grid = new int[row, column];
     }
+    
+    
 }
