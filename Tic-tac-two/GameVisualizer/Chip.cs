@@ -2,7 +2,7 @@
 
 public class Chip
 {
-    private string belongs;
+    private Player belongs;
     private string color;
     
     

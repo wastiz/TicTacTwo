@@ -1,13 +1,12 @@
 ﻿using GridVisualizer;
-
+using MenuApp;
 namespace GameBrain
 {
     public class GameBrain
     {
-        private Grid grid;
-        public void initializeGame()
+        public GameBrain(int boardSize, int movableBoardSize, string crossColor, string zeroColor)
         {
-            grid = new Grid();
+            
         }
     }
 }

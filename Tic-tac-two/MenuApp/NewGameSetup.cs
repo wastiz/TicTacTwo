@@ -1,4 +1,5 @@
-﻿namespace MenuApp
+﻿using GameBrain;
+namespace MenuApp
 {
     public class NewGameSetup : Menu
     {
@@ -8,18 +9,22 @@
         {
             mainMenu = menu;
         }
-
-        private void HandleOneplayer()
-        {
-            
-        }
-
+        
         private void HandleTwoplayer()
         {
-            Console.WriteLine("Two players");
+            gameBrain = new Game
+        }
+        
+        private void HandleOneplayer()
+        {
+            Console.WriteLine("Player vs AI is not yet realized");
+        }
+        private void HandleAI()
+        {
+            Console.WriteLine("AI vs AI is not yet realized");
         }
 
-        private string[] optionsArray = new[] { "One player", "Two players", "Back to main menu" };
+        private string[] optionsArray = new[] { "Two players", "vs AI", "Back to main menu" };
         private int activeOptionIndex = 0;
         private string menuGuidance = "Press \"Esc\" to exit. Press enter to select an option. Move with arrows";
         private Action[] menuActions;
@@ -28,8 +33,8 @@
         {
             menuActions = new Action[]
             {
-                HandleOneplayer,
                 HandleTwoplayer,
+                HandleAI,
                 mainMenu.ShowMainMenu
             };
 
