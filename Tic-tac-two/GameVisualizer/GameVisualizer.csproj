@@ -4,12 +4,10 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>GridVisualizer</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ConsoleApp\ConsoleApp.csproj" />
-      <ProjectReference Include="..\MenuApp\MenuApp.csproj" />
+      <ProjectReference Include="..\GameBrain\GameBrain.csproj" />
     </ItemGroup>
 
 </Project>

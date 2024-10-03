@@ -17,16 +17,19 @@
 
        private void HandleNewGame()
        {
+           exit = true;
            newGameSetup.ShowNewGameSetup();
        }
        
        private void HandleOptions()
        {
+           exit = true;
            newOptions.ShowOptions();
        }
        
        private void HandleExit()
        {
+           Console.Clear();
            Console.WriteLine("Exiting the game");
            Environment.Exit(0);
        }

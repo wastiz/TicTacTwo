@@ -1,4 +1,4 @@
-﻿namespace GridVisualizer;
+﻿namespace GameVisualizer;
 
 public class MovableGrid
 {

@@ -5,12 +5,13 @@ namespace MenuApp
     public class Menu
     {
         private string _heading = "Tic Tac Two";
+        protected bool exit = false;
         protected void Start(string[] optionsArray, int activeOptionIndex, string menuGuidance, Action[] menuActions)
         {
-            bool exit = false;
 
             while (!exit)
             {
+                Console.Clear();
                 DisplayMenuOptions(optionsArray, menuGuidance, activeOptionIndex);
                 var pressedKey = Console.ReadKey(true); // true not to display pressed key
 
@@ -37,11 +38,9 @@ namespace MenuApp
 
         private void DisplayMenuOptions(string[] optionsArray, string menuGuidance, int activeOptionIndex)
         {
-            Console.Clear();
-            Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine(_heading);
             Console.WriteLine();
+            Console.WriteLine(_heading);
             Console.WriteLine(menuGuidance);
             Console.WriteLine();
             

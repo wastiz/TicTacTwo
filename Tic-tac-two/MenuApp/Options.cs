@@ -3,8 +3,8 @@
     public class Options : Menu
     {
         private MainMenu mainMenu;
-        private int grid_size { get; set; } = 5;
-        private int movable_grid_size { get; set; } = 3;
+        public int _gridSize { get; set; } = 5;
+        public int _movableGridSize { get; set; } = 3;
         private string cross_color { get; set; } = "red";
         private string zero_color { get; set; } = "blue";
 
@@ -28,7 +28,7 @@
             {
                 HandleGridSize("Invalid input. Please enter a valid number.");
             }
-            else if (size == grid_size)
+            else if (size == _gridSize)
             {
                 HandleGridSize("This size is already assigned...");
             }
@@ -38,8 +38,8 @@
             }
             else
             {
-                grid_size = size;
-                Console.WriteLine($"Grid size successfully updated to {grid_size}.");
+                _gridSize = size;
+                Console.WriteLine($"Grid size successfully updated to {_gridSize}.");
             }
         }
 
@@ -58,7 +58,7 @@
             {
                 HandleMovableGridSize("Invalid input. Please enter a valid number.");
             }
-            else if (size == movable_grid_size)
+            else if (size == _movableGridSize)
             {
                 HandleMovableGridSize("This size is already assigned...");
             }
@@ -68,8 +68,8 @@
             }
             else
             {
-                movable_grid_size = size;
-                Console.WriteLine($"Movable grid size successfully updated to {movable_grid_size}.");
+                _movableGridSize = size;
+                Console.WriteLine($"Movable grid size successfully updated to {_movableGridSize}.");
             }
         }
 
@@ -136,8 +136,8 @@
         {
             string[] optionsArray = new[] 
             { 
-                "Grid Size: " + grid_size, 
-                "Movable Grid Size: " + movable_grid_size,
+                "Grid Size: " + _gridSize, 
+                "Movable Grid Size: " + _movableGridSize,
                 "Cross Color: " + cross_color,
                 "Zero Color: " + zero_color,
                 "Back"

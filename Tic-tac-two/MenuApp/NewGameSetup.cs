@@ -1,9 +1,16 @@
-﻿using GameBrain;
+﻿using GameVisualizer;
+
 namespace MenuApp
 {
     public class NewGameSetup : Menu
     {
         private MainMenu mainMenu;
+        private Options gameOptions;
+
+        public NewGameSetup(Options options)
+        {
+            gameOptions = options;
+        }
 
         public void SetMainMenu(MainMenu menu)
         {
@@ -12,13 +19,16 @@ namespace MenuApp
         
         private void HandleTwoplayer()
         {
-            gameBrain = new Game
+            exit = true;
+            Game game = new Game(gameOptions._gridSize, gameOptions._movableGridSize);
+            game.DisplayGame();
         }
         
         private void HandleOneplayer()
         {
             Console.WriteLine("Player vs AI is not yet realized");
         }
+
         private void HandleAI()
         {
             Console.WriteLine("AI vs AI is not yet realized");
@@ -34,6 +44,7 @@ namespace MenuApp
             menuActions = new Action[]
             {
                 HandleTwoplayer,
+                HandleOneplayer,
                 HandleAI,
                 mainMenu.ShowMainMenu
             };
