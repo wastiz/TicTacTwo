@@ -3,21 +3,36 @@
     public class Brain
     {
         public int[,] board;
-        private int[,] movableBoard;
-        private int playerNumber = 1;
+        public int[,] movableBoard;
+        public int playerNumber = 1;
 
-        public Brain(int board, int movableBoard)
+        public Brain(int boardSize, int movableBoardSize)
         {
-            this.board = new int[board, board];
-            this.movableBoard = new int[movableBoard, movableBoard];
+            board = new int[boardSize, boardSize];
+            movableBoard = new int[boardSize, boardSize];
+            
+            int startRow = (boardSize - movableBoardSize) / 2;
+            int startCol = (boardSize - movableBoardSize) / 2;
+            
+            for (int i = 0; i < movableBoardSize; i++)
+            {
+                for (int j = 0; j < movableBoardSize; j++)
+                {
+                    movableBoard[startRow + i, startCol + j] = 1;
+                }
+            }
         }
 
-        public void makeMove(int x, int y)
+        public bool makeMove(int x, int y)
         {
             if (board[x, y] == 0)
             {
-                movableBoard[x, y] = playerNumber;
+                board[x, y] = playerNumber;
                 this.playerNumber = playerNumber == 1 ? 2 : 1;
+                return true;
+            } else
+            {
+                return false;
             }
         }
     }
