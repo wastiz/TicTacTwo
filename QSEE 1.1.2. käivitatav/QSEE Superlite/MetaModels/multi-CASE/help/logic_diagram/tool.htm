@@ -1,0 +1,551 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-gb">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</script>
+</head>
+
+<body link="#3366CC" vlink="#3366CC" alink="#6699CC" onLoad="MM_preloadImages('OpenBig.jpg','NewBig.jpg','SetupBig.jpg','ExitBig.jpg','images/PreviousBig.jpg','images/NextBig.jpg','../images/CloseBig.jpg')">
+<table width="100%" height="64" border="0" background="../images/top.jpg">
+  <!--DWLayoutTable-->
+  <tr> 
+    <td width="100%" height="49" valign="top"><!--DWLayoutEmptyCell-->&nbsp; </td>
+  </tr>
+</table>
+<table width="100%" height="214" border="0" align="center">
+  <!--DWLayoutTable-->
+  <tr> 
+    <td width="250" height="206" valign="top"> <table height="200" width="100%" border="0" cellpadding="0" cellspacing="5" bgcolor="#EDF2F8">
+        <tr> 
+          <td height="21" colspan="3" class="menutop" bgcolor="#BACBE5"> <font color="#006DD6"><strong>The 
+            Guide</strong></font> </font></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#input" class="menu"> <font color="#006DD6">Input 
+            Terminals </font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#gate" class="menu"> <font color="#006DD6">Logic 
+            Gates </font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#signal" class="menu"> <font color="#006DD6">Logic 
+            Signals </font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#truth_table" class="menu"> <font color="#006DD6">Truth 
+            Tables </font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#example" class="menu"> <font color="#006DD6">Example</font></a></td>
+        </tr>
+      </table></td>
+    <td width="719" valign="top"> <table height="200" width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="100%" height="200" valign="top"> <h1><font size="5">Logic 
+              Diagram</font></h1>
+            <p>The logic diagram tool allows the visual construction of Boolean 
+              style logic circuits. These type of models define how a number of 
+              input signals are processed through various kinds of logic gates. 
+              Input terminals and logic gates are connected using signal links. 
+              As a model is being defined the tool automatically updates textual 
+              expressions associated with the output of each logic gate. Once 
+              a diagram is complete a model check facility can be used to identify 
+              likely errors and a truth table of the logic circuit can be automatically 
+              generated.</p>
+            <p align="left">To view the main multi-CASE help page click <a href="../tool.htm">here</a></p>
+            <div align="right"> 
+              <table width="152" border="0">
+                <!--DWLayoutTable-->
+                <tr> 
+                  <td width="25%" height="74" valign="top"> <a href="http:qsee_cls" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image24','','../images/CloseBig.jpg',1)"> 
+                    <img src="../images/Close.jpg" alt="Close Help Window" name="Image24" border="0" width="146" height="72"></a></td>
+                </tr>
+                <tr> 
+                  <td height="21" valign="top"> <div align="center"> <a href="http:qsee_cls">Close 
+                      Help Window</a></div></td>
+                </tr>
+              </table>
+            </div></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr> 
+    <td height="1"></td>
+    <td></td>
+  </tr>
+</table>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h2>Input Terminals<a name="input" id="input"></a></h2>
+<p><b>Definition:</b> Input terminals are used to represent the source of signals 
+  within the logic diagram. Input terminals typically have one or more outgoing 
+  <a href="#signal">signal links</a> that connect to <a href="#gate">logic gates</a>. 
+  Input terminals can be assigned a value of either one or zero, (i.e. set/unset, 
+  true/false) which is output from the terminal during real-time evaluation of 
+  the model.</p>
+<p><b>Representation:</b> An input terminal is represented by a small circular 
+  shaped node that is (by default) red in color. The name of the input terminal 
+  is shown above and the currently assigned value is shown below. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10"> <img src="images/input.JPG" width="27" height="53"></p>
+<p><b>Creation:</b> To add an input terminal right click on the logic diagram 
+  or the logic diagram icon within the project tree and select the &quot;Add Input 
+  Terminal&quot; option from the menu. Position the input outline where you wish 
+  it to be placed on the diagram and left click, enter the name when prompted 
+  and click &quot;OK&quot;. </p>
+<p><b>Rules:</b> A maximum of thirty two input terminals can be shown on one model. 
+  Each input terminal should be given a unique name (although this is not enforced).</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, Delete, 
+  Add Outgoing Signal, Add Subsequent AND, Add Subsequent OR, Add Subsequent NOT, 
+  Add Subsequent NAND, Add Subsequent NOR, Add Subsequent XOR, Add Subsequent 
+  XNOR, Add Subsequent NOP/Junction, Is Set, Change Input Node Color, Edit Input 
+  Annotation/Name</p>
+<p align="right"><a href="#top">Back To Top</a> </p>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h2>Logic Gates<a name="gate" id="gate"></a></h2>
+<p><b>Definition:</b> Logic gates are used to represent a signal manipulation 
+  device within a logic diagram. A logic gate has one or more input <a href="#signal">signals</a> 
+  and generates a single output signal (although this can be split). There are 
+  various types of logic gate, each having its own particular behavior in terms 
+  of how the input signals are used to generate the output signal. A gate that 
+  has been placed on the model can be changed to be a different gate via its associated 
+  context sensitive menu (see the &quot;Gate Type&quot; sub-menu).</p>
+<p><a name="value"></a>A textual label that shows a logical expression and output 
+  value of the gate is placed above the outgoing signal. This is constructed by 
+  using textual symbols to represent the various types of gates. e.g.</p>
+<p><img src="../images/pixel.gif" width="35" height="10"><img src="images/value.JPG" width="145" height="44"></p>
+<p>&nbsp;</p>
+<p><b>Representation:</b> The logic gates supported are <a href="#and">AND</a>, 
+  <a href="#or">OR</a>, <a href="#not">NOT</a>, <a href="#nand">NAND</a>, <a href="#nor">NOR</a>, 
+  <a href="#xor">XOR</a>, <a href="#xnor">XNOR</a> and <a href="#nop">NOP</a>. 
+  The representation of each of these and the mapping from input to output signals 
+  is described below.</p>
+<p>&nbsp;</p>
+<h3>AND Gate<a name="and"></a></h3>
+<p>An AND gate takes one or more input signals (typically two). The output is 
+  1 if <strong>all</strong> inputs are also 1, otherwise the output is 0, i.e.</p>
+<table width="367" border="0">
+  <tr>
+    <td width="54" rowspan="5" nowrap>&nbsp;</td>
+    <td width="100" rowspan="5" nowrap><img src="images/and.JPG" width="54" height="45"></td>
+    <td width="54" bgcolor="#FF0000">
+<div align="center"><strong>Input1</strong></div></td>
+    <td width="55" bgcolor="#FF0000">
+<div align="center"><strong>Input2</strong></div></td>
+    <td width="62" bgcolor="#00aF00">
+<div align="center"><strong>Output</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+</table>
+<p>An AND gate is represented in textual expressions by a period character, e.g. 
+  (A . B).</p>
+<p>&nbsp;</p>
+<h3>OR Gate<a name="or" id="or"></a></h3>
+<p>An OR gate takes one or more input signals (typically two). The output is 1 
+  if <strong>any</strong> inputs are 1, otherwise the output is 0, i.e.</p>
+<table width="367" border="0">
+  <tr> 
+    <td width="54" rowspan="5" nowrap>&nbsp;</td>
+    <td width="100" rowspan="5" nowrap><img src="images/or.JPG" width="52" height="46"></td>
+    <td width="54" bgcolor="#FF0000">
+<div align="center"><strong>Input1</strong></div></td>
+    <td width="55" bgcolor="#FF0000">
+<div align="center"><strong>Input2</strong></div></td>
+    <td width="62" bgcolor="#00aF00">
+<div align="center"><strong>Output</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+</table>
+<p>An OR gate is represented in textual expressions by a plus character, e.g. 
+  (A + B).</p>
+<p>&nbsp;</p>
+<h3>NOT Gate<a name="not" id="not"></a></h3>
+<p>A NOT gate takes exactly one input signal. The input signal is negated to form 
+  the output signal. The output is 1 if the input is 0, otherwise the output is 
+  0, i.e.</p>
+<table width="367" border="0">
+  <tr> 
+    <td width="54" rowspan="3" nowrap>&nbsp;</td>
+    <td width="100" rowspan="3" nowrap><img src="images/not.JPG" width="52" height="47"></td>
+    <td width="113" bgcolor="#FF0000">
+<div align="center"><strong>Input1</strong></div></td>
+    <td width="62" bgcolor="#00aF00">
+<div align="center"><strong>Output</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+</table>
+<p>A NOT gate is represented in textual expressions by a negate character, e.g. 
+  (&not;A).</p>
+<p>&nbsp;</p>
+<h3>NAND Gate<a name="nand" id="nand"></a></h3>
+<p>A NAND (negated AND) gate takes one or more input signals (typically two). 
+  The output is 0 if <strong>all</strong> inputs are 1, otherwise the output is 
+  1, i.e.</p>
+<table width="367" border="0">
+  <tr> 
+    <td width="54" rowspan="5" nowrap>&nbsp;</td>
+    <td width="100" rowspan="5" nowrap><img src="images/nand.JPG" width="51" height="44"></td>
+    <td width="54" bgcolor="#FF0000"> <div align="center"><strong>Input1</strong></div></td>
+    <td width="55" bgcolor="#FF0000"> <div align="center"><strong>Input2</strong></div></td>
+    <td width="62" bgcolor="#00aF00"> <div align="center"><strong>Output</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+</table>
+<p>A NAND gate is represented in textual expressions by a combination of the negation 
+  and period characters, e.g. (&not;(A . B)).</p>
+<p>&nbsp;</p>
+<h3>NOR Gate<a name="nor" id="nor"></a></h3>
+<p>An NOR (negated OR) gate takes one or more input signals (typically two). The 
+  output is 0 if <strong>any</strong> inputs are 1, otherwise the output is 1, 
+  i.e.</p>
+<table width="367" border="0">
+  <tr> 
+    <td width="54" rowspan="5" nowrap>&nbsp;</td>
+    <td width="100" rowspan="5" nowrap><img src="images/nor.JPG" width="51" height="44"></td>
+    <td width="54" bgcolor="#FF0000"> <div align="center"><strong>Input1</strong></div></td>
+    <td width="55" bgcolor="#FF0000"> <div align="center"><strong>Input2</strong></div></td>
+    <td width="62" bgcolor="#00aF00"> <div align="center"><strong>Output</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+</table>
+<p>A NOR gate is represented in textual expressions by a combination of the negation 
+  and plus characters, e.g. (&not;(A + B)).</p>
+<p>&nbsp;</p>
+<h3>XOR Gate<a name="xor" id="xor"></a></h3>
+<p>A XOR (exclusive OR) gate takes one or more input signals (typically two). 
+  The output is 1 if <strong>either </strong>(but not all)<strong> </strong> inputs 
+  are 1, otherwise the output is 0, i.e.</p>
+<table width="367" border="0">
+  <tr> 
+    <td width="54" rowspan="5" nowrap>&nbsp;</td>
+    <td width="100" rowspan="5" nowrap><img src="images/xor.JPG" width="50" height="44"></td>
+    <td width="54" bgcolor="#FF0000"> <div align="center"><strong>Input1</strong></div></td>
+    <td width="55" bgcolor="#FF0000"> <div align="center"><strong>Input2</strong></div></td>
+    <td width="62" bgcolor="#00aF00"> <div align="center"><strong>Output</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+</table>
+<p>A XOR gate is represented in textual expressions by a caret character, e.g. 
+  (A ^ B).</p>
+<p>&nbsp;</p>
+<h3>XNOR Gate<a name="xnor" id="xnor"></a></h3>
+<p>A XNOR (exclusive negated OR) gate takes one or more input signals (typically 
+  two). The output is 0 if <strong>either </strong>(but not all)<strong> </strong> 
+  inputs are 1, otherwise the output is 1, i.e.</p>
+<table width="367" border="0">
+  <tr> 
+    <td width="54" rowspan="5" nowrap>&nbsp;</td>
+    <td width="100" rowspan="5" nowrap><img src="images/xnor.JPG" width="54" height="45"></td>
+    <td width="54" bgcolor="#FF0000"> <div align="center"><strong>Input1</strong></div></td>
+    <td width="55" bgcolor="#FF0000"> <div align="center"><strong>Input2</strong></div></td>
+    <td width="62" bgcolor="#00aF00"> <div align="center"><strong>Output</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+</table>
+<p>A XNOR gate is represented in textual expressions by a combination of the negation 
+  and caret characters, e.g. (&not;(A ^ B)).</p>
+<p>&nbsp;</p>
+<h3>NOP Gate<a name="nop" id="nop"></a></h3>
+<p>A NOP (no operation) gate takes exactly one input signal. The input and output 
+  signals match exactly. NOP gates are useful to represent junctions (i.e. the 
+  splitting of signals) or output terminals. In the latter case it is often sensible 
+  to give the gate a unique name so that it can be identified within <a href="#truth_table">truth 
+  tables</a>. With a NOP gate the output is 1 if the input is 1, otherwise the 
+  output is 0, i.e.</p>
+<table width="367" border="0">
+  <tr> 
+    <td width="54" rowspan="3" nowrap>&nbsp;</td>
+    <td width="100" rowspan="3" nowrap><img src="images/nop.JPG" width="21" height="23"></td>
+    <td width="113" bgcolor="#FF0000"> <div align="center"><strong>Input1</strong></div></td>
+    <td width="62" bgcolor="#00aF00"> <div align="center"><strong>Output</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>0</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>0</strong></div></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FF0000"><div align="center"><strong>1</strong></div></td>
+    <td bgcolor="#00aF00"><div align="center"><strong>1</strong></div></td>
+  </tr>
+</table>
+<p>A NOP gate has no representation in textual expressions since it has no effect 
+  on output.</p>
+<p>&nbsp;</p>
+<p><b>Creation:</b> To add a logic gate right click on the logic diagram and select 
+  the appropriate &quot;Add .... Gate&quot; option from the menu. Position the 
+  gate outline where you wish it to be placed on the diagram and left click. A 
+  logic gate can also be added by right clicking on an existing gate and selecting 
+  the appropriate &quot;Add Subsequent .... Gate&quot; option from the menu. In 
+  this case a <a href="#signal">signal link</a> from the original gate to the 
+  new gate is created automatically.</p>
+<p><b>Rules:</b> A logic gate should have at least one input signal and should 
+  generate exactly one output signal. <a href="#not">NOT</a> gates and <a href="#nop">NOP</a> 
+  gates can have no more than one input signal.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, Delete, 
+  Add Outgoing Signal, Add Subsequent AND,Add Subsequent OR, Add Subsequent NOT, 
+  Add Subsequent NAND, Add Subsequent NOR, Add Subsequent XOR, Add Subsequent 
+  XNOR, Add Subsequent NOP/Junction, Gate Type, Edit Gate Annotation/Name.</p>
+<p align="right"><a href="#top">Back To Top</a> </p>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h2>Logic Signals<a name="signal" id="signal"></a></h2>
+<p><b>Definition:</b> A logic signal represents a connection path between two 
+  logic gates. A signal is output from a <a href="#gate">logic gate</a>, travels 
+  along a signal link, and is input into another logic gate. <a href="#input">Input 
+  terminals</a> are the originating point of the signal values and therefore can 
+  be the source element of a signal link. Whenever a logic signal is added, the 
+  textual expressions associated with effected gates will be automatically updated.</p>
+<p><b>Representation:</b> A logic signal is represented by a graphical link between 
+  two logic gates. A textual expression of the output from the source gate is 
+  shown above the link. e.g.</p>
+<p><img src="../images/pixel.gif" width="35" height="10"> <img src="images/signal.JPG" width="101" height="25"></p>
+<p>&nbsp;</p>
+<p><b>Creation:</b> To add a signal link right click on either the input terminal 
+  or the logic gate which is to be the source of the link and select the &quot;Add 
+  Outgoing Signal&quot; option from the menu. Use the mouse to position the other 
+  end of the link over the gate that is to be the destination of the signal and 
+  left click.</p>
+<p><b>Rules:</b> A logic signal link must originate from either an input terminal 
+  or a logic gate and terminate at a logic gate.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, Delete, 
+  Add/Remove Link Point, Change Link Color, Edit Signal Annotation.</p>
+<div align="right"><a href="#top">Back To Top</a> </div>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h2>Truth Tables<a name="truth_table" id="truth_table"></a></h2>
+<p>The logic diagram tool has the ability to automatically generate truth tables 
+  from input models. A truth table provides a none diagrammatical view of the 
+  model in terms of how input values are mapped to output values. When the truth 
+  table is generated every possible combination of input values is automatically 
+  calculated and used as input into the defined model. The generated output from 
+  each possible combination is then output on the associated row within the table. 
+  e.g. the truth table below was generated from the <a href="#example">example</a> 
+  model.</p>
+<p>Truth Table: <font color="#990000">Inputs</font><font face="Courier New, Courier, mono"> 
+  --&gt;</font> <font color="#006600">Outputs</font></p>
+<table width="100%" border="1">
+  <tr> 
+    <td><font color="#7F0000" size="2"><b>X</b></font></td>
+    <td><font color="#7F0000" size="2"><b>Y</b></font></td>
+    <td><font color="#007F00" size="2"><b>Carry</b></font></td>
+    <td><font color="#007F00" size="2"><b>Sum</b></font></td>
+  </tr>
+  <tr> 
+    <td><font size="2">0</font></td>
+    <td><font size="2">0</font></td>
+    <td><font size="2">0</font></td>
+    <td><font size="2">0</font></td>
+  </tr>
+  <tr> 
+    <td><font size="2">0</font></td>
+    <td><font size="2">1</font></td>
+    <td><font size="2">0</font></td>
+    <td><font size="2">1</font></td>
+  </tr>
+  <tr> 
+    <td><font size="2">1</font></td>
+    <td><font size="2">0</font></td>
+    <td><font size="2">0</font></td>
+    <td><font size="2">1</font></td>
+  </tr>
+  <tr> 
+    <td><font size="2">1</font></td>
+    <td><font size="2">1</font></td>
+    <td><font size="2">1</font></td>
+    <td><font size="2">0</font></td>
+  </tr>
+</table>
+<p></P>
+<p>The truth table is generated as a HTML type document. The generated document 
+  is output to a file. The name of this file must be specified by the user, it 
+  is recommended that the default suffix is left unchanged (since this is appropriate 
+  for the type of file being generated). </p>
+<p>&nbsp;</p>
+<div align="right"><a href="#top">Back To Top</a> </div>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h2>Example<a name="example"></a></h2>
+<p>Below is an example of a Logic Diagram that represents a half-adder type circuit. 
+  There are two <a href="#input">input terminals</a> named 'X' and 'Y'. Notice 
+  how <a href="#nop">NOP gates</a> have been used to represent output terminals. 
+  In this case these are named 'Carry' and 'Sum'. The <a href="#truth_table">truth 
+  table</a> generated from this example is shown above.</p>
+<p>&nbsp;</p>
+<p><img src="../images/pixel.gif" width="35" height="10"> <img src="images/example.JPG" width="701" height="163"></p>
+<p>&nbsp;</p>
+<div align="right"><a href="#top">Back To Top</a> </div>
+<div align="right"> &nbsp;</div>
+<p>&nbsp;</p>
+<div align="right">
+<table width="152" border="0">
+    <!--DWLayoutTable-->
+    <tr> 
+      <td width="25%" height="74" valign="top"> <a href="http:qsee_cls" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image28','','../images/CloseBig.jpg',1)"> 
+        <img src="../images/Close.jpg" alt="Close Help Window" name="Image28" border="0" width="146" height="72"></a></td>
+    </tr>
+    <tr> 
+      <td height="21" valign="top"> <div align="center"> <a href="http:qsee_cls">Close 
+          Help Window</a></div></td>
+    </tr>
+  </table>
+</div>
+<p>&nbsp;</p>
+<table width="100%" height="53" border="0">
+  <!--DWLayoutTable-->
+  <tr> 
+    <td width="100%" height="64" valign="top" background="../images/bottom.JPG"><!--DWLayoutEmptyCell-->&nbsp; 
+    </td>
+  </tr>
+</table>
+
+</body>
+
+</html>

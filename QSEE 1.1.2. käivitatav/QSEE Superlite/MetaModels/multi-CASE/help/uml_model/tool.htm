@@ -1,0 +1,2270 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-gb">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</script>
+</head>
+
+<body link="#3366CC" vlink="#3366CC" alink="#6699CC" onLoad="MM_preloadImages('OpenBig.jpg','NewBig.jpg','SetupBig.jpg','ExitBig.jpg','images/PreviousBig.jpg','images/NextBig.jpg','../images/CloseBig.jpg')">
+
+<table width="100%" height="64" border="0" background="../images/top.jpg">
+  <!--DWLayoutTable-->
+  <tr>
+    <td width="100%" height="49" valign="top"><!--DWLayoutEmptyCell-->&nbsp;
+    </td>
+  </tr>
+</table>
+<table width="100%" height="214" border="0" align="center">
+  <!--DWLayoutTable-->
+  <tr>
+    <td width="250" height="206" valign="top">
+    <table height="278" width="98%" border="0" cellpadding="0" cellspacing="5" bgcolor="#EDF2F8">
+      <tr>
+        <td height="21" colspan="4" class="menutop" bgcolor="#BACBE5">
+        <font color="#006DD6"><strong>The Guide</strong></font> </font></td>
+      </tr>
+      <tr>
+        <td height="31" colspan="2" bgcolor="#D7E0EF">
+        <a href="#uml_models" class="menu"><font color="#006DD6">UML Models
+        </font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#usecase_model" class="menu">
+        <font color="#006DD6">Use Case Model </font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#class_model" class="menu">
+        <font color="#006DD6">Class Model </font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#collaboration_model" class="menu">
+        <font color="#006DD6">Collaboration Model</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#sequence_model" class="menu">
+        <font color="#006DD6">Sequence Model</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#statechart_model" class="menu">
+        <font color="#006DD6">Statechart Model</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#activity_model" class="menu">
+        <font color="#006DD6">Activity Model</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#deployment_model" class="menu">
+        <font color="#006DD6">Deployment Model</font></a></td>
+      </tr>
+      <tr>
+        <td width="18%" bgcolor="#D7E0EF">&nbsp;</td>
+        <td width="82%" bgcolor="#D7E0EF">
+        <a href="#component_model" class="menu"><font color="#006DD6">Component 
+        Model</font></a></td>
+      </tr>
+      <tr>
+        <td colspan="2" bgcolor="#D7E0EF">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2" bgcolor="#D7E0EF">
+        <a href="#model_elements" class="menu"><font color="#006DD6">UML Model 
+        Elements</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#instances"><font color="#006DD6">
+        Classifiers</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#states"><font color="#006DD6">States</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#instances"><font color="#006DD6">
+        Instances</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#features"><font color="#006DD6">Features</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#relationships"><font color="#006DD6">
+        Relationships</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF">&nbsp;</td>
+        <td bgcolor="#D7E0EF"><a href="#common_elements"><font color="#006DD6">
+        Common Elements</font></a></td>
+      </tr>
+      <!--   
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#class" class="menu" ><font color="#006DD6">Class</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#interface" class="menu" ><font color="#006DD6">Interface</font></a></td>
+        </tr>
+		<tr> 
+          <td bgcolor="#D7E0EF"><a href="#datatype" class="menu" ><font color="#006DD6">Datatype</font></a></td>
+        </tr>
+		<tr> 
+          <td bgcolor="#D7E0EF"><a href="#primitive" class="menu" ><font color="#006DD6">Primitive</font></a></td>
+        </tr>
+		<tr> 
+          <td bgcolor="#D7E0EF"><a href="#enumeration" class="menu" ><font color="#006DD6">Enumeration</font></a></td>
+        </tr>
+		<tr> 
+          <td bgcolor="#D7E0EF"><a href="#exception" class="menu" ><font color="#006DD6">Exception</font></a></td>
+        </tr>
+		<tr> 
+          <td bgcolor="#D7E0EF"><a href="#signal" class="menu" ><font color="#006DD6">Signal</font></a></td>
+        </tr>
+		<tr> 
+          <td bgcolor="#D7E0EF"><a href="#actor" class="menu" ><font color="#006DD6">Actor</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#useCase" class="menu" ><font color="#006DD6">Use 
+            Case</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#attribute" class="menu" ><font color="#006DD6">Attribute</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#operation" class="menu" ><font color="#006DD6">Operation</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#association" class="menu" ><font color="#006DD6">Association</font></a></td>
+        </tr>
+		 <tr> 
+          <td bgcolor="#D7E0EF"><a href="#communication" class="menu" ><font color="#006DD6">Communication</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#generalization" class="menu" ><font color="#006DD6">Generalization</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#realization" class="menu" ><font color="#006DD6">Realization</font></a></td>
+        </tr>
+		<tr> 
+          <td bgcolor="#D7E0EF"><a href="#dependency" class="menu" ><font color="#006DD6">Dependency</font></a></td>
+        </tr>
+		<tr> 
+          <td bgcolor="#D7E0EF"><a href="#import_dependency" class="menu" ><font color="#006DD6">Import 
+            Dependency</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#extend_dependency" class="menu" ><font color="#006DD6">Extend 
+            Dependency</font></a></td>
+        </tr>
+		<tr> 
+          <td bgcolor="#D7E0EF"><a href="#constraint" class="menu" ><font color="#006DD6">Constraint</font></a></td>
+        </tr>
+		<tr> 
+          <td bgcolor="#D7E0EF"><a href="#tag" class="menu" ><font color="#006DD6">Tag</font></a></td>
+        </tr>
+		<tr> 
+          <td bgcolor="#D7E0EF"><a href="#note" class="menu" ><font color="#006DD6">Note</font></a></td>
+        </tr>  
+		-->
+    </table>
+    </td>
+    <td width="719" valign="top">
+    <table height="200" width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="100%" height="200" valign="top">
+        <h1><font size="5">UML Model</font></h1>
+        <p>The Unified Modeling Language provides a number of models to allow 
+        the specification and design of software systems using an object 
+        orientated approach. UML has become the de facto standard for the 
+        modeling of software systems and is commonly understood by analysts and 
+        programmers alike. The generic nature of UML does make it quite large 
+        and (in some areas) complex to understand. Please refer to one of the 
+        many available publications for more detailed information about the UML. 
+        This implementation of UML allows a user with even minimal knowledge to 
+        begin modeling systems. This is achieved by protecting the user from 
+        many of the complex semantic rules defined by the UML standard. The tool 
+        dynamically analyses models and automatically disables menu options that 
+        would lead to the input of an invalid UML model. A model check is also 
+        provided to help discover common errors that are better identified using 
+        a deferred check.</p>
+        <p align="left">To view the main multi-CASE help page click
+        <a href="../tool.htm">here</a></p>
+        <div align="right">
+          <table width="170" border="0">
+            <tr>
+              <td width="164">
+              <div align="center">
+                <a href="http:qsee_cls" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image53','','../images/CloseBig.jpg',1)">
+                <img src="../images/Close.jpg" alt="Close Help Page" name="Image53" border="0" width="146" height="72"></a></div>
+              </td>
+            </tr>
+            <tr>
+              <td width="164">
+              <div align="center">
+                <a href="http:qsee_cls">Close Help Window</a></div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+  <tr>
+    <td height="1"></td>
+    <td></td>
+  </tr>
+</table>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h1>UML Models<a name="uml_models"></a></h1>
+<p>This section of the help page describes the various UML models supported by 
+the multi-CASE tool. Each model is designed to be used to perform 
+analysis/design of different aspects of a software system. Each model is 
+constructed using a combination of <a href="#model_elements">model elements</a>, 
+which are discussed in the second part of this help document. The modeling 
+elements available are dependent upon the current UML model being developed. 
+There are however certain modeling element that may be used on all UML Models. 
+These are <a href="#note">Notes</a>, <a href="#constraint">Constraints</a> and<a href="#tag"> 
+Tags</a>.</p>
+<p>The models within UML may be categorized as supporting -</p>
+<ul>
+  <li>Structural Modeling</li>
+  <li>Behavioral Modeling</li>
+  <li>Architectural Modeling</li>
+</ul>
+<p>UML however is designed to be used in a fashion most appropriate to the 
+problem, so these groupings are not strictly enforced.</p>
+<p>The actual UML models supported by the multi-CASE tool are
+<a href="#usecase_model">Use Case models</a>, <a href="#class_model">Class 
+models</a>, <a href="#collaboration_model">Collaboration models</a>,
+<a href="#sequence_model">Sequence models</a>, <a href="#statechart_model">State 
+chart models</a>, <a href="#activity_model">Activity models</a>,
+<a href="#deployment_model">Deployment models</a> and <a href="#component_model">
+Component models</a>. Although some of these models actually have more than one 
+specific purpose, e.g. class models can be used as object models (simply by not 
+including any classes on the model). For general information about working with 
+diagrams within the QSEE environment <a href="http:qsee_app:diagrams.htm">click 
+here</a>. </p>
+<p>When a new UML model is created (by right clicking on the project folder and 
+selecting &quot;Add UML Model&quot;) a top level model is created that contains a single 
+system package. </p>
+<p><a name="top_level"></a>To add a new model to the top level package left 
+click on the package (or the diagram area) and select the appropriate option. 
+All models created at the top level will be added to the system package. See 
+example below.</p>
+<p><img src="images/system_package.JPG" width="438" height="390"></p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p></p>
+<p>&nbsp;</p>
+<h2>Use Case Models<a name="usecase_model"></a></h2>
+<p>Use Case Models allow the user to model the externally visible behavior of a 
+system. A typical use case model has a number of actors that initiate specific 
+use cases of the system. Use Case models are useful to present a conceptual view 
+of the main system requirements in a form that can be understood by most 
+stakeholders. The modeling elements that may be used on a Use Case model are
+<a href="#actor">Actors</a>, <a href="#usecase">Use Cases</a>, <a href="#class">
+Classes</a> (ref), <a href="#communication_association">Communications</a>,
+<a href="#generalization">Generalizations</a>, <a href="#realization">
+Realizations</a>, <a href="#dependency">Dependencies</a>,
+<a href="#collaboration">Collaborations</a>, <a href="#package">Packages</a>,
+<a href="#note">Notes</a>, <a href="#constraint">Constraints</a> and
+<a href="#tag">Tags</a>.</p>
+<p>Below is an example of a UML Use Case model.</p>
+<p>&nbsp;</p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/use_example.jpg" width="593" height="414"> </p>
+<div align="right">
+  <div align="right">
+    <a href="#top">Back To Top</a>
+  </div>
+</div>
+<p>&nbsp;</p>
+<h2>Class Models<a name="class_model"></a></h2>
+<p>Class models are used to describe the static structure of a system. Class 
+models are often seen as the primary modeling technique within the UML and tend 
+to include a large amount of detailed information about the system being modeled. 
+Class models usually show the classes of a system together with the 
+relationships between them. The modeling elements which may be used on a class 
+model are <a href="#class">Classes</a>, <a href="#association">Associations</a>,
+<a href="#realization">Realizations</a>, <a href="#dependency">Dependencies</a>,
+<a href="#signal">Signals</a>, <a href="#datatype">DataTypes</a>,
+<a href="#primitivetype">PrimitiveTypes</a>, <a href="#exception">Exceptions</a>,
+<a href="#enumeration">Enumerations</a>, <a href="#actor">Actors</a> (ref),
+<a href="#usecase">Use Cases</a> (ref), <a href="#collaboration">Collaborations</a>,
+<a href="#package">Packages</a>, <a href="#object">Objects</a>, <a href="#link">
+Links</a>, <a href="#note">Notes</a>, <a href="#constraint">Constraints</a> and
+<a href="#tag">Tags</a>.</p>
+<p>Below is an example of a UML class model.</p>
+<p>&nbsp;</p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/example.jpg" width="609" height="416"> </p>
+<p></p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p></p>
+<h2>Collaboration Models<a name="collaboration_model"></a></h2>
+<p>Collaboration models are used to show how instances of classes (often defined 
+within a class model) work together in order to satisfy certain behavioral 
+requirements of a system. i.e. how objects work together within a known 
+scenario. Collaboration models are often created as subordinates of
+<a href="#collaboration">Collaboration </a>elements (to show how related 
+elements collaborate in order to achieve a task). Collaboration models are very 
+similar to <a href="#sequence_model">sequence models</a> and can often represent 
+the same scenario. Collaboration models tend to be better at showing the amount 
+of coupling that exists between objects, but worse at showing the order in which 
+messages are exchanged between communicating objects. </p>
+<p>The modeling elements which may be used on a collaboration model are
+<a href="#object">Objects</a>, <a href="#link">Links</a>, <a href="#call">Calls</a>,
+<a href="#note">Notes</a>, <a href="#constraint">Constraints</a> and
+<a href="#tag">Tags</a>.</p>
+<p>Below is an example of a UML collaboration model.</p>
+<p>&nbsp;</p>
+<p><img src="../images/pixel.gif" width="35" height="10"><img src="images/collab_model.JPG" width="421" height="336"></p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>&nbsp;</p>
+<h2>Sequence Model<a name="Sequence_model"></a></h2>
+<p>Sequence models are used to show how instances of classes (often defined 
+within a class model) work together in order to satisfy certain behavioral 
+requirements of a system. i.e. how objects work together within a known 
+scenario. Sequence models are often created to as subordinates of
+<a href="#collaboration">Collaboration </a>elements (to show how related 
+classifiers collaborate in order to achieve a task). Sequence models are very 
+similar to <a href="#collaboration_model">collaboration models</a> and can often 
+represent the same scenario. Sequence models tend to be better at showing the 
+sequence of messages exchanged between objects, but worse at showing the level 
+of coupling between interacting objects. The Y-axis of a sequence model 
+represents the passing of time.</p>
+<p>The modeling elements which may be used on a sequence model are
+<a href="#object">Objects</a> (active and passive), <a href="#call">Calls</a>,
+<a href="#note">Notes</a>, <a href="#constraint">Constraints</a> and
+<a href="#tag">Tags</a>. The <a href="#active_object">Active objects</a> are 
+usually shown at the left hand side of the model and are the objects that 
+instigate the initial call (since they have an active lifeline by default).</p>
+<p>Below is an example of a UML sequence model.</p>
+<p>&nbsp;</p>
+<p><img src="../images/pixel.gif" width="35" height="10"><img src="images/sequence_model.JPG" width="502" height="472"></p>
+<p>&nbsp;</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>&nbsp;</p>
+<h2>Statechart Model<a name="statechart_model"></a></h2>
+<p>A UML Statechart model is used to show the dynamic behavior of a system. A 
+statechart shows the different states which exist within the system and in what 
+circumstances each of these states is either entered and exited. The state of a 
+system often effects how it reacts to specific events that may occur and how the 
+system responds to these events. Statecharts are often created as subordinates 
+of <a href="#class">classes</a>, thus showing the dynamic behavior of the class 
+in question.</p>
+<p>The modeling elements which may be used on a statechart model include
+<a href="#states">States</a>, <a href="#transition">Transitions</a>,
+<a href="#note">Notes</a>, <a href="#constraint">Constraints</a> and
+<a href="#tag">Tags</a>.</p>
+<p>Below is an example of a UML statechart model.</p>
+<p>&nbsp;</p>
+<p><img src="images/state_model.JPG" width="919" height="501"></p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>&nbsp;</p>
+<h2>Activity Model<a name="activity_model"></a></h2>
+<p>Activity models are used to model specific computational processes. i.e. they 
+allow the modeling of activities or algorithms. Activity models are essentially 
+an advanced form of a flowchart. These models are often created as subordinates 
+of <a href="#operation">operations</a> to allow a more precise definition of the 
+behavior performed by the operation to be defined. An activity model provides a 
+sequence of actions, interspersed with flow-control logic.</p>
+<p>The modeling elements which may be used on a activity model include
+<a href="#action_state">Action States</a>, <a href="#transition">Transitions</a>,
+<a href="#object">Objects</a> (flow), <a href="#note">Notes</a>,
+<a href="#constraint">Constraints</a> and <a href="#tag">Tags</a>.</p>
+<p>Below is an example of a UML Activity model.</p>
+<p>&nbsp;</p>
+<p><img src="../images/pixel.gif" width="60" height="10"><img src="images/activity_model.JPG" width="464" height="456"></p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>&nbsp;</p>
+<h2>Component Model<a name="component_model"></a></h2>
+<p>Component models are used to help model the organization of the software 
+components within a system. A component model is typically used to show how 
+classes are combined into one or more components and how each component is 
+physically implemented within the distributed system. i.e. where components are 
+implemented within the distribution files. </p>
+<p>The modeling elements which may be used on a component model are
+<a href="#component">Components</a>, <a href="#artifact">Artifacts</a>,
+<a href="#class">Classes</a> (Ref), <a href="#generalization">Generalizations</a>,
+<a href="#realization">Realizations</a>, <a href="#dependency">Dependencies</a>,
+<a href="#package">Packages</a>, <a href="#note">Notes</a>,
+<a href="#constraint">Constraints</a> and <a href="#tag">Tags</a>.</p>
+<p>Below is an example of a UML component model.</p>
+<p>&nbsp;</p>
+<p><img src="../images/pixel.gif" width="60" height="10"><img src="images/component_model.JPG" width="464" height="313"></p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>&nbsp;</p>
+<h2>Deployment Model<a name="deployment_model"></a></h2>
+<p>Deployment diagrams are used to help model physical or architectural aspects 
+of a system. They are typically used to model hardware devices of a system and 
+to show how software components are deployed across the available devices. 
+Deployment models can be used to show the static architectural structure as well 
+as the run-time location of component instances.</p>
+<p>The modeling elements which may be used on a deployment model are
+<a href="#node">Nodes</a>, <a href="#component">Components</a>,
+<a href="#artifact">Artifacts</a>, <a href="#node_instance">Node Instances</a>,
+<a href="#component_instance">Component Instances</a>, <a href="#object">Objects</a>,
+<a href="#association">Associations</a>, <a href="#generalization">
+Generalizations</a>, <a href="#realization">Realizations</a>,
+<a href="#dependency">Dependencies</a>, <a href="#package">Packages</a>,
+<a href="#note">Notes</a>, <a href="#constraint">Constraints</a> and
+<a href="#tag">Tags</a>.</p>
+<p>Below is an example of a UML deployment model.</p>
+<p>&nbsp;</p>
+<p><img src="../images/pixel.gif" width="60" height="10"><img src="images/deployment_model.JPG" width="542" height="331"></p>
+<p>&nbsp;</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>&nbsp;</p>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h1>UML Model Elements<a name="model_elements"></a></h1>
+<p>This section of the help page describes the specific model elements that can 
+be used within the various UML models. Some of these elements can be used on 
+several models, whereas others are only ever used on one specific model. Nearly 
+all model elements have a visibility value of <strong>private</strong>, <strong>
+protected</strong>, <strong>package</strong> or <strong>public</strong>. This 
+visibility is represented by prefixing the element names with -, #, ~ or + 
+respectively. </p>
+<p>The available model elements generally belong to one of several 'groups' of 
+elements, all members of each group tend to behave or be used in a similar 
+manner. These common element groups are described below. For general information 
+about working with diagrams within the QSEE environment
+<a href="http:qsee_app:diagrams.htm">click here</a>.</p>
+<p>&nbsp;</p>
+<h2>Classifiers<a name="classifier" id="classifier"></a></h2>
+<p>Within the UML the most commonly used set of elements are classifiers. There 
+are a number of different types of classifier, each of which is designed to be 
+used in a certain way or on certain UML models. Despite subtle differences there 
+is much commonality with respect to how classifiers can be used within the 
+modeling environment, and the type of options provided within their menus etc. 
+Classifiers are elements that declare and group a number of related
+<a href="#features">features</a>, such as attributes and operations. Classifiers 
+are often linked using various <a href="#relationships">relationships</a> 
+including associations, generalizations, dependencies and realizations. Since 
+classifiers can be involved in generalization relationships they can all be 
+identified as being <em>root</em> (top of a generalization hierarchy), <em>leaf</em> 
+(bottom of a generalization hierarchy) or <em>abstract</em> (may not be directly 
+instantiated). Classifiers are represented by named graphical node shapes, such 
+as Rectangles and Ovals. Each different classifier has its own specific 
+notation.</p>
+<p>The elements within UML which are kinds of classifiers are <a href="#class">
+Classes</a>, <a href="#interface">Interfaces</a>, <a href="#signal">Signals</a>,
+<a href="#exception">Exceptions</a>, <a href="#datatype">DataTypes</a>,
+<a href="#primitivetype">PrimitiveTypes</a>, <a href="#enumeration">Enumerations</a>,
+<a href="#package">Packages</a>, <a href="#node">Nodes</a>, <a href="#component">
+Components</a>, <a href="#artifact">Artifacts</a>, <a href="#usecase">Use Cases</a>,
+<a href="#actor">Actors</a> and <a href="#collaboration">Collaborations</a>.</p>
+<p>&nbsp;</p>
+<h2>States<a name="states"></a></h2>
+<p>The UML provides a number of elements which are based on a common state 
+element. Generally a state is used to model a situation where a set of 
+circumstances are known to be true. A typical system or parts of a system goes 
+through a number of recognizable states during execution. To model this dynamic 
+nature of a system's changing state UML provides a number of state based 
+elements that appear on either a <a href="#statechart_model">statechart model</a> 
+or an <a href="#activity_model">activity model</a>. <a href="#transition">
+Transition relationships</a> allow the modeling of the change from one state to 
+another.</p>
+<p>The different kind of state elements provided within UML are <a href="#state">
+States</a>, <a href="#initial_state">Initial States</a>, <a href="#final_state">
+Final States</a>, <a href="#history_state">History States</a>,
+<a href="#synch_state">Synchronization States</a>, <a href="#choice_state">
+Choice State</a>, <a href="junction_state">Junction States</a>,
+<a href="#fork_state">Fork States</a>, <a href="#join_state">Join States</a>,
+<a href="#action_state">Action States</a>, <a href="#decision_state">Decision 
+State</a> and <a href="#merge_state">Merge States</a>.</p>
+<p>&nbsp;</p>
+<h2>Instances<a name="instances"></a></h2>
+<p>The UML allows run-time scenarios to be modeled and snap shots in time to be 
+modeled. In order to support these behavioral views a number of modeling 
+elements are provided which allow <a href="#classifier">classifiers</a> to be 
+represented as run-time instances. For example, at run time a class element is 
+instantiated as an object, therefore during modeling an <a href="#object">Object</a> 
+element is provided to allow the run-time instantiation of the <a href="#class">
+Class</a> to be represented. Instances are typically represented by the same 
+graphical shape as the classifier that they represent, often identifiable by a 
+lighter coloring.</p>
+<p>The kinds of instances provided within the UML tool are <a href="#object">
+Objects</a>, <a href="#node_instance">Node Instances</a> and
+<a href="#component_instance">Component Instances</a>.</p>
+<p>&nbsp;</p>
+<h2>Features<a name="features"></a></h2>
+<p>A number of elements within the UML are used to define the characteristics of 
+the element in which they are contained. These are commonly referred to as 
+features and are usually declared within a <a href="#classifier">classifier</a>. 
+A feature is an element which helps define the structure and behavior of the 
+classifier, or an instance of the classifier, in which it is contained. The type 
+of features used are dependent on the kind of classifier in which they are 
+declared, for example <a href="#attribute">Attributes</a> may be declared within 
+a <a href="#class">Class</a>, but not within an <a href="#interface">Interface</a>. 
+Features are represented on the models as textual words, contained within the 
+host classifier.</p>
+<p>The kinds of features commonly used within the UML are <a href="#attribute">
+Attributes</a>, <a href="#operation">Operations</a>, <a href="#signal_reception">
+Receptions</a>, <a href="#enumeration_literal">Enumeration Literals</a>,
+<a href="attribute_value">Attribute Values</a>, and <a href="#extension_point">
+Extension Points</a>.</p>
+<p>&nbsp;</p>
+<h2>Relationships<a name="relationships"></a></h2>
+<p>Within the UML relationships can be created between elements. There are 
+several types of relationship each having its own notation, appropriate usage 
+and connectivity rules. Fundamentally however all relationships are used to 
+identify that one element is related (in some way) to another element. All the 
+relationships are represented as graphical links, linking from a source to a 
+destination element. Various end decorators are used along with varying 
+line-styles to show the specific types of relationship.</p>
+<p>The kinds of relationships available within the UML are
+<a href="#association">Associations</a>, <a href="#generalization">
+Generalizations</a>, <a href="#dependency">Dependencies</a>,
+<a href="#realization">Realizations</a>, <a href="#classifier_role">Classifier 
+Roles</a>, <a href="#link">Links</a>, <a href="#call">Calls</a> and
+<a href="#transition">Transitions</a>.</p>
+<h2>&nbsp;</h2>
+<h2>Common Elements<a name="common_elements"></a></h2>
+<p>There are three elements that can be used within all UML models. These three 
+are <a href="#note">Notes</a>, <a href="#constraint">Constraints</a> and<a href="#tag"> 
+Tags</a>. All of these elements are used to add additional information to one or 
+more other elements residing on a model. <a href="#note">Notes</a> provide an 
+informal way of annotating model elements. <a href="#constraint">Constraints</a> 
+provide a more formal way of specifying restrictions to be applied to model 
+elements. <a href="#tag">Tags</a> allow (often platform/organizational) specific 
+information to be attached to elements.</p>
+<div align="right">
+&nbsp;<p><a href="#top">Back To Top</a>
+</div>
+<p>&nbsp;</p>
+<h1>Element Descriptions</h1>
+<p>This section contains a description of each modeling element available within 
+the UML tool. </p>
+<p>&nbsp;</p>
+<h2>Class<a name="class"></a></h2>
+<p><b>Definition:</b> A class is a kind of classifier used to define a set of 
+objects that have the same features, behavior, relationships and semantics. 
+Since classes are just a special kind of <a href="#classifier">classifier</a> 
+they can be involved in <a href="#generalization">generalization</a> 
+relationships, have <a href="#association">associations</a> and be specified as 
+being abstract, leaf, root etc. Classes may contain <a href="#attribute">
+attributes</a>, <a href="#operation">operations</a> and
+<a href="#signal_reception">signal receptions</a>. Classes may also contain an 
+underlying <a href="#statechart_model">statechart model</a> and/or
+<a href="#activity_model">activity model</a> to help model the behavioral nature 
+of the class. <a href="#object">Objects</a> may be used to model run-time 
+instances of classes.</p>
+<p><b>Representation:</b> A class is represented by a rectangular shaped node 
+that is (by default) yellow in color. It is split into three compartments, the 
+top part holding the name of the class, the middle part holding the attributes 
+contained by the class and the bottom part holding the operations/receptions 
+defined within the class. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_class.jpg" width="179" height="123"> </p>
+<p><b>Creation:</b> A class is added by right clicking on a
+<a href="#class_model">class model</a> diagram editor or on the class model icon 
+within the project tree and selecting the &quot;Add Class&quot; option from the menu. 
+Position the class outline where you wish it to be placed on the diagram and 
+left click, enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> A class must have a unique name within its namespace (i.e. the 
+package in which it is defined, rather than the specific model on which it 
+exists). Classes that are specified as being <strong>abstract</strong> cannot 
+also be specified as being <strong>leaf</strong> (this is prevented by the user 
+interface).</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Attribute, Add Operation, Add Signal Reception, Re-Order (features), 
+Add Association, Add Generalization, Add Realization, Add Dependency, Realize 
+Interface, Is Abstract Class, Is Leaf Class, Is Root Class, Is Active Class, Set 
+Visibility (Private, Protected, Package, Public) and Edit Class Color/Annotation/Name.</p>
+<p align="right"><a href="#top">Back To Top</a></p>
+<h2>Interface<a name="interface"></a></h2>
+<p><b>Definition:</b> An interface is a kind of classifier used to define a 
+number of related operations that must be implemented by a realizing classifier. 
+Since interfaces are just a special kind of <a href="#classifier">classifier</a> 
+they can be involved in <a href="#generalization">generalization</a> 
+relationships, have <a href="#association">associations</a> and be specified as 
+being leaf or root etc. Interfaces can only contain definitions of
+<a href="#operation">Operations</a> and <a href="#signal_reception">Signal 
+Receptions</a>. Interfaces do not provide the implementation methods for the 
+operations they define, hence all added operations are automatically defined as 
+abstract. Interfaces may also contain an underlying <a href="#statechart_model">
+statechart model</a> and/or <a href="#activity_model">activity model</a> to help 
+model the behavioral nature of the interface. Interfaces define a contract that 
+is actually carried out by a realizing classifier.</p>
+<p><b>Representation:</b> An interface is represented by a rectangular shaped 
+node that is (by default) lilac in color. It is split into three compartments, 
+the top part holding the name of the interface and the &lt;&lt;interface&gt;&gt; stereotype, 
+the middle part is always empty (since attributes are not permitted), and the 
+bottom part holding the abstract operations/receptions defined within the 
+interface. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_interface.jpg" width="217" height="141"> </p>
+<p><b>Creation:</b> An interface is added by right clicking on a
+<a href="#class_model">class model</a> diagram editor or on the class model icon 
+within the project tree and selecting the &quot;Add Interface&quot; option from the menu. 
+Position the interface outline where you wish it to be placed on the diagram and 
+left click, enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> An interface must have a unique name within its namespace (i.e. 
+the package in which it is defined, rather than the specific model on which it 
+exists). Attributes may not be added to an interface. All operations and signal 
+receptions contained by the interface have <b>public</b> visibility and are 
+specified as <b>abstract</b> (i.e. have no implementation method).</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Operation, Add Signal Reception, Re-Order (features), Add 
+Generalization, Add Dependency, Is Leaf Interface, Is Root Interface, Set 
+Visibility (Private, Protected, Package, Public) and Edit Interface Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Datatype<a name="datatype"></a></h2>
+<p><b>Definition:</b> A datatype is a kind of classifier used to define a set of 
+objects that have no identity, but simply represent values. Since datatypes are 
+just a special kind of <a href="#classifier">classifier</a> they can be involved 
+in <a href="#generalization">generalization</a> relationships, have
+<a href="#association">associations</a> and be specified as being leaf or root 
+etc. Datatypes can only contain definitions of <a href="#operation">Operations</a> 
+since attributes would provide identity. Datatypes are often used to model 
+special attribute/parameter types required in the system being modeled.</p>
+<p><b>Representation:</b> A datatype is represented by a rectangular shaped node 
+that is (by default) cyan in color. It is split into three compartments, the top 
+part holding the name of the datatype and the &lt;&lt;datatype&gt;&gt; stereotype, the 
+middle part is always empty (since attributes are not permitted), and the bottom 
+part holding the query operations defined within the datatype. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_datatype.JPG" width="286" height="107"> </p>
+<p><b>Creation:</b> A datatype is added by right clicking on a
+<a href="#class_model">class model</a> diagram editor or on the class model icon 
+within the project tree and selecting the &quot;Add Data Type&quot; option from the menu. 
+Position the datatype outline where you wish it to be placed on the diagram and 
+left click, enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> A datatype must have a unique name within its namespace (i.e. 
+the package in which it is defined, rather than the specific model on which it 
+exists). Attributes may not be added to a datatype. All operations contained by 
+a datatype must be specified as being a <b>query</b>, since no data values exist 
+within the datatype instance. Associations linked to datatypes may not be 
+navigable away from the datatype.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Operation, Re-Order Operations, Add Generalization, Add Dependency, 
+Is Abstract Type, Is Leaf Type, Is Root Type, Set Visibility (Private, 
+Protected, Package, Public) and Edit Type Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Primitive Type<a name="primitivetype" id="primitivetype"></a></h2>
+<p><b>Definition:</b> A primitive type is a kind of <a href="#datatype">datatype</a> 
+used to identify predefined datatypes which have no structure defined within the 
+model itself. Since primitive types are just a special kind of
+<a href="#classifier">classifier</a> they can be involved in
+<a href="#generalization">generalization</a> relationships, have
+<a href="#association">associations</a> and be specified as being leaf or root 
+etc. Primitive types do not contain features such as attributes and operations, 
+since they are seen as being predefined elements. Primitive types are often used 
+to model types that are defined outside the scope of the UML model, e.g. common 
+mathematical types.</p>
+<p><b>Representation:</b> A primitive type is represented by a rectangular 
+shaped node that is (by default) cyan in color. It is split into three 
+compartments, the top part holding the name of the datatype and the 
+&lt;&lt;primitive&gt;&gt; stereotype, the middle and bottom compartments are always empty 
+(since attributes and operations are not permitted). e.g.</p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_primitive.JPG" width="105" height="89"> </p>
+<p><b>Creation:</b> A primitive type is added by right clicking on a
+<a href="#class_model">class model</a> diagram editor or on the class model icon 
+within the project tree and selecting the &quot;Add Primitive Type&quot; option from the 
+menu. Position the primitive type outline where you wish it to be placed on the 
+diagram and left click, enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> A primitive type must have a unique name within its namespace 
+(i.e. the package in which it is defined, rather than the specific model on 
+which it exists). Attributes, operations and receptions may not be added to a 
+primitive type. Associations linked to primitive types may not be navigable away 
+from the primitive type.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Generalization, Add Dependency, Is Abstract Type, Is Leaf Type, Is 
+Root Type, Set Visibility (Private, Protected, Package, Public) and Edit Type 
+Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Enumeration<a name="enumeration"></a></h2>
+<p><b>Definition:</b> An enumeration type is a kind of <a href="#datatype">
+datatype</a> that has a well defined set of of possible values, known as
+<a href="#enumeration_literal">enumeration literals</a>. Since enumeration types 
+are just a special kind of <a href="#classifier">classifier</a> they can be 
+involved in <a href="#generalization">generalization</a> relationships, have
+<a href="#association">associations</a> and be specified as being leaf or root 
+etc. Enumeration types can only contain definitions of
+<a href="#enumeration_literal">Enumeration Literals</a> and <a href="#operation">
+Operations</a>. Enumeration types are often used to model types with a finite 
+set of nominal values.</p>
+<p><b>Representation:</b> A enumeration type is represented by a rectangular 
+shaped node that is (by default) cyan in color. It is split into three 
+compartments, the top part holding the name of the enumeration type and the 
+&lt;&lt;enumeration&gt;&gt; stereotype, the middle part holding the enumeration literals, 
+and the bottom part holding the query operations defined within the enumeration. 
+e.g.</p>
+<p>&nbsp;</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_enumeration.JPG" width="121" height="142"> </p>
+<p><b>Creation:</b> An enumeration type is added by right clicking on a
+<a href="#class_model">class model</a> diagram editor or on the class model icon 
+within the project tree and selecting the &quot;Add Enumeration Type&quot; option from the 
+menu. Position the enumeration type outline where you wish it to be placed on 
+the diagram and left click, enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> An enumeration must have a unique name within its namespace 
+(i.e. the package in which it is defined, rather than the specific model on 
+which it exists). Attributes may not be added to an enumeration type. All 
+contained enumeration literal values must have unique names. All operations 
+contained by a datatype must be specified as being a <b>query</b>, since no data 
+values exist within the enumeration type instance. Associations linked to an 
+enumeration may not be navigable away from the enumeration type.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Enumeration Label, Add Operation, Re-Order (features), Add 
+Generalization, Add Dependency, Is Abstract Type, Is Leaf Type, Is Root Type, 
+Set Visibility (Private, Protected, Package, Public) and Edit Type Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Signal<a name="signal"></a></h2>
+<p><b>Definition:</b> A signal is a kind of classifier used to define objects 
+that are used for asynchronous communication between run-time instances. Since 
+signals are just a special kind of <a href="#classifier">classifier</a> they can 
+be involved in <a href="#generalization">generalization</a> relationships, have
+<a href="#association">associations</a> and be specified as being leaf, root 
+etc. Signals may contain <a href="#attribute">attributes</a> and
+<a href="#operation">operations</a>. Signals may also contain an underlying
+<a href="#statechart_model">statechart model</a> and/or
+<a href="#activity_model">activity model</a> to help model the behavioral nature 
+of the signal. The <a href="#signal_reception">receptions</a> defined within a 
+classifier identify which signals can be received and handled by that 
+classifier.</p>
+<p><b>Representation:</b> A signal is represented by a rectangular shaped node 
+that is (by default) orange in color. It is split into three compartments, the 
+top part holding the name of the signal and the &lt;&lt;signal&gt;&gt; stereotype, the 
+middle part holding the attributes contained by the signal and the bottom part 
+holding the operations defined within the signal. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img border="0" src="images/uml_signal.JPG" width="128" height="103"> </p>
+<p><b>Creation:</b> A signal is added by right clicking on a
+<a href="#class_model">class model</a> diagram editor or on the class model icon 
+within the project tree and selecting the &quot;Add Signal&quot; option from the menu. 
+Position the signal outline where you wish it to be placed on the diagram and 
+left click, enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> A signal must have a unique name within its namespace (i.e. the 
+package in which it is defined, rather than the specific model on which it 
+exists). </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Attribute, Add Operation, Re-Order (features), Add Association, Add 
+Generalization, Add Realization, Add Dependency, Realize Interface, Is Leaf 
+Signal, Is Root Signal, Set Visibility (Private, Protected, Package, Public) and 
+Edit Signal Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Exception<a name="exception"></a></h2>
+<p><b>Definition:</b> An exception is a kind of <a href="#signal">signal</a> 
+who's instances are typically raised by operations to signify faults during 
+execution. Since exceptions are just a special kind of <a href="#classifier">
+classifier</a> they can be involved in <a href="#generalization">generalization</a> 
+relationships, have <a href="#association">associations</a> and be specified as 
+being abstract, leaf or root etc. Exceptions may contain <a href="#attribute">
+attributes</a> and <a href="#operation">operations</a>. Exceptions may also 
+contain an underlying <a href="#statechart_model">statechart model</a> and/or
+<a href="#activity_model">activity model</a> to help model the behavioral nature 
+of the exception.</p>
+<p><b>Representation:</b> An exception is represented by a rectangular shaped 
+node that is (by default) light brown in color. It is split into three 
+compartments, the top part holding the name of the exception and the 
+&lt;&lt;exception&gt;&gt; stereotype, the middle part holding the attributes contained by 
+the exception and the bottom part holding the operations defined within the 
+exception. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_exception.JPG" width="105" height="88"> </p>
+<p><b>Creation:</b> An exception is added by right clicking on a
+<a href="#class_model">class model</a> diagram editor or on the class model icon 
+within the project tree and selecting the &quot;Add Exception&quot; option from the menu. 
+Position the exception outline where you wish it to be placed on the diagram and 
+left click, enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> An exception must have a unique name within its namespace (i.e. 
+the package in which it is defined, rather than the specific model on which it 
+exists). </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Attribute, Add Operation, Re-Order (features), Add Association, Add 
+Generalization, Add Realization, Add Dependency, Realize Interface, Is Leaf 
+Exception, Is Root Exception, Set Visibility (Private, Protected, Package, 
+Public) and Edit Exception Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Actor<a name="actor"></a></h2>
+<p><b>Definition:</b> An actor is a kind of classifier used to define external 
+objects that interact with the system being modeled. Since actors are just a 
+special kind of <a href="#classifier">classifier</a> they can be involved in
+<a href="#generalization">generalization</a> relationships and have
+<a href="#communication_association">communication associations</a> etc. Actors 
+may contain an underlying <a href="#statechart_model">statechart model</a> 
+and/or <a href="#activity_model">activity model</a> to help model their 
+behavioral nature. Actors are typically attached to one or more
+<a href="#usecase">Use Case</a> elements to show how they interact with the 
+system.</p>
+<p><b>Representation:</b> An actor is represented by a stick man shaped node 
+with its name label displayed above. i.e.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_actor.jpg" width="73" height="102"> </p>
+<p><b>Creation:</b> An actor is added by right clicking on a
+<a href="#usecase_model">Use Case model</a> diagram editor or on the Use Case 
+model icon within the project tree and selecting the &quot;Add Actor&quot; option from the 
+menu. Position the actor outline where you wish it to be placed on the diagram 
+and left click, enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> An actor must have a unique name within its namespace (i.e. the 
+package in which it is defined, rather than the specific model on which it 
+exists).</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Communication (association), Add Generalization, Set Visibility 
+(Private, Protected, Package, Public) and Edit Actor Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Use Case<a name="useCase"></a></h2>
+<p><b>Definition:</b> A use case is a kind of classifier used to represent the 
+  uses of the system as seen from external actors. Use case elements identify 
+  the high level functionality of a system. Since use cases are just a special 
+  kind of <a href="#classifier">classifier</a> they can be involved in <a href="#generalization">generalization</a> 
+  relationships and have <a href="#communication_association">communication associations</a> 
+  etc. Use cases may contain an underlying <a href="#statechart_model">statechart 
+  model</a> and/or <a href="#activity_model">activity model</a> to help model 
+  their behavioral nature. Use cases are typically attached to one or more <a href="#actor">Actor</a> 
+  elements to show how they are externally instigated. Use case elements can also 
+  include the functionality of other use cases by using an &lt;&lt;include&gt;&gt; 
+  <a href="#dependency">dependency</a>, or conditionally extend the functionality 
+  of other use cases by using an &lt;&lt;extend&gt;&gt; <a href="#dependency"> 
+  dependency</a>. </p>
+<p>A use case element may have an underlying <a href="../storyboard/tool.htm">storyboard 
+  model</a> defined. This allows for the definition of any graphical user interface 
+  requirements that are applicable to the functionality of the use case.</p>
+<p><b>Representation:</b> A use case is represented by an oval shaped node that 
+is (by default) blue in color. It has a top compartment that holds the name of 
+the use case and an optional lower compartment that is used to show
+<a href="#extension_point">extension points</a> defined within the use case. 
+i.e.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_use_case.jpg" width="129" height="81"> </p>
+<p><b>Creation:</b> A use case is added by right clicking on a
+<a href="#usecase_model">Use Case model</a> diagram editor or on the use case 
+model icon within the project tree and selecting the &quot;Add UseCase&quot; option from 
+the menu. Position the use case outline where you wish it to be placed on the 
+diagram and left click, enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> A use case must have a unique name within its namespace (i.e. 
+the package in which it is defined, rather than the specific model on which it 
+exists).</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Extension Point, Re-Order Extension Points, Add Communication 
+(association), Add Generalization, Add &lt;&lt;include&gt;&gt; Dependency, Add &lt;&lt;extend&gt;&gt; 
+Dependency, Set Visibility (Private, Protected, Package, Public) and Edit 
+UseCase Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Package<a name="package" id="package"></a></h2>
+<p><b>Definition:</b> A package is a kind of classifier used to help manage 
+models and their elements. Packages provide a method of dividing large models 
+into manageable chunks. Each package contains any number of subordinate UML 
+models. Since packages are just a special kind of <a href="#classifier">
+classifier</a> they can be involved in <a href="#generalization">generalization</a> 
+relationships and be specified as being leaf or root etc. Packages can also 
+import or access the the functionality of other packages by using an &lt;&lt;import&gt;&gt; 
+or &lt;&lt;access&gt; <a href="#dependency">dependency</a> respectively. The rules for 
+how models are divided into packages are very relaxed, e.g. a model could be 
+divided into packages based on a logical divide of functionality, or 
+alternatively based on an allocation of work to various team members. Packages 
+provide a specific namespace in which elements exist, i.e. they provide the 
+bounding area in which element names must be unique.</p>
+<p><b>Representation:</b> A package is represented by a folder shaped node that 
+is (by default) peach in color. It has a top compartment that holds the name of 
+the package and a lower compartment that displays a list UML models contained 
+within the package. e.g.</p>
+<p>&nbsp;</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_package.JPG" width="225" height="137"> </p>
+<p><b>Creation:</b> A package is added by right clicking on a UML model diagram 
+editor or on a model icon within the project tree and selecting the &quot;Add 
+Package&quot; option from the menu. Position the package outline where you wish it to 
+be placed on the diagram and left click, enter the name when prompted and click 
+&quot;OK&quot;.</p>
+<p><b>Rules:</b> A package must have a unique name within its namespace (i.e. 
+the package in which it is defined, rather than the specific model on which it 
+exists).</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add &lt;various&gt; UML Models, Re-Order Models, Add Generalization, Add 
+Realization, Add &lt;&lt;import&gt;&gt; Dependency, Add &lt;&lt;access&gt;&gt; Dependency, Realize 
+Interface, Is Leaf Package, Is Root Package, Set Visibility (Private, Protected, 
+Package, Public) and Edit Package Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Node<a name="node" id="node"></a></h2>
+<p><b>Definition:</b> A node descriptor is a kind of classifier used to 
+represent physical objects or computational resources/devices. Since nodes are 
+just a special kind of <a href="#classifier">classifier</a> they can be involved 
+in <a href="#generalization">generalization</a> relationships, have
+<a href="#communication_association">communication associations</a> and be 
+specified as being abstract, leaf or root etc. Nodes may contain
+<a href="#attribute">attributes</a>, <a href="#operation">operations</a> and
+<a href="#signal_reception">signal receptions</a>. Nodes may also contain an 
+underlying <a href="#statechart_model">statechart model</a> and/or
+<a href="#activity_model">activity model</a> to help model their behavioral 
+nature. Nodes are often associated with other nodes to show some sort of 
+communication path between them. Also nodes often deploy <a href="#component">
+components</a>, which is shown using a &lt;&lt;deploy&gt;&gt; <a href="#dependency">
+dependency</a> relationship. <a href="#node_instance">Nodes instances</a> may be 
+used to model run-time instances of nodes.</p>
+<p><b>Representation:</b> A node is represented by a three dimensional cube 
+shaped node that is (by default) lilac in color. It is split into three 
+compartments, the top part holding the name of the node and any stereotype, the 
+middle part holding the attributes contained by the node and the bottom part 
+holding the operations defined within the node. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_node.JPG" width="178" height="123"> </p>
+<p><b>Creation:</b> A node is added by right clicking on a
+<a href="#deployment_model">Deployment model</a> diagram editor or on the 
+Deployment model icon within the project tree and selecting the &quot;Add Node 
+Descriptor&quot; option from the menu. Position the node outline where you wish it to 
+be placed on the diagram and left click, enter the name when prompted and click 
+&quot;OK&quot;.</p>
+<p><b>Rules:</b> A node must have a unique name within its namespace (i.e. the 
+package in which it is defined, rather than the specific model on which it 
+exists). Nodes that are specified as being <strong>abstract</strong> can not 
+also be specified as being <strong>leaf</strong> (this is prevented by the user 
+interface). </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Attribute, Add Operation, Add Signal Reception, Re-Order (features), 
+Attach to Deployed Component, Add Association, Add Generalization, Add 
+Realization, Add Dependency, Realize Interface, Is Abstract Node, Is Leaf Node, 
+Is Root Node, Set Visibility (Private, Protected, Package, Public) and Edit Node 
+Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p></p>
+<h2>Component<a name="component" id="component"></a></h2>
+<p><b>Definition:</b> A component descriptor is a kind of classifier used to 
+encapsulate functionality of the system into a modular element that can be 
+easily replaced and/or deployed. Since components are just a special kind of
+<a href="#classifier">classifier</a> they can be involved in
+<a href="#generalization">generalization</a> relationships and be specified as 
+being abstract, leaf or root etc. Components may contain an underlying
+<a href="#statechart_model">statechart model</a> and/or
+<a href="#activity_model">activity model</a> to help model their behavioral 
+nature. Components often expose their functionality using <a href="#interface">
+interfaces</a> and contain resident <a href="#class">classes</a> that provide 
+the functionality. Also components often have specific implementing
+<a href="#artifact">artifacts</a>. <a href="#component_instance">Component 
+instances</a> may be used to model run-time instances of components.</p>
+<p><b>Representation:</b> A component is represented by a rectangular shaped 
+node with two left hand boxes that is (by default) light pink in color. The name 
+of the component and any stereotype is shown within the component. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_component.JPG" width="126" height="79"> </p>
+<p><b>Creation:</b> A component is added by right clicking on a
+<a href="#component_model">Component model</a>/<a href="#deployment_model">Deployment 
+model</a> diagram editor or on the Component/Deployment model icon within the 
+project tree and selecting the &quot;Add Component Descriptor&quot; option from the menu. 
+Position the component outline where you wish it to be placed on the diagram and 
+left click, enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> A component must have a unique name within its namespace (i.e. 
+the package in which it is defined, rather than the specific model on which it 
+exists). Components that are specified as being <strong>abstract</strong> can 
+not also be specified as being <strong>leaf</strong> (this is prevented by the 
+user interface). </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Attach to Resident Class/Component, Attach To Implementing Artifact, Add 
+Generalization, Add Realization, Add Dependency, Realize Interface, Is Abstract 
+Component, Is Leaf Component, Is Root Component, Set Visibility (Private, 
+Protected, Package, Public) and Edit Component Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p></p>
+<h2>Artifact<a name="artifact" id="artifact"></a></h2>
+<p><b>Definition:</b> An artifact is a kind of classifier used to represent a 
+piece of information that is produced or used by the system being modeled. 
+Artifacts typically represent files such as executable programs, source code or 
+documents. Artifacts are often attached to one or more <a href="#actor">
+component</a> elements that they implement. They can also be directly attached 
+to <a href="#class">classes</a> via <a href="#dependency">dependency</a> 
+relationships.</p>
+<p><b>Representation:</b> An artifact is represented by a rectangular shaped 
+node that is (by default) light green in color. The name of the artifact and any 
+stereotype is shown within the artifact node. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_artifact.JPG" width="112" height="78"> </p>
+<p><b>Creation:</b> An artifact is added by right clicking on a
+<a href="#component_model">Component model</a>/<a href="#deployment_model">Deployment 
+model</a> diagram editor or on the Component/Deployment model icon within the 
+project tree and selecting the &quot;Add Artifact&quot; option from the menu. Position the 
+artifact outline where you wish it to be placed on the diagram and left click, 
+enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> An artifact must have a unique name within its namespace (i.e. 
+the package in which it is defined, rather than the specific model on which it 
+exists). </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Dependency, Set Visibility (Private, Protected, Package, Public) and 
+Edit Artifact Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Collaboration<a name="collaboration" id="collaboration"></a></h2>
+<p><b>Definition:</b> A collaboration is a kind of classifier used to represent 
+  the realization of either an <a href="#operation">operation</a> or <a href="#classifier">classifier</a>. 
+  Collaborations can also be used to show how a number of classifiers play specific 
+  roles in order to help implement a part of the system's behavior. Since collaborations 
+  are just a special kind of <a href="#classifier">classifier</a> they can be 
+  involved in <a href="#generalization">generalization</a> relationships etc. 
+  Collaborations typically contain one or more underlying <a href="#sequence_model">sequence 
+  models</a> and/or <a href="#collaboration_model">collaboration models</a> to 
+  help model the interaction between classifiers. Collaborations identify the 
+  collaborating classifiers and their roles using <a href="#classifier_role"> 
+  classifier role</a> relationships.</p>
+<p><b>Representation:</b> A collaboration is represented by an oval shaped node 
+that is (by default) green in color. It has a top compartment that holds the 
+name of the collaboration and an optional lower compartment that is used to show 
+the underlying sequence/collaboration models.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_collaboration.JPG" width="185" height="83"> </p>
+<p><b>Creation:</b> A collaboration is added by right clicking on a
+<a href="#usecase_model">Use Case model</a>/<a href="#class_model">Class model</a> 
+diagram editor or on the Use Case/Class model icon within the project tree and 
+selecting the &quot;Add Collaboration&quot; option from the menu. Position the 
+collaboration outline where you wish it to be placed on the diagram and left 
+click, enter the name when prompted and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> A collaboration must have a unique name within its namespace 
+(i.e. the package in which it is defined, rather than the specific model on 
+which it exists).</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Underlying Sequence Model, Add Underlying Collaboration Model, 
+Re-Order Models, Add Generalization, Add Realization, Add Classifier Role, Add 
+Used Collaboration, Set Visibility (Private, Protected, Package, Public) and 
+Edit Collaboration Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>&nbsp;</p>
+<h2>State<a name="state" id="state"></a></h2>
+<p><b>Definition:</b> A state is an element used to represent a situation where 
+a set of circumstances are known to be true. A simple state is the most commonly 
+used state and identifies one of the available states within a system. These 
+type of states are used on <a href="#statechart_model">Statechart models</a> 
+rather than <a href="#activity_model">Activity models</a>. States are connected 
+to other states using <a href="#transition">transitions</a>. Composite states 
+contain sub-states, allowing grouping of states within super-states. Concurrent 
+composite states contain regions that define several sub-state machines that 
+exist in parallel. A state may contain actions that get executed on entry to the 
+state, on exit from the state and continuously while in the state. These are 
+known as <strong>entry</strong>, <strong>exit</strong> and <strong>do</strong> 
+actions respectively. States may also contain <a href="#internal_transition">
+internal transitions</a>, which are transitions that when triggered do not cause 
+a change of state to take place.</p>
+<p><b>Representation:</b> A simple state is represented by a rounded rectangular 
+shaped node that is (by default) orange in color. The name of the state and any 
+stereotype is shown within the top compartment. Any Entry/Exit/Do actions and 
+internal transitions are shown as textual labels below the top compartment. 
+Composite states are similar to simple states except that they also contain a 
+sub-statechart model within the body of the state. Concurrent composite states 
+are similar to composite states except there are two or more regions (identified 
+by dividing dashed lines) which each contain a sub-statechart mode, examples -
+</p>
+<p>&nbsp;</p>
+<table width="90%" border="0" align="center">
+  <tr>
+    <td width="19%">
+    <div align="center">
+      <img align="middle" src="images/uml_state.JPG" width="139" height="99"></div>
+    </td>
+    <td width="32%">
+    <div align="center">
+      <img src="images/uml_comp_state.JPG" width="164" height="228"></div>
+    </td>
+    <td width="49%">
+    <div align="center">
+      <img src="images/uml_conc_state.JPG" width="403" height="282"></div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <div align="center">
+      <strong>A Simple State</strong></div>
+    </td>
+    <td>
+    <div align="center">
+      <strong>A Composite State</strong></div>
+    </td>
+    <td>
+    <div align="center">
+      <strong>A Concurrent Composite State</strong></div>
+    </td>
+  </tr>
+</table>
+<p><img src="../images/pixel.gif" width="35" height="10"></p>
+<p><b>Creation:</b> A state is added by right clicking on a
+<a href="#statechart_model">Statechart model</a> diagram editor or on the 
+Statechart model icon within the project tree and selecting the &quot;Add State&quot; 
+option from the menu. Position the state outline where you wish it to be placed 
+on the diagram and left click, enter the name when prompted and click &quot;OK&quot;. If 
+the state outline is placed within another state or state region then the state 
+is created as a sub-state of the parent.</p>
+<p><b>Rules:</b> A state must have a unique name within its model. A state 
+should usually have at least one incoming and one outgoing transition (either 
+directly or via its super-state)<b>.</b></p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Outgoing Transition, Add Internal Transition, Re-Order Transitions, 
+Add New Region, Remove Region, (set) Stereotype, Edit Entry/Exit/Do Actions, and 
+Edit State Color/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Action State<a name="action_state" id="action_state"></a></h2>
+<p><b>Definition:</b> An action state is a kind of state used to model 
+activities carried out on <a href="#activity_model">Activity models</a>. An 
+action state has a name and an expression that is executed when the state is 
+entered. Action states are usually exited automatically via an outgoing
+<a href="#transition">transition</a> once the expression execution is complete, 
+i.e. transition to the next action state is implicitly performed rather than on 
+the arrival of a specific event. Action states may have an underlying
+<a href="#activity_model">activity model</a>, in which case the definition of 
+the activity is further described by a more detailed set of sub-activities and 
+transitions.</p>
+<p><b>Representation:</b> An action state is represented by a rectangular shaped 
+node that is (by default) orange in color. The name of the state is shown within 
+the top part of the state and the expression is shown below. e.g.</p>
+<p><img src="../images/pixel.gif" width="77" height="14"><img src="images/uml_action_state.JPG" width="99" height="108"></p>
+<p>&nbsp;</p>
+<p><b>Creation:</b> An action state is added by right clicking on a
+<a href="#activity_model">Activity</a><a href="#activity_model"> model</a> 
+diagram editor or on the Activity model icon within the project tree and 
+selecting the &quot;Add Action&quot; option from the menu. Position the state outline 
+where you wish it to be placed on the diagram and left click, enter the name and 
+expression when prompted and click &quot;OK&quot;. </p>
+<p><b>Rules:</b> An action state should usually have at least one incoming and 
+one outgoing transition<b>.</b></p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Outgoing Transition, Create Nested Activity Model, View/Delete 
+Nested Model and Edit Action Color/Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Initial State<a name="initial_state" id="initial_state"></a></h2>
+<p><b>Definition:</b> An initial state is a kind of state used to identify the 
+first transition to be taken within a model. The destination of the first 
+transition is thus the first state to be entered within the model (i.e. the 
+default state). Only a single outgoing transition may be connected to an initial 
+state.</p>
+<p><b>Representation:</b> An initial state is represented by a solid circular 
+shaped node that is (by default) black in color. i.e.</p>
+<p><img src="../images/pixel.gif" width="81" height="16"><img src="images/uml_init_state.JPG" width="21" height="22"></p>
+<p><b>Creation:</b> An initial state is added by right clicking on a
+<a href="#statechart_model">Statechart model</a>/<a href="#activity_model">Activity 
+model</a> diagram editor or on the model icon within the project tree and 
+selecting the &quot;Add Initial State&quot; option from the menu. Position the state 
+outline where you wish it to be placed on the diagram and left click.</p>
+<p><b>Rules:</b> Only one initial state may exist within a model (or within a 
+composite state/each concurrent region). An initial state may not have any 
+incoming transitions and only one outgoing transition. The transition attached 
+to an initial state may not have a trigger event.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Outgoing Transition, Edit State Color/Annotation.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<div align="right">
+</div>
+<h2>Final State<a name="final_state" id="final_state"></a></h2>
+<p><b>Definition:</b> A final state is a kind of state used to identify the 
+completion of a state machine. If the final state is within a composite state 
+then the state signifies the completion of the composite state only, rather than 
+the entire state machine. A final state has incoming transitions only.</p>
+<p><b>Representation:</b> A final state is represented by a solid circular 
+shaped node with a larger outer circle that is (by default) black in color. i.e.</p>
+<p><img src="../images/pixel.gif" width="91" height="13"><img src="images/uml_final_state.JPG" width="31" height="33"></p>
+<p><b>Creation:</b> A final state is added by right clicking on a
+<a href="#statechart_model">Statechart model</a>/<a href="#activity_model">Activity 
+model </a>diagram editor or on the model icon within the project tree and 
+selecting the &quot;Add Final State&quot; option from the menu. Position the state outline 
+where you wish it to be placed on the diagram and left click.</p>
+<p><b>Rules:</b> A final state may not have any outgoing transitions.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Edit State Color/Annotation.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>History State<a name="history_state" id="history_state"></a></h2>
+<p><b>Definition:</b> A history state is a kind of state used to represent the 
+most recent active state within a state machine (or composite state). There are 
+two flavors of history states, a shallow history state and a deep history state. 
+A shallow history state only allows the most recently active state within the 
+same composite level as the history state to be re-entered. Whereas a deep 
+history state allows the most recently active state at any level within a 
+composite state's hierarchy to be re-entered. The outgoing transition from a 
+history state is taken if the history state is being entered for the first time 
+(i.e. there is no most recently active state), thus allowing a default initial 
+state to be identified.</p>
+<p><b>Representation:</b> A history state is represented by a circular shaped 
+node containing a 'H' (for shallow history) and a 'H*' (for deep history). i.e.</p>
+<p><img src="../images/pixel.gif" width="93" height="8"><img src="images/uml_hist_state.JPG" width="34" height="37">
+<img src="../images/pixel.gif" width="35" height="10"><img src="images/uml_deep_hist.JPG" width="33" height="34">
+</p>
+<p><b>Creation:</b> A history state is added by right clicking on a
+<a href="#statechart_model">Statechart model</a>/<a href="#activity_model">Activity 
+model</a> diagram editor or on the model icon within the project tree and 
+selecting the &quot;Add (Deep) History State&quot; option from the menu. Position the 
+state outline where you wish it to be placed on the diagram and left click.</p>
+<p><b>Rules:</b> Only one history state of each type (shallow and deep) may 
+exist within a model (or within a composite state/each concurrent region). A 
+history state may have only one outgoing transition. The transition attached to 
+a history state may not have a trigger event.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Outgoing Transition, Edit State Color/Annotation.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<div align="right">
+</div>
+<div align="right">
+</div>
+<h2>Synchronization State<a name="synch_state" id="synch_state"></a></h2>
+<p><b>Definition:</b> A synchronization state is a kind of state used to allow 
+coordination of states within concurrent regions. A synchronization state is 
+used in collaboration with <a href="#fork_state">fork</a> and
+<a href="#join_state">join</a> states to specify that the entry to a state in 
+one concurrent region is dependent on the exit from a state within another 
+concurrent region. i.e. it allows states within different regions to be 
+synchronized. An integer value may be specified that limits the number of times 
+an outgoing transition is fired for each incoming transition. By default this 
+value is unbounded which means that for each incoming transition exactly one 
+outgoing transition is fired. If this value is set, it should be a positive 
+integer greater than zero. A value of one would cause only one outgoing 
+transition to be fired even if several incoming transitions were received.</p>
+<p><b>Representation:</b> A synchronization state is represented by a circular 
+shaped node containing a '*' (for unbounded) and a 'n' (for bounded). i.e.</p>
+<p><img src="../images/pixel.gif" width="103" height="13"><img src="images/uml_synch.JPG" width="24" height="25">
+<img src="../images/pixel.gif" width="35" height="10"><img src="images/uml_synch_b.JPG" width="24" height="25">
+</p>
+<p><b>Creation:</b> A synchronization state is added by right clicking on a
+<a href="#statechart_model">Statechart model</a>/<a href="#activity_model">Activity 
+model</a> diagram editor or on the model icon within the project tree and 
+selecting the &quot;Add Synch-State&quot; option from the menu. Position the state outline 
+where you wish it to be placed on the diagram and left click.</p>
+<p><b>Rules:</b> All incoming transitions to a synchronization state must 
+originate from the same region. All outgoing transitions from a synchronization 
+state must target states within the same region.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Outgoing Transition, Edit State Color/Annotation/Bound Value.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<div align="right">
+</div>
+<div align="right">
+</div>
+<h2>Choice State<a name="choice_state" id="choice_state"></a></h2>
+<p><b>Definition:</b> A choice state is a kind of state used to model the 
+splitting of incoming transitions into multiple outgoing transitions, i.e. a 
+branch. Each outgoing transition should have a guard condition that is evaluated 
+at run-time to decide which outgoing transition should be taken. Choice states 
+appear on <a href="#statechart_model">statechart models</a> only.</p>
+<p><b>Representation:</b> A choice state is represented by a small circular 
+shaped node, i.e.</p>
+<p><img src="../images/pixel.gif" width="79" height="18"><img src="images/uml_choice.JPG" width="21" height="21">
+<img src="../images/pixel.gif" width="35" height="10"> </p>
+<p><b>Creation:</b> A choice state is added by right clicking on a
+<a href="#statechart_model">Statechart model</a> diagram editor or on the model 
+icon within the project tree and selecting the &quot;Add Choice-State&quot; option from 
+the menu. Position the state outline where you wish it to be placed on the 
+diagram and left click.</p>
+<p><b>Rules:</b> All outgoing transitions from a choice state must not have a 
+trigger event specified.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Outgoing Transition, Edit State Color/Annotation.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<div align="right">
+</div>
+<div align="right">
+</div>
+<h2>Junction State<a name="junction_state" id="junction_state"></a></h2>
+<p><b>Definition:</b> A junction state is a kind of state used to model either 
+merging or static conditional branching of transitions. In the former case 
+several incoming transitions are combined into a single outgoing transition. In 
+the latter case each outgoing transition should have a guard condition that is 
+evaluated to decide which outgoing transition should be taken. Junction states 
+appear on <a href="#statechart_model">statechart models</a> only.</p>
+<p><b>Representation:</b> A junction state is represented by a small solid 
+circular shaped node, i.e.</p>
+<p><img src="../images/pixel.gif" width="80" height="12"><img src="images/uml_junc.JPG" width="21" height="22">
+<img src="../images/pixel.gif" width="35" height="10"> </p>
+<p><b>Creation:</b> A junction state is added by right clicking on a
+<a href="#statechart_model">Statechart model</a> diagram editor or on the model 
+icon within the project tree and selecting the &quot;Add Junction-State&quot; option from 
+the menu. Position the state outline where you wish it to be placed on the 
+diagram and left click.</p>
+<p><b>Rules:</b> All outgoing transitions from a junction state must not have a 
+trigger event specified.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Outgoing Transition, Edit State Color/Annotation.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<div align="right">
+&nbsp;<div align="right">
+  </div>
+  <div align="right">
+  </div>
+  <h2 align="left">Decision State<a name="decision_state" id="decision_state"></a></h2>
+  <p align="left"><b>Definition:</b> A decision state is a kind of state used to 
+  model conditional branching of transitions on <a href="#activity_model">
+  activity models</a>. Each outgoing transition should have a guard condition 
+  that is evaluated to decide which outgoing transition should be taken. 
+  Decision states are a short-cut notation which is used rather than having 
+  several outgoing transitions from a state triggered by the same event, but 
+  with different guards.</p>
+  <p align="left"><b>Representation:</b> A decision state is represented by a 
+  small solid diamond shaped node, i.e.</p>
+  <p align="left"><img src="../images/pixel.gif" width="35" height="10"><img src="images/uml_decision.JPG" width="108" height="93">
+  <img src="../images/pixel.gif" width="35" height="10"> </p>
+  <p align="left"><b>Creation:</b> A decision state is added by right clicking 
+  on an <a href="#activity_model">Activity model</a> diagram editor or on the 
+  model icon within the project tree and selecting the &quot;Add Decision&quot; option 
+  from the menu. Position the decision outline where you wish it to be placed on 
+  the diagram and left click.</p>
+  <p align="left"><b>Rules:</b> A decision state may have only one incoming 
+  transition. All outgoing transitions from a decision state must not have a 
+  trigger event specified but should have a guard condition. There should be two 
+  or more outgoing transitions from a decision state. </p>
+  <p align="left"><b>Operations: </b>Move Forwards/Backwards, Bring to Front, 
+  Send to Back, Delete, Add Outgoing Transition, Edit State Color/Annotation.</p>
+  <div align="right">
+    <a href="#top">Back To Top</a>
+  </div>
+  <div align="right">
+&nbsp;</div>
+  <h2 align="left">Merge State<a name="merge_state" id="merge_state"></a></h2>
+  <p align="left"><b>Definition:</b> A merge state is a kind of state used to 
+  model the merging of transitions on <a href="#activity_model">activity models</a>. 
+  Merge states are a short-cut notation which is used rather than having several 
+  transitions targeting the same state. i.e. two or more incoming transitions 
+  are combined into a single outgoing transition.</p>
+  <p align="left"><b>Representation:</b> A merge state is represented by a small 
+  solid diamond shaped node, i.e.</p>
+  <p align="left"><img src="../images/pixel.gif" width="63" height="9"><img src="images/uml_merge.JPG" width="39" height="78">
+  <img src="../images/pixel.gif" width="35" height="10"> </p>
+  <p align="left"><b>Creation:</b> A merge state is added by right clicking on 
+  an <a href="#activity_model">Activity model</a> diagram editor or on the model 
+  icon within the project tree and selecting the &quot;Add Merge&quot; option from the 
+  menu. Position the merge outline where you wish it to be placed on the diagram 
+  and left click.</p>
+  <p align="left"><b>Rules:</b> A merge state may have only one outgoing 
+  transition which must not have a trigger event or guard condition specified. 
+  There should be two or more incoming transitions to a merge state. </p>
+  <p align="left"><b>Operations: </b>Move Forwards/Backwards, Bring to Front, 
+  Send to Back, Delete, Add Outgoing Transition, Edit State Color/Annotation.</p>
+  <div align="right">
+    <a href="#top">Back To Top</a>
+  </div>
+  <p align="left">&nbsp;</div>
+<div align="right">
+</div>
+<div align="right">
+</div>
+<h2>Fork State<a name="fork_state" id="fork_state"></a></h2>
+<p><b>Definition:</b> A fork state is a kind of state used to model the 
+splitting of a single incoming transition into multiple outgoing concurrent 
+transitions. A fork state allows the modeling of concurrent transition paths 
+within a single model. Fork states can be used on both
+<a href="#statechart_model">statechart models</a> and <a href="#activity_model">
+activity models</a>. In the former case the outgoing transitions must target 
+different concurrent regions. </p>
+<p><b>Representation:</b> A fork state is represented by a solid bar shaped node 
+(note: in activity models the bar is shown horizontally), i.e.</p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="../images/pixel.gif" width="35" height="10"><img src="images/uml_fork.JPG" width="71" height="130">
+</p>
+<p><b>Creation:</b> A fork state is added by right clicking on a
+<a href="#statechart_model">Statechart model</a>/<a href="#activity_model">Activity 
+model</a> diagram editor or on the model icon within the project tree and 
+selecting the &quot;Add Fork-State&quot; option from the menu. Position the state outline 
+where you wish it to be placed on the diagram and left click.</p>
+<p><b>Rules:</b> A fork state may have only one incoming transition. All 
+outgoing transitions from a fork state must not have a trigger event or guard 
+condition specified.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Outgoing Transition, Edit State Color/Annotation.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Join State<a name="join_state" id="join_state"></a></h2>
+<p><b>Definition:</b> A join state is a kind of state used to model the merging 
+of a multiple concurrent incoming transitions into a single outgoing transition. 
+A join state allows the modeling of concurrent transition paths within a single 
+model. Join states can be used on both <a href="#statechart_model">statechart 
+models</a> and <a href="#activity_model">activity models</a>. In the former case 
+the incoming transitions must originate from different concurrent regions. </p>
+<p><b>Representation:</b> A join state is represented by a solid bar shaped node 
+(note: in activity models the bar is shown horizontally), i.e.</p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="../images/pixel.gif" width="35" height="10"><img src="images/uml_join.JPG" width="77" height="130">
+</p>
+<p><b>Creation:</b> A join state is added by right clicking on a
+<a href="#statechart_model">Statechart model</a>/<a href="#activity_model">Activity 
+model</a> diagram editor or on the model icon within the project tree and 
+selecting the &quot;Add Join-State&quot; option from the menu. Position the state outline 
+where you wish it to be placed on the diagram and left click.</p>
+<p><b>Rules:</b> A join state may have only one outgoing transition which must 
+not have a trigger event specified. All incoming transitions to a join state 
+must not have a guard condition specified.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Outgoing Transition, Edit State Color/Annotation.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<div align="right">
+</div>
+<h2>&nbsp;</h2>
+<h2>Object<a name="object" id="object"></a></h2>
+<p><b>Definition:</b> An object is a kind of <a href="#instances">instance</a> 
+that is used to model run-time instantiations of <a href="#class">classes</a>. 
+Each object has its own name and a class type (which the object represents). A 
+number of <a href="#attribute_value">attribute values</a> can be contained by 
+the object that show what values are assigned to attributes during a specific 
+point in time. Objects are often related to other objects using <a href="#link">
+link</a> relationships (which are run-time instances of <a href="#association">
+associations</a>). Objects may appear on most UML models and have subtle 
+behavioral differences depending on which model they appear. e.g. Within
+<a href="#sequence_model">sequence models</a> special <strong>active objects<a name="active_object"></a></strong> 
+can be added that represent instances that are already active within the system.</p>
+<p><b>Representation:</b> An object is represented by a rectangular shaped node 
+that is (by default) very light yellow in color. The name/type of the object is 
+shown underlined within the top compartment and any attribute/value pairs are 
+shown within the lower compartment. An object shows the name and a type in the 
+form <strong>&lt;name&gt; : &lt;type&gt;</strong>. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_object.JPG" width="135" height="101"> </p>
+<p><b>Creation:</b> An object is added by right clicking on a model diagram 
+editor or on the model icon within the project tree and selecting the &quot;Add 
+Object&quot; option from the menu. Position the object outline where you wish it to 
+be placed on the diagram and left click, enter the name and select the type when 
+prompted then click &quot;OK&quot;.</p>
+<p><b>Rules:</b> An object has very few rules compared to other model elements, 
+ideally an object should be based on a class (although this is not enforced). 
+When based on a class the attribute values shown should only include values for 
+attributes that exists within the class type.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Attribute Value, Re-Order Attribute Values, Add Link, Add &lt;&lt;become&gt;&gt; 
+Dependency, Add &lt;&lt;copy&gt;&gt; Dependency, Show Where Instance Defined and Edit Object 
+Color/Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Node Instance<a name="node_instance" id="node_instance"></a></h2>
+<p><b>Definition:</b> A node instance is a kind of <a href="#instances">instance</a> 
+that is used to model instantiations of <a href="#node">node</a> descriptors. 
+Each node instance has its own name and a node type (which the instance 
+represents). A number of <a href="#attribute_value">attribute values</a> can be 
+contained by the instance that show what values are assigned to attributes 
+during a specific point in time. Instances are often related to other instances 
+using <a href="#link">link</a> relationships (which are run-time instances of
+<a href="#communication_association">communication associations</a>). Node 
+instances appear on <a href="#deployment_model">deployment models</a>.</p>
+<p><b>Representation:</b> A node instance is represented by a three dimensional 
+cube shaped node that is (by default) very light lilac in color. The name/type 
+of the instance is shown underlined within the top compartment and any 
+attribute/value pairs are shown within the lower compartment. An instance shows 
+the name and a type in the form <strong>&lt;name&gt; : &lt;type&gt;</strong>. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_node_instance.JPG" width="197" height="123"> </p>
+<p><b>Creation:</b> A node instance is added by right clicking on a
+<a href="#deployment_model">Deployment model</a> diagram editor or on the 
+deployment model icon within the project tree and selecting the &quot;Add Node 
+Instance&quot; option from the menu. Position the instance outline where you wish it 
+to be placed on the diagram and left click, enter the name and select the type 
+when prompted then click &quot;OK&quot;.</p>
+<p><b>Rules:</b> A node instance has very few rules compared to other model 
+elements, ideally an instance should be based on a node descriptor (although 
+this is not enforced). When based on a node the attribute values shown should 
+only include values for attributes that exists within the node type.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Attribute Value, Re-Order Attribute Values, Attach to Resident 
+Instance, Add Link, Add &lt;&lt;become&gt;&gt; Dependency, Add &lt;&lt;copy&gt;&gt; Dependency, Show 
+Where Instance Defined and Edit Instance Color/Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Component Instance<a name="component_instance" id="component_instance"></a></h2>
+<p><b>Definition:</b> A component instance is a kind of <a href="#instances">
+instance</a> that is used to model run-time instantiations of
+<a href="#component">components</a>. Each component instance has its own name 
+and a component type (which the instance represents). Component instances are 
+often related to other instances (usually <a href="#object">objects</a>) using 
+&lt;&lt;reside&gt;&gt; <a href="#dependency">dependency</a> relationships, indicating that 
+the target instance resides on the component instance during run-time. Component 
+instances appear on <a href="#deployment_model">deployment models</a>.</p>
+<p><b>Representation:</b> A component instance is represented by a rectangular 
+shaped node with two left hand boxes that is (by default) very light pink in 
+color. The name/type of the instance is shown underlined within the instance 
+shape. An instance shows the name and a type in the form <strong>&lt;name&gt; : &lt;type&gt;</strong>. 
+e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_comp_instance.JPG" width="157" height="76"> </p>
+<p><b>Creation:</b> A component instance is added by right clicking on a
+<a href="#deployment_model">Deployment model</a> diagram editor or on the 
+deployment model icon within the project tree and selecting the &quot;Add Component 
+Instance&quot; option from the menu. Position the instance outline where you wish it 
+to be placed on the diagram and left click, enter the name and select the type 
+when prompted then click &quot;OK&quot;.</p>
+<p><b>Rules:</b> A component instance has very few rules compared to other model 
+elements, ideally an instance should be based on a component descriptor 
+(although this is not enforced). </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Attach to Resident Instance, Add &lt;&lt;become&gt;&gt; Dependency, Add &lt;&lt;copy&gt;&gt; 
+Dependency, Show Where Instance Defined and Edit Instance Color/Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>&nbsp;</p>
+<h2>Attribute<a name="attribute"></a></h2>
+<p><b>Definition:</b> An attribute is a <a href="#features">feature</a> declared 
+within a <a href="#classifier">classifier</a> that defines what data values are 
+to be maintained by run-time instances of the classifier. Attributes have a 
+name, type and multiplicity information. An attribute has a visibility (e.g. 
+private) that determines how visible it is outside its containing classifier. An 
+attribute also has a scope which specifies whether the value is associated with 
+each instance of the classifier, or with the classifier itself. Attributes may 
+also have an initial value. The multiplicity information is used to specify the 
+lower and upper bound of value instances of the attribute, for example an 
+attribute can be declared that allows exactly ten unique strings to be stored.</p>
+<p><b>Representation:</b> An attribute is represented by text and is typically 
+displayed within the middle compartment of a classifier. A classifier scoped 
+attribute is underlined. The attribute text is split into various parts in the 
+form <strong>&lt;name&gt; : &lt;type&gt; [&lt;multiplicity&gt;] [=&lt;initial_value&gt;] [{&lt;constraint_tags&gt;}]</strong>. 
+Multiplicity is specified as<strong> &lt;lower_bound&gt;..&lt;upper_bound&gt;</strong> with 
+an asterisk (*) used to represent an unbounded upper bound. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_attribute.jpg" width="180" height="96"> </p>
+<p><b>Creation:</b> An attribute is created by right clicking on the classifier 
+in which the attribute is to be defined. Select the &quot;Add Attribute&quot; from the 
+menu then input details as prompted.</p>
+<p><b>Rules:</b> Attributes should always have a unique name within their 
+classifier hierarchy (i.e. the name must be not only unique within the 
+classifier itself but within any classifiers that are involved in 
+generalizations with the classifier). </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Is Changeable, Is Frozen, Is Add Only, Is Classifier Scoped, Is Derived, 
+Set Visibility (Private, Protected, Package, Public), Show Where Type Defined 
+and Edit Attribute Color/Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Operation<a name="operation"></a></h2>
+<p><b>Definition:</b> An operation is a <a href="#features">feature</a> that 
+defines a service which may be requested in order to carry out some behavior 
+within the run-time system. Each operation has a signature that specifies what 
+parameters are required when the operation is called. Operations are defined 
+within an owning <a href="#classifier">classifier</a> that provides a context in 
+which the operation's behavior in carried out. Operations often make use of
+<a href="#attribute">attributes</a> within the owning classifier to carry out 
+their behavior (although this is not always the case). An operation has a 
+visibility (e.g. public) that determines how visible it is outside its 
+containing classifier. An operation also has a scope which specifies whether it 
+is invoked within the context of a specific instance of the classifier, or 
+within the context of the classifier itself. Several other predefined 
+constraints can be applied to operations limiting their ability to be executed 
+concurrently or their ability to effect the state of values within their 
+classifier, etc.</p>
+<p><b>Representation:</b> An operation is represented by text and is typically 
+displayed within the bottom compartment of a classifier. A classifier scoped 
+operation is underlined and an abstract operation is shown in italics. The 
+operation text is split into various parts in the form <strong>&lt;name&gt;(&lt;param_list&gt;) 
+[: &lt;return_type&gt;] [{&lt;constraint_tags&gt;}]</strong>. Each parameter specified has a 
+name, type, multiplicity and direction. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_operation.jpg" width="204" height="76"> </p>
+<p><b>Creation:</b> An operation is created by right clicking on the classifier 
+in which the operation is to be defined. Select the &quot;Add Operation&quot; from the 
+menu then input details as prompted.</p>
+<p><b>Rules:</b> Operations should always have a unique name within their classifier 
+  hierarchy (i.e. the name must be not only unique within the classifier itself 
+  but within any classifiers that are involved in generalizations with the classifier). 
+  An operation may have a maximum of one return parameter.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, Delete, 
+  Add Parameter, Add Return Parameter, Edit Parameter Details/Annotation, Delete 
+  Parameter, Add Dependency, Is Sequential, Is Guarded, Is Concurrent, Is Abstract 
+  Operation, Is Leaf Operation, Is Root Operation, Is Query Operation, Is Classifier 
+  Scoped, Set Visibility (Private, Protected, Package, Public) and Edit Operation 
+  Color/Implementation Method/Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Signal Reception<a name="signal_reception" id="signal_reception"></a></h2>
+<p><b>Definition:</b> A signal reception is a <a href="#features">feature</a> 
+that defines the ability of a <a href="#classifier">classifier</a> to handle a 
+specified <a href="#signal">signal</a> during run-time execution. Each reception 
+is associated with a signal. The way in which a signal is handled by the 
+classifier is usually described within an underlying <a href="#statechart_model">
+statechart model</a> contained by the classifier receiving the signal. A 
+reception has a visibility (e.g. public) that determines how visible it is 
+outside its containing classifier. A reception also has a scope that specifies 
+whether it is invoked within the context of a specific instance of the 
+classifier, or within the context of the classifier itself.</p>
+<p><b>Representation:</b> A reception is represented by text and is displayed 
+within the bottom compartment of a classifier. A classifier scoped reception is 
+underlined and an abstract reception is shown in italics. The reception name is 
+always prefixed by the &lt;&lt;signal&gt;&gt; stereotype, e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_reception.JPG" width="206" height="58"> </p>
+<p><b>Creation:</b> A reception is created by right clicking on the classifier 
+in which the reception is to be defined. Select the &quot;Add Signal Reception&quot; from 
+the menu then select the <a href="#signal">signal</a> that is to be received 
+from the list provided.</p>
+<p><b>Rules:</b> Receptions should always have a unique name within their 
+classifier hierarchy (i.e. the name must be not only unique within the 
+classifier itself but within any classifiers that are involved in 
+generalizations with the classifier). </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Is Abstract, Is Leaf, Is Root, Is Query, Is Classifier Scoped, Set 
+Visibility (Private, Protected, Package, Public) and Edit Reception Color/Annotation/Signal.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Enumeration Literal<a name="enumeration_literal" id="enumeration_literal"></a></h2>
+<p><b>Definition:</b> An enumeration literal defines one possible nominal value 
+that may be assigned to a value who's type is based on the owning
+<a href="#enumeration">enumeration type</a>. Several literals are usually 
+specified within an enumeration type to define the set of possible values. An 
+enumeration literal is simply a textual name that is unique within its owning 
+enumeration type.</p>
+<p><b>Representation:</b> An enumeration literal is represented by a textual 
+name and is typically displayed within the middle compartment of an enumeration 
+type. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_enum_lit.JPG" width="121" height="95"> </p>
+<p><b>Creation:</b> An enumeration literal is created by right clicking on the
+<a href="#enumeration">Enumeration Type</a> in which the literal is to be 
+defined. Select the &quot;Add Enumeration Label&quot; from the menu then input the name 
+when prompted.</p>
+<p><b>Rules:</b> Enumeration literals should always have a unique name within 
+their classifier hierarchy (i.e. the name must be not only unique within the 
+enumeration type itself but within any enumeration types that are involved in 
+generalizations with the enumeration type). </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete and Edit Enumeration Color/Label.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Extension Point<a name="extension_point" id="extension_point"></a></h2>
+<p><b>Definition:</b> An extension point identifies a location within a
+<a href="#usecase">use case</a> classifier where the use case may be extended. 
+An extension point consists of a name and a location reference.</p>
+<p><b>Representation:</b> An extension point is represented by a textual name 
+and is typically displayed within the lower half of a use case classifier. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_ext_points.JPG" width="220" height="105"> </p>
+<p><b>Creation:</b> An extension point is created by right clicking on the
+<a href="#useCase">Use Case</a> classifier in which the extension point is to be 
+defined. Select the &quot;Add Extension Point&quot; from the menu then input the name and 
+location when prompted.</p>
+<p><b>Rules:</b> Extension points must have a name.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete and Edit Extension Point Color/Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>&nbsp;</p>
+<h2>Attribute Value<a name="attribute_value" id="attribute_value"></a></h2>
+<p><b>Definition:</b> An attribute value defines what values are assigned to
+<a href="#attribute">attributes</a> during execution at a specific point in 
+time. Attribute values are contained by <a href="#instance">instances</a> 
+(specifically <a href="#object">objects</a> and <a href="#node_instance">node 
+instances</a>). Attribute values help the modeling of run-time snapshots of the 
+system. Attribute values may be based on <a href="#attribute">attributes</a> 
+that are defined within the classifier of the containing instance. An attribute 
+value has a name and an associated value.</p>
+<p><b>Representation:</b> An attribute value is represented by a textual name 
+and value pair and is typically displayed within the bottom compartment of an 
+instance. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_attrib_val.JPG" width="135" height="61"> </p>
+<p><b>Creation:</b> An attribute value is created by right clicking on the 
+instance in which the attribute value is to be defined. Select the &quot;Add 
+Attribute Value &quot; from the menu then input the details as prompted.</p>
+<p><b>Rules:</b> Attributes values should always have a unique name within their 
+containing instance. The value specified should be compatible with the type of 
+the attribute on which the attribute value is based.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Show Where Attribute Defined and Edit Attribute Value Color/Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>&nbsp;</p>
+<h2>Association<a name="association"></a></h2>
+<p><b>Definition:</b> An association models a <a href="#relationships">
+relationship</a> between <a href="#classifier">classifiers</a>. The presence of 
+an association indicates that run-time instances of the classifiers may be 
+linked, subject to restrictions identified within each association end. An 
+association may also be represented by an <strong>association class<a name="association_class"></a></strong>, 
+in which case attributes and operations may also be defined within the 
+association. Each association end has a role name and a multiplicity 
+specification. Each end also has a number of standard constraints which may be 
+selected.</p>
+<p><b>Representation:</b> Associations are represented as solid lines between 
+two classifiers, such as classes, interfaces, nodes etc. They have three labels 
+attached to them, an association name label, a source end label and a 
+destination end label, i.e.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_association.jpg" width="318" height="42"> </p>
+<p>The association ends can be manipulated to specify information such as role 
+name, multiplicity, aggregation semantics and navigability. Multiplicity 
+information is show using the lower and upper bound values, e.g. <strong>1..*</strong> 
+with an asterisk being used to represent an unbounded upper bound (synonymous to 
+&quot;many&quot;). Simple aggregation is shown using an open diamond attached to the end 
+of the association. Composite aggregation is shown using a solid diamond 
+attached to the end. If an association is only navigable in one direction, then 
+an arrow head will be shown at the end to which it is navigable. Various 
+standard constraints may also be specified on association ends making them <b>
+unique</b>, <b>ordered</b>, <b>frozen</b>, <b>addOnly</b> etc. These are shown 
+after the end name between braces, e.g. { frozen, ordered }</p>
+<p><b>Creation:</b> To create an association you must right click on the 
+classifier you wish to be the source and select &quot;Add Association&quot; from the menu. 
+Now left click on the classifier you wish to be the destination, the association 
+will then be created with default source/end role names and multiplicity 
+information.</p>
+<p><b>Rules:</b> Associations can usually only connect classifiers of the same 
+  type, e.g. Nodes can only be connected to Nodes. Class model classifiers however 
+  can generally be connected to each other. e.g. it is possible to create an association 
+  between a Class and an Interface. An error message is shown if an attempt to 
+  break connection rules is made. Aggregation can only be assigned to one of the 
+  association ends. An attempt to assign aggregation semantics to both ends results 
+  in the previous aggregation semantics being removed. When given, the association 
+  name should be unique within its containing namespace and the end names should 
+  be different to each other (although this is not enforced). In addition to this 
+  a model check produces a warning if the association end names are the same as 
+  any attributes defined within the classifiers connected to the association.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add/Remove Link Point, Source/Dest End Details, Make Association Class, 
+Stereotype, Is Derived Association, Set Visibility (Private, Protected, Package, 
+Public) and Edit Association Color/Annotation/Name. </p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Communication Associations<a name="communication_association" id="communication_association"></a></h2>
+<p><b>Definition:</b> Communication associations are special kinds of <a href="#association">associations</a> 
+  typically used to represent communication paths between <a href="#actor">actors</a> 
+  and <a href="#usecase"> use cases</a> on <a href="#usecase_model">use case models, 
+  </a>and between <a href="#node">node descriptors</a> on <a href="#deployment_model">deployment 
+  models</a>. The only difference being they are referred to as communication 
+  associations. Also the diagrams on which they appear typically hide the association 
+  end labels by default (note: this behavior can be overridden).</p>
+<p><b>Representation:</b> A communication is represented by a single line 
+(unless name/end labels are not withheld in which case they appear as
+<a href="#association">associations</a>), i.e.</p>
+<p>&nbsp; </p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_communication.jpg" width="193" height="1"> </p>
+<p>&nbsp; </p>
+<p><b>Creation:</b> To create a communication you must right click on the 
+classifier you wish to be the source and select &quot;Add Communication 
+(association)&quot; from the menu. Now left click on the classifier you wish to be 
+the destination, the communication association will then be created with default 
+source/end role names and multiplicity information (although this will usually 
+be hidden).</p>
+<p><b>Rules:</b> A communication may only link between a use case and actor on a 
+use case model, or between nodes on a deployment model. </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add/Remove Link Point, Source/Dest End Details, Stereotype, Set 
+Visibility (Private, Protected, Package, Public) and Edit Communication Color/Annotation/Name.
+</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Generalization<a name="generalization"></a></h2>
+<p><b>Definition:</b> A generalization models an inheritance type
+<a href="#relationships">relationship</a> between <a href="#classifier">
+classifiers</a>. A generalization reflects the fact that the features and 
+associations defined for a supertype classifier are inherited by a subtype 
+classifier. A subtype may inherit from one or more supertypes.</p>
+<p><b>Representation:</b> Generalizations are represented as solid lines between 
+two classifiers, with a large open arrow head at the supertype end, i.e.</p>
+<p>&nbsp;</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_generalization.jpg" width="316" height="21"> </p>
+<p>&nbsp; </p>
+<p><b>Creation:</b> To create a generalization you must right click on the 
+classifier you wish to be the subtype and select &quot;Add Generalization&quot; from the 
+menu. Now left click on the classifier you wish to be the supertype, the 
+generalization relationship will then be created.</p>
+<p><b>Rules:</b> Generalizations may only exist between classifiers of the same 
+kind, e.g. classes can only have generalization relationships to other classes. 
+Generalizations may not form a recursive dependency between classifiers. 
+Supertypes may not be specified as being <strong>leaf</strong> classifiers. 
+Subtypes may not be specified as being <strong>root</strong> classifiers.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add/Remove Link Point and Edit Generalization Color/Annotation. </p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Realization<a name="realization"></a></h2>
+<p><b>Definition:</b> A realization models a <a href="#relationships">
+relationship</a> between <a href="#classifier">classifiers</a> where the source 
+classifier guarantees to implement the behavior specified by the destination 
+classifier. A realization is commonly used to show that a classifier provides 
+the implementation methods for abstract operations defined in an
+<a href="#interface">interface</a>. A classifier may realize one or more 
+interfaces. A realization is also sometimes shown between
+<a href="#collaboration">collaborations</a> and the classifier/operation that 
+the collaboration describes.</p>
+<p><b>Representation:</b> Realizations are represented as dashed lines between 
+two classifiers, with a large open arrow head at the destination end, i.e.</p>
+<p>&nbsp;</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_realization.jpg" width="321" height="21"> </p>
+<p>&nbsp; </p>
+<p><b>Creation:</b> To create a realization you must right click on the 
+classifier you wish to be the source (realizing classifier) and select &quot;Add 
+Realization&quot; from the menu. Now left click on the classifier you wish to be the 
+destination (realized classifier), the realization relationship will then be 
+created.</p>
+<p><b>Rules:</b> The destination of a realization relationship must be a 
+classifier or operation.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add/Remove Link Point and Edit Realization Color/Annotation. </p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Dependency<a name="dependency"></a></h2>
+<p><b>Definition:</b> A dependency models a <a href="#relationships">
+relationship</a> between modeling elements to indicate that one element makes 
+use of another element and that changes to the destination element may effect 
+the source element in some way. A dependency is unidirectional. There are many 
+stereotypes that can be applied to dependencies, the most common of which are 
+catered for directly within the menu options of the tool.</p>
+<p><b>Representation:</b> Dependencies are represented as dashed lines between 
+two elements, with a small arrow head at the destination end, i.e.</p>
+<p>&nbsp;</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_dependency.jpg" width="320" height="7"> </p>
+<p>&nbsp; </p>
+<p><b>Creation:</b> To create a dependency you must right click on the 
+classifier you wish to be the source and select &quot;Add Dependency &quot; from the menu. 
+Now left click on the element you wish to be the destination and the dependency 
+will be created. </p>
+<p><b>Rules:</b> There are no rules applied to dependencies.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add/Remove Link Point, Make &lt;&lt;stereotype_name...&gt;&gt;, Set Link Color, Edit 
+Dependency Annotation. </p>
+<p><strong>Variations: </strong>A number of variations are provided as standard 
+within appropriate menu options, these are -</p>
+<p>&nbsp;</p>
+<table width="80%" border="1" align="center">
+  <tr>
+    <td width="15%"><strong>Stereotype</strong></td>
+    <td width="28%"><strong>Where used</strong></td>
+    <td width="57%"><strong>Meaning</strong></td>
+  </tr>
+  <tr>
+    <td>&lt;&lt;include&gt;&gt;<a name="include_dependency"></a></td>
+    <td>Between Use Case classifiers</td>
+    <td>Shows that a use case includes the behavior of another use case.</td>
+  </tr>
+  <tr>
+    <td>&lt;&lt;extend&gt;&gt;</td>
+    <td>
+    <div align="left">
+      Between Use Case classifiers</div>
+    </td>
+    <td>Shows that a use case's behavior is conditionally extended by another 
+    use case.</td>
+  </tr>
+  <tr>
+    <td>&lt;&lt;import&gt;&gt;<a name="import_dependency"></a></td>
+    <td>Between Packages</td>
+    <td>Shows that a package imports the elements defined in another package 
+    into its namespace.</td>
+  </tr>
+  <tr>
+    <td>&lt;&lt;access&gt;&gt;</td>
+    <td>Between Packages</td>
+    <td>Shows that a package accesses the elements defined in another package.</td>
+  </tr>
+  <tr>
+    <td>&lt;&lt;reside&gt;&gt;<a name="reside_dependency"></a></td>
+    <td>Components/Nodes descriptors and Instances</td>
+    <td>Shows that a component has resident components/classes. Or that a node 
+    or component instance has resident component/class instances.</td>
+  </tr>
+  <tr>
+    <td>&lt;&lt;deploy&gt;&gt;</td>
+    <td>Nodes and Component descriptors</td>
+    <td>Shows that a node deploys a component.</td>
+  </tr>
+  <tr>
+    <td>&lt;&lt;implement&gt;&gt;</td>
+    <td>Components and Artifacts</td>
+    <td>Shows that a component or class is implemented by an artifact.</td>
+  </tr>
+  <tr>
+    <td>&lt;&lt;become&gt;&gt;<a name="become_dependency"></a></td>
+    <td>Instances</td>
+    <td>Shows that the same object takes on different identity or is resident on 
+    different nodes/components at different periods in time.</td>
+  </tr>
+  <tr>
+    <td>&lt;&lt;copy&gt;&gt;</td>
+    <td>Instances</td>
+    <td>Shows that one instance is a copy of another instance.</td>
+  </tr>
+  <tr>
+    <td>&lt;&lt;send&gt;&gt;</td>
+    <td>Operations and Signals</td>
+    <td>Shows that an operation is capable of sending a specific 
+    signal/exception.</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p align="right"><a href="#top">Back To Top</a> </p>
+<h2>Classifier Role<a name="classifier_role" id="classifier_role"></a></h2>
+<p><b>Definition:</b> A classifier role models a <a href="#relationships">
+relationship</a> between <a href="#collaboration">collaboration</a> elements and
+<a href="#classifier">classifiers</a> that play a role during behavior defined 
+within the collaboration. A classifier role relationship helps define a context 
+in which a collaboration exists, i.e. which classifiers work together in order 
+to provide a specific piece of system behavior. Each classifier role has a role 
+name that defines the specific role being played by the classifier when involved 
+in the related collaboration.</p>
+<p><b>Representation:</b> Classifier roles are represented as dashed lines 
+between a collaboration and a classifier, e.g.</p>
+<p>&nbsp;</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_class_role.JPG" width="276" height="23"> </p>
+<p>&nbsp; </p>
+<p><b>Creation:</b> To create a classifier role you must right click on the
+<a href="#collaboration">collaboration</a> you wish to be the source and select 
+&quot;Add Classifier Role&quot; from the menu. Now left click on the classifier you wish 
+to be the role playing classifier, the classifier role relationship will then be 
+created and a prompt for the role name shown.</p>
+<p><b>Rules:</b> Classifier roles may only exist between collaboration and 
+classifier elements. </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add/Remove Link Point, Change Link/Text Color and Edit Role 
+Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Transition<a name="transition" id="transition"></a></h2>
+<p><b>Definition:</b> A transition relationship is used to model the movement 
+from one <a href="#state">state</a> to another within in either a
+<a href="#statechart_model">statechart model</a> or an <a href="#activity_model">
+activity model</a>. A transition is triggered by an incoming event. There are 
+various types of incoming events such as a call (of an operation), the receipt 
+of a signal, the passing of time, or a change of circumstance (evaluated by an 
+expression). On receipt of a suitable event the transition is taken on condition 
+that an optional guard condition evaluates to true. Actions may also be attached 
+to transitions that are carried out once the transition is taken. The triggering 
+of a transition usually forces the current state to be changed, but this is not 
+always the case for transitions that start and end at the same state. There are 
+special <strong>internal transitions<a name="internal_transition"></a></strong> 
+which may be used to show transitions that do not result in a state change when 
+triggered. These are exactly the same as transitions but shown as internal text 
+items within a state rather than using a relationship, since the source and 
+target state are always the same.</p>
+<p><b>Representation:</b><strong> </strong>Transitions are represented as solid 
+lines shown between states, with an open headed arrow shown on the target state. 
+A textual label shows the event, guard conditions and actions associated with 
+the transition in the form <strong>&lt;event&gt; [&lt;condition&gt;] / &lt;action&gt;</strong>, 
+e.g.</p>
+<p>&nbsp;</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_transition.JPG" width="391" height="28"> </p>
+<p>&nbsp; </p>
+<p><b>Creation:</b> To create a transition you must right click on the
+<a href="#state">state</a> you wish to be the source and select &quot;Add Transition&quot; 
+from the menu. Now left click on the state you wish to be the target of the 
+transition, the transition relationship will then be created and a prompt for 
+the event, guard and action within be shown.</p>
+<p><b>Rules:</b> Transitions may only exist between states, but there are 
+specific connectivity rules that are dependent on the kind of states being 
+linked.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add/Remove Link Point, Add Event Parameter, Edit Event Parameter/Event 
+Annotation, Delete Event Parameter, Show Where Trigger Defined, Change Link/Text 
+Color and Edit Transition Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Call<a name="call" id="call"></a></h2>
+<p><b>Definition:</b> A call relationship is used to model interaction between
+<a href="#object">objects</a> within either a <a href="#sequence_model">sequence 
+model</a> or a <a href="#collaboration_model">collaboration model</a>. A call 
+shows the sending of a message from one object to another object. Each call has 
+a name and a list of argument values (actual parameters). A call typically 
+invokes an <a href="#operation">operation</a> available within the target 
+object, or sends a <a href="#signal">signal</a> capable or being received by the 
+target object. A call may originate and target the same object (i.e. an object 
+can make a call to itself). Within <a href="#sequence_model">sequence models</a> 
+calls are shown between object active lifelines, whereas within
+<a href="#collaboration_model">collaboration models</a> calls are shown along
+<a href="#link">links</a> between objects.</p>
+<p><b>Representation:</b><strong> </strong>Calls are represented as solid lines 
+shown between either lifelines or on links, with an arrow shown on the target 
+side. A textual label shows the call sequence number, guard/iteration condition 
+and name associated with the call in the form <strong>&lt;seq_num&gt; [&lt;condition&gt;] 
+&lt;name&gt;(&lt;args&gt;)</strong>, e.g.</p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_call.JPG" width="228" height="28"> </p>
+<p>There are slight variations of call notation, depending on the type of call 
+being made. The above example shows a synchronous call (the caller waits for the 
+called operation to return before continuing, i.e. the caller is blocked). There 
+are two other variations available. An asynchronous call is shown with an open 
+ended arrow and indicates that the caller does not wait for the called operation 
+to return before continuing, i.e. the caller is not blocked). e.g.</p>
+<p><img src="../images/pixel.gif" width="35" height="10"><img src="images/uml_call_asynch.JPG" width="240" height="26"></p>
+<p>A return from an operation is shown using a dashed line as below. note: 
+returns like this are only optionally shown on sequence models.</p>
+<p><img src="../images/pixel.gif" width="35" height="10"><img src="images/uml_call_return.JPG" width="239" height="12"></p>
+<p>&nbsp;</p>
+<p><b>Creation:</b> To create a call you must right click on either the active 
+lifeline (within sequence models) or on a link (within collaboration models)<a href="#collaboration"></a> 
+and select &quot;Add (asynch) Call&quot; from the menu. Within sequence models you must 
+left click on the target lifeline (this is not required on collaboration 
+models). When prompted input the name, condition, sequence number etc. as 
+required and click &quot;OK&quot;.</p>
+<p><b>Rules:</b> If a call is being made to a defined operation the list of 
+arguments given should match the parameters defined within the operation. 
+Similarly, if the call is to a signal reception the arguments given must match 
+the attributes defined within the signal classifier being sent.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add/Remove Link Point, Add Argument, Edit Argument Details/Annotation, 
+Delete Argument, Show Where Call Defined, Change Link Color and Edit Call 
+Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Link<a name="link" id="link"></a></h2>
+<p><b>Definition:</b> A link relationship is used to model run-time 
+instantiations of <a href="#association">associations</a>. Links are shown 
+between <a href="#instance">instances</a> to show that one instance is related 
+to another instance in some way. A link represents a relationship between 
+instances during run-time execution of the system being modeled.</p>
+<p><b>Representation:</b><strong> </strong>Links are represented as solid lines 
+shown between instances. They have three labels attached to them, a link name 
+label (which is underlined), a source end label and a destination end label 
+(which display role names of attached instances), e.g.</p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_link.JPG" width="258" height="34"></p>
+<p>Since links are instances of <a href="#association">associations</a> they 
+provide support for simple/compositional aggregation semantics and navigable 
+ends. It does not make sense however for a link to show multiplicity information 
+since the link itself represents the existence of a one to one relationship 
+between two instances.</p>
+<p><b>Creation:</b> To create a link you must right click on the instance you 
+wish to be the source of the link and select &quot;Add Link&quot; from the menu. Now left 
+click on the instance you wish to be the destination, the link will then be 
+created with default source/end role names and a prompt to select the host 
+association will be shown.</p>
+<p><b>Rules:</b> Links may only exist between instances of the same kind, e.g. 
+objects can only have link relationships to other objects. Although not strictly 
+enforced, links should only exist between instances that are based on 
+classifiers which are linked via an association.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add/Remove Link Point, (set) Link Lifetime, Show Where Link Defined, 
+Change Link/text Color and Edit Link Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p></p>
+<h2>Constraint<a name="constraint"></a></h2>
+<p><b>Definition:</b> Constraints are general modeling elements that allow 
+certain restrictions to be defined within a model. Constraints can be attached 
+to one or more elements of the diagram or the diagram itself. A constraint can 
+be specified in any language (including natural language) and the language used 
+is specified as part of the constraint. Certain predefined constraints also 
+exists, but these are generally selected from appropriate menu options and shown 
+in the form { &lt;constraint&gt; } after or near the element they constrain.</p>
+<p><b>Representation:</b> A constraint is represented by a rectangular shaped 
+node with the top right corner folded over. It holds three pieces of 
+information, these are the name of the constraint; the language of the 
+constraint; and the constraint text itself. A dashed line is shown between a 
+constraint and the elements it constrains.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_constraint.jpg" width="273" height="76"> </p>
+<p><b>Creation:</b> A constraint is added by right clicking on a UML diagram 
+editor or on the model icon within the project tree and selecting the &quot;Add 
+Constraint&quot; option from the menu. Position the constraint outline where you wish 
+it to be placed on the diagram and left click. Enter the name, language, 
+constraint details and elements to be constrained when prompted then click &quot;OK&quot;.
+</p>
+<p><b>Rules:</b> A constraint must have a unique name within its namespace (i.e. 
+the package in which it is defined, rather than the specific model on which it 
+exists). Ideally constraints should only make direct reference to 
+attributes/operations which are accessible via constrained elements.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Edit Constraint Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Tag<a name="tag"></a></h2>
+<p><b>Definition:</b> A tag is a general modeling element that allows 
+information to be attached to UML modeling elements. The information is in the 
+form of a tag name and one or more associated values. How the tags and their 
+values are interpreted is not defined within the UML, i.e. they can be used to 
+convey information specific to a user selected domain. Tags can be attached to 
+one or more UML elements.</p>
+<p><b>Representation:</b> A tag is represented by text enclosed in braces in the 
+form <strong>{&lt;name&gt;=&lt;values&gt;}</strong>. A dashed line is shown between tags and 
+the elements to which they are related. e.g.</p>
+<blockquote>
+  <p><font size="5">
+  <tab indent="6">{Version=1.0}</font></p>
+</blockquote>
+<p><b>Creation:</b> A tag is added by right clicking on a UML diagram editor or 
+on the model icon within the project tree and selecting the &quot;Add Tag&quot; option 
+from the menu. Position the tag outline where you wish it to be placed on the 
+diagram and left click. Enter the name and select the elements to be attached to 
+the tag when prompted then click &quot;OK&quot;. </p>
+<p><b>Rules:</b> A tag must have a unique name within its namespace (i.e. the 
+package in which it is defined, rather than the specific model on which it 
+exists).</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Value, Edit Value Details, Delete Value, Set Tag Color, Edit Tag 
+Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<h2>Note<a name="note"></a></h2>
+<p><b>Definition:</b> Notes are general modeling elements that allow annotations 
+to be defined within a model. Notes can be attached to one or more elements of 
+the diagram or the diagram itself. The contents of the note are fully 
+independent from the UML semantics, i.e. they are simply comments that convey 
+any information. </p>
+<p><b>Representation:</b> A note is represented by a rectangular shaped node 
+with the top right corner folded over. It holds a single piece of text. e.g.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/uml_note.jpg" width="168" height="104"> </p>
+<p><b>Creation:</b> A note is added by right clicking on a UML diagram editor or 
+on the model icon within the project tree and selecting the &quot;Add Note&quot; option 
+from the menu. Position the note outline where you wish it to be placed on the 
+diagram and left click. Enter the note text when prompted then click &quot;OK&quot;. </p>
+<p><b>Rules:</b> none</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Link to Element, Edit Note Details. </p>
+<p>&nbsp;</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<div align="right">
+&nbsp;</div>
+<div align="right">
+  <table width="152" border="0">
+    <!--DWLayoutTable-->
+    <tr>
+      <td width="25%" height="74" valign="top">
+      <a href="http:qsee_cls" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image28','','../images/CloseBig.jpg',1)">
+      <img src="../images/Close.jpg" alt="Close Help Window" name="Image28" border="0" width="146" height="72"></a></td>
+    </tr>
+    <tr>
+      <td height="21" valign="top">
+      <div align="center">
+        <a href="http:qsee_cls">Close Help Window</a></div>
+      </td>
+    </tr>
+  </table>
+</div>
+<p></p>
+<table width="100%" height="53" border="0">
+  <!--DWLayoutTable-->
+  <tr>
+    <td width="100%" height="64" valign="top" background="../images/bottom.JPG"><!--DWLayoutEmptyCell-->&nbsp;
+    </td>
+  </tr>
+</table>
+
+</body>
+
+</html>

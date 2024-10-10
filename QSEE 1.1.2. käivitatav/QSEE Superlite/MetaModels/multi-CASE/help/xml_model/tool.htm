@@ -1,0 +1,1202 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-gb">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</script>
+</head>
+
+<body link="#3366CC" vlink="#3366CC" alink="#6699CC" onLoad="MM_preloadImages('../../../../METAMO%7E1/MULTI-%7E1/help/XML_SC%7E1/OpenBig.jpg','../../../../METAMO%7E1/MULTI-%7E1/help/XML_SC%7E1/NewBig.jpg','../../../../METAMO%7E1/MULTI-%7E1/help/XML_SC%7E1/SetupBig.jpg','../../../../METAMO%7E1/MULTI-%7E1/help/XML_SC%7E1/ExitBig.jpg','../../../../METAMO%7E1/MULTI-%7E1/help/XML_SC%7E1/images/PreviousBig.jpg','../../../../METAMO%7E1/MULTI-%7E1/help/XML_SC%7E1/images/NextBig.jpg','../../../../METAMO%7E1/MULTI-%7E1/help/images/CloseBig.jpg')">
+
+<table width="100%" height="64" border="0" background="../../../../METAMO~1/MULTI-~1/help/images/top.jpg">
+  <!--DWLayoutTable-->
+  <tr>
+    <td width="100%" height="49" valign="top"><!--DWLayoutEmptyCell-->&nbsp;
+     </td>
+  </tr>
+</table>
+<table width="100%" height="214" border="0" align="center">
+  <!--DWLayoutTable-->
+  <tr>
+    <td width="250" height="206" valign="top">
+    <table height="200" width="100%" border="0" cellpadding="0" cellspacing="5" bgcolor="#EDF2F8">
+        <tr> 
+          <td height="21" class="menutop" bgcolor="#BACBE5"><font color="#006DD6"> 
+            <strong>The Guide</strong></font> </font></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a class="menu" href="#element"> <font color="#006DD6">Elements</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a class="menu" href="#root_element"> <font color="#006DD6">Root 
+            Elements</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a class="menu" href="#grouping_element"> <font color="#006DD6">Grouping 
+            Elements </font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a class="menu" href="#reference_element"> <font color="#006DD6">Reference 
+            Elements </font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a class="menu" href="#attribute"> <font color="#006DD6">Attributes</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a class="menu" href="#association"> <font color="#006DD6">Associations</font></a></td>
+        </tr>
+        <tr>
+          <td bgcolor="#D7E0EF"><a class="menu" href="#relationship"><font color="#006DD6">Relationships</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#entity"><font color="#006DD6">Entities</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#notation"><font color="#006DD6"> Notations</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a class="menu" href="#enumerated_type"> <font color="#006DD6">Enumerated 
+            Types </font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a class="menu" href="#notation_enumerated_type"> 
+            <font color="#006DD6">Notation Enumerated Types </font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#code_generation"><font color="#006DD6"> 
+            Code Generation</font></a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D7E0EF"><a href="#example" class="menu"> <font color="#006DD6">Example</font></a></td>
+        </tr>
+      </table>
+    </td>
+    <td width="719" valign="top">
+    <table height="200" width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="100%" height="200" valign="top">
+        <h1><font size="5">XML Schema Model</font></h1>
+            <p>The XML Schema Model tool provides a graphical approach to the 
+              definition of the syntactical rules underlying XML documents.&nbsp; 
+              i.e. it provides a method of modeling Document Type Definitions 
+              (DTDs) and XML Schema Documents (XSDs).</p>
+            <p>The Extensible Markup Language (XML) has become the standard way 
+              of storing and exchanging information in an open textual format.&nbsp; 
+              Each XML document can contain certain tags and associated attribute 
+              values that are appropriate for the application area being supported.&nbsp; 
+              The rules that govern the available tags, attributes and the general 
+              structure of an XML document may be defined in a textual Document 
+              Type Definition (DTD) or an XML Schema Document (XSD) file.&nbsp; 
+              This tool allows the rules to be modeled in a graphical manner and 
+              the textual DTD or XSD file to be generated automatically.&nbsp; 
+              A model checking facility also allows input models to be checked 
+              for consistency etc. prior to code generation.</p>
+            <p>To view the main multi-CASE help page click <a href="../../../../METAMO~1/MULTI-~1/help/tool.htm">here</a></p>
+            <div align="right">
+<table width="152" border="0">
+            <!--DWLayoutTable-->
+            <tr>
+              <td width="25%" height="74" valign="top">
+              <a href="http://qsee_cls" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image12','','../../../../METAMO%7E1/MULTI-%7E1/help/images/CloseBig.jpg',1)">
+              <img src="../../../../METAMO~1/MULTI-~1/help/images/Close.jpg" alt="Close Help Window" name="Image12" border="0" width="146" height="72"></a></td>
+            </tr>
+            <tr>
+              <td height="21" valign="top">
+              <div align="center">
+                <a href="http://qsee_cls">Close Help Window</a></div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+  <tr>
+    <td height="1"></td>
+    <td></td>
+  </tr>
+</table>
+<h1>XML Schema Models</h1>
+<p>XML Schema models contain a number of different types of graphical objects 
+  that are typically combined to produce a hierarchical type structure. When an 
+  XML model is first created (by right clicking on the project folder and selecting 
+  &quot;Add XML Model&quot;) a graphical object is created automatically.&nbsp; 
+  This is a single <a href="#root_element">root element</a> that represents the 
+  top level element of the model. The root element cannot be deleted from the 
+  model.&nbsp; The different types of objects used to create an XML Schema model 
+  are graphical representations of the textual objects specified within a DTD 
+  or XSD.&nbsp; Therefore users that are familiar with DTD or XSD grammar should 
+  be able to easily understand the appropriate usage of each graphical object 
+  available.&nbsp; Users that are not familiar with the grammars will still be 
+  able to create meaningful graphical models by becoming aware of the purpose 
+  and usage of each available graphical object.&nbsp; The main objects provided 
+  by the tool are <a href="#element">elements</a> (with defined <a href="#attribute">attributes</a>), 
+  <a href="#grouping_element">grouping elements</a>, <a href="#entity">entities</a>, 
+  <a href="#notation">notations</a> and <a href="#enumerated_type">enumerated 
+  types</a>.&nbsp;Compositional <a href="#association">association</a> links are 
+  used to show how (parent) elements may contain other (child) elements. Reference 
+  <a href="#relationship">relationship</a> links are used to indicate cross referencing 
+  between elements. See the provided <a href="#example">example</a> model.</p>
+<p>DTDs and XSDs may also be generated from the <a href="../entity_relationship_diagram/tool.htm">Entity 
+  Relationship Diagram</a> tool.</p>
+<p>For general information about working with diagrams within the QSEE environment 
+  <a href="http://qsee_app:diagrams.htm">click here</a>.</p>
+<p>The <a href="http://qsee_www/http://www.w3.org/TR/REC-xml/">full specification</a> 
+  of the Extensible Markup Language (XML) is available from the <a href="http://qsee_www/http://www.w3.org/">World 
+  Wide Web Consortium (W3C) website</a>.</p>
+<p>&nbsp;</p>
+<p><img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h2>Elements<a name="element"></a></h2>
+<p><b>Definition:</b> Elements are used to define the nature and composition of 
+  information within the XML Schema.&nbsp; Elements are usually the most commonly 
+  used object within a model. An element identifies a particular grouping of information 
+  and is often representative of an object from the domain being modeled, e.g. 
+  Customer, Bank Details, Book.&nbsp; Each element must have a unique name within 
+  the model and can define zero or more related <a href="#attribute">attributes</a>. 
+  An element can also be specified as containing 'data' indicating that data may 
+  be stored directly within the element itself. An element can be specified as 
+  being an 'XML Schema Key' , which indicates that the element acts as part of 
+  its parent's unique identifier during <a href="#code_generation">XML Schema 
+  generation</a>.</p>
+<p>Elements may also contain zero or more other elements.&nbsp; This is modeled 
+  using <a href="#association">association</a> links from the parent elements 
+  to each child element they contain.&nbsp; Elements can be attached and detached 
+  from parent elements anytime during modeling. Elements that are specified as 
+  containing 'data' and also contain child elements are known as <strong>mixed 
+  content</strong> elements. i.e. Within the conforming XML document the parent 
+  element will be able to contain a combination of data and child elements. Elements 
+  that contain no child elements are usually described as being 'empty', although 
+  they can still contain defined attributes.&nbsp; It is also possible for elements 
+  to be specified as being able to contain 'any' combination of child elements.&nbsp; 
+  A cross reference between elements can be specified using a <a href="#relationship">relationship</a>. 
+  A special kind of element called the <a href="#root_element">root element</a> 
+  is used to model the topmost element within the model. </p>
+<p>An element may contain an underlying <a href="../storyboard/tool.htm">storyboard 
+  model</a> that allows for the definition of any graphical user interface requirements 
+  related to the element or its attributes.</p>
+<p><b>Representation:</b> An element is represented by a rectangular shaped node 
+  that is (by default) lilac in color. The name of the element is shown at the 
+  top and the names of any defined attributes are shown below. If an element may 
+  contain data then a &lt;&lt;data<em><strong>:type</strong></em>&gt;&gt; label 
+  is shown below the name. If the element may not contain data and does not contain 
+  any child elements then an &lt;&lt;empty&gt;&gt; label is shown.&nbsp; If an 
+  element is specified as being able to contain any child elements then an &lt;&lt;any&gt;&gt; 
+  label is shown instead.&nbsp; e.g. A non-empty element to represent a named 
+  'Category'&nbsp; (child elements not shown)-</p>
+<p></p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10">
+<img src="images/element.JPG" width="145" height="73"> </p>
+<p><b>Creation:</b> An element is added by right clicking on the XML Schema 
+  diagram editor or on the model icon within the project tree and selecting the 
+  &quot;Add Element&quot; option from the menu. Position the element outline where 
+  you wish it to be placed on the diagram and left click, enter the name when 
+  prompted and click &quot;OK&quot;. It is also possible to create a child element 
+  by right clicking on the element you wish to be the parent and selecting &quot;Add 
+  Child Element&quot;.</p>
+<p><b>Rules:</b> An element's name must be present and unique within the model 
+(with respect to all other elements and the root element). An element can only 
+be directly contained by one parent element (also see
+<a href="#reference_element">reference elements</a>). </p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, Delete, 
+  Add Attribute, Re-Order Attributes, Add Child Element, Add Child Grouping Element, 
+  Add Child Reference Element, Add Reference Relationship, Attach To Parent Element, 
+  Detach From Parent Element, Is Optional Occurrence, Is Multiple Occurrence, 
+  Is XML Schema Key, Create/View/Delete Underlying Storyboard, Change Element 
+  Color, Edit Element Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a></div>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h2>Root Elements<a name="root_element"></a></h2>
+<p><b>Definition:</b> A root element is a special kind of <a href="#element"> 
+  element</a> that represents the top level element on a model.&nbsp; Exactly 
+  one root element must exist on each XML Schema Model. The name of the root element 
+  should always be changed to be something relevant to the application area that 
+  the schema is designed to support. e.g. Questionnaire, Account.&nbsp; Since 
+  root elements are just special kinds of elements much of their behavior is the 
+  same as regular elements. i.e. they can define <a href="#attribute">attributes</a>, 
+  contain child elements etc.&nbsp; Root elements however cannot be deleted and 
+  cannot be directly attached to a parent element via an <a href="#association"> 
+  association</a>.</p>
+<p><b>Representation:</b> A root element is represented by a three dimensional 
+  cube shaped node that is (by default) lilac in color. The name of the element 
+  is shown at the top and the names of any defined attributes are shown below. 
+  If the root element may contain data then a &lt;&lt;data<strong><em>:type</em></strong>&gt;&gt; 
+  label is shown below the name. If the root element may not contain data and 
+  does not contain any child elements then an &lt;&lt;empty&gt;&gt; label is shown.&nbsp; 
+  If the root element is specified as being able to contain any child elements 
+  then an &lt;&lt;any&gt;&gt; label is shown instead.&nbsp; e.g. An empty root 
+  element to represent a book.</p>
+<p></p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10">
+<img border="0" src="images/root.JPG" width="187" height="112"> </p>
+<p><b>Creation:</b> A root element is automatically created on all XML Schema 
+  Model diagrams. A root element cannot be created by the user.</p>
+<p><b>Rules:</b>&nbsp; Only one root element may exist on a single model. A root 
+element cannot be deleted.&nbsp; A root element's name must be present and 
+unique within the model (with respect to all other elements). A root element 
+cannot be directly attached to a parent element (use
+<a href="#reference_element">reference elements</a>).</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, Delete, 
+  Add Attribute, Re-Order Attributes, Add Child Element, Add Child Grouping Element, 
+  Add Child Reference Element, Add Reference Relationship, Create/View/Delete 
+  Underlying Storyboard, Change Root Color, Edit Root Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a></div>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h2>Grouping Elements<a name="grouping_element"></a></h2>
+<p><b>Definition:</b> Grouping elements are a special kind of <a href="#element">
+element</a> that are used to define a collection of child elements.&nbsp; 
+Grouping elements exist purely to allow management of other elements and 
+therefore do not define their own attributes.&nbsp; They should however always 
+contain two or more child elements (since this is the purpose of their 
+existence) linked using <a href="#association">associations</a>. Grouping 
+elements may be used to define a reusable group of child elements that may then 
+be <a href="#reference_element">referenced</a> from several places within the 
+model, i.e. they provide a mechanism for re-use. Grouping elements may also be 
+used to identify a collection of child elements that are mutually exclusive, 
+i.e. only one element from the group may exist within the parent at any one 
+time. The latter of these is known as a <strong>choice grouping</strong> element 
+and this fact is reflected by the label shown within the element (and the dashed 
+lines of attached <a href="#association">associations</a>).&nbsp; A grouping 
+element may optionally be given a name.&nbsp; This is only necessary if the 
+grouping element needs to be <a href="#reference_element">referenced</a> from 
+elsewhere within the model, since only named elements can be referenced.</p>
+<p><b>Representation:</b> A grouping element is represented by a rectangular 
+shaped node with rounded ends that is (by default) green in color. The name of 
+the grouping (if specified) is shown at the top of the node. If the grouping 
+element is specified as containing mutually exclusive child elements then a 
+&lt;&lt;choice&gt;&gt; label is shown in the middle of the node, otherwise a &lt;&lt;group&gt;&gt; label 
+is shown. e.g. a choice grouping element and a regular grouping element.</p>
+<p></p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="30" height="12">
+<img border="0" src="images/choice.JPG" width="86" height="90"></p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10"><img src="images/group.JPG" width="84" height="88">
+</p>
+<p><b>Creation:</b> A grouping element is added by right clicking on the XML Schema diagram editor or on the model icon within the project tree and selecting 
+  the &quot;Add Grouping Element&quot; option from the menu. Position the element 
+  outline where you wish it to be placed on the diagram and left click. It is 
+  also possible to create a child grouping element by right clicking on the element 
+  you wish to be the parent and selecting &quot;Add Child Grouping Element&quot;.</p>
+<p><b>Rules:</b> If present, a grouping element's name must be unique within the 
+model (with respect to all other grouping elements). A grouping element can only 
+be directly contained by one parent element (also see
+<a href="#reference_element">reference elements</a>). Choice grouping elements 
+should not contain the same child element more than once (i.e. via reference 
+elements).</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, Delete, 
+  Add Child Element, Add Child Grouping Element, Add Child Reference Element, 
+  Attach To Parent Element, Detach From Parent Element, Is Optional Occurrence, 
+  Is Multiple Occurrence, Is Choice Grouping, Create/View/Delete Underlying Storyboard, 
+  Change Grouping Color, Edit Grouping Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h2>Reference Elements<a name="reference_element"></a></h2>
+<p><b>Definition:</b> A reference element is used to allow a reference to be made 
+  to an existing element within the model.&nbsp; All element types can be referenced, 
+  i.e. <a href="#element">elements</a>, the <a href="#root_element"> root element</a> 
+  and <a href="#grouping_element">grouping elements</a>.&nbsp; A reference element 
+  effectively acts as a proxy element and allows the same element to be contained 
+  by more than one parent. Reference elements do not maintain any data themselves, 
+  they simply derive it from the element being referenced. A reference element 
+  always has a single host element that it references. If the host element is 
+  renamed then the name of the reference element is automatically changed.&nbsp; 
+  If the host element is deleted then all reference elements that refer to the 
+  host are also deleted.&nbsp; Reference elements are most commonly used to reference 
+  named <a href="#grouping_element"> grouping elements</a> during the application 
+  of re-use. They can also be used to allow the same element to be contained by 
+  different elements within the model (see <a href="#example">example</a>). Reference 
+  elements that refer to <a href="#element">elements</a> as their host can be 
+  specified as being an 'XML Schema Key' , which indicates that the referenced 
+  element acts as part of its parent's unique identifier during <a href="#code_generation">XML 
+  Schema generation</a>.</p>
+<p>A reference element may also contain an underlying <a href="../storyboard/tool.htm">storyboard 
+  model</a> that allows for the definition of any graphical user interface requirements 
+  related to the element or its attributes. When used on a reference element the 
+  given storyboard may be different from any storyboard associated with the original 
+  element, thus providing alternative storyboard views when required.</p>
+<p><b>Representation:</b> A reference element is represented by a node that 
+derives its shape and color from the element being referenced. The name of the 
+reference (which will always match its host element) is shown at the top of the 
+node just above a &lt;&lt;ref&gt;&gt; label, which indicates the special nature of the 
+element. e.g. A reference to a Question element.</p>
+<p></p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10">
+<img src="images/reference.JPG" width="80" height="55"> </p>
+<p><b>Creation:</b> A reference element is added by right clicking on the 
+element you wish to be the parent and selecting &quot;Add Child Reference Element&quot; 
+from the menu. Position the reference outline where you wish it to be placed on 
+the diagram and left click, select the name of the element to be referenced and 
+click &quot;OK&quot;. </p>
+<p><b>Rules:</b> A reference element must reference an element defined on the 
+same model as the reference.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, Delete, 
+  Attach To Parent Element, Detach From Parent Element, Is Optional Occurrence, 
+  Is Multiple Occurrence, Is XML Schema Key, Show Where Element Defined, Create/View/Delete 
+  Underlying Storyboard, Edit Reference Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h2>Attributes<a name="attribute"></a></h2>
+<p><b>Definition:</b> Attributes are used to identify and define specific pieces 
+  of information that may be recorded by a particular element.&nbsp; Attributes 
+  are contained (owned) by either an <a href="#element">element</a> or the <a href="#root_element">root 
+  element</a>.&nbsp; Attributes have a unique name (within their containing element), 
+  a type to indicate the nature of the data to be stored, an optional default 
+  value and optional constraints.&nbsp; If a default value is given then this 
+  will be assigned to the attribute within the XML document if no other value 
+  is specified.&nbsp; An attribute that has being given a default value can also 
+  be specified as 'fixed', which indicates that the attribute value is in fact 
+  constant and can only ever equal the default value.&nbsp; An attribute can be 
+  specified as being 'required', which indicates that a value must be present 
+  for the attribute within a conforming XML document. An attribute can be specified 
+  as being an 'XML Schema Key' , which indicates that the attribute acts as part 
+  of its owning element's unique identifier during <a href="#code_generation">XML 
+  Schema generation</a>.</p>
+<p>The available attribute types are described below.&nbsp; The type of an 
+attribute may also be either a user defined <a href="#enumerated_type">
+enumerated type</a> or a <a href="#notation_enumerated_type">notation enumerated 
+type</a>.</p>
+<div align="center">
+  <table width="772" border="1">
+    <tr> 
+      <td width="173"><strong>Type</strong></td>
+      <td width="311"><strong>Description</strong></td>
+      <td width="104"><strong>DTD Mapping</strong></td>
+      <td width="148"><strong>XSD Mapping</strong></td>
+    </tr>
+    <tr> 
+      <td width="173">Character Data</td>
+      <td width="311">The attribute value will be character data, i.e. a string 
+        of characters.</td>
+      <td width="104">CDATA</td>
+      <td width="148">xsd:string</td>
+    </tr>
+    <tr> 
+      <td width="173">Unique ID</td>
+      <td width="311">The attribute value will be a unique ID.</td>
+      <td width="104">ID</td>
+      <td width="148">ID</td>
+    </tr>
+    <tr> 
+      <td width="173">Element Ref ID</td>
+      <td width="311">The attribute value will be the ID of another element.</td>
+      <td width="104">IDREF</td>
+      <td width="148">IDREF</td>
+    </tr>
+    <tr> 
+      <td width="173">Element Ref ID List</td>
+      <td width="311">The attribute value will be a list of IDs of other elements.</td>
+      <td width="104">IDREFS</td>
+      <td width="148">IDREFS</td>
+    </tr>
+    <tr> 
+      <td width="173">Name Token</td>
+      <td width="311">The attribute value will be a valid XML name (a single word 
+        string).</td>
+      <td width="104">NMTOKEN</td>
+      <td width="148">NMTOKEN</td>
+    </tr>
+    <tr> 
+      <td width="173">Name Token List</td>
+      <td width="311">The attribute value will be a list of valid XML names.</td>
+      <td width="104">NMTOKENS</td>
+      <td width="148">NMTOKENS</td>
+    </tr>
+    <tr> 
+      <td width="173">Entity</td>
+      <td width="311">The attribute value will be the name of an <a href="#unparsed_entity">unparsed 
+        entity</a>.</td>
+      <td width="104">ENTITY</td>
+      <td width="148">ENTITY</td>
+    </tr>
+    <tr> 
+      <td width="173">Entity List</td>
+      <td width="311">The attribute value will be a list of <a href="#unparsed_entity">unparsed 
+        entity</a> names.</td>
+      <td width="104">ENTITIES</td>
+      <td width="148">ENTITIES</td>
+    </tr>
+    <tr> 
+      <td>String</td>
+      <td>The attribute value will be a string of characters.</td>
+      <td>CDATA</td>
+      <td>xsd:string</td>
+    </tr>
+    <tr> 
+      <td>Boolean</td>
+      <td>The attribute value will be true or false, 1 or 0.</td>
+      <td>CDATA</td>
+      <td>xsd:boolean</td>
+    </tr>
+    <tr> 
+      <td>Decimal</td>
+      <td>The attribute value will be a decimal number possible containing a fractional 
+        part. </td>
+      <td>CDATA</td>
+      <td>xsd:decimal</td>
+    </tr>
+    <tr> 
+      <td>Float</td>
+      <td>The attribute value will be a floating point number possibly represented 
+        using a mantissa and exponent.</td>
+      <td>CDATA</td>
+      <td>xsd:float</td>
+    </tr>
+    <tr> 
+      <td>Double</td>
+      <td>The attribute value will be a double precision floating point number 
+        possibly represented using a mantissa and exponent.</td>
+      <td>CDATA</td>
+      <td>xsd:double</td>
+    </tr>
+    <tr> 
+      <td>Duration</td>
+      <td>The attribute value will represent a duration of time, designating Gregorian 
+        year, month, day, hour, minute, and second components.</td>
+      <td>CDATA</td>
+      <td>xsd:duration</td>
+    </tr>
+    <tr> 
+      <td>Date &amp; Time</td>
+      <td>The attribute value will represent a date and time.</td>
+      <td>CDATA</td>
+      <td>xsd:dateTime</td>
+    </tr>
+    <tr> 
+      <td>Date</td>
+      <td>The attribute value will represent a date.</td>
+      <td>CDATA</td>
+      <td>xsd:date</td>
+    </tr>
+    <tr> 
+      <td>Time</td>
+      <td>The attribute value will represent a time.</td>
+      <td>CDATA</td>
+      <td>xsd:time</td>
+    </tr>
+    <tr> 
+      <td>Year &amp; Month</td>
+      <td>The attribute value will represent a specific gregorian month in a specific 
+        gregorian year.</td>
+      <td>CDATA</td>
+      <td>xsd:gYearMonth</td>
+    </tr>
+    <tr> 
+      <td>Month &amp; Day</td>
+      <td>The attribute value will represent a specific month and day (that will 
+        re-occur every year).</td>
+      <td>CDATA</td>
+      <td>xsd:gMonthDay</td>
+    </tr>
+    <tr> 
+      <td>Year</td>
+      <td>The attribute value will represent a gregorian calendar year.</td>
+      <td>CDATA</td>
+      <td>xsd:gYear</td>
+    </tr>
+    <tr> 
+      <td>Month</td>
+      <td>The attribute value will represent a month.</td>
+      <td>CDATA</td>
+      <td>xsd:gMonth</td>
+    </tr>
+    <tr> 
+      <td>Day</td>
+      <td>The attribute value will represent a day.</td>
+      <td>CDATA</td>
+      <td>xsd:gDay</td>
+    </tr>
+    <tr> 
+      <td>Hex Binary</td>
+      <td>The attribute value will be arbitrary hex-encoded binary data. </td>
+      <td>CDATA</td>
+      <td>xsd:hexBinary</td>
+    </tr>
+    <tr> 
+      <td>Base64 Binary</td>
+      <td>The attribute value will be Base64-encoded arbitrary binary data. </td>
+      <td>CDATA</td>
+      <td>xsd:base64Binary</td>
+    </tr>
+    <tr> 
+      <td>Uniform Resource Identifier</td>
+      <td>The attribute value will be a Uniform Resource Identifier Reference 
+        (URI). </td>
+      <td>CDATA</td>
+      <td>xsd:anyURI</td>
+    </tr>
+    <tr> 
+      <td>Qualified Name</td>
+      <td>The attribute value will be a XML qualified name.</td>
+      <td>CDATA</td>
+      <td>xsd:QName</td>
+    </tr>
+    <tr> 
+      <td>Notation</td>
+      <td>The attribute value will be the qualified name of a Notation defined 
+        within the schema.</td>
+      <td>CDATA</td>
+      <td>NOTATION</td>
+    </tr>
+    <tr> 
+      <td>Token</td>
+      <td>The attribute value will be a tokenized string, i.e. a string with no 
+        leading or trailing spaces, no carraige returns, line-feeds or tabs.</td>
+      <td>CDATA</td>
+      <td>xsd:token</td>
+    </tr>
+    <tr> 
+      <td>Language</td>
+      <td>The attribute value will identify a natural lanugage. See On-line <a href="http://qsee_www/http://www.ietf.org/rfc/rfc3066.txt">definition</a>.</td>
+      <td>CDATA</td>
+      <td>xsd:language</td>
+    </tr>
+    <tr> 
+      <td>Name</td>
+      <td>The attribute value will be a valid XML name.</td>
+      <td>CDATA</td>
+      <td>xsd:Name</td>
+    </tr>
+    <tr> 
+      <td>Non-Colonized Name</td>
+      <td>The attribute value will be a XML &quot;non-colonized&quot; Name. i.e. 
+        A Qualified Name without the prefix and colon.</td>
+      <td>CDATA</td>
+      <td>xsd:NCName</td>
+    </tr>
+    <tr> 
+      <td>Integer</td>
+      <td>The attribute value will be a whole number.</td>
+      <td>CDATA</td>
+      <td>xsd:integer</td>
+    </tr>
+    <tr> 
+      <td>Long</td>
+      <td>The attribute value will be a whole number (with a larger range than 
+        Int)</td>
+      <td>CDATA</td>
+      <td>xsd:long</td>
+    </tr>
+    <tr> 
+      <td>Int</td>
+      <td>The attribute value will be a whole number (with a smaller range than 
+        Long)</td>
+      <td>CDATA</td>
+      <td>xsd:int</td>
+    </tr>
+    <tr> 
+      <td>Short</td>
+      <td>The attribute value will be a whole number (with a smaller range than 
+        Int)</td>
+      <td>CDATA</td>
+      <td>xsd:short</td>
+    </tr>
+    <tr> 
+      <td>Byte</td>
+      <td>The attribute value will be a whole number between -128 and +127 inclusive.</td>
+      <td>CDATA</td>
+      <td>xsd:byte</td>
+    </tr>
+    <tr> 
+      <td>Non-Positive Integer</td>
+      <td>The attribute value will be a whole number with a value &lt;=0.</td>
+      <td>CDATA</td>
+      <td>xsd:nonPositiveInteger</td>
+    </tr>
+    <tr> 
+      <td>Non-Negative Integer</td>
+      <td>The attribute value will be a whole number with a value &gt;=0.</td>
+      <td>CDATA</td>
+      <td>xsd:nonNegativeInteger</td>
+    </tr>
+    <tr> 
+      <td>Negative Integer</td>
+      <td>The attribute value will be a whole number with a value &lt;0.</td>
+      <td>CDATA</td>
+      <td>xsd:negativeInteger</td>
+    </tr>
+    <tr> 
+      <td>Positive Integer</td>
+      <td>The attribute value will be a whole number with a value &gt;0.</td>
+      <td>CDATA</td>
+      <td>xsd:positiveInteger</td>
+    </tr>
+    <tr> 
+      <td>Unsigned Long</td>
+      <td>The attribute value will be a whole number with a value &gt;=0 (with 
+        a larger range than Unsigned Int)</td>
+      <td>CDATA</td>
+      <td>xsd:unsignedLong</td>
+    </tr>
+    <tr> 
+      <td>Unsigned Int</td>
+      <td>The attribute value will be a whole number with a value &gt;=0 (with 
+        a smaller range than Unsigned Long)</td>
+      <td>CDATA</td>
+      <td>xsd:unsignedInt</td>
+    </tr>
+    <tr> 
+      <td>Unsigned Short</td>
+      <td>The attribute value will be a whole number with a value &gt;=0 (with 
+        a smaller range than Unsigned Int)</td>
+      <td>CDATA</td>
+      <td>xsd:unsignedShort</td>
+    </tr>
+    <tr> 
+      <td>Unsigned Byte</td>
+      <td>The attribute value will be a whole number between 0 and 255 inclusive.</td>
+      <td>CDATA</td>
+      <td>xsd:unsignedByte</td>
+    </tr>
+  </table>
+</div>
+<p>&nbsp;</p>
+<p><b>Representation:</b> Attributes are shown as single lines of text within 
+their containing element. Attributes that are specified as being 'fixed' are 
+shown in italics. Attributes that are specified as being 'required' are 
+underlined.&nbsp; If a default value is supplied it is show at the right of the 
+text prefixed by an equals (=) sign.&nbsp; The general form of an attribute is
+<b>&lt;name&gt; : &lt;type&gt; [=&lt;default_value&gt;]</b>. The example below shows several 
+attributes contained by a Person element.&nbsp; The 'person id' is specified as 
+being required (since it is underlined).&nbsp; The marital status attribute has 
+a default value of &quot;single&quot;.</p>
+<p></p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10">
+<img src="images/attribs.JPG" width="192" height="146"> </p>
+<p><b>Creation:</b> An attribute is added by right clicking on the element in 
+which the attribute is to be defined and selecting &quot;Add Attribute&quot; from the 
+menu. When prompted, enter the name, select the type and specify any default 
+value and/or constraint for the attribute and click &quot;OK&quot;. </p>
+<p><b>Rules:</b> An attribute's name must be present and unique (with respect to 
+all other attributes within the containing element). Only one attribute of type 
+'Unique ID' can be defined within an element. An attribute of type 'Unique ID' 
+cannot be fixed or have a default value specified. Attributes that are specified 
+as being required must not have a default value. Attributes that are specified 
+as being fixed must have a default value. Only one attribute based on a
+<a href="#notation_enumerated_type">notation enumerated type</a> can be defined 
+within an element. Any given default value must be appropriate for the type of 
+the attribute.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, Delete, 
+  Show Where Type Defined, Is XML Schema Key, Change Text Color, Edit Attribute 
+  Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h2>Associations<a name="association"></a></h2>
+<p><b>Definition:</b> Associations are used to form a compositional link between 
+  <a href="#element">elements</a> (including the <a href="#root_element">root 
+  element</a> and <a href="#grouping_element">grouping elements</a>) and the child 
+  elements they may contain.&nbsp; Therefore they are used to define what elements 
+  may be contained by other elements, i.e. the content model.&nbsp; An association 
+  links from exactly one parent to exactly one child. A child element may only 
+  be directly contained within one parent (i.e. forming an hierarchical type model), 
+  it is possible however for a child to be contained by more than one parent by 
+  making use of <a href="#reference_element">reference elements</a>. Child elements 
+  are seen to be contained by their parents in an order determined by their relative 
+  vertical position. i.e. the ordering of child elements works from left to right. 
+  This fact is important when modeling certain constructs, where a sequence of 
+  children needs to be represented in an explicit order. It also has an effect 
+  during <a href="#code_generation">code generation</a>.</p>
+<p>As well as identifying how one element contains another, associations also 
+signify certain constraints with respect to the number of child elements that 
+may appear.&nbsp; This information is often referred to as <b>cardinality</b> or
+<b>multiplicity</b> and is identified using graphical symbols shown at the end 
+of the association closest to the child element. The current cardinality is 
+specified by selecting or deselecting the &quot;Is Multiple Occurrence&quot; and &quot;Is 
+Optional Occurrence&quot; options within either the association menu or the child 
+element menu. The four possible combinations of <b>cardinality </b>indicate,</p>
+<p>&nbsp;&nbsp;&nbsp; <b><a name="cardinality"></a></b>i) exactly one child 
+element must be present. (not optional, not multiple) - <i>default</i></p>
+<p>&nbsp;&nbsp;&nbsp; ii) one or more child elements must be present, (not optional, 
+  is multiple)</p>
+<p>&nbsp;&nbsp;&nbsp; iii) zero or one child element may be present, (is optional, 
+  not multiple)</p>
+<p>&nbsp;&nbsp;&nbsp; iv) zero or more child elements may be present. (is 
+optional, is multiple)</p>
+<p><b>Representation:</b> An association is represented as a line between two 
+  elements.&nbsp; A small solid dot is shown next to the parent element in order 
+  to allow the direction of the association to be always determined. If an association 
+  represents an exclusive choice (i.e. only one of the children may be present 
+  at any one time) then the line is dashed at the end closest to the parent. e.g. 
+  An association between a 'Parent' and its 'Child' element.</p>
+<p></p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10">
+<img src="images/assoc_ex.JPG" width="103" height="165"> </p>
+<p>Each available <b>cardinality</b> is represented as symbols shown next to the 
+  child element on the association.&nbsp; A crows foot symbol represents multiple 
+  occurrence and an 'O' symbol represents optional occurrence, (see x-refs to 
+  <a href="#cardinality">descriptions above</a>). i.e.</p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10"><img border="0" src="images/assoc.JPG" width="170" height="86"></p>
+<p><strong>note:</strong> An association connected to a parent <a href="#element">element</a> 
+  that is specified as being able to contain 'character data' replaces the small 
+  dot with a small circular cross. This indicates that the parent is a <strong>mixed 
+  content</strong> element, which sometimes has an effect during <a href="#code_generation">code 
+  generation</a>.</p>
+<p><b>Creation:</b> Associations are created automatically whenever a child element 
+  is added to a parent element using the &quot;Add Child .....&quot; option from 
+  an element menu.&nbsp; An element that has no parent assigned can be associated 
+  with a parent using the &quot;Attach to Parent Element&quot; option from its 
+  menu.&nbsp; In this case use the mouse to position the association end over 
+  the required parent and left click to attach.</p>
+<p><b>Rules:</b> Associations must link from a parent element (including the 
+root and grouping elements) to a child element, grouping element, or reference 
+element.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add/Remove Link Point, Detach From Parent Element, Is Optional 
+Occurrence, Is Multiple Occurrence, Change Link Color, Edit Association 
+Annotation.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h2>Relationships<a name="relationship" id="relationship"></a></h2>
+<p><b>Definition:</b> Relationships are used to define a cross reference link 
+  between <a href="#element">elements</a>.&nbsp; The presence of a reference relationship 
+  indicates that instances of the source element refer to instances of the destination 
+  element within a conforming XML Document. Relationships are unidirectional in 
+  nature and may only originate from <a href="#element">element</a> type nodes 
+  within the model. Relationships may target either <a href="#element">elements</a> 
+  or <a href="#reference_element">reference elements</a> (providing their host 
+  is an element). An optional relationship name and element role name may be specified 
+  to help describe the purpose of the relationship. </p>
+<p>As well as identifying a cross reference between elements, relationships also 
+  signify certain constraints with respect to the number of target elements that 
+  may be referenced.&nbsp; This information is often referred to as <b>cardinality</b> 
+  or <b>multiplicity</b> and is identified using graphical symbols shown at the 
+  end of the relationship closest to the target element. The current cardinality 
+  is specified by selecting or deselecting the &quot;Is Multiple Occurrence&quot; 
+  and &quot;Is Optional Occurrence&quot; options within the relationship menu. 
+  The four possible combinations of <b>cardinality </b>indicate,</p>
+<p>&nbsp;&nbsp;&nbsp; <b><a></a></b><a name="rel_card"></a>i) exactly one element 
+  must be referenced. (not optional, not multiple) - <i>default</i></p>
+<p>&nbsp;&nbsp;&nbsp; ii) one or more elements must be referenced, (not optional, 
+  is multiple)</p>
+<p>&nbsp;&nbsp;&nbsp; iii) zero or one element may be referenced, (is optional, 
+  not multiple)</p>
+<p>&nbsp;&nbsp;&nbsp; iv) zero or more elements may be referenced. (is optional, 
+  is multiple)</p>
+<p><b>Representation:</b> A relationship is represented as a directional line 
+  between two elements.&nbsp; An arrow is shown next to the target element in 
+  order to allow the direction of the relationship to be always determined. If 
+  given, the relationship and role names are shown close the to relationship line. 
+  e.g. A relationship between a 'Student' and 'Class' indicating that a student 
+  'Takes' one or more classes.</p>
+<p></p>
+<p> <img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10"> 
+  <img src="images/rel_ex.JPG" width="426" height="74"> </p>
+<p>&nbsp;</p>
+<p>Each available <b>cardinality</b> is represented as symbols shown next to the 
+  target element on the relationship.&nbsp; A double arrow symbol represents multiple 
+  occurrence and an 'O' symbol represents optional occurrence, (see x-refs to 
+  <a href="#rel_card">descriptions above</a>). i.e.</p>
+<p> <img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10"><img src="images/rel.JPG" width="131" height="122"></p>
+<p><b>Creation:</b> A relationship is added by right clicking on the element, 
+  from which the reference is to originate, and selecting &quot;Add Reference 
+  Relationship&quot; from the menu.&nbsp; Use the mouse to position the relationship 
+  end over the required target element (or reference element) and left click to 
+  attach.</p>
+<p><b>Rules:</b> Relationships must link from an element to either an element 
+  or a reference element (providing their host is an element). The target element 
+  of a relationship should have a key defined (if correct XML Schema generation 
+  is required).</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, Delete, 
+  Add/Remove Link Point, Is Optional Occurrence, Is Multiple Occurrence, Change 
+  Link Color, Edit Relationship Annotation/Details.</p>
+<div align="right"> <a href="#top">Back To Top</a> </div>
+<p> <img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h2>Entities<a name="entity"></a></h2>
+<p><b>Definition:</b> Entities provide a mechanism for associating a given name 
+  with either a piece of character data (i.e. a string) or a reference to an external 
+  file.&nbsp; The given name can then be used within a conforming XML document 
+  to indicate the presence of the associated information, i.e. when the XML is 
+  processed references to the entity name are replaced by the given text or the 
+  content of the referenced file.&nbsp; Entities are a useful mechanism for defining 
+  a constant value or content that is to be used in several different places within 
+  a document. The fact that entities allow specific values to be decoupled and 
+  referenced only by name improves readability, reusability and changeability 
+  of an XML document. i.e. any changes to the entity value are automatically reflected 
+  in all the places where it is referenced from within the document.</p>
+<p>Entities may be classified as being either <b>internal</b> (when their value 
+  holds character data), or <b>external</b> (when their value holds a reference 
+  to a file). By default an entity is internal, but it may be specified as being 
+  external by selecting the &quot;Is External&quot; menu option.&nbsp; In some 
+  circumstances an external entity may reference a file that contains data that 
+  is not parsable by the XML processor, e.g. an image file.&nbsp; These are often 
+  referred to as <b><a name="unparsed_entity"></a>unparsed entities</b> and may 
+  be specified by associating the entity value with a <a href="#notation">notation</a> 
+  (which identifies the data format/processing requirements) by using the &quot;Associate 
+  with Notation&quot; menu option, available by right clicking on the external 
+  entity value text. Unparsed entities may be specified as the value of entity 
+  typed <a href="#attribute">attributes</a>.</p>
+<p><strong>note: </strong>It is recommended that entities are not used if the 
+  intention of the user is to generate XML Schema Code (XSD). This is because 
+  XSD does not yet fully support definition of entities. No such restriction exists 
+  for DTD generation.</p>
+<p>Within a conforming XML document entities are referenced using the &amp;&lt;entity_name&gt;; 
+  notation, e.g.&nbsp; &amp;copyright_message;</p>
+<p><b>Representation:</b> An entity is represented by a rectangular shaped node 
+that is (by default) peach in color. The name of the entity is shown at the top 
+just above an &lt;&lt;entity&gt;&gt; label, which indicates the special nature of the 
+object. The value associated within the entity is shown below within the node. 
+e.g. An internal entity named 'Author' with a value of 'Dr. Mark Dixon'.</p>
+<p></p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10">
+<img src="images/entity.JPG" width="103" height="79"> </p>
+<p>&nbsp;</p>
+<p>If an entity is specified as being external then the label below the name is 
+  set to &lt;&lt;ext_entity&gt;&gt;. e.g. An external entity named 'Specification' 
+  with a value that refers to a file on the local system.</p>
+<p><img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10"><img src="images/entity2.JPG" width="119" height="77"></p>
+<p>&nbsp;</p>
+<p>If an entity is specified as being an unparsed entity then the label below 
+  the name is set to &lt;&lt;unparsed_entity&gt;&gt;. In addition, the name of 
+  the associated <a href="#notation">notation</a> is shown in brackets following 
+  the value. e.g. An unparsed entity named 'Map Image' with a value representing 
+  the location of a map image file. The formatting/processing requirements for 
+  the image are defined by a notation named 'BMP'.</p>
+<p> <img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10"><img src="images/entity3.JPG" width="191" height="76"></p>
+<p>&nbsp;</p>
+<p><b>Creation:</b> An entity is added by right clicking on the XML Schema 
+  diagram editor or on the model icon within the project tree and selecting the 
+  &quot;Add Entity&quot; option from the menu. Position the entity outline where 
+  you wish it to be placed on the diagram and left click, enter the name and value 
+  when prompted and click &quot;OK&quot;. </p>
+<p><b>Rules:</b> An entity's name must be present and unique within the model 
+(with respect to all other entities). An entity should always be given a value. 
+External entities should refer to files that are accessible to the XML document 
+during processing.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Is External, Change Entity Color, Edit Entity Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h2>Notations<a name="notation"></a></h2>
+<p><b>Definition:</b> A notation is used to provide information about the format 
+  and/or processing requirements of data either stored within (or referenced by) 
+  a conforming XML document.&nbsp; Notations are commonly used when data (usually 
+  binary) needs to be processed using specific 3rd party applications. i.e. data 
+  that cannot be parsed by a regular XML processor.&nbsp; A notation associates 
+  a name with a value that represents either a format and/or external application 
+  required to process stored data.&nbsp; Notations are most commonly used in association 
+  with <a href="#unparsed_entity">unparsed external entity</a> values, to help 
+  identify a method of processing binary type data.&nbsp; They can also be used 
+  to identify the format of elements that contain an attribute based on a <a href="#notation_enumerated_type">notation 
+  enumerated type</a>. </p>
+<p><b>Representation:</b> A notation is represented by a rectangular shaped node 
+that is (by default) light blue in color. The name of the notation is shown at 
+the top just above a &lt;&lt;notation&gt;&gt; label, which indicates the special nature of 
+the object. The value associated within the notation is shown below within the 
+node. e.g. A notation named 'bmp' that refers (in this case) to an application 
+capable of displaying the data.</p>
+<p></p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10">
+<img border="0" src="images/notation.JPG" width="103" height="78"> </p>
+<p>Notation values are often long pieces of text, therefore the name is sometimes 
+  truncated within the notation node.&nbsp; The value however is always fully 
+  stored even if it is not displayed, e.g. A notation named 'gif89a' that refers 
+  to information about the format GIF89a.&nbsp; The full notation value stored 
+  is actually &quot;-//Compuserve//NOTATION Graphic Interchange Format 89a//EN&quot;.</p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10"><img border="0" src="images/notation2.JPG" width="234" height="77"></p>
+<p><b>Creation:</b> A notation is added by right clicking on the XML Schema 
+  diagram editor or on the model icon within the project tree and selecting the 
+  &quot;Add Notation&quot; option from the menu. Position the notation outline 
+  where you wish it to be placed on the diagram and left click, enter the name 
+  and value when prompted and click &quot;OK&quot;. </p>
+<p><b>Rules:</b> A notation's name must be present and unique within the model 
+(with respect to all other notations). A notation should always be given a 
+value.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Change Notation Color, Edit Notation Annotation/Details.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h2>Enumerated Types<a name="enumerated_type"></a></h2>
+<p><b>Definition:</b> Enumerated types allow the definition of a number of 
+unique character strings, which determine the set of available values that can 
+legally be assigned to an <a href="#attribute">attribute</a>.&nbsp; An 
+enumerated type is given a name that may then be selected as the type of an 
+attribute. i.e. they allow the definition of a domain specific attribute type.&nbsp; 
+If an attribute is associated with an enumerated type then the value assigned to 
+that attribute (within a conforming XML document) <i>must</i> be one of those 
+defined within the enumerated type.&nbsp; Enumerated types are typically used to 
+restrict attribute values to a small number of possible options. The values 
+defined within an enumerated type are represented by enumeration labels.&nbsp; 
+An enumerated type is meaningless unless it has at least one enumeration label 
+(value) defined.</p>
+<p><b>Representation:</b> An enumerated type is represented by a rectangular 
+shaped node that is (by default) yellow in color. The name of the enumerated 
+type is shown at the top just above an &lt;&lt;enum&gt;&gt; label, which indicates the 
+special nature of the object. The enumeration labels defined within the type are 
+shown below the title and type label. e.g. An enumerated type called 'level' 
+that contains three enumeration labels, 'easy', 'intermediate', and 'hard'.</p>
+<p></p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10">
+<img src="images/enum_type.JPG" width="93" height="111"> </p>
+<p><b>Creation:</b> An enumerated type is added by right clicking on the XML Schema diagram editor or on the model icon within the project tree and selecting 
+  the &quot;Add Enumerated Type&quot; option from the menu. Position the type 
+  outline where you wish it to be placed on the diagram and left click, enter 
+  the name when prompted and click &quot;OK&quot;. </p>
+<p><b>Rules:</b> An enumerated type's name must be present and unique within the 
+model (with respect to all other enumerated and notation enumerated types). An 
+enumerated type should contain at least one enumeration label. All contained 
+enumeration labels must be unique within the context of the enumeration type.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Enumeration Label, Re-Order Labels, Change Type Color, Edit Type 
+Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h2>Notation Enumerated Types<a name="notation_enumerated_type"></a></h2>
+<p><b>Definition:</b> Notation enumerated types allow the identification of a 
+  number of unique <a href="#notation">notations</a>, which determine the set 
+  of available values that can legally be assigned to an <a href="#attribute"> 
+  attribute</a>.&nbsp; A notation enumerated type is given a name that may then 
+  be selected as the type of an attribute. i.e. they allow the definition of a 
+  domain specific attribute type.&nbsp; If an attribute is associated with a notation 
+  enumerated type then the value assigned to that attribute (within a conforming 
+  XML document) <i>must</i> be one of those defined within the notation enumerated 
+  type.&nbsp; Notation enumerated types are often used to associate a defined 
+  <a href="#notation">notation</a> with the value of an <a href="#attribute"> 
+  attribute</a> within an <a href="#element">element</a>.&nbsp; When used in this 
+  way the element typically contains data stored in an unparsable format that 
+  must be processed by a specialized application.&nbsp; The value of the attribute 
+  (which is a <a href="#notation">notation</a>) is used to help identify the format 
+  or an application to perform the processing. The <a href="#notation"> notations</a> 
+  identified within an enumerated type are represented by enumeration labels.&nbsp; 
+  A notation enumerated type is meaningless unless it has at least one enumeration 
+  label (notation) defined. All notations identified within a notation enumerated 
+  type must exist on the same model as the type.</p>
+<p><b>Representation:</b> A notation enumerated type is represented by a 
+rectangular shaped node that is (by default) light blue in color. The name of 
+the notation enumerated type is shown at the top just above a &lt;&lt;notation_enum&gt;&gt; 
+label, which indicates the special nature of the object. The notation 
+enumeration labels defined within the type are shown below the title and type 
+label. e.g. A notation enumerated type called 'image type' that contains three 
+enumeration labels that refer to the, 'bmp', 'gif', and 'jpeg' notations.</p>
+<p></p>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10">
+<img border="0" src="images/notation_enum.JPG" width="131" height="109"> </p>
+<p><b>Creation:</b> A notation enumerated type is added by right clicking on the 
+  XML Schema diagram editor or on the model icon within the project tree and 
+  selecting the &quot;Add Notation Enumerated Type&quot; option from the menu. 
+  Position the type outline where you wish it to be placed on the diagram and 
+  left click, enter the name when prompted and click &quot;OK&quot;. </p>
+<p><b>Rules:</b> A notation enumerated type's name must be present and unique 
+within the model (with respect to all other enumerated and notation enumerated 
+types). A notation enumerated type should contain at least one enumeration 
+label. All contained enumeration labels must refer to different notations 
+present on the model.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Enumeration Label, Re-Order Labels, Change Type Color, Edit Type 
+Annotation/Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h1>Code generation<a name="code_generation"></a></h1>
+<p>Code generation allows the translation of a graphical XML Schema Model into 
+  a representative Data Type Definition (<strong>DTD</strong>) or XML Schema Document 
+  (<strong>XSD</strong>) file. During the generation process spaces are removed 
+  from the names of elements, entities etc. and replaced with underscores.&nbsp; 
+  The ordering of contained child elements is resolved from left to right. Generated 
+  code is output to a file.&nbsp; The name of this file must be specified by the 
+  user, it is recommended that the default suffix is left unchanged (since this 
+  is appropriate for the type of file being generated).&nbsp; Once the code has 
+  been generated it may be viewed from within the tool or an appropriate editor.</p>
+<p>An option is provided for &quot;Verbose Code Generation&quot; that instructs 
+  the tool to provide explanatory comments within the generated code.&nbsp; These 
+  comments are useful to users who are not fully familiar with the DTD or XSD 
+  grammar.&nbsp; Most objects within an XML Schema Model have the same name as 
+  their DTD/XSD counterparts, thus it is not too difficult to see the relationship 
+  between the model and the generated code.&nbsp; See the <a href="#example">example</a> 
+  for a sample model along with the <a href="#DTD">DTD</a> and <a href="#XSD">XSD</a> 
+  that is generated from the model.&nbsp;</p>
+<p>During DTD generation the elements contained by <strong>mixed content </strong>parent 
+  <a href="#element">elements</a> are always generated as if contained within 
+  a multiple <a href="#grouping_element">choice grouping</a>. Therefore the cardinality 
+  and optionality of the child elements as indicated by the <a href="#association">associations</a> 
+  is ignored. This is necessary because of the specific way in which mixed content 
+  elements must be represented within DTDs. This behavior is not performed during 
+  XSD generation since the mixed content model of the XML Schema grammar is somewhat 
+  stronger.</p>
+<p>During generation of XML Schema Documents (XSD) any <a href="#element">elements</a> 
+  or <a href="#attribute">attributes</a> which are marked as 'XML Schema Key' 
+  are used to define the unique key on the parent element. <a href="#entity">Entities</a> 
+  are not well supported by the XSD grammar and thus their use should be avoided 
+  if the intended code target is an XML Schema Document.</p>
+<div align="right">
+&nbsp;</div>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p>
+<img src="../../../../METAMO~1/MULTI-~1/help/images/line.jpg" width="100%" height="14"></p>
+<h1>Example<a name="example"></a></h1>
+<p>Below is an example model created using the XML Schema Model tool. Within this 
+  example a <a href="#reference_element">reference element</a> has been used to 
+  allow 'Question' <a href="#element">elements</a> to be contained within a 'Category' 
+  or within the 'Questionnaire' element.&nbsp; The <a href="#grouping_element">choice 
+  grouping</a> indicates that a 'Questionnaire' consists of either one or more 
+  'Categories', or one or more 'Questions' (but not both). A 'Question' may be 
+  either multichoice or require a textual response. In the former case the the 
+  correct multichoice answer is referenced via the 'correct_answer' <a href="#relationship">relationship</a>. 
+  In the latter case a suggested answer is stored as data within the question 
+  element. Two <a href="#enumerated_type">enumerated types</a> ('level' and 'question 
+  type') are defined and used as the type of two <a href="#attribute">attributes</a> 
+  ('difficulty level' and 'question type' respectively).</p>
+<p>The <a href="#DTD">DTD</a> and <a href="#XSD">XSD</a> code generated form this 
+  model is shown below.</p>
+<p>&nbsp;</p>
+<p> <img src="../../../../METAMO~1/MULTI-~1/help/images/pixel.gif" width="35" height="10"> 
+  <img src="images/example1.JPG" width="514" height="652"> </p>
+<p>&nbsp;</p>
+<p><a name="DTD"></a>The DTD code generated from this model is shown below.&nbsp; 
+  Verbose code generation was turned off during this generation.</p>
+<pre><font face="Courier New, Courier, mono">&lt;!-- Auto-Generated DTD by QSEE-SuperLite multi-CASE (c) 2001-2004 QSEE-Technologies Ltd. 
+     www.qsee-technologies.com </font></pre>
+<pre><font face="Courier New, Courier, mono">     note: spaces within Element/Entity names etc. have been replaced by underscores (_)</font></pre>
+<pre><font face="Courier New, Courier, mono">     Verbose generation: OFF</font></pre>
+<pre><font face="Courier New, Courier, mono">     Root Element Name :Questionnaire
+--&gt;</font></pre>
+<pre><font face="Courier New, Courier, mono">
+&lt;!ENTITY Owner &quot;QSEE Technologies LTD.&quot;&gt;</font></pre>
+<pre><font face="Courier New, Courier, mono">&lt;!-- Definition of ELEMENT types --&gt;
+&lt;!ELEMENT Questionnaire ((Category+ | Question+))&gt;
+&lt;!ATTLIST Questionnaire title CDATA #REQUIRED&gt;
+&lt;!ATTLIST Questionnaire difficulty_level (easy|intermediate|hard) &quot;intermediate&quot;&gt;</font></pre>
+<pre><font face="Courier New, Courier, mono">&lt;!ELEMENT Category (Question+)&gt;
+&lt;!ATTLIST Category name CDATA #REQUIRED&gt;</font></pre>
+<pre><font face="Courier New, Courier, mono">&lt;!ELEMENT Question (#PCDATA | Multichoice_Answer)*&gt;
+&lt;!ATTLIST Question question CDATA #REQUIRED&gt;
+&lt;!ATTLIST Question question_type (multichoice|textual_response) #REQUIRED&gt;</font></pre>
+<pre><font face="Courier New, Courier, mono">&lt;!ATTLIST Question Multichoice_Answer_REF IDREF #IMPLIED&gt;</font></pre>
+<pre><font face="Courier New, Courier, mono">&lt;!ELEMENT Multichoice_Answer (#PCDATA)&gt;
+&lt;!ATTLIST Multichoice_Answer answer_id ID #REQUIRED&gt;</font></pre>
+<pre><font face="Courier New, Courier, mono">&lt;!-- End of DTD file auto-generation --&gt;</font>&nbsp;</pre>
+<div align="right"> <a href="#top">Back To Top</a> </div>
+<pre>&nbsp;</pre>
+<p><a name="XSD" id="XSD"></a>The XSD code generated from the <a href="#example">example</a> 
+  model is shown below.&nbsp; Verbose code generation was turned off during this 
+  generation.</p>
+<pre><font face="Courier New, Courier, mono">&lt;!-- Auto-Generated XML Schema by QSEE-SuperLite multi-CASE (c) 2001-2004    QSEE-Technologies Ltd. 
+     www.qsee-technologies.com </font></pre>
+<pre><font face="Courier New, Courier, mono">     note: spaces within Element/Entity names etc. have been replaced by underscores (_)</font></pre>
+<pre><font face="Courier New, Courier, mono">     Verbose generation: OFF</font></pre>
+<pre><font face="Courier New, Courier, mono">     Root Element Name :Questionnaire
+--&gt;</font></pre>
+<pre><font face="Courier New, Courier, mono">&lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;</font></pre>
+<pre><font face="Courier New, Courier, mono"> &lt;xsd:annotation&gt;<br>  &lt;xsd:documentation xml:lang=&quot;en&quot;&gt;<br>    XML Schema file for XML Schema Model<br>  &lt;/xsd:documentation&gt;<br> &lt;/xsd:annotation&gt;</font></pre>
+<pre> <font face="Courier New, Courier, mono">&lt;xsd:element name=&quot;Questionnaire&quot; type=&quot;QuestionnaireType&quot;/&gt;
+ 
+ &lt;!-- Definition of Element Types --&gt;<br> &lt;!-- =========================== --&gt;
+<br> &lt;xsd:complexType name=&quot;QuestionnaireType&quot;&gt;<br>    &lt;xsd:sequence&gt;<br>      &lt;xsd:choice&gt;<br>        &lt;xsd:element name=&quot;Category&quot; type=&quot;CategoryType&quot; maxOccurs=&quot;unbounded&quot;/&gt;<br>        &lt;xsd:element name=&quot;Question&quot; type=&quot;QuestionType&quot; maxOccurs=&quot;unbounded&quot;&gt;<br>          &lt;xsd:keyref name=&quot;Question1_FK1&quot; refer=&quot;Multichoice_Answer_Key&quot;&gt;<br>            &lt;xsd:selector xpath=&quot;./Multichoice_Answer_REF&quot;/&gt;<br>            &lt;xsd:field xpath=&quot;@answer_id&quot;/&gt;<br>          &lt;/xsd:keyref&gt;<br>        &lt;/xsd:element&gt;<br>      &lt;/xsd:choice&gt;<br>    &lt;/xsd:sequence&gt;<br>    &lt;xsd:attribute name=&quot;title&quot; type=&quot;xsd:string&quot; use=&quot;required&quot;/&gt;<br>    &lt;xsd:attribute name=&quot;difficulty_level&quot; type=&quot;levelKind&quot; default=&quot;intermediate&quot;/&gt;
+ &lt;/xsd:complexType&gt;<br> &lt;!-- end of type definition for 'Questionnaire' element --&gt;</font></pre>
+<pre><font face="Courier New, Courier, mono"> &lt;xsd:complexType name=&quot;CategoryType&quot;&gt;<br>    &lt;xsd:sequence&gt;<br>      &lt;xsd:element name=&quot;Question&quot; type=&quot;QuestionType&quot; maxOccurs=&quot;unbounded&quot;&gt;<br>        &lt;xsd:keyref name=&quot;Question_FK1&quot; refer=&quot;Multichoice_Answer_Key&quot;&gt;<br>          &lt;xsd:selector xpath=&quot;./Multichoice_Answer_REF&quot;/&gt;<br>          &lt;xsd:field xpath=&quot;@answer_id&quot;/&gt;<br>        &lt;/xsd:keyref&gt;<br>      &lt;/xsd:element&gt;<br>    &lt;/xsd:sequence&gt;<br>    &lt;xsd:attribute name=&quot;name&quot; type=&quot;xsd:string&quot; use=&quot;required&quot;/&gt;
+ </font><font face="Courier New, Courier, mono">&lt;/xsd:complexType&gt;
+ &lt;!-- end of type definition for 'Category' element --&gt;
+
+ </font><font face="Courier New, Courier, mono">&lt;xsd:complexType name=&quot;QuestionType&quot; mixed=&quot;true&quot;&gt;<br>    &lt;xsd:sequence&gt;<br>      &lt;xsd:sequence&gt;<br>        &lt;xsd:element name=&quot;Multichoice_Answer&quot; type=&quot;Multichoice_AnswerType&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;<br>          &lt;xsd:key name=&quot;Multichoice_Answer_Key&quot;&gt;<br>            &lt;xsd:selector xpath=&quot;.&quot;/&gt;<br>            &lt;xsd:field xpath=&quot;@answer_id&quot;/&gt;<br>          &lt;/xsd:key&gt;<br>        &lt;/xsd:element&gt;<br>      &lt;/xsd:sequence&gt;<br>      &lt;xsd:sequence&gt;<br>        &lt;xsd:element name=&quot;Multichoice_Answer_REF&quot; minOccurs=&quot;0&quot;&gt;<br>          &lt;xsd:complexType&gt;<br>            &lt;xsd:attribute name=&quot;answer_id&quot; type=&quot;xsd:ID&quot; use=&quot;required&quot;/&gt;<br>          &lt;/xsd:complexType&gt;<br>        &lt;/xsd:element&gt;<br>      &lt;/xsd:sequence&gt;<br>    &lt;/xsd:sequence&gt;<br>    &lt;xsd:attribute name=&quot;question&quot; type=&quot;xsd:string&quot; use=&quot;required&quot;/&gt;<br>    &lt;xsd:attribute name=&quot;question_type&quot; type=&quot;question_typeKind&quot; use=&quot;required&quot;/&gt;
+ &lt;/xsd:complexType&gt;<br> &lt;!-- end of type definition for 'Question' element --&gt;
+
+ &lt;xsd:complexType name=&quot;Multichoice_AnswerType&quot;&gt;<br>    &lt;xsd:simpleContent&gt;<br>      &lt;xsd:extension base=&quot;xsd:string&quot;&gt;<br>        &lt;xsd:attribute name=&quot;answer_id&quot; type=&quot;xsd:ID&quot; use=&quot;required&quot;/&gt;<br>      &lt;/xsd:extension&gt;<br>    &lt;/xsd:simpleContent&gt;<br> &lt;/xsd:complexType&gt;<br> &lt;!-- end of type definition for 'Multichoice_Answer' element --&gt;
+
+ &lt;xsd:simpleType name=&quot;levelKind&quot;&gt;<br>  &lt;xsd:restriction base=&quot;xsd:string&quot;&gt;<br>   &lt;xsd:enumeration value=&quot;easy&quot;/&gt;<br>   &lt;xsd:enumeration value=&quot;intermediate&quot;/&gt;<br>   &lt;xsd:enumeration value=&quot;hard&quot;/&gt;<br>  &lt;/xsd:restriction&gt;<br> &lt;/xsd:simpleType&gt;
+
+ &lt;xsd:simpleType name=&quot;question_typeKind&quot;&gt;<br>  &lt;xsd:restriction base=&quot;xsd:string&quot;&gt;<br>   &lt;xsd:enumeration value=&quot;multichoice&quot;/&gt;<br>   &lt;xsd:enumeration value=&quot;textual_response&quot;/&gt;<br>  &lt;/xsd:restriction&gt;<br> &lt;/xsd:simpleType&gt;<br>
+ &lt;!-- Definition of Elements to represent Entity types --&gt;<br> &lt;!-- ================================================ --&gt;<br> &lt;xsd:element name=&quot;Owner&quot; type=&quot;xsd:token&quot; fixed=&quot;QSEE Technologies LTD.&quot;/&gt;<br><br></font><font face="Courier New, Courier, mono">&lt;/xs</font><font face="Courier New, Courier, mono">d:schema&gt;</font></pre>
+<pre><font face="Courier New, Courier, mono">&lt;!-- End of XML Schema file auto-generation --&gt;
+</font> </pre>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<div align="right">
+&nbsp;</div>
+<div align="right">
+  <table width="152" border="0">
+    <!--DWLayoutTable-->
+    <tr>
+      <td width="25%" height="74" valign="top">
+      <a href="http://qsee_cls" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image28','','../../../../METAMO%7E1/MULTI-%7E1/help/images/CloseBig.jpg',1)">
+      <img src="../../../../METAMO~1/MULTI-~1/help/images/Close.jpg" alt="Close Help Window" name="Image28" border="0" width="146" height="72"></a></td>
+    </tr>
+    <tr>
+      <td height="21" valign="top">
+      <div align="center">
+        <a href="http://qsee_cls">Close Help Window</a></div>
+      </td>
+    </tr>
+  </table>
+</div>
+<p></p>
+<table width="100%" height="53" border="0">
+  <!--DWLayoutTable-->
+  <tr>
+    <td width="100%" height="64" valign="top" background="../../../../METAMO~1/MULTI-~1/help/images/bottom.JPG"><!--DWLayoutEmptyCell-->&nbsp;
+     </td>
+  </tr>
+</table>
+
+</body>
+
+</html>

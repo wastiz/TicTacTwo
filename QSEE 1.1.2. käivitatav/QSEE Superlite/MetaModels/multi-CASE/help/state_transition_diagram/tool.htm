@@ -1,0 +1,263 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-gb">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</script>
+</head>
+
+<body link="#3366CC" vlink="#3366CC" alink="#6699CC" onLoad="MM_preloadImages('OpenBig.jpg','NewBig.jpg','SetupBig.jpg','ExitBig.jpg','images/PreviousBig.jpg','images/NextBig.jpg','../images/CloseBig.jpg')">
+
+<table width="100%" height="64" border="0" background="../images/top.jpg">
+  <!--DWLayoutTable-->
+  <tr>
+    <td width="100%" height="49" valign="top">
+    <!--DWLayoutEmptyCell-->&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" height="214" border="0" align="center">
+  <!--DWLayoutTable-->
+  <tr>
+    <td width="250" height="206" valign="top">
+    <table height="200" width="100%" border="0" cellpadding="0" cellspacing="5" bgcolor="#EDF2F8">
+      <tr>
+        <td height="21" colspan="3" class="menutop" bgcolor="#BACBE5">
+        <font color="#006DD6"><strong>The Guide</strong></font> </font></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF"><a href="#initial_state" class="menu">
+        <font color="#006DD6">Initial State</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF"><a href="#final_state" class="menu">
+        <font color="#006DD6">Final State</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF"><a href="#state" class="menu">
+        <font color="#006DD6">State</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF"><a href="#transition" class="menu">
+        <font color="#006DD6">Transition</font></a></td>
+      </tr>
+      <tr>
+        <td bgcolor="#D7E0EF"><a href="#example" class="menu">
+        <font color="#006DD6">Example</font></a></td>
+      </tr>
+    </table>
+    </td>
+    <td width="719" valign="top">
+    <table height="200" width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="100%" height="200" valign="top">
+        <h1><font size="5">State Transition Diagram</font></h1>
+        <p>State transition diagrams allow the user to model how a system reacts 
+        to (and generates) events over time. State transition diagrams are often 
+        used when modeling real-time systems but can be generally applied to any 
+        object which has several states of operation that depend upon both 
+        internal and external activity. Each of the states and the transitions 
+        between the states are diagrammatically shown along with events, 
+        conditions and actions that are associated with the transitions from one 
+        state to another. A more advanced form of a state transition diagram is 
+        also provided as a model within the <a href="../uml_model/tool.htm">UML 
+        tool</a>.</p>
+        <p align="left">To view the main multi-CASE help page click
+        <a href="../tool.htm">here</a></p>
+        <div align="right">
+          <table width="152" border="0">
+            <!--DWLayoutTable-->
+            <tr>
+              <td width="25%" height="74" valign="top">
+              <a href="http:qsee_cls" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image18','','../images/CloseBig.jpg',1)">
+              <img src="../images/Close.jpg" alt="Close Help Window" name="Image18" border="0" width="146" height="72"></a></td>
+            </tr>
+            <tr>
+              <td height="21" valign="top">
+              <div align="center">
+                <a href="http:qsee_cls">Close Help Window</a></div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+  <tr>
+    <td height="1"></td>
+    <td></td>
+  </tr>
+</table>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h2>Initial State<a name="initial_state"></a></h2>
+<p><b>Definition:</b> An initial state is used to identify the first
+<a href="#transition">transition</a> to be taken within a model. The destination 
+of the first transition is thus the first <a href="#state">state</a> to be 
+entered within the model (i.e. the default state). </p>
+<p><b>Representation:</b> An initial state is represented by a solid circular 
+shaped node that is (by default) black in color. i.e.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/init_state.JPG" width="21" height="22"> </p>
+<p><b>Creation:</b> The initial state is created automatically when the model is 
+first created.</p>
+<p><b>Rules:</b> There can be only one initial state of a system and it cannot 
+be deleted as all state transition diagrams must have an initial state. An 
+initial state may have several outgoing transitions, but in this case each 
+transition should be in response to a different incoming event (or guard 
+condition). An initial state may have no incoming transitions.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Subsequent State, Add Transition, Change Color.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h2>Final State<a name="final_state"></a></h2>
+<p><b>Definition:</b> A final state is used to identify the completion of a 
+state machine. A final state has incoming <a href="#transition">transitions</a> 
+only.</p>
+<p><b>Representation:</b> A final state is represented by a solid circular 
+shaped node with a larger outer circle that is (by default) black in color. i.e.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/final_state.JPG" width="31" height="33"> </p>
+<p><b>Creation:</b> The final state can be created by either right clicking on 
+the diagram editor or right clicking on the state you want to attach to a final 
+state. From the menu select the &quot;Add Final State&quot; option and left click where 
+you want the final state to be positioned. If the final state is added by right 
+clicking on a state a transition will be added automatically, but if the final 
+state is added by right clicking on the diagram you must add the incoming 
+transitions manually.</p>
+<p><b>Rules:</b> There can be at most one final state of a system. A final state 
+may have several incoming transitions but may not have any outgoing transitions.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Change Color.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h2>State<a name="state"></a></h2>
+<p><b>Definition:</b> A state is used to represent a situation or condition 
+where a set of circumstances are known to be true. States are connected to other 
+states using <a href="#transition">transitions</a> which define why a state is 
+entered and why a state is exited.</p>
+<p><b>Representation:</b> A state is represented by a rectangular node shape 
+with rounded corners. By default the state is yellow with a black border. i.e.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/state.jpg" width="95" height="63"> </p>
+<p><b>Creation:</b> A state can be created by either right clicking on the 
+diagram editor or right clicking on the state you want to attach to a new state. 
+From the menu select the &quot;Add (subsequent) State&quot; option and left click where 
+you want the state to be positioned. If the state is added by right clicking on 
+an existing state then a transition will be added automatically, but if the 
+state is added by right clicking on the diagram you must add the transitions 
+manually.</p>
+<p><b>Rules:</b> A state must have at least one incoming and one outgoing 
+transition. A state must be named.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add Subsequent State, Add Subsequent Final State, Add Transition, Change 
+State/Text Color, Edit State Annotation, Edit State Name.</p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h2>Transition<a name="transition"></a></h2>
+<p><b>Definition:</b> A transition is used to model the changing of
+<a href="#state">state</a> within a system. A transition is triggered by a 
+specific <strong>event</strong>. Once the transition has been taken a specified
+<strong>action</strong> may be executed. An optional <strong>guard</strong> may 
+also be shown (usually by placing a <strong>[condition]</strong> after the 
+trigger event name) that identifies additional constraints that must be 
+satisfied before the transition may be taken.</p>
+<p><b>Representation:</b> A transition is represented by solid line linking a 
+source and destination state. An arrow indicates the direction of the 
+transition. The event and possible action are shown next to a transition 
+separated by a horizontal line. i.e.</p>
+<p></p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/transition.jpg" width="173" height="68"> </p>
+<p><b>Creation:</b> A transition can be created by right clicking on the state 
+that is to be the source of the transition and selecting &quot;Add Transition&quot; from 
+the menu. You must then left click the state you wish to be the destination of 
+the transition. You will then be prompted to add an event and an action 
+description, enter the details as required and left click &quot;OK&quot;. </p>
+<p><b>Rules:</b> A transition should always have an event specified (except from 
+the initial state), but actions are optional.</p>
+<p><b>Operations: </b>Move Forwards/Backwards, Bring to Front, Send to Back, 
+Delete, Add/Remove Link Point, Change Link/Text Color and Edit Event/Action 
+Details. </p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<p><img src="../images/line.jpg" width="100%" height="14"></p>
+<h2>Example<a name="example"></a></h2>
+<p>Below is an example of a state transition diagram.</p>
+<p><img src="../images/pixel.gif" width="35" height="10">
+<img src="images/example.jpg" width="663" height="446"> </p>
+<p></p>
+<div align="right">
+  <a href="#top">Back To Top</a>
+</div>
+<div align="right">
+&nbsp;</div>
+<p></p>
+<p></p>
+<div align="right">
+  <table width="152" border="0">
+    <!--DWLayoutTable-->
+    <tr>
+      <td width="25%" height="74" valign="top">
+      <a href="http:qsee_cls" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image28','','../images/CloseBig.jpg',1)">
+      <img src="../images/Close.jpg" alt="Close Help Window" name="Image28" border="0" width="146" height="72"></a></td>
+    </tr>
+    <tr>
+      <td height="21" valign="top">
+      <div align="center">
+        <a href="http:qsee_cls">Close Help Window</a></div>
+      </td>
+    </tr>
+  </table>
+</div>
+<p></p>
+<table width="100%" height="53" border="0">
+  <!--DWLayoutTable-->
+  <tr>
+    <td width="100%" height="64" valign="top" background="../images/bottom.JPG">
+    <!--DWLayoutEmptyCell-->&nbsp;</td>
+  </tr>
+</table>
+
+</body>
+
+</html>

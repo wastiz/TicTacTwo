@@ -62,8 +62,17 @@ namespace GameVisualizer
             Console.ResetColor();
             
             Console.WriteLine(optionalMessage);
-            var pressedKey = Input(inputMessage);
-            HandleInput(pressedKey);
+            
+            if (gameBrain.chipsLeft[gameBrain.playerNumber] == 2)
+            {
+                var pressedKey = Input(inputMessage);
+                HandleChoice(pressedKey);
+            }
+            else
+            {
+                var pressedKey = Input(inputMessage);
+                HandleInput(pressedKey);
+            }
         }
 
 
@@ -108,6 +117,51 @@ namespace GameVisualizer
                     break;
             }
         }
+
+        private void HandleChoice(ConsoleKeyInfo pressedKey)
+        {
+            Console.WriteLine("Place chip (1)");
+            Console.WriteLine("Move Board (2)");
+            Console.WriteLine("Remove player's chip (3)");
+
+            switch (pressedKey.Key)
+            {
+                case ConsoleKey.D1: // Обработка выбора 1 для размещения фишки
+                case ConsoleKey.NumPad1:
+                    var nextPressedKey = Input("Player is making choice (X)...");
+                    HandleInput(nextPressedKey);
+                    break;
+
+                case ConsoleKey.D2: // Обработка выбора 2 для перемещения подвижного поля
+                case ConsoleKey.NumPad2:
+                    var nextMoveText = Input("Please type one of these options: 'up', 'down', 'left', 'right', 'up-left', 'up-right', 'down-left', 'down-right'").ToLower();
+
+                    // Возможные направления перемещения
+                    string[] validDirections = { "up", "down", "left", "right", "up-left", "up-right", "down-left", "down-right" };
+
+                    // Проверка, что введено корректное направление
+                    if (Array.Exists(validDirections, direction => direction == nextMoveText))
+                    {
+                        gameBrain.moveMovableBoard(nextMoveText); // Перемещение подвижного поля
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid direction. Please try again.");
+                    }
+                    break;
+
+                case ConsoleKey.D3: // Обработка выбора 3 для удаления фишки игрока
+                case ConsoleKey.NumPad3:
+                    nextPressedKey = Input("Player is making choice (X)..."); // Обновление переменной
+                    HandleInput(nextPressedKey); // Передача аргумента в HandleInput
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid choice. Please press 1, 2, or 3.");
+                    break;
+            }
+        }
+
 
         private void handleArrowUp(int[] cursorPosition)
         {
