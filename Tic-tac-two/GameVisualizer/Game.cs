@@ -6,6 +6,9 @@ namespace GameVisualizer
     {
         private Brain gameBrain;
         private int[] cursorPosition;
+        private bool player1MadeChoice = false;
+        private bool player2MadeChoice = false;
+        private string optionalMessage = "";
 
         public Game(int gridSize, int movableGridSize)
         {
@@ -13,30 +16,34 @@ namespace GameVisualizer
             gameBrain = new Brain(gridSize, movableGridSize);
         }
 
-        public void DisplayGame()
+        public void StartGame()
         {
-            DisplayMovableGrid(gameBrain.board, gameBrain.movableBoard, "Player" + gameBrain.playerNumber + "is making choice (X)...");
+            while (true)
+            {
+                string playerChip = gameBrain.playerNumber == 1 ? "X" : "O";
+                DisplayGrid(gameBrain.board, gameBrain.movableBoard, "Player " + gameBrain.playerNumber + " is making choice (" + playerChip + ")...", optionalMessage);
+                if (gameBrain.chipsLeft[gameBrain.playerNumber] <= 0)
+                {
+                    Console.WriteLine("Game over! No more chips left.");
+                    break;
+                }
+            }
         }
 
-        public void DisplayMovableGrid(int[,] gameBoard, int[,] movableGameBoard, string inputMessage, string optionalMessage = "")
+        public void DisplayGrid(int[,] gameBoard, int[,] movableGameBoard, string inputMessage, string optionalMessage = "")
         {
             int rows = gameBoard.GetLength(0);
             int columns = gameBoard.GetLength(1);
 
             Console.Clear();
-
-            
             Console.WriteLine(" ----------------------");
 
             for (int i = 0; i < rows; i++)
             {
-                
                 Console.Write(" |");
-
                 for (int j = 0; j < columns; j++)
                 {
-                    
-                    if (i >= 1 && i <= 3 && j >= 1 && j <= 3 && movableGameBoard[i, j] == 1)
+                    if (movableGameBoard[i, j] == 1)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                     }
@@ -44,7 +51,7 @@ namespace GameVisualizer
                     {
                         Console.ResetColor();
                     }
-            
+
                     if (gameBoard[i, j] == 1)
                         Console.Write(" X |");
                     else if (gameBoard[i, j] == 2)
@@ -54,24 +61,35 @@ namespace GameVisualizer
                     else
                         Console.Write("   |");
                 }
-                
                 Console.WriteLine();
                 Console.WriteLine(" ----------------------");
             }
 
             Console.ResetColor();
-            
             Console.WriteLine(optionalMessage);
-            
-            if (gameBrain.chipsLeft[gameBrain.playerNumber] == 2)
+            ShowPlayerOptions();
+        }
+
+        private void ShowPlayerOptions()
+        {
+            if (gameBrain.chipsLeft[gameBrain.playerNumber] == 2 && !((gameBrain.playerNumber == 1 && player1MadeChoice) || (gameBrain.playerNumber == 2 && player2MadeChoice)))
             {
-                var pressedKey = Input(inputMessage);
+                Console.WriteLine("Place chip (1)");
+                Console.WriteLine("Move Board (2)");
+                Console.WriteLine("Remove player's chip (3)");
+                
+                var pressedKey = Input("Player " + gameBrain.playerNumber + ", make a choice:");
                 HandleChoice(pressedKey);
+                
+                if (gameBrain.playerNumber == 1) 
+                    player1MadeChoice = true;
+                else 
+                    player2MadeChoice = true;
             }
             else
             {
-                var pressedKey = Input(inputMessage);
-                HandleInput(pressedKey);
+                var pressedKey = Input("Player " + gameBrain.playerNumber + " is thinking:");
+                HandleCursor(pressedKey);
             }
         }
 
@@ -83,135 +101,106 @@ namespace GameVisualizer
             Console.WriteLine();
             return keyInfo;
         }
+        
+        public string TextInput(string prompt)
+        {
+            Console.WriteLine(prompt);
+            string input = Console.ReadLine();
+            Console.WriteLine();
+            return input;
+        }
 
-        private void HandleInput(ConsoleKeyInfo pressedKey)
+        private void HandleCursor(ConsoleKeyInfo pressedKey)
         {
             switch (pressedKey.Key)
             {
                 case ConsoleKey.UpArrow:
-                    handleArrowUp(cursorPosition);
+                    HandleArrowMovement(-1, 0, "You cannot move up...");
                     break;
-
                 case ConsoleKey.DownArrow:
-                    handleArrowDown(cursorPosition);
+                    HandleArrowMovement(1, 0, "You cannot move down...");
                     break;
-
                 case ConsoleKey.LeftArrow:
-                    handleArrowLeft(cursorPosition);
+                    HandleArrowMovement(0, -1, "You cannot move left...");
                     break;
-
                 case ConsoleKey.RightArrow:
-                    handleArrowRight(cursorPosition);
+                    HandleArrowMovement(0, 1, "You cannot move right...");
                     break;
-
                 case ConsoleKey.Enter:
-                    bool madeMove = gameBrain.makeMove(cursorPosition[0], cursorPosition[1]);
-                    if (madeMove)
+                    bool madeMove = gameBrain.placeChip(cursorPosition[0], cursorPosition[1]);
+                    if (!madeMove)
                     {
-                        DisplayMovableGrid(gameBrain.board, gameBrain.movableBoard, "Player " + gameBrain.playerNumber + " is making choice (X)...");
-                    }
-                    else
-                    {
-                        DisplayMovableGrid(gameBrain.board, gameBrain.movableBoard, "Player " + gameBrain.playerNumber + " is making choice (X)...", "You cannot place here...");
+                        optionalMessage = "You cannot place here...";
                     }
                     break;
             }
         }
+
+        private void HandleArrowMovement(int deltaX, int deltaY, string errorMessage)
+        {
+            int startRow = gameBrain.startRow;
+            int startCol = gameBrain.startCol;
+            
+            int newRow = cursorPosition[0] + deltaX;
+            int newCol = cursorPosition[1] + deltaY;
+            
+            if (newRow < startRow || newRow >= startRow + gameBrain.movableBoardSize ||
+                newCol < startCol || newCol >= startCol + gameBrain.movableBoardSize)
+            {
+                optionalMessage = errorMessage;
+            }
+            else
+            {
+                cursorPosition[0] = newRow;
+                cursorPosition[1] = newCol;
+            }
+        }
+
 
         private void HandleChoice(ConsoleKeyInfo pressedKey)
         {
-            Console.WriteLine("Place chip (1)");
-            Console.WriteLine("Move Board (2)");
-            Console.WriteLine("Remove player's chip (3)");
-
             switch (pressedKey.Key)
             {
-                case ConsoleKey.D1: // Обработка выбора 1 для размещения фишки
-                case ConsoleKey.NumPad1:
-                    var nextPressedKey = Input("Player is making choice (X)...");
-                    HandleInput(nextPressedKey);
+                case ConsoleKey.D1:
+                    var nextPressedKey = Input("Player " + gameBrain.playerNumber + " is thinking:");
+                    HandleCursor(nextPressedKey);
                     break;
 
-                case ConsoleKey.D2: // Обработка выбора 2 для перемещения подвижного поля
-                case ConsoleKey.NumPad2:
-                    var nextMoveText = Input("Please type one of these options: 'up', 'down', 'left', 'right', 'up-left', 'up-right', 'down-left', 'down-right'").ToLower();
-
-                    // Возможные направления перемещения
-                    string[] validDirections = { "up", "down", "left", "right", "up-left", "up-right", "down-left", "down-right" };
-
-                    // Проверка, что введено корректное направление
-                    if (Array.Exists(validDirections, direction => direction == nextMoveText))
-                    {
-                        gameBrain.moveMovableBoard(nextMoveText); // Перемещение подвижного поля
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid direction. Please try again.");
-                    }
+                case ConsoleKey.D2:
+                    HandleBoardMove();
                     break;
 
-                case ConsoleKey.D3: // Обработка выбора 3 для удаления фишки игрока
-                case ConsoleKey.NumPad3:
-                    nextPressedKey = Input("Player is making choice (X)..."); // Обновление переменной
-                    HandleInput(nextPressedKey); // Передача аргумента в HandleInput
+                case ConsoleKey.D3:
+                    var nexttPressedKey = Input("Player " + gameBrain.playerNumber + " is thinking:");
+                    HandleCursor(nexttPressedKey);
                     break;
 
                 default:
-                    Console.WriteLine("Invalid choice. Please press 1, 2, or 3.");
+                    HandleChoice(Input("Invalid choice. Please press 1, 2, or 3."));
                     break;
             }
         }
 
-
-        private void handleArrowUp(int[] cursorPosition)
+        private void HandleBoardMove()
         {
-            if (cursorPosition[0] - 1 < 1)
-            { 
-                DisplayMovableGrid(gameBrain.board, gameBrain.movableBoard, "Player 1 is making choice (X)...", "You cannot move up...");
+            string nextMoveText = TextInput("Please type one of these options: 'up', 'down', 'left', 'right', 'up-left', 'up-right', 'down-left', 'down-right'").ToLower();
+            string[] validDirections = { "up", "down", "left", "right", "up-left", "up-right", "down-left", "down-right" };
+
+            if (Array.Exists(validDirections, direction => direction == nextMoveText))
+            {
+                bool movedBoard = gameBrain.moveMovableBoard(nextMoveText);
+                if (movedBoard)
+                {
+                    Console.WriteLine("Board moved successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to move the board.");
+                }
             }
             else
             {
-                cursorPosition[0]--;
-                DisplayMovableGrid(gameBrain.board, gameBrain.movableBoard, "Player 1 is making choice (X)...");
-            }
-        }
-
-        private void handleArrowDown(int[] cursorPosition)
-        {
-            if (cursorPosition[0] + 1 > 3)
-            {
-                DisplayMovableGrid(gameBrain.board, gameBrain.movableBoard, "Player 1 is making choice (X)...", "You cannot move down...");
-            }
-            else
-            {
-                cursorPosition[0]++;
-                DisplayMovableGrid(gameBrain.board, gameBrain.movableBoard, "Player 1 is making choice (X)...");
-            }
-        }
-
-        private void handleArrowLeft(int[] cursorPosition)
-        {
-            if (cursorPosition[1] - 1 < 1)
-            {
-                DisplayMovableGrid(gameBrain.board, gameBrain.movableBoard, "Player 1 is making choice (X)...", "You cannot move left...");
-            }
-            else
-            {
-                cursorPosition[1]--;
-                DisplayMovableGrid(gameBrain.board, gameBrain.movableBoard, "Player 1 is making choice (X)...");
-            }
-        }
-
-        private void handleArrowRight(int[] cursorPosition)
-        {
-            if (cursorPosition[1] + 1 > 3)
-            {
-                DisplayMovableGrid(gameBrain.board, gameBrain.movableBoard, "Player 1 is making choice (X)...", "You cannot move right...");
-            }
-            else
-            {
-                cursorPosition[1]++;
-                DisplayMovableGrid(gameBrain.board, gameBrain.movableBoard, "Player 1 is making choice (X)...");
+                Console.WriteLine("Invalid direction. Please try again.");
             }
         }
     }

@@ -21,7 +21,7 @@ namespace MenuApp
         {
             exit = true;
             Game game = new Game(gameOptions._gridSize, gameOptions._movableGridSize);
-            game.DisplayGame();
+            game.StartGame();
         }
         
         private void HandleOneplayer()
