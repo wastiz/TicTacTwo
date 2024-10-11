@@ -1,12 +1,35 @@
-﻿namespace MenuApp
+﻿using System.Text.Json;
+using System.IO;
+using DAL;
+
+namespace MenuApp
 {
     public class Options : Menu
     {
+        public static string GetGameConfiguration()
+        { 
+            var result = File.ReadAllText("options.json");
+            var text = System.Text.Json.JsonSerializer.Deserialize<string>(result);
+            Console.WriteLine(text);
+            return text;
+        }
+        
+        public void WriteGameConfiguration(List<string> gameConfiguration)
+        {
+            foreach (var optionValue in gameConfiguration)
+            {
+                var optionJsonStr = System.Text.Json.JsonSerializer.Serialize(optionValue);
+                File.WriteAllText("options.json",optionJsonStr);
+            }
+        }
+        
         private MainMenu mainMenu;
         public int _gridSize { get; set; } = 5;
         public int _movableGridSize { get; set; } = 3;
         private string cross_color { get; set; } = "red";
         private string zero_color { get; set; } = "blue";
+        
+        private string config { get; set; } = GetGameConfiguration();
 
         public void SetMainMenu(MainMenu menu)
         {
@@ -69,6 +92,7 @@
             else
             {
                 _movableGridSize = size;
+                
                 Console.WriteLine($"Movable grid size successfully updated to {_movableGridSize}.");
             }
         }

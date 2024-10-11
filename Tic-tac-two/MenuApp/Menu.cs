@@ -2,7 +2,7 @@
 
 namespace MenuApp
 {
-    public class Menu
+    public abstract class Menu
     {
         private string _heading = "Tic Tac Two";
         protected bool exit = false;
