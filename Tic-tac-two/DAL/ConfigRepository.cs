@@ -1,6 +1,6 @@
 ﻿namespace DAL;
 
-public interface ConfigRepository
+public interface IConfigRepository
 {
     string GetGameConfiguration();
 }

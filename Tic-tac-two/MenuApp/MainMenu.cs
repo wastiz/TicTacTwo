@@ -49,7 +49,7 @@
                HandleExit
            };
 
-           Start(mainMenuOptionsArray, mainActiveOptionIndex, mainMenuGuidance, mainMenuActions);
+           StartMenu(mainMenuOptionsArray, mainActiveOptionIndex, mainMenuGuidance, mainMenuActions);
        }
    }
 }

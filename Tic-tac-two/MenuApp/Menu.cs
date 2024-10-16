@@ -6,10 +6,15 @@ namespace MenuApp
     {
         private string _heading = "Tic Tac Two";
         protected bool exit = false;
-        protected void Start(string[] optionsArray, int activeOptionIndex, string menuGuidance, Action[] menuActions)
+        protected string[] optionsArray;
+        private int activeOptionIndex;
+        private string menuGuidance;
+        private Action[] menuActions;
+        
+        protected void StartMenu(string[] optionsArray, int activeOptionIndex, string menuGuidance, Action[] menuActions)
         {
 
-            while (!exit)
+            while (true)
             {
                 Console.Clear();
                 DisplayMenuOptions(optionsArray, menuGuidance, activeOptionIndex);
@@ -33,6 +38,8 @@ namespace MenuApp
                         exit = true;
                         break;
                 }
+                
+                if(exit) break;
             }
         }
 

@@ -16,7 +16,7 @@ namespace MenuApp
         {
             mainMenu = menu;
         }
-        
+            
         private void HandleTwoplayer()
         {
             exit = true;
@@ -49,7 +49,7 @@ namespace MenuApp
                 mainMenu.ShowMainMenu
             };
 
-            Start(optionsArray, activeOptionIndex, menuGuidance, menuActions);
+            StartMenu(optionsArray, activeOptionIndex, menuGuidance, menuActions);
         }
     }
 }

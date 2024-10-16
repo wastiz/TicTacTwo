@@ -1,8 +1,0 @@
-﻿[
-  {
-    "boardSize": 5,
-    "movableBoardSize": 3,
-    "cross_color": "red",
-    "zero_color": "blue"
-  }
-]
