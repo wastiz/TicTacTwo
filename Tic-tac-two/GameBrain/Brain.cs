@@ -6,37 +6,24 @@
         public int[,] board;
         public int boardWidth;
         public int boardHeight;
-        
         public int[,] movableBoard;
         public int movableBoardWidth;
         public int movableBoardHeight;
-        public int startRow;
-        public int startCol;
-        
+        public int gridX;
+        public int gridY;
         public int[] chipsLeft;
         public int playerNumber = 1;
 
         public Brain(string gameMode, GameConfiguration config)
         {
-            board = new int[config.BoardSizeWidth, config.BoardSizeHeight];
+            board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
             boardWidth = config.BoardSizeWidth;
             boardHeight = config.BoardSizeHeight;
-            
+            movableBoard = new int[config.MovableBoardHeight, config.MovableBoardWidth];
             movableBoardWidth = config.MovableBoardWidth;
             movableBoardHeight = config.MovableBoardHeight;
-            
-            startRow = (config.BoardSizeWidth - movableBoardWidth) / 2;
-            startCol = (config.BoardSizeHeight - movableBoardHeight) / 2;
-            
-            movableBoard = new int[config.BoardSizeWidth, config.BoardSizeHeight];
-            for (int i = 0; i < movableBoardWidth; i++)
-            {
-                for (int j = 0; j < movableBoardHeight; j++)
-                {
-                    movableBoard[startRow + i, startCol + j] = 1;
-                }
-            }
-            
+            gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
+            gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
             chipsLeft = new int[] {0, config.ChipsCount[0], config.ChipsCount[1]};
         }
 
@@ -67,69 +54,61 @@
 
         public bool moveMovableBoard(string direction)
         {
-            for (int i = 0; i < movableBoardWidth; i++)
-            {
-                for (int j = 0; j < movableBoardHeight; j++)
-                {
-                    movableBoard[startRow + i, startCol + j] = 0;
-                }
-            }
+            int newGridX = gridX;
+            int newGridY = gridY;
             
             switch (direction)
             {
                 case "up":
-                    if (startRow - 1 >= 0) startRow--;
+                    if (newGridY - 1 >= 0) newGridY--;
                     break;
                 case "down":
-                    if (startRow + movableBoardWidth < board.GetLength(0)) startRow++;
+                    if (newGridY + movableBoardHeight < boardHeight) newGridY++;
                     break;
                 case "left":
-                    if (startCol - 1 >= 0) startCol--;
+                    if (newGridX - 1 >= 0) newGridX--;
                     break;
                 case "right":
-                    if (startCol + movableBoardHeight < board.GetLength(1)) startCol++;
+                    if (newGridX + movableBoardWidth < boardWidth) newGridX++;
                     break;
                 case "up-left":
-                    if (startRow - 1 >= 0 && startCol - 1 >= 0)
+                    if (newGridY - 1 >= 0 && newGridX - 1 >= 0)
                     {
-                        startRow--;
-                        startCol--;
+                        newGridY--;
+                        newGridX--;
                     }
                     break;
                 case "up-right":
-                    if (startRow - 1 >= 0 && startCol + movableBoardHeight < board.GetLength(1))
+                    if (newGridY - 1 >= 0 && newGridX + movableBoardWidth < boardWidth)
                     {
-                        startRow--;
-                        startCol++;
+                        newGridY--;
+                        newGridX++;
                     }
                     break;
                 case "down-left":
-                    if (startRow + movableBoardWidth < board.GetLength(0) && startCol - 1 >= 0)
+                    if (newGridY + movableBoardHeight < boardHeight && newGridX - 1 >= 0)
                     {
-                        startRow++;
-                        startCol--;
+                        newGridY++;
+                        newGridX--;
                     }
                     break;
                 case "down-right":
-                    if (startRow + movableBoardWidth < board.GetLength(0) && startCol + movableBoardHeight < board.GetLength(1))
+                    if (newGridY + movableBoardHeight < boardHeight && newGridX + movableBoardWidth < boardWidth)
                     {
-                        startRow++;
-                        startCol++;
+                        newGridY++;
+                        newGridX++;
                     }
                     break;
                 default:
                     return false;
             }
             
-            for (int i = 0; i < movableBoardWidth; i++)
-            {
-                for (int j = 0; j < movableBoardHeight; j++)
-                {
-                    movableBoard[startRow + i, startCol + j] = 1;
-                }
-            }
+            gridX = newGridX;
+            gridY = newGridY;
+            
             playerNumber = playerNumber == 1 ? 2 : 1;
             return true;
         }
+
     }
 }

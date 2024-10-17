@@ -12,8 +12,8 @@ namespace GameVisualizer
 
         public Game(string gameMode, GameConfiguration config)
         {
-            cursorPosition = new int[] { 2, 2 };
             gameBrain = new Brain(gameMode, config);
+            cursorPosition = new int[] { gameBrain.boardWidth / 2, gameBrain.boardHeight / 2 };
         }
 
         public void StartGame()
@@ -21,7 +21,7 @@ namespace GameVisualizer
             while (true)
             {
                 string playerChip = gameBrain.playerNumber == 1 ? "X" : "O";
-                DisplayGrid(gameBrain.board, gameBrain.movableBoard, "Player " + gameBrain.playerNumber + " is making choice (" + playerChip + ")...", optionalMessage);
+                DisplayGrid(gameBrain.board, gameBrain.movableBoard, gameBrain.gridX, gameBrain.gridY, "Player " + gameBrain.playerNumber + " is making choice (" + playerChip + ")...", optionalMessage);
                 if (gameBrain.chipsLeft[gameBrain.playerNumber] <= 0)
                 {
                     Console.WriteLine("Game over! No more chips left.");
@@ -30,39 +30,80 @@ namespace GameVisualizer
             }
         }
 
-        public void DisplayGrid(int[,] gameBoard, int[,] movableGameBoard, string inputMessage, string optionalMessage = "")
+        public void DisplayGrid(int[,] board, int[,] movableBoard, int gridX, int gridY, string inputMessage, string optionalMessage = "")
         {
-            int rows = gameBoard.GetLength(0);
-            int columns = gameBoard.GetLength(1);
-
+            int boardHeight = board.GetLength(1);
+            int boardWidth = board.GetLength(0);
+            int movableBoardHeight = movableBoard.GetLength(1);
+            int movableBoardWidth = movableBoard.GetLength(0);
+            
             Console.Clear();
-            Console.WriteLine(" ----------------------");
 
-            for (int i = 0; i < rows; i++)
+            for (var row = 0; row < boardWidth; row++)
             {
-                Console.Write(" |");
-                for (int j = 0; j < columns; j++)
+                for (var col = 0; col < boardHeight; col++)
                 {
-                    if (movableGameBoard[i, j] == 1)
+                    if (board[row, col] == 1)
+                        Console.Write(" X ");
+                    else if (board[row, col] == 2)
+                        Console.Write(" O ");
+                    else if (cursorPosition[0] == row && cursorPosition[1] == col)
+                        Console.Write(" _ ");
+                    else
+                        Console.Write("   ");
+
+                    if (col == boardHeight - 1)
+                    {
+                        continue;
+                    }
+                    else if (row >= gridY && row < gridY + movableBoardWidth &&
+                             col >= gridX && col + 1 < gridX + movableBoardHeight)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("|");
+                        Console.ResetColor();
                     }
                     else
                     {
-                        Console.ResetColor();
+                        Console.Write("|");
                     }
-
-                    if (gameBoard[i, j] == 1)
-                        Console.Write(" X |");
-                    else if (gameBoard[i, j] == 2)
-                        Console.Write(" O |");
-                    else if (i == cursorPosition[0] && j == cursorPosition[1])
-                        Console.Write(" _ |");
-                    else
-                        Console.Write("   |");
                 }
+
                 Console.WriteLine();
-                Console.WriteLine(" ----------------------");
+
+                if (row < boardWidth - 1)
+                {
+                    for (var col = 0; col < boardHeight; col++)
+                    {
+                        if (row >= gridY && row < gridY + movableBoardWidth - 1 &&
+                            col >= gridX && col < gridX + movableBoardHeight)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("---");
+                            Console.ResetColor();
+                            if (col < boardHeight - 1 && col + 1 < gridX + movableBoardHeight)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("+");
+                                Console.ResetColor();
+                            }
+                            else
+                            {
+                                Console.Write("+");
+                            }
+                        }
+                        else
+                        {
+                            Console.Write("---");
+                            if (col < boardHeight - 1)
+                            {
+                                Console.Write("+");
+                            }
+                        }
+                    }
+                }
+
+                Console.WriteLine();
             }
 
             Console.ResetColor();
@@ -138,8 +179,8 @@ namespace GameVisualizer
 
         private void HandleArrowMovement(int deltaX, int deltaY, string errorMessage)
         {
-            int startRow = gameBrain.startRow;
-            int startCol = gameBrain.startCol;
+            int startRow = gameBrain.gridY;
+            int startCol = gameBrain.gridX;
             
             int newRow = cursorPosition[0] + deltaX;
             int newCol = cursorPosition[1] + deltaY;
