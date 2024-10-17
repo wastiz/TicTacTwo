@@ -2,30 +2,42 @@
 {
     public class Brain
     {
+        
         public int[,] board;
+        public int boardWidth;
+        public int boardHeight;
+        
         public int[,] movableBoard;
-        public int playerNumber = 1;
-        public int[] chipsLeft = { 0, 4, 4 };
-        public int movableBoardSize;
+        public int movableBoardWidth;
+        public int movableBoardHeight;
         public int startRow;
         public int startCol;
+        
+        public int[] chipsLeft;
+        public int playerNumber = 1;
 
-        public Brain(int boardSize, int movableBoardSize)
+        public Brain(string gameMode, GameConfiguration config)
         {
-            board = new int[boardSize, boardSize];
-            this.movableBoardSize = movableBoardSize;
+            board = new int[config.BoardSizeWidth, config.BoardSizeHeight];
+            boardWidth = config.BoardSizeWidth;
+            boardHeight = config.BoardSizeHeight;
             
-            startRow = (boardSize - movableBoardSize) / 2;
-            startCol = (boardSize - movableBoardSize) / 2;
+            movableBoardWidth = config.MovableBoardWidth;
+            movableBoardHeight = config.MovableBoardHeight;
             
-            movableBoard = new int[boardSize, boardSize];
-            for (int i = 0; i < movableBoardSize; i++)
+            startRow = (config.BoardSizeWidth - movableBoardWidth) / 2;
+            startCol = (config.BoardSizeHeight - movableBoardHeight) / 2;
+            
+            movableBoard = new int[config.BoardSizeWidth, config.BoardSizeHeight];
+            for (int i = 0; i < movableBoardWidth; i++)
             {
-                for (int j = 0; j < movableBoardSize; j++)
+                for (int j = 0; j < movableBoardHeight; j++)
                 {
                     movableBoard[startRow + i, startCol + j] = 1;
                 }
             }
+            
+            chipsLeft = new int[] {0, config.ChipsCount[0], config.ChipsCount[1]};
         }
 
         public bool placeChip(int x, int y)
@@ -55,9 +67,9 @@
 
         public bool moveMovableBoard(string direction)
         {
-            for (int i = 0; i < movableBoardSize; i++)
+            for (int i = 0; i < movableBoardWidth; i++)
             {
-                for (int j = 0; j < movableBoardSize; j++)
+                for (int j = 0; j < movableBoardHeight; j++)
                 {
                     movableBoard[startRow + i, startCol + j] = 0;
                 }
@@ -69,13 +81,13 @@
                     if (startRow - 1 >= 0) startRow--;
                     break;
                 case "down":
-                    if (startRow + movableBoardSize < board.GetLength(0)) startRow++;
+                    if (startRow + movableBoardWidth < board.GetLength(0)) startRow++;
                     break;
                 case "left":
                     if (startCol - 1 >= 0) startCol--;
                     break;
                 case "right":
-                    if (startCol + movableBoardSize < board.GetLength(1)) startCol++;
+                    if (startCol + movableBoardHeight < board.GetLength(1)) startCol++;
                     break;
                 case "up-left":
                     if (startRow - 1 >= 0 && startCol - 1 >= 0)
@@ -85,21 +97,21 @@
                     }
                     break;
                 case "up-right":
-                    if (startRow - 1 >= 0 && startCol + movableBoardSize < board.GetLength(1))
+                    if (startRow - 1 >= 0 && startCol + movableBoardHeight < board.GetLength(1))
                     {
                         startRow--;
                         startCol++;
                     }
                     break;
                 case "down-left":
-                    if (startRow + movableBoardSize < board.GetLength(0) && startCol - 1 >= 0)
+                    if (startRow + movableBoardWidth < board.GetLength(0) && startCol - 1 >= 0)
                     {
                         startRow++;
                         startCol--;
                     }
                     break;
                 case "down-right":
-                    if (startRow + movableBoardSize < board.GetLength(0) && startCol + movableBoardSize < board.GetLength(1))
+                    if (startRow + movableBoardWidth < board.GetLength(0) && startCol + movableBoardHeight < board.GetLength(1))
                     {
                         startRow++;
                         startCol++;
@@ -109,9 +121,9 @@
                     return false;
             }
             
-            for (int i = 0; i < movableBoardSize; i++)
+            for (int i = 0; i < movableBoardWidth; i++)
             {
-                for (int j = 0; j < movableBoardSize; j++)
+                for (int j = 0; j < movableBoardHeight; j++)
                 {
                     movableBoard[startRow + i, startCol + j] = 1;
                 }

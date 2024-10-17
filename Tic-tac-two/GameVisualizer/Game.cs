@@ -10,10 +10,10 @@ namespace GameVisualizer
         private bool player2MadeChoice = false;
         private string optionalMessage = "";
 
-        public Game(int gridSize, int movableGridSize)
+        public Game(string gameMode, GameConfiguration config)
         {
             cursorPosition = new int[] { 2, 2 };
-            gameBrain = new Brain(gridSize, movableGridSize);
+            gameBrain = new Brain(gameMode, config);
         }
 
         public void StartGame()
@@ -144,8 +144,8 @@ namespace GameVisualizer
             int newRow = cursorPosition[0] + deltaX;
             int newCol = cursorPosition[1] + deltaY;
             
-            if (newRow < startRow || newRow >= startRow + gameBrain.movableBoardSize ||
-                newCol < startCol || newCol >= startCol + gameBrain.movableBoardSize)
+            if (newRow < startRow || newRow >= startRow + gameBrain.movableBoardWidth ||
+                newCol < startCol || newCol >= startCol + gameBrain.movableBoardHeight)
             {
                 optionalMessage = errorMessage;
             }

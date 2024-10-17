@@ -1,71 +1,69 @@
-﻿using System;
-
-namespace MenuApp
+﻿namespace MenuApp
 {
-    public abstract class Menu
+public abstract class Menu
+{
+    private string _heading = "Tic Tac Two";
+    protected bool exit = false;
+    protected List<string> optionsArray;
+    protected int activeOptionIndex;
+    protected string menuGuidance = "Use up and down arrow to select option, enter to enter...";
+    protected Action[] menuActions;
+    
+    protected void StartMenu()
     {
-        private string _heading = "Tic Tac Two";
-        protected bool exit = false;
-        protected string[] optionsArray;
-        private int activeOptionIndex;
-        private string menuGuidance;
-        private Action[] menuActions;
-        
-        protected void StartMenu(string[] optionsArray, int activeOptionIndex, string menuGuidance, Action[] menuActions)
+        while (true)
         {
-
-            while (true)
-            {
-                Console.Clear();
-                DisplayMenuOptions(optionsArray, menuGuidance, activeOptionIndex);
-                var pressedKey = Console.ReadKey(true); // true not to display pressed key
-
-                switch (pressedKey.Key)
-                {
-                    case ConsoleKey.UpArrow:
-                        activeOptionIndex = (activeOptionIndex == 0) ? optionsArray.Length - 1 : activeOptionIndex - 1;
-                        break;
-
-                    case ConsoleKey.DownArrow:
-                        activeOptionIndex = (activeOptionIndex == optionsArray.Length - 1) ? 0 : activeOptionIndex + 1;
-                        break;
-
-                    case ConsoleKey.Enter:
-                        menuActions[activeOptionIndex]();
-                        break;
-
-                    case ConsoleKey.Escape:
-                        exit = true;
-                        break;
-                }
-                
-                if(exit) break;
-            }
-        }
-
-        private void DisplayMenuOptions(string[] optionsArray, string menuGuidance, int activeOptionIndex)
-        {
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine();
-            Console.WriteLine(_heading);
-            Console.WriteLine(menuGuidance);
-            Console.WriteLine();
+            Console.Clear();
+            if (exit) break;
             
-            for (int i = 0; i < optionsArray.Length; i++)
-            {
-                if (i == activeOptionIndex)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkBlue;
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                }
-
-                Console.WriteLine(optionsArray[i]);
-            }
+            DisplayMenuOptions(optionsArray, menuGuidance, activeOptionIndex);
             
-            Console.ForegroundColor = ConsoleColor.Black;
+            var pressedKey = Console.ReadKey(true); // true not to display pressed key
+
+            switch (pressedKey.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    activeOptionIndex = (activeOptionIndex == 0) ? optionsArray.Count - 1 : activeOptionIndex - 1;
+                    break;
+
+                case ConsoleKey.DownArrow:
+                    activeOptionIndex = (activeOptionIndex == optionsArray.Count - 1) ? 0 : activeOptionIndex + 1;
+                    break;
+
+                case ConsoleKey.Enter:
+                    menuActions[activeOptionIndex]();
+                    break;
+
+                case ConsoleKey.Escape:
+                    exit = true;
+                    break;
+            }
         }
     }
+    
+    private void DisplayMenuOptions(List<string> optionsArray, string menuGuidance, int activeOptionIndex)
+    {
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine();
+        Console.WriteLine(_heading);
+        Console.WriteLine(menuGuidance);
+        Console.WriteLine();
+        
+        for (int i = 0; i < optionsArray.Count; i++)
+        {
+            if (i == activeOptionIndex)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
+            Console.WriteLine(optionsArray[i]);
+        }
+        
+        Console.ForegroundColor = ConsoleColor.White;
+    }
+}
 }
