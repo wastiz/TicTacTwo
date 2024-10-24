@@ -1,4 +1,5 @@
 ﻿using GameBrain;
+using DAL;
 
 namespace GameVisualizer
 {
@@ -9,6 +10,7 @@ namespace GameVisualizer
         private bool player1MadeChoice = false;
         private bool player2MadeChoice = false;
         private string optionalMessage = "";
+        private bool gameRunning = true;
 
         public Game(string gameMode, GameConfiguration config)
         {
@@ -18,7 +20,7 @@ namespace GameVisualizer
 
         public void StartGame()
         {
-            while (true)
+            while (gameRunning)
             {
                 string playerChip = gameBrain.playerNumber == 1 ? "X" : "O";
                 DisplayGrid(gameBrain.board, gameBrain.movableBoard, gameBrain.gridX, gameBrain.gridY, "Player " + gameBrain.playerNumber + " is making choice (" + playerChip + ")...", optionalMessage);
@@ -107,6 +109,8 @@ namespace GameVisualizer
             }
 
             Console.ResetColor();
+            Console.WriteLine("To save game press s");
+            Console.WriteLine();
             Console.WriteLine(optionalMessage);
             ShowPlayerOptions();
         }
@@ -134,12 +138,17 @@ namespace GameVisualizer
             }
         }
 
-
         public ConsoleKeyInfo Input(string prompt)
         {
             Console.WriteLine(prompt);
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             Console.WriteLine();
+            if (keyInfo.Key == ConsoleKey.S)
+            {
+                gameRunning = false;
+                string stateName = TextInput("Name the saving...");
+                gameBrain.SaveGame(stateName);
+            }
             return keyInfo;
         }
         

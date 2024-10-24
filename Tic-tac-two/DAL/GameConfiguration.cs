@@ -1,4 +1,4 @@
-﻿namespace GameBrain;
+﻿namespace DAL;
 
 public record struct GameConfiguration()
 {

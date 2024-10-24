@@ -1,6 +1,4 @@
 ﻿namespace DAL;
-using GameBrain;
-
 public class ConfigRepositoryJson
 {
     public List<GameConfiguration> _gameConfigurations;

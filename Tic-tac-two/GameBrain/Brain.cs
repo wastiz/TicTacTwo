@@ -1,8 +1,9 @@
-﻿namespace GameBrain
+﻿using DAL;
+
+namespace GameBrain
 {
     public class Brain
     {
-        
         public int[,] board;
         public int boardWidth;
         public int boardHeight;
@@ -13,6 +14,8 @@
         public int gridY;
         public int[] chipsLeft;
         public int playerNumber = 1;
+        private GameConfiguration gameConfig;
+        private GameRepositoryJson repository = new GameRepositoryJson();
 
         public Brain(string gameMode, GameConfiguration config)
         {
@@ -25,6 +28,7 @@
             gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
             gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
             chipsLeft = new int[] {0, config.ChipsCount[0], config.ChipsCount[1]};
+            gameConfig = config;
         }
 
         public bool placeChip(int x, int y)
@@ -108,6 +112,30 @@
             
             playerNumber = playerNumber == 1 ? 2 : 1;
             return true;
+        }
+
+        public void SaveGame(string stateName)
+        {
+            int[][] formattedBoard = new int[board.GetLength(0)][];
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                formattedBoard[i] = new int[board.GetLength(1)];
+                for (int j = 0; j < board.GetLength(1); j++)
+                {
+                    formattedBoard[i][j] = board[i, j];
+                }
+            }
+            GameState gameToSave = new GameState()
+            {
+                StateName = stateName,
+                GameConfig = gameConfig,
+                Board = formattedBoard,
+                GridX = gridX,
+                GridY = gridY,
+                ChipsLeft = chipsLeft,
+                PlayerNumber = playerNumber
+            };
+            repository.SaveGameToRepo(gameToSave);
         }
 
     }
