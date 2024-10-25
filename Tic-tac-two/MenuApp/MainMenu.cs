@@ -7,6 +7,7 @@ namespace MenuApp
     public class MainMenu : Menu
     {
         ConfigRepositoryJson repository = new ConfigRepositoryJson();
+        GameRepositoryJson gameRepository = new GameRepositoryJson();
         private string gameMode;
         private string selectedConfigName;
         
@@ -19,12 +20,34 @@ namespace MenuApp
             menuActions = new Action[]
             {
                 ShowNewGameSetup,
+                ShowLoadGame,
                 ShowOptions,
                 HandleExit
             };
 
             StartMenu();
-        } 
+        }
+
+        public void ShowLoadGame()
+        {
+            activeOptionIndex = 0;
+            menuGuidance = "Choose game configuration or create your own. Press \"Esc\" to exit. Press enter to select an option. Move with arrows";
+            optionsArray.Clear();
+            List<string> gameStates = gameRepository.GetAllStateNames();
+
+            foreach (var gameState in gameStates)
+            {
+                optionsArray.Add(gameState);
+            }
+            optionsArray.Add("Back");
+            menuActions = new Action[optionsArray.Count];
+            for (int i = 0; i < gameStates.Count; i++)
+            {
+                int index = i;
+                menuActions[index] = () => StartGame(gameStates[index]);
+            }
+            
+        }
 
         public void ShowOptions()
         {
@@ -215,11 +238,11 @@ namespace MenuApp
             StartMenu();
         }
 
-        private void StartGame(string name)
+        private void StartGame(string name, string stateName = "")
         {
             exit = true;
-            selectedConfigName = name;
-            Game game = new Game(gameMode, repository.GetConfigurationByName(name));
+            // selectedConfigName = name;
+            Game game = new Game(gameMode, repository.GetConfigurationByName(name), stateName);
             game.StartGame();
         }
     }

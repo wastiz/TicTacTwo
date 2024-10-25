@@ -30,6 +30,21 @@ namespace GameBrain
             chipsLeft = new int[] {0, config.ChipsCount[0], config.ChipsCount[1]};
             gameConfig = config;
         }
+        
+        public Brain(string gameMode, GameConfiguration config, string stateName)
+        {
+            board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
+            boardWidth = config.BoardSizeWidth;
+            boardHeight = config.BoardSizeHeight;
+            movableBoard = new int[config.MovableBoardHeight, config.MovableBoardWidth];
+            movableBoardWidth = config.MovableBoardWidth;
+            movableBoardHeight = config.MovableBoardHeight;
+            gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
+            gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
+            chipsLeft = new int[] {0, config.ChipsCount[0], config.ChipsCount[1]};
+            gameConfig = config;
+            stateName = stateName;
+        }
 
         public bool placeChip(int x, int y)
         {
