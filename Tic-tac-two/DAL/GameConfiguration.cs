@@ -9,7 +9,7 @@ public record struct GameConfiguration()
     public int MovableBoardHeight { get; set; } = 3;
     
     //public List<int> ChipsCount { get; set; } = new List<int> { 4, 4 };
-    public int[] ChipsCount { get; set; } = new int[] { 4, 4 };
+    public int[] ChipsCount { get; set; } = new int[] { 0, 4, 4 };
     
     public int WinCondition { get; set; } = 3; //pieces in row to win
     public int MovePieceAfterNMoves { get; set; } = 0; //0 to disable

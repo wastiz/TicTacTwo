@@ -19,7 +19,7 @@ public class GameRepositoryJson
         };
 
         var configJsonStr = System.Text.Json.JsonSerializer.Serialize(gameState, options);
-        System.IO.File.WriteAllText(FileHelper.BasePath + gameState.StateName + FileHelper.ConfigExtension, configJsonStr);
+        System.IO.File.WriteAllText(FileHelper.BasePath + gameState.StateName + FileHelper.GameExtension, configJsonStr);
     }
 
     public List<GameState> GetAllGameStates()
@@ -55,6 +55,21 @@ public class GameRepositoryJson
             }
         }
         return gameNames;
+    }
+
+    public GameState GetGameStateByName(string name)
+    {
+        var statePath = FileHelper.BasePath + name + FileHelper.GameExtension;
+        
+        if (System.IO.File.Exists(statePath))
+        {
+            var stateJsonStr = System.IO.File.ReadAllText(statePath);
+            var gameState = System.Text.Json.JsonSerializer.Deserialize<GameState>(stateJsonStr);
+            return gameState;
+        }
+        
+        throw new FileNotFoundException($"Game State '{name}' not found.");
+
     }
 
 }

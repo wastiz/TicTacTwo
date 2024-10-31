@@ -17,7 +17,7 @@ namespace GameBrain
         private GameConfiguration gameConfig;
         private GameRepositoryJson repository = new GameRepositoryJson();
 
-        public Brain(string gameMode, GameConfiguration config)
+        public Brain(GameConfiguration config)
         {
             board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
             boardWidth = config.BoardSizeWidth;
@@ -27,23 +27,32 @@ namespace GameBrain
             movableBoardHeight = config.MovableBoardHeight;
             gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
             gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
-            chipsLeft = new int[] {0, config.ChipsCount[0], config.ChipsCount[1]};
+            chipsLeft = new int[] {0, config.ChipsCount[1], config.ChipsCount[2]};
             gameConfig = config;
         }
         
-        public Brain(string gameMode, GameConfiguration config, string stateName)
+        public Brain(GameState state)
         {
-            board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
-            boardWidth = config.BoardSizeWidth;
-            boardHeight = config.BoardSizeHeight;
-            movableBoard = new int[config.MovableBoardHeight, config.MovableBoardWidth];
-            movableBoardWidth = config.MovableBoardWidth;
-            movableBoardHeight = config.MovableBoardHeight;
+            board = new int[state.GameConfig.BoardSizeHeight, state.GameConfig.BoardSizeWidth];
+            boardWidth = state.GameConfig.BoardSizeWidth;
+            boardHeight = state.GameConfig.BoardSizeHeight;
+            
+
+            for (int i = 0; i < boardHeight; i++)
+            {
+                for (int j = 0; j < boardWidth; j++)
+                {
+                    board[i, j] = state.Board[i][j];
+                }
+            }
+            
+            movableBoard = new int[state.GameConfig.MovableBoardHeight, state.GameConfig.MovableBoardWidth];
+            movableBoardWidth = state.GameConfig.MovableBoardWidth;
+            movableBoardHeight = state.GameConfig.MovableBoardHeight;
             gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
             gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
-            chipsLeft = new int[] {0, config.ChipsCount[0], config.ChipsCount[1]};
-            gameConfig = config;
-            stateName = stateName;
+            chipsLeft = state.ChipsLeft;
+            gameConfig = state.GameConfig;
         }
 
         public bool placeChip(int x, int y)

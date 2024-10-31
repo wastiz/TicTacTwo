@@ -12,18 +12,10 @@ namespace GameVisualizer
         private string optionalMessage = "";
         private bool gameRunning = true;
 
-        public Game(string gameMode, GameConfiguration config, string stateName)
+        public Game(string gameMode, Brain gameBrain)
         {
-            if (stateName == "")
-            {
-                gameBrain = new Brain(gameMode, config);
-                cursorPosition = new int[] { gameBrain.boardWidth / 2, gameBrain.boardHeight / 2 };
-            }
-            else
-            {
-                gameBrain = new Brain(gameMode, config);
-                cursorPosition = new int[] { gameBrain.boardWidth / 2, gameBrain.boardHeight / 2 };
-            }
+            this.gameBrain = gameBrain;
+            cursorPosition = new int[] { gameBrain.boardWidth / 2, gameBrain.boardHeight / 2 };
         }
 
         public void StartGame()

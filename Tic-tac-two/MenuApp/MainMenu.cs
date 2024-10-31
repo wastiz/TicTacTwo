@@ -15,7 +15,7 @@ namespace MenuApp
         {
             activeOptionIndex = 0;
             menuGuidance = "Press \"Esc\" to exit. Press enter to select an option. Move with arrows";
-            optionsArray = new List<string> { "New Game", "Options", "Exit" };
+            optionsArray = new List<string> { "New Game", "Load Game", "Options", "Exit" };
 
             menuActions = new Action[]
             {
@@ -44,8 +44,9 @@ namespace MenuApp
             for (int i = 0; i < gameStates.Count; i++)
             {
                 int index = i;
-                menuActions[index] = () => StartGame(gameStates[index]);
+                menuActions[index] = () => StartGameWithState(gameStates[index]);
             }
+            menuActions[gameStates.Count] = ShowMainMenu;
             
         }
 
@@ -147,7 +148,7 @@ namespace MenuApp
                 BoardSizeHeight = boardHeight,
                 MovableBoardWidth = movableBoardWidth,
                 MovableBoardHeight = movableBoardHeight,
-                ChipsCount = new int[] { chipsCountX, chipsCountO },
+                ChipsCount = new int[] { 0, chipsCountX, chipsCountO },
                 WinCondition = winCondition,
                 MovePieceAfterNMoves = movePieceAfterNMoves
             };
@@ -232,17 +233,25 @@ namespace MenuApp
             for (int i = 0; i < confNames.Count; i++)
             {
                 int index = i;
-                menuActions[index] = () => StartGame(confNames[index]);
+                menuActions[index] = () => StartGameWithConf(confNames[index]);
             }
             
             StartMenu();
         }
 
-        private void StartGame(string name, string stateName = "")
+        private void StartGameWithState(string stateName)
         {
             exit = true;
-            // selectedConfigName = name;
-            Game game = new Game(gameMode, repository.GetConfigurationByName(name), stateName);
+            Brain gameBrain = new Brain(gameRepository.GetGameStateByName(stateName));
+            Game game = new Game(gameMode, gameBrain);
+            game.StartGame();
+        }
+
+        private void StartGameWithConf(string configName)
+        {
+            exit = true;
+            Brain gameBrain = new Brain(repository.GetConfigurationByName(configName));
+            Game game = new Game(gameMode, gameBrain);
             game.StartGame();
         }
     }
