@@ -3,8 +3,8 @@
 public interface IConfigRepository
 {
     List<string> GetAllConfigNames();
-    List<GameConfiguration> GetAllConfigs();
-    GameConfiguration GetConfigurationByName(string name);
-    void SaveConfiguration(GameConfiguration gameConfiguration);
+    List<GameConfigurationDB> GetAllConfigs();
+    GameConfigurationDB GetConfigurationByName(string name);
+    void SaveConfiguration(GameConfigurationDB gameConfiguration);
     void DeleteConfiguration(string name);
 }

@@ -27,7 +27,7 @@ namespace GameBrain
             movableBoardHeight = config.MovableBoardHeight;
             gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
             gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
-            chipsLeft = new int[] {0, config.ChipsCount[1], config.ChipsCount[2]};
+            chipsLeft = config.ChipsCount;
             gameConfig = config;
         }
         
