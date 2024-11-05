@@ -1,10 +1,11 @@
-﻿namespace DAL;
-
-public interface IConfigRepository
+﻿namespace DAL
 {
-    List<string> GetAllConfigNames();
-    List<GameConfigurationDB> GetAllConfigs();
-    GameConfigurationDB GetConfigurationByName(string name);
-    void SaveConfiguration(GameConfigurationDB gameConfiguration);
-    void DeleteConfiguration(string name);
+    public interface IConfigRepository
+    {
+        List<string> GetAllConfigNames();
+        List<GameConfiguration> GetAllConfigs();
+        GameConfiguration GetConfigurationByName(string name);
+        void SaveConfiguration(GameConfiguration gameConfiguration);
+        void DeleteConfiguration(string name);
+    }
 }

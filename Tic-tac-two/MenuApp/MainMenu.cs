@@ -6,8 +6,8 @@ namespace MenuApp
 {
     public class MainMenu : Menu
     {
-        ConfigRepositoryJson repository = new ConfigRepositoryJson();
-        GameRepositoryJson gameRepository = new GameRepositoryJson();
+        ConfigRepositoryDb repository = new ConfigRepositoryDb();
+        GameRepositoryDb gameRepository = new GameRepositoryDb();
         private string gameMode;
         private string selectedConfigName;
         

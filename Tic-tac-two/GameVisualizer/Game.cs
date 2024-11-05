@@ -22,6 +22,7 @@ namespace GameVisualizer
         {
             while (gameRunning)
             {
+                Console.WriteLine(gameBrain.chipsLeft);
                 string playerChip = gameBrain.playerNumber == 1 ? "X" : "O";
                 DisplayGrid(gameBrain.board, gameBrain.movableBoard, gameBrain.gridX, gameBrain.gridY, "Player " + gameBrain.playerNumber + " is making choice (" + playerChip + ")...", optionalMessage);
                 if (gameBrain.chipsLeft[gameBrain.playerNumber] <= 0)

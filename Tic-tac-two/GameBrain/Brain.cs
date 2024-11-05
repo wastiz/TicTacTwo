@@ -16,6 +16,7 @@ namespace GameBrain
         public int playerNumber = 1;
         private GameConfiguration gameConfig;
         private GameRepositoryJson repository = new GameRepositoryJson();
+        public string? win = null;
 
         public Brain(GameConfiguration config)
         {
@@ -53,6 +54,14 @@ namespace GameBrain
             gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
             chipsLeft = state.ChipsLeft;
             gameConfig = state.GameConfig;
+        }
+
+        public void checkWinCondition()
+        {
+            if (chipsLeft[1] == 0 || chipsLeft[2] == 0)
+            {
+                win = "Draw";
+            }
         }
 
         public bool placeChip(int x, int y)
