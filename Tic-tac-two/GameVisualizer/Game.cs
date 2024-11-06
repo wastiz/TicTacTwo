@@ -1,5 +1,4 @@
 ﻿using GameBrain;
-using DAL;
 
 namespace GameVisualizer
 {
@@ -22,12 +21,41 @@ namespace GameVisualizer
         {
             while (gameRunning)
             {
-                Console.WriteLine(gameBrain.chipsLeft);
                 string playerChip = gameBrain.playerNumber == 1 ? "X" : "O";
                 DisplayGrid(gameBrain.board, gameBrain.movableBoard, gameBrain.gridX, gameBrain.gridY, "Player " + gameBrain.playerNumber + " is making choice (" + playerChip + ")...", optionalMessage);
-                if (gameBrain.chipsLeft[gameBrain.playerNumber] <= 0)
+                if (gameBrain.win == 0)
                 {
-                    Console.WriteLine("Game over! No more chips left.");
+                    Console.WriteLine("Game over! Draw");
+                    Console.WriteLine("Back to Main Menu? (press Enter, other key to exit game)");
+                    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                    if (keyInfo.Key == ConsoleKey.Enter)
+                    {
+                        Console.WriteLine("Need somehow to show main menu");
+                    }
+                    break;
+                }
+
+                if (gameBrain.win == 1)
+                {
+                    Console.WriteLine("Game over! Player 1 wins");
+                    Console.WriteLine("Back to Main Menu? (press Enter, other key to exit game)");
+                    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                    if (keyInfo.Key == ConsoleKey.Enter)
+                    {
+                        Console.WriteLine("Need somehow to show main menu");
+                    }
+                    break;
+                }
+
+                if (gameBrain.win == 2)
+                {
+                    Console.WriteLine("Game over! Player 2 wins");
+                    Console.WriteLine("Back to Main Menu? (press Enter, other key to exit game)");
+                    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                    if (keyInfo.Key == ConsoleKey.Enter)
+                    {
+                        Console.WriteLine("Need somehow to show main menu");
+                    }
                     break;
                 }
             }

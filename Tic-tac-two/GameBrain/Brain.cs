@@ -15,8 +15,8 @@ namespace GameBrain
         public int[] chipsLeft;
         public int playerNumber = 1;
         private GameConfiguration gameConfig;
-        private GameRepositoryJson repository = new GameRepositoryJson();
-        public string? win = null;
+        private GameRepositoryDb repository = new GameRepositoryDb();
+        public int? win = null;
 
         public Brain(GameConfiguration config)
         {
@@ -55,12 +55,63 @@ namespace GameBrain
             chipsLeft = state.ChipsLeft;
             gameConfig = state.GameConfig;
         }
-
-        public void checkWinCondition()
+        
+        public void CheckForWinner()
         {
-            if (chipsLeft[1] == 0 || chipsLeft[2] == 0)
+            if (chipsLeft[1] == 0 && chipsLeft[2] == 0)
             {
-                win = "Draw";
+                win = 0;
+            }
+            for (int i = 0; i < boardWidth; i++)
+            {
+                for (int j = 0; j <= boardHeight - 3; j++)
+                {
+                    if (board[i, j] != 0 &&
+                        board[i, j] == board[i, j + 1] &&
+                        board[i, j] == board[i, j + 2])
+                    {
+                        win = playerNumber;
+                    }
+                }
+            }
+            
+            for (int j = 0; j < boardHeight; j++)
+            {
+                for (int i = 0; i <= boardWidth - 3; i++)
+                {
+                    if (board[i, j] != 0 &&
+                        board[i, j] == board[i + 1, j] &&
+                        board[i, j] == board[i + 2, j])
+                    {
+                        win = playerNumber;
+                    }
+                }
+            }
+
+            for (int i = 0; i <= boardWidth - 3; i++)
+            {
+                for (int j = 0; j <= boardHeight - 3; j++)
+                {
+                    if (board[i, j] != 0 &&
+                        board[i, j] == board[i + 1, j + 1] &&
+                        board[i, j] == board[i + 2, j + 2])
+                    {
+                        win = playerNumber;
+                    }
+                }
+            }
+            
+            for (int i = 0; i <= boardWidth - 3; i++)
+            {
+                for (int j = 2; j < boardHeight; j++)
+                {
+                    if (board[i, j] != 0 &&
+                        board[i, j] == board[i + 1, j - 1] &&
+                        board[i, j] == board[i + 2, j - 2])
+                    {
+                        win = playerNumber;
+                    }
+                }
             }
         }
 
@@ -71,6 +122,7 @@ namespace GameBrain
                 board[x, y] = playerNumber;
                 chipsLeft[playerNumber]--;
                 playerNumber = playerNumber == 1 ? 2 : 1;
+                CheckForWinner();
                 return true;
             }
             return false;
@@ -83,6 +135,7 @@ namespace GameBrain
                 board[x, y] = 0;
                 chipsLeft[board[x, y]]++;
                 playerNumber = playerNumber == 1 ? 2 : 1;
+                CheckForWinner();
                 return true;
             }
 
