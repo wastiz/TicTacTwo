@@ -8,7 +8,6 @@ public class ConfigRepositoryJson : IConfigRepository
         CheckAndCreateInitialConfig();
         _gameConfigurations = GetAllConfigs();
     }
-    
     private void CheckAndCreateInitialConfig()
     {
         if (!System.IO.Directory.Exists(FileHelper.BasePath))

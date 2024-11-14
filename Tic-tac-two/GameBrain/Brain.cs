@@ -50,8 +50,8 @@ namespace GameBrain
             movableBoard = new int[state.GameConfig.MovableBoardHeight, state.GameConfig.MovableBoardWidth];
             movableBoardWidth = state.GameConfig.MovableBoardWidth;
             movableBoardHeight = state.GameConfig.MovableBoardHeight;
-            gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
-            gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
+            gridX = state.GridX;
+            gridY = state.GridY;
             chipsLeft = state.ChipsLeft;
             gameConfig = state.GameConfig;
         }
@@ -120,9 +120,9 @@ namespace GameBrain
             if (board[x, y] == 0)
             {
                 board[x, y] = playerNumber;
+                CheckForWinner();
                 chipsLeft[playerNumber]--;
                 playerNumber = playerNumber == 1 ? 2 : 1;
-                CheckForWinner();
                 return true;
             }
             return false;
@@ -133,9 +133,9 @@ namespace GameBrain
             if (board[x, y] != 0)
             {
                 board[x, y] = 0;
+                CheckForWinner();
                 chipsLeft[board[x, y]]++;
                 playerNumber = playerNumber == 1 ? 2 : 1;
-                CheckForWinner();
                 return true;
             }
 

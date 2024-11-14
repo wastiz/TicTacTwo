@@ -146,19 +146,29 @@ namespace GameVisualizer
 
         private void ShowPlayerOptions()
         {
-            if (gameBrain.chipsLeft[gameBrain.playerNumber] == 2 && !((gameBrain.playerNumber == 1 && player1MadeChoice) || (gameBrain.playerNumber == 2 && player2MadeChoice)))
+            Console.WriteLine("Player 1 chips left: " + gameBrain.chipsLeft[1]);
+            Console.WriteLine("Player 2 chips left: " + gameBrain.chipsLeft[2]);
+            
+            Console.WriteLine(gameBrain.gridX);
+            Console.WriteLine(gameBrain.gridY);
+            
+            Console.WriteLine(DAL.FileHelper.BasePath);
+            
+            bool playerMadeChoice = gameBrain.playerNumber == 1 ? player1MadeChoice : player2MadeChoice;
+            
+            if (gameBrain.chipsLeft[gameBrain.playerNumber] == 2 && !playerMadeChoice)
             {
+                if (gameBrain.playerNumber == 1) 
+                    player1MadeChoice = true;
+                else 
+                    player2MadeChoice = true;
+                
                 Console.WriteLine("Place chip (1)");
                 Console.WriteLine("Move Board (2)");
                 Console.WriteLine("Remove player's chip (3)");
                 
                 var pressedKey = Input("Player " + gameBrain.playerNumber + ", make a choice:");
                 HandleChoice(pressedKey);
-                
-                if (gameBrain.playerNumber == 1) 
-                    player1MadeChoice = true;
-                else 
-                    player2MadeChoice = true;
             }
             else
             {
@@ -268,6 +278,37 @@ namespace GameVisualizer
             if (Array.Exists(validDirections, direction => direction == nextMoveText))
             {
                 bool movedBoard = gameBrain.moveMovableBoard(nextMoveText);
+                switch (nextMoveText)
+                {
+                    case "up":
+                        cursorPosition[0]++;
+                        break;
+                    case "down":
+                        cursorPosition[0]--;
+                        break;
+                    case "left":
+                        cursorPosition[1]--;
+                        break;
+                    case "right":
+                        cursorPosition[1]++;
+                        break;
+                    case "up-left":
+                        cursorPosition[0]++;
+                        cursorPosition[1]--;
+                        break;
+                    case "up-right":
+                        cursorPosition[0]++;
+                        cursorPosition[1]++;
+                        break;
+                    case "down-left":
+                        cursorPosition[1]--;
+                        cursorPosition[0]--;
+                        break;
+                    case "down-right":
+                        cursorPosition[1]++;
+                        cursorPosition[0]--;
+                        break;
+                }
                 if (movedBoard)
                 {
                     Console.WriteLine("Board moved successfully.");
