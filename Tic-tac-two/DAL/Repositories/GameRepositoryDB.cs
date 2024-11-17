@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 public class GameRepositoryDb
 {
-    private readonly GameStateDbContext _context;
+    private readonly AppDbContext _context;
 
     public GameRepositoryDb()
     {
-        _context = new GameStateDbContext();
+        _context = new AppDbContext();
         _context.Database.EnsureCreated();
     }
     

@@ -3,11 +3,11 @@
     using System.Text.Json;
     public class ConfigRepositoryDb : IConfigRepository
     {
-        private readonly GameConfigDbContext _context;
+        private readonly AppDbContext _context;
 
         public ConfigRepositoryDb()
         {
-            _context = new GameConfigDbContext();
+            _context = new AppDbContext();
             _context.Database.EnsureCreated();
             CheckAndCreateInitialConfig();
         }

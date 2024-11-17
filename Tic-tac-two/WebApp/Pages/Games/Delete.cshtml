@@ -1,0 +1,64 @@
+@page
+@model WebApp.Pages_Games.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>GameStateDB</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameStateDB.StateName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameStateDB.StateName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameStateDB.GameConfigJson)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameStateDB.GameConfigJson)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameStateDB.BoardJson)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameStateDB.BoardJson)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameStateDB.ChipsLeftJson)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameStateDB.ChipsLeftJson)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameStateDB.GridX)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameStateDB.GridX)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameStateDB.GridY)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameStateDB.GridY)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameStateDB.PlayerNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameStateDB.PlayerNumber)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="GameStateDB.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

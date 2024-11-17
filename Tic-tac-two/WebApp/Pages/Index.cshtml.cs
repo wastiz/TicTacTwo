@@ -8,9 +8,9 @@ public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
 
-    private readonly GameStateDbContext _ctx;
+    private readonly AppDbContext _ctx;
 
-    public IndexModel(ILogger<IndexModel> logger, GameStateDbContext _ctx)
+    public IndexModel(ILogger<IndexModel> logger, AppDbContext _ctx)
     {
         _logger = logger;
     }

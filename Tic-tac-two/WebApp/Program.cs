@@ -5,12 +5,11 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidCastException("Connection string not found");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-
+connectionString = connectionString.Replace("<%location%>", FileHelper.BasePath);
 // register "how to create a db when somebody asks for it"
-builder.Services.AddDbContext<GameConfigDbContext>(options => options.UseSqlite(connectionString));
-builder.Services.AddDbContext<GameStateDbContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
 
 //builder.Services
 //.AddTransient<>(); - create new one every time

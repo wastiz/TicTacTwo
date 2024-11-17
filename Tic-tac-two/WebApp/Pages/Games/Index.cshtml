@@ -1,0 +1,72 @@
+@page
+@model WebApp.Pages_Games.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GameStateDB[0].StateName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GameStateDB[0].GameConfigJson)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GameStateDB[0].BoardJson)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GameStateDB[0].ChipsLeftJson)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GameStateDB[0].GridX)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GameStateDB[0].GridY)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GameStateDB[0].PlayerNumber)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.GameStateDB) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StateName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameConfigJson)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BoardJson)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChipsLeftJson)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GridX)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GridY)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlayerNumber)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
