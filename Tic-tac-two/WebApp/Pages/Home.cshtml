@@ -2,15 +2,22 @@
 @model WebApp.Pages.Home
 
 <div class="container">
-    <h2>Tic-Tac-Two</h2>
-    <p>Welcome, @TempData["Username"]</p>
-    <a asp-page="/NewGame">
-        <button class="btn btn-primary mb-2">New Game</button>
-    </a>
-    <a asp-page="/LoadGame">
-        <button class="btn btn-primary mb-2">Load Game</button>
-    </a>
-    <a asp-page="GameConfigs">
-        <button class="btn btn-primary mb-2">Game Configurations</button>
-    </a>
+    <div class="row">
+        <div class="col-4 d-flex flex-column">
+            <h2>Tic-Tac-Two</h2>
+            <p>Welcome, @Model.Username</p>
+            <a asp-page="/NewGame">
+                <button class="btn btn-primary mb-2">New Game</button>
+            </a>
+            <a asp-page="/LoadGame">
+                <button class="btn btn-primary mb-2">Load Game</button>
+            </a>
+            <a asp-page="GameConfigs">
+                <button class="btn btn-primary mb-2">Game Configurations</button>
+            </a>
+        </div>
+        <div class="col-8 d-flex align-items-center justify-content-center">
+            <img src="img/animation.gif" alt="animation" id="home-animation">
+        </div>
+    </div>
 </div> 

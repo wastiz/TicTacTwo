@@ -1,33 +1,43 @@
 ﻿@page
 @model WebApp.Pages.NewGame
 
-<form method="post" class="container h-100 d-flex flex-column align-items-center justify-content-center">
+<div class="container">
     <div class="row">
-        <div class="col-6 d-flex flex-column">
-            <input type="radio" class="btn-check" asp-for="GameMode" id="two-players" value="two-players" autocomplete="off" checked>
-            <label class="btn" for="two-players">Two Player, One Pc</label>
+        <div class="col-4">
+            <form method="post" class="container h-100 d-flex flex-column align-items-center justify-content-center">
+                <div class="row">
+                    <h3>Choose Game Mode:</h3>
+                    <div class="col-6 mb-3">
+                        <input type="radio" class="btn-check" asp-for="GameMode" id="two-players" value="two-players" autocomplete="off" checked>
+                        <label class="btn" for="two-players">Two Player, One Pc</label>
 
-            <input type="radio" class="btn-check" asp-for="GameMode" id="vs-ai" value="vs-ai" autocomplete="off">
-            <label class="btn" for="vs-ai">You vs AI</label>
+                        <input type="radio" class="btn-check" asp-for="GameMode" id="vs-ai" value="vs-ai" autocomplete="off">
+                        <label class="btn" for="vs-ai">You vs AI</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="radio" class="btn-check" asp-for="GameMode" id="ai-vs-ai" value="ai-vs-ai" autocomplete="off">
+                        <label class="btn" for="ai-vs-ai">AI vs AI</label>
 
-            <input type="radio" class="btn-check" asp-for="GameMode" id="ai-vs-ai" value="ai-vs-ai" autocomplete="off">
-            <label class="btn" for="ai-vs-ai">AI vs AI</label>
-
-            <input type="radio" class="btn-check" asp-for="GameMode" id="connect" value="connect" autocomplete="off" disabled>
-            <label class="btn" for="connect">Connect to game</label>
+                        <input type="radio" class="btn-check" asp-for="GameMode" id="connect" value="connect" autocomplete="off" disabled>
+                        <label class="btn" for="connect">Connect to game</label>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <h3>Choose Game Configuration:</h3>
+                        @foreach (var confName in Model.GameConfigs)
+                        {
+                            <input type="radio" class="btn-check" asp-for="GameConfig" id="@confName" value="@confName" autocomplete="off">
+                            <label class="btn" for="@confName">@confName</label>
+                        }
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Start Game</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="col-6 d-flex flex-column">
-            @foreach (var confName in Model.GameConfigs)
-            {
-            <input type="radio" class="btn-check" asp-for="GameConfig" id="@confName" value="@confName" autocomplete="off">
-            <label class="btn" for="@confName">@confName</label>
-            }
+        
+        <div class="col-8 d-flex align-items-center justify-content-center">
+            <img src="img/animation.gif" alt="animation" id="home-animation">
         </div>
     </div>
-    <div class="row">
-        <div class="col-5"></div>
-        <div class="col-2">
-            <button type="submit" class="btn btn-primary">Start Game</button>
-        </div>
-    </div>
-</form>
+</div> 

@@ -42,8 +42,7 @@ public class IndexModel : PageModel
         }
 
         Message = "Welcome!";
-        TempData["Username"] = Username;
-        return RedirectToPage("./Home");
+        return RedirectToPage("./Home", new { username = Username });
     }
 
 }
