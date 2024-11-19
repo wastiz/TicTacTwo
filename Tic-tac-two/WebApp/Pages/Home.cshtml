@@ -1,0 +1,14 @@
+﻿@page
+@model WebApp.Pages.Home
+
+<h2>Tic-Tac-Two</h2>
+<p>Welcome, @TempData["Username"]</p>
+<a asp-page="/NewGame">
+    <button class="btn btn-primary mb-2">New Game</button>
+</a>
+<a asp-page="/LoadGame">
+    <button class="btn btn-primary mb-2">Load Game</button>
+</a>
+<a asp-page="GameConfigs">
+    <button class="btn btn-primary mb-2">Game Configurations</button>
+</a> 

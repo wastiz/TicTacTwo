@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241117133418_InitialCreate")]
+    [Migration("20241119094724_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -90,6 +90,25 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GameStates");
+                });
+
+            modelBuilder.Entity("DAL.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

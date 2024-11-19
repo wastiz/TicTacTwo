@@ -1,10 +1,32 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Welcome to Tic-Tac-Two";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <h1 class="display-4 text-center">Welcome to Tic-Tac-Two</h1>
+    <div class="col-4"></div>
+    <div class="col-4">
+        @if (TempData["Message"] != null)
+        {
+        <div class="alert alert-warning">
+            @TempData["Message"]
+        </div>
+        }
+        @if (@Model.Message != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Model.Message
+            </div>
+        }
+        <form method="post" class="d-flex flex-column">
+            <label for="username">Username:</label>
+            <input id="username" name="username" type="text">
+            <label for="password">Password:</label>
+            <input id="password" name="password" type="password" class="mb-3">
+            <a class="mb-3" asp-page="/Register">Create account if you don't have one</a>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div class="col-4"></div>
 </div>
