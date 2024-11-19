@@ -18,3 +18,6 @@ dotnet ef migrations add InitialCreate --project DAL --startup-project WebApp
 dotnet ef database update --project DAL --startup-project WebApp
 dotnet ef database drop --project DAL --startup-project WebApp 
 
+TO update migrations:
+dotnet ef migrations remove --project DAL --startup-project WebApp
+dotnet ef migrations add InitialCreate --project DAL --startup-project WebApp

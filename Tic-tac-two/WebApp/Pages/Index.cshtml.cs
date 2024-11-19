@@ -22,7 +22,7 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-        // Просто загружает страницу
+       
     }
 
     public IActionResult OnPost()

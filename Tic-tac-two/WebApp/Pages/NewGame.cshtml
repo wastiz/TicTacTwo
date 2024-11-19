@@ -1,19 +1,33 @@
 ﻿@page
 @model WebApp.Pages.NewGame
 
-@{
-    Layout = null;
-}
+<form method="post" class="container h-100 d-flex flex-column align-items-center justify-content-center">
+    <div class="row">
+        <div class="col-6 d-flex flex-column">
+            <input type="radio" class="btn-check" asp-for="GameMode" id="two-players" value="two-players" autocomplete="off" checked>
+            <label class="btn" for="two-players">Two Player, One Pc</label>
 
-<!DOCTYPE html>
+            <input type="radio" class="btn-check" asp-for="GameMode" id="vs-ai" value="vs-ai" autocomplete="off">
+            <label class="btn" for="vs-ai">You vs AI</label>
 
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
-</div>
-</body>
-</html>
+            <input type="radio" class="btn-check" asp-for="GameMode" id="ai-vs-ai" value="ai-vs-ai" autocomplete="off">
+            <label class="btn" for="ai-vs-ai">AI vs AI</label>
+
+            <input type="radio" class="btn-check" asp-for="GameMode" id="connect" value="connect" autocomplete="off" disabled>
+            <label class="btn" for="connect">Connect to game</label>
+        </div>
+        <div class="col-6 d-flex flex-column">
+            @foreach (var confName in Model.GameConfigs)
+            {
+            <input type="radio" class="btn-check" asp-for="GameConfig" id="@confName" value="@confName" autocomplete="off">
+            <label class="btn" for="@confName">@confName</label>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary">Start Game</button>
+        </div>
+    </div>
+</form>
