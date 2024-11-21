@@ -4,32 +4,41 @@
 <div class="container mt-4">
     <h1 class="mb-5">Tic-Tac-Two</h1>
     <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <form method="post">
-                <div class="d-flex flex-wrap" style="width:@(Model.GridWidth * 80)px">
-                    @for (int i = 0; i < Model.GridHeight; i++)
+                <div class="d-flex flex-wrap" style="width:@(Model.BoardWidth * 80)px">
+                    @for (int i = 0; i < Model.BoardHeight; i++)
                     {
-                    for (int j = 0; j < Model.GridWidth; j++)
-                    {
-                    <button type="submit" name="row" value="@i" formaction="/TicTacToe?col=@j"
-                            class="btn btn-outline-primary border"
-                            style="width: 80px; height: 80px; font-size: 24px;">
-                        @if (@Model.Grid[i, j] == 1)
+                        for (int j = 0; j < Model.BoardWidth; j++)
                         {
-                            @:X
-                        } else if (@Model.Grid[i, j] == 2)
-                        {
-                            @:O
+                            <button type="submit"
+                                    class="btn btn-outline-primary border"
+                                    style="width: 80px; height: 80px; font-size: 24px;"
+                                    name="x"
+                                    value="@i"
+                                    formaction="?handler=Click&x=@i&y=@j">
+                                @if (Model.Grid[i][j] == 1)
+                                {
+                                    @:X
+                                }
+                                else if (Model.Grid[i][j] == 2)
+                                {
+                                    @:O
+                                }
+                                else
+                                {
+                                    @:
+                                }
+                            </button>
                         }
-                        else
-                        {
-                            @:
-                        }
-                    </button>
-                    }
                     }
                 </div>
             </form>
+        </div>
+        <div class="col-6 justify-content-end">
+            <a asp-page="/NewGame">
+                <button class="btn btn-primary">Back to Menu</button>
+            </a>
         </div>
     </div>
 </div>

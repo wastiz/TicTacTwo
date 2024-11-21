@@ -17,7 +17,9 @@ namespace GameBrain
         private GameConfiguration gameConfig;
         private GameRepositoryDb repository = new GameRepositoryDb();
         public int? win = null;
-
+        
+        
+        public Brain () {}
         public Brain(GameConfiguration config)
         {
             board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
@@ -33,6 +35,44 @@ namespace GameBrain
         }
         
         public Brain(GameState state)
+        {
+            board = new int[state.GameConfig.BoardSizeHeight, state.GameConfig.BoardSizeWidth];
+            boardWidth = state.GameConfig.BoardSizeWidth;
+            boardHeight = state.GameConfig.BoardSizeHeight;
+            
+
+            for (int i = 0; i < boardHeight; i++)
+            {
+                for (int j = 0; j < boardWidth; j++)
+                {
+                    board[i, j] = state.Board[i][j];
+                }
+            }
+            
+            movableBoard = new int[state.GameConfig.MovableBoardHeight, state.GameConfig.MovableBoardWidth];
+            movableBoardWidth = state.GameConfig.MovableBoardWidth;
+            movableBoardHeight = state.GameConfig.MovableBoardHeight;
+            gridX = state.GridX;
+            gridY = state.GridY;
+            chipsLeft = state.ChipsLeft;
+            gameConfig = state.GameConfig;
+        }
+
+        public void Initialize(GameConfiguration config)
+        {
+            board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
+            boardWidth = config.BoardSizeWidth;
+            boardHeight = config.BoardSizeHeight;
+            movableBoard = new int[config.MovableBoardHeight, config.MovableBoardWidth];
+            movableBoardWidth = config.MovableBoardWidth;
+            movableBoardHeight = config.MovableBoardHeight;
+            gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
+            gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
+            chipsLeft = config.ChipsCount;
+            gameConfig = config;
+        }
+
+        public void Initialize(GameState state)
         {
             board = new int[state.GameConfig.BoardSizeHeight, state.GameConfig.BoardSizeWidth];
             boardWidth = state.GameConfig.BoardSizeWidth;

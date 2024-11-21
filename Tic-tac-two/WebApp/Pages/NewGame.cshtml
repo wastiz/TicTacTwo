@@ -21,15 +21,15 @@
                         <input type="radio" class="btn-check" asp-for="GameMode" id="connect" value="connect" autocomplete="off" disabled>
                         <label class="btn" for="connect">Connect to game</label>
                     </div>
-                    <div class="col-12 mb-3">
-                        <h3>Choose Game Configuration:</h3>
-                        @foreach (var confName in Model.GameConfigs)
-                        {
+                    <h3>Choose Game Configuration:</h3>
+                    @foreach (var confName in Model.GameConfigs)
+                    {
+                        <div class="col-12">
                             <input type="radio" class="btn-check" asp-for="GameConfig" id="@confName" value="@confName" autocomplete="off">
                             <label class="btn" for="@confName">@confName</label>
-                        }
-                    </div>
-                    <div class="col-12">
+                        </div>
+                    }
+                    <div class="col-12 mt-5">
                         <button type="submit" class="btn btn-primary">Start Game</button>
                     </div>
                 </div>

@@ -15,55 +15,61 @@ public class Game : PageModel
     
     [BindProperty(SupportsGet = true)]
     public string Config { get; set; }
+    
+    private readonly Brain _gameBrain;
+    private readonly ConfigRepositoryDb _configRepositoryDb;
+    private readonly GameRepositoryDb _gameRepositoryDb;
 
-    public Brain _gameBrain;
-    public ConfigRepositoryDb _configRepositoryDb;
-    public GameRepositoryDb _gameRepositoryDb;
+    [BindProperty]
+    public List<List<int>> Grid { get; set; }
+    
+    [BindProperty]
+    public int BoardWidth { get; set; }
+    [BindProperty]
+    public int BoardHeight { get; set; }
 
-    [BindProperty]
-    public int GridWidth { get; set; }
-    [BindProperty]
-    public int GridHeight { get; set; }
-    [BindProperty]
-    public int MovableGridWidth { get; set; }
-    [BindProperty]
-    public int MovableGridHeight { get; set; }
-    public int[,] Grid { get; set; }
-
-    public Game(ConfigRepositoryDb configRepositoryDb, GameRepositoryDb gameRepositoryDb)
+    public Game(Brain gameBrain, ConfigRepositoryDb configRepositoryDb, GameRepositoryDb gameRepositoryDb)
     {
+        _gameBrain = gameBrain;
         _configRepositoryDb = configRepositoryDb;
         _gameRepositoryDb = gameRepositoryDb;
     }
 
     public void OnGet()
     {
-        if (!string.IsNullOrEmpty(Config))
+        if (_gameBrain.board == null)
         {
-            InitializeGame();
+            var gameConfig = _configRepositoryDb.GetConfigurationByName(Config);
+            _gameBrain.Initialize(gameConfig);
+            Grid = ConvertToList(_gameBrain.board);
+            BoardWidth = _gameBrain.boardWidth;
+            BoardHeight = _gameBrain.boardHeight;
         }
     }
 
-    public IActionResult OnPost(string config, string mode)
+    public void OnPostClick(int x, int y)
     {
-        Config = config;
-        Mode = mode;
-        
-        InitializeGame();
-        
-        return Page();
+        bool madeMove = _gameBrain.placeChip(x, y);
+        Grid = ConvertToList(_gameBrain.board);
+        BoardWidth = _gameBrain.boardWidth;
+        BoardHeight = _gameBrain.boardHeight;
+        RedirectToPage();
     }
-
-    private void InitializeGame()
+    
+    public List<List<int>> ConvertToList(int[,] matrix)
     {
-        var gameConfig = _configRepositoryDb.GetConfigurationByName(Config);
-        
-        _gameBrain = new Brain(gameConfig);
-        
-        GridWidth = _gameBrain.boardWidth;
-        GridHeight = _gameBrain.boardHeight;
-        MovableGridWidth = _gameBrain.movableBoardWidth;
-        MovableGridHeight = _gameBrain.movableBoardHeight;
-        Grid = _gameBrain.board;
+        var list = new List<List<int>>();
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            var row = new List<int>();
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                row.Add(matrix[i, j]);
+            }
+            list.Add(row);
+        }
+        return list;
     }
 }
+
+
