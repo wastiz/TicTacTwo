@@ -3,42 +3,88 @@
 
 <div class="container mt-4">
     <h1 class="mb-5">Tic-Tac-Two</h1>
-    <div class="row">
-        <div class="col-6">
-            <form method="post">
-                <div class="d-flex flex-wrap" style="width:@(Model.BoardWidth * 80)px">
-                    @for (int i = 0; i < Model.BoardHeight; i++)
-                    {
-                        for (int j = 0; j < Model.BoardWidth; j++)
+    @if (Model.GameBrain.win != null)
+    {
+        if (Model.GameBrain.win == 0)
+        {
+            <h1>It's a draw</h1>   
+        }
+        else
+        {
+            <h1>Player @Model.GameBrain.win wins!</h1>   
+        }
+    }
+    else
+    { 
+        <p>@Model.Message</p>
+        <div class="row">
+            <div class="col-6">
+                <form method="post">
+                    <div class="d-flex flex-wrap position-relative" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
+                        @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
                         {
-                            <button type="submit"
-                                    class="btn btn-outline-primary border"
-                                    style="width: 80px; height: 80px; font-size: 24px;"
-                                    name="x"
-                                    value="@i"
-                                    formaction="?handler=Click&x=@i&y=@j">
-                                @if (Model.Grid[i][j] == 1)
-                                {
-                                    @:X
-                                }
-                                else if (Model.Grid[i][j] == 2)
-                                {
-                                    @:O
-                                }
-                                else
-                                {
-                                    @:
-                                }
-                            </button>
+                        for (int j = 0; j < Model.GameBrain.boardWidth; j++)
+                        {
+                        bool isInsideMovableGrid = i >= Model.GameBrain.gridX && i < Model.GameBrain.gridX + 3 &&
+                        j >= Model.GameBrain.gridY && j < Model.GameBrain.gridY + 3;
+
+                        <button type="submit"
+                                class="btn btn-outline-primary border position-relative"
+                                style="width: 80px; height: 80px; font-size: 24px;"
+                                name="x"
+                                value="@i"
+                                formaction="?handler=Click&x=@i&y=@j"
+                                @(isInsideMovableGrid || Model.disableBoard ? "" : "disabled")>
+                            @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
+                            {
+                            @:X
+                            }
+                            else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
+                            {
+                            @:O
+                            }
+                            else
+                            {
+                            @:
+                            }
+                        </button>
                         }
+                        }
+                        <div class="movable-grid" style="
+                            width: 240px;
+                            height: 240px;
+                            border: 3px solid red;
+                            position: absolute;
+                            top: @(Model.GameBrain.gridX * 80)px;
+                            left: @(Model.GameBrain.gridY * 80)px;
+                            pointer-events: none;">
+                        </div>
+                    </div>
+
+                    @if (Model.showOptions)
+                    {
+                        <button formaction="?handler=Option&option=placeChip">Place Chip</button>
+                        <button formaction="?handler=Option&option=moveBoard">Move Board</button>
+                        <button formaction="?handler=Option&option=takeChip">Take out Chip</button>
                     }
-                </div>
-            </form>
+                    @if (Model.moveBoardOptions)
+                    {
+                        <button formaction="?handler=MoveBoard&direction=up">Up</button>
+                        <button formaction="?handler=MoveBoard&direction=down">Down</button>
+                        <button formaction="?handler=MoveBoard&direction=left">Left</button>
+                        <button formaction="?handler=MoveBoard&direction=right">Right</button>
+                        <button formaction="?handler=MoveBoard&direction=up-left">Up-Left</button>
+                        <button formaction="?handler=MoveBoard&direction=up-right">Up-Right</button>
+                        <button formaction="?handler=MoveBoard&direction=down-left">Down-left</button>
+                        <button formaction="?handler=MoveBoard&direction=down-right">Down-Right</button>
+                    }
+                </form>
+            </div>
+            <div class="col-6 justify-content-end">
+                <a asp-page="/NewGame">
+                    <button class="btn btn-primary">Back to Menu</button>
+                </a>
+            </div>
         </div>
-        <div class="col-6 justify-content-end">
-            <a asp-page="/NewGame">
-                <button class="btn btn-primary">Back to Menu</button>
-            </a>
-        </div>
-    </div>
+    }
 </div>

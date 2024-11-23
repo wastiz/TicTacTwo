@@ -33,3 +33,7 @@ body {
   width: 300px;
   height: 300px;
 }
+.movable-grid {
+  box-shadow: 0 0 5px 2px rgba(255, 0, 0, 0.5);
+  z-index: 10;
+}

@@ -16,44 +16,99 @@ public class Game : PageModel
     [BindProperty(SupportsGet = true)]
     public string Config { get; set; }
     
-    private readonly Brain _gameBrain;
+    public Brain GameBrain { get; set; } = default!;
     private readonly ConfigRepositoryDb _configRepositoryDb;
     private readonly GameRepositoryDb _gameRepositoryDb;
-
-    [BindProperty]
-    public List<List<int>> Grid { get; set; }
     
     [BindProperty]
-    public int BoardWidth { get; set; }
+    public String Message { get; set; }
+    
     [BindProperty]
-    public int BoardHeight { get; set; }
+    public bool player1MadeChoice { get; set; }
+    [BindProperty]
+    public bool player2MadeChoice { get; set; }
+    
+    [BindProperty]
+    public bool disableBoard { get; set; }
+    
+    [BindProperty]
+    public bool showOptions { get; set; }
+    
+    [BindProperty]
+    public bool moveBoardOptions { get; set; }
 
     public Game(Brain gameBrain, ConfigRepositoryDb configRepositoryDb, GameRepositoryDb gameRepositoryDb)
     {
-        _gameBrain = gameBrain;
+        GameBrain = gameBrain;
         _configRepositoryDb = configRepositoryDb;
         _gameRepositoryDb = gameRepositoryDb;
     }
 
     public void OnGet()
     {
-        if (_gameBrain.board == null)
+        if (GameBrain.board == null)
         {
             var gameConfig = _configRepositoryDb.GetConfigurationByName(Config);
-            _gameBrain.Initialize(gameConfig);
-            Grid = ConvertToList(_gameBrain.board);
-            BoardWidth = _gameBrain.boardWidth;
-            BoardHeight = _gameBrain.boardHeight;
+            GameBrain.Initialize(gameConfig);
+            Message = $"Player {GameBrain.playerNumber} is thinking";
         }
     }
 
-    public void OnPostClick(int x, int y)
+    public IActionResult OnPostClick(int x, int y)
     {
-        bool madeMove = _gameBrain.placeChip(x, y);
-        Grid = ConvertToList(_gameBrain.board);
-        BoardWidth = _gameBrain.boardWidth;
-        BoardHeight = _gameBrain.boardHeight;
-        RedirectToPage();
+        bool playerMadeChoice = GameBrain.playerNumber == 1 ? player1MadeChoice : player2MadeChoice;
+        if (GameBrain.chipsLeft[GameBrain.playerNumber] == 3 && !playerMadeChoice)
+        {
+            if (GameBrain.playerNumber == 1)
+                player1MadeChoice = true;
+            else 
+                player2MadeChoice = true;
+
+            disableBoard = true;
+            showOptions = true;
+        }
+        else
+        {
+            PlaceChip(x, y);
+        }
+        return Page();
+    }
+
+    public IActionResult OnPostOption(String option)
+    {
+        switch (option)
+        {
+            case "placeChip":
+                break;
+            case "moveBoard":
+                moveBoardOptions = true;
+                break;
+            case "takeChip":
+                break;
+            
+        }
+        disableBoard = false;
+        showOptions = false;
+        return Page();
+    }
+
+    public IActionResult OnPostMoveBoard(String direction)
+    {
+        GameBrain.moveMovableBoard(direction);
+        return Page();
+    }
+
+    public void PlaceChip(int x, int y)
+    {
+        bool madeMove = GameBrain.placeChip(x, y);
+        if (madeMove)
+        {
+            Message = $"Player {GameBrain.playerNumber} is thinking";
+        }
+        else
+        {
+            Message = "Sorry, you can't do this";
+        }
     }
     
     public List<List<int>> ConvertToList(int[,] matrix)
