@@ -20,7 +20,6 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connect
 //builder.Services.AddScoped<IConfigRepository, ConfigRepositoryJson>();
 builder.Services.AddScoped<ConfigRepositoryDb>();
 builder.Services.AddScoped<GameRepositoryDb>();
-builder.Services.AddSingleton<Brain>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

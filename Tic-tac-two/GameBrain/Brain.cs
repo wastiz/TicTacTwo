@@ -263,6 +263,38 @@ namespace GameBrain
             };
             repository.SaveGameToRepo(gameToSave);
         }
+        
+        public override string ToString()
+        {
+            var sb = new System.Text.StringBuilder();
 
+            sb.AppendLine("Game Board:");
+            for (int i = 0; i < boardHeight; i++)
+            {
+                for (int j = 0; j < boardWidth; j++)
+                {
+                    sb.Append(board[i, j] + " ");
+                }
+                sb.AppendLine();
+            }
+
+            sb.AppendLine("Movable Board:");
+            for (int i = 0; i < movableBoardHeight; i++)
+            {
+                for (int j = 0; j < movableBoardWidth; j++)
+                {
+                    sb.Append(movableBoard[i, j] + " ");
+                }
+                sb.AppendLine();
+            }
+
+            sb.AppendLine($"Grid Position: ({gridX}, {gridY})");
+            sb.AppendLine($"Chips Left: Player 1 = {chipsLeft[0]}, Player 2 = {chipsLeft[1]}");
+            sb.AppendLine($"Current Player: {playerNumber}");
+            sb.AppendLine($"Winner: {(win == null ? "None" : win == 0 ? "Draw" : $"Player {win}")}");
+
+            return sb.ToString();
+        }
     }
+
 }

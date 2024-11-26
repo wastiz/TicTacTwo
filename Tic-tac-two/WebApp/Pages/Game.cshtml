@@ -7,11 +7,17 @@
     {
         if (Model.GameBrain.win == 0)
         {
-            <h1>It's a draw</h1>   
+            <h1>It's a draw</h1>
+            <a asp-page="/NewGame">
+                <button class="btn btn-primary">Back to Menu</button>
+            </a>
         }
         else
         {
-            <h1>Player @Model.GameBrain.win wins!</h1>   
+            <h1>Player @Model.GameBrain.win wins!</h1>
+            <a asp-page="/NewGame">
+                <button class="btn btn-primary">Back to Menu</button>
+            </a>
         }
     }
     else
@@ -19,37 +25,42 @@
         <p>@Model.Message</p>
         <div class="row">
             <div class="col-6">
-                <form method="post">
                     <div class="d-flex flex-wrap position-relative" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
+
                         @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
                         {
-                        for (int j = 0; j < Model.GameBrain.boardWidth; j++)
-                        {
-                        bool isInsideMovableGrid = i >= Model.GameBrain.gridX && i < Model.GameBrain.gridX + 3 &&
-                        j >= Model.GameBrain.gridY && j < Model.GameBrain.gridY + 3;
+                            for (int j = 0; j < Model.GameBrain.boardWidth; j++)
+                            {
+                                bool isInsideMovableGrid = i >= Model.GameBrain.gridX && i < Model.GameBrain.gridX + 3 &&
+                                                           j >= Model.GameBrain.gridY && j < Model.GameBrain.gridY + 3;
 
-                        <button type="submit"
-                                class="btn btn-outline-primary border position-relative"
-                                style="width: 80px; height: 80px; font-size: 24px;"
-                                name="x"
-                                value="@i"
-                                formaction="?handler=Click&x=@i&y=@j"
-                                @(isInsideMovableGrid || Model.disableBoard ? "" : "disabled")>
-                            @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
-                            {
-                            @:X
+                                // Формируем URL с параметрами
+                                var url = Url.Page(
+                                    "./Game", // Путь к странице
+                                    new { x = i, y = j, GameId = Model.GameId } // Параметры для URL
+                                );
+
+                                <a class="btn btn-outline-primary border position-relative"
+                                   style="width: 80px; height: 80px; font-size: 24px;"
+                                   href="@url"
+                                    @(isInsideMovableGrid || Model.disableBoard ? "" : "disabled")>
+                                    @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
+                                    {
+                                        @:X
+                                    }
+                                    else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
+                                    {
+                                        @:O
+                                    }
+                                    else
+                                    {
+                                        @:
+                                    }
+                                </a>
                             }
-                            else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
-                            {
-                            @:O
-                            }
-                            else
-                            {
-                            @:
-                            }
-                        </button>
                         }
-                        }
+
+
                         <div class="movable-grid" style="
                             width: 240px;
                             height: 240px;
@@ -78,7 +89,6 @@
                         <button formaction="?handler=MoveBoard&direction=down-left">Down-left</button>
                         <button formaction="?handler=MoveBoard&direction=down-right">Down-Right</button>
                     }
-                </form>
             </div>
             <div class="col-6 justify-content-end">
                 <a asp-page="/NewGame">
@@ -86,5 +96,6 @@
                 </a>
             </div>
         </div>
+        <div>@Model.GameBrain.ToString()</div>
     }
 </div>

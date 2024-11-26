@@ -45,6 +45,7 @@ public class GameRepositoryDb
     {
         var gameStateDb = ConvertToDbModel(gameState);
         var existingState = _context.GameStates.SingleOrDefault(gs => gs.StateName == gameState.StateName);
+
         if (existingState == null)
         {
             _context.GameStates.Add(gameStateDb);

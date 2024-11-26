@@ -35,7 +35,7 @@
                 _context.SaveChanges();
             }
         }
-        //comment
+        
         public List<string> GetAllConfigNames()
         {
             return _context.GameConfigurations.Select(gc => gc.Name).ToList();
