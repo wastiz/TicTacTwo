@@ -7,11 +7,17 @@
     {
         if (Model.GameBrain.win == 0)
         {
-            <h1>It's a draw</h1>   
+            <h1>It's a draw</h1>
+            <a asp-page="/NewGame">
+                <button class="btn btn-primary">Back to Menu</button>
+            </a>
         }
         else
         {
-            <h1>Player @Model.GameBrain.win wins!</h1>   
+            <h1>Player @Model.GameBrain.win wins!</h1>
+            <a asp-page="/NewGame">
+                <button class="btn btn-primary">Back to Menu</button>
+            </a>
         }
     }
     else
@@ -23,32 +29,32 @@
                     <div class="d-flex flex-wrap position-relative" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
                         @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
                         {
-                        for (int j = 0; j < Model.GameBrain.boardWidth; j++)
-                        {
-                        bool isInsideMovableGrid = i >= Model.GameBrain.gridX && i < Model.GameBrain.gridX + 3 &&
-                        j >= Model.GameBrain.gridY && j < Model.GameBrain.gridY + 3;
+                            for (int j = 0; j < Model.GameBrain.boardWidth; j++)
+                            {
+                                bool isInsideMovableGrid = i >= Model.GameBrain.gridX && i < Model.GameBrain.gridX + 3 &&
+                                                           j >= Model.GameBrain.gridY && j < Model.GameBrain.gridY + 3;
 
-                        <button type="submit"
-                                class="btn btn-outline-primary border position-relative"
-                                style="width: 80px; height: 80px; font-size: 24px;"
-                                name="x"
-                                value="@i"
-                                formaction="?handler=Click&x=@i&y=@j"
-                                @(isInsideMovableGrid || Model.disableBoard ? "" : "disabled")>
-                            @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
-                            {
-                            @:X
+                                <button type="submit"
+                                        class="btn btn-outline-primary border position-relative"
+                                        style="width: 80px; height: 80px; font-size: 24px;"
+                                        name="x"
+                                        value="@i"
+                                        formaction="?handler=Click&x=@i&y=@j"
+                                        @(isInsideMovableGrid || Model.disableBoard ? "" : "disabled")>
+                                    @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
+                                    {
+                                        @:X
+                                    }
+                                    else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
+                                    {
+                                        @:O
+                                    }
+                                    else
+                                    {
+                                        @:
+                                    }
+                                </button>
                             }
-                            else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
-                            {
-                            @:O
-                            }
-                            else
-                            {
-                            @:
-                            }
-                        </button>
-                        }
                         }
                         <div class="movable-grid" style="
                             width: 240px;
