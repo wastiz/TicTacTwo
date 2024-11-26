@@ -11,16 +11,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 public class Game : PageModel
 {
     [BindProperty(SupportsGet = true)] public string Mode { get; set; }
-    [BindProperty(SupportsGet = true)] public string ConfigName { get; set; }
-    [BindProperty(SupportsGet = true)] public string? GameId { get; set; } = null;
-
+    [BindProperty(SupportsGet = true)] public string Config { get; set; }
+    [BindProperty] public string? GameId { get; set; } = null;
+    
     public Brain GameBrain { get; set; }
     private readonly ConfigRepositoryDb _configRepositoryDb;
     private readonly GameRepositoryDb _gameRepositoryDb;
 
     [BindProperty] public string Message { get; set; }
-    [BindProperty] public bool player1MadeChoice { get; set; }
-    [BindProperty] public bool player2MadeChoice { get; set; }
     [BindProperty] public bool disableBoard { get; set; }
     [BindProperty] public bool showOptions { get; set; }
     [BindProperty] public bool moveBoardOptions { get; set; }
@@ -29,41 +27,51 @@ public class Game : PageModel
     {
         _configRepositoryDb = configRepositoryDb;
         _gameRepositoryDb = gameRepositoryDb;
-        if (!string.IsNullOrEmpty(ConfigName))
-        {
-            GameBrain = new Brain(_configRepositoryDb.GetConfigurationByName(ConfigName));
-            GameId = Guid.NewGuid().ToString();
-            GameBrain.SaveGame(GameId);
-        }
-
-        if (!string.IsNullOrEmpty(GameId))
-        {
-            GameBrain = new Brain(_gameRepositoryDb.GetGameStateByName(GameId));
-            GameBrain.SaveGame(GameId);
-        }
     }
-
-    public void OnGet()
+    
+    
+    public void OnGet(int? x, int? y, string gameId)
     {
-        // Проверяем, что GameBrain не равен null, если это необходимо
-        if (GameBrain == null)
+        
+        if (x == null || y == null || string.IsNullOrEmpty(gameId))
         {
-            if (!string.IsNullOrEmpty(ConfigName))
+            Console.WriteLine($"Mode: {Mode}, Config: {Config}, GameId: {GameId}");
+
+            if (!string.IsNullOrEmpty(Config))
             {
-                GameBrain = new Brain(_configRepositoryDb.GetConfigurationByName(ConfigName));
+                var config = _configRepositoryDb.GetConfigurationByName(Config);
+                GameBrain = new Brain(config);
                 GameId = Guid.NewGuid().ToString();
                 GameBrain.SaveGame(GameId);
             }
             else if (!string.IsNullOrEmpty(GameId))
             {
-                GameBrain = new Brain(_gameRepositoryDb.GetGameStateByName(GameId));
+                var gameState = _gameRepositoryDb.GetGameStateByName(GameId);
+                GameBrain = new Brain(gameState);
                 GameBrain.SaveGame(GameId);
             }
+            else
+            {
+                RedirectToPage("/Error");
+            }
+
+            Message = $"Player {GameBrain?.playerNumber} is thinking";
         }
-    
-        // Теперь безопасно обращаемся к свойству GameBrain
-        Message = $"Player {GameBrain?.playerNumber} is thinking";
+        
+        else
+        {
+            Console.WriteLine($"GameId: {gameId}, x: {x}, y: {y}");
+
+            var gameState = _gameRepositoryDb.GetGameStateByName(gameId);
+            GameBrain = new Brain(gameState);
+            GameBrain.placeChip(x.Value, y.Value);
+            GameBrain.SaveGame(gameId);
+        
+            Message = $"Player {GameBrain?.playerNumber} is thinking";
+        }
     }
+    
+    
     
     public List<List<int>> ConvertToList(int[,] matrix)
     {
@@ -80,7 +88,6 @@ public class Game : PageModel
         return list;
     }
 }
-
 
 
 

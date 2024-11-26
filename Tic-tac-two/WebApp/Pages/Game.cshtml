@@ -33,17 +33,14 @@
                             {
                                 bool isInsideMovableGrid = i >= Model.GameBrain.gridX && i < Model.GameBrain.gridX + 3 &&
                                                            j >= Model.GameBrain.gridY && j < Model.GameBrain.gridY + 3;
-
-                                // Формируем URL с параметрами
-                                var url = Url.Page(
-                                    "./Game", // Путь к странице
-                                    new { x = i, y = j, GameId = Model.GameId } // Параметры для URL
-                                );
-
-                                <a class="btn btn-outline-primary border position-relative"
-                                   style="width: 80px; height: 80px; font-size: 24px;"
-                                   href="@url"
-                                    @(isInsideMovableGrid || Model.disableBoard ? "" : "disabled")>
+                                
+                                <a
+                                    asp-route-x="@i"
+                                    asp-route-y="@j"
+                                    asp-route-GameId="@Model.GameId"
+                                    class="btn btn-outline-primary border position-relative"
+                                    style="width: 80px; height: 80px; font-size: 24px;"
+                                    >
                                     @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
                                     {
                                         @:X
@@ -96,6 +93,5 @@
                 </a>
             </div>
         </div>
-        <div>@Model.GameBrain.ToString()</div>
     }
 </div>
