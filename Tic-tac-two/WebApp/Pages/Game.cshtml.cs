@@ -57,7 +57,7 @@ public class Game : PageModel
     public IActionResult OnPostClick(int x, int y)
     {
         bool playerMadeChoice = GameBrain.playerNumber == 1 ? player1MadeChoice : player2MadeChoice;
-        if (GameBrain.chipsLeft[GameBrain.playerNumber] == 3 && !playerMadeChoice)
+        if (GameBrain.chipsLeft[GameBrain.playerNumber] == 2 && !playerMadeChoice)
         {
             if (GameBrain.playerNumber == 1)
                 player1MadeChoice = true;
