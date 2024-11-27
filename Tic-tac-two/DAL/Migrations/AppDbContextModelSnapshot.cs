@@ -77,12 +77,21 @@ namespace DAL.Migrations
                     b.Property<int>("GridY")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Player1Options")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Player2Options")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("PlayerNumber")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("StateName")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Win")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

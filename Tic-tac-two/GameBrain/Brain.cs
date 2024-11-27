@@ -12,11 +12,14 @@ namespace GameBrain
         public int movableBoardHeight;
         public int gridX;
         public int gridY;
-        public int[] chipsLeft;
-        public int playerNumber = 1;
+        public int[] chipsLeft; //chipsLeft[1] - player 1 chips, chipsLeft[2] - player 2 chips
+        public int playerNumber;
+        public int chipsToOptions; // How many chips have player to place to get options
+        public bool player1Options; // player 1 have more options
+        public bool player2Options; // player 2 have more options
         private GameConfiguration gameConfig;
         private GameRepositoryDb repository = new GameRepositoryDb();
-        public int? win = null;
+        public int win = 0; //0 - nothing, 1 - player 1 won, 2 - player 2 won, 3 - draw
         
         
         public Brain () {}
@@ -30,7 +33,11 @@ namespace GameBrain
             movableBoardHeight = config.MovableBoardHeight;
             gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
             gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
+            playerNumber = 1;
+            player1Options = config.Player1Options;
+            player2Options = config.Player2Options;
             chipsLeft = config.ChipsCount;
+            chipsToOptions = config.ChipsToOptions;
             gameConfig = config;
         }
         
@@ -54,45 +61,11 @@ namespace GameBrain
             movableBoardHeight = state.GameConfig.MovableBoardHeight;
             gridX = state.GridX;
             gridY = state.GridY;
+            playerNumber = state.PlayerNumber;
+            player1Options = state.Player1Options;
+            player2Options = state.Player2Options;
             chipsLeft = state.ChipsLeft;
-            gameConfig = state.GameConfig;
-        }
-
-        public void Initialize(GameConfiguration config)
-        {
-            board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
-            boardWidth = config.BoardSizeWidth;
-            boardHeight = config.BoardSizeHeight;
-            movableBoard = new int[config.MovableBoardHeight, config.MovableBoardWidth];
-            movableBoardWidth = config.MovableBoardWidth;
-            movableBoardHeight = config.MovableBoardHeight;
-            gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
-            gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
-            chipsLeft = config.ChipsCount;
-            gameConfig = config;
-        }
-
-        public void Initialize(GameState state)
-        {
-            board = new int[state.GameConfig.BoardSizeHeight, state.GameConfig.BoardSizeWidth];
-            boardWidth = state.GameConfig.BoardSizeWidth;
-            boardHeight = state.GameConfig.BoardSizeHeight;
-            
-
-            for (int i = 0; i < boardHeight; i++)
-            {
-                for (int j = 0; j < boardWidth; j++)
-                {
-                    board[i, j] = state.Board[i][j];
-                }
-            }
-            
-            movableBoard = new int[state.GameConfig.MovableBoardHeight, state.GameConfig.MovableBoardWidth];
-            movableBoardWidth = state.GameConfig.MovableBoardWidth;
-            movableBoardHeight = state.GameConfig.MovableBoardHeight;
-            gridX = state.GridX;
-            gridY = state.GridY;
-            chipsLeft = state.ChipsLeft;
+            chipsToOptions = state.GameConfig.ChipsToOptions;
             gameConfig = state.GameConfig;
         }
         
@@ -100,7 +73,7 @@ namespace GameBrain
         {
             if (chipsLeft[1] == 0 && chipsLeft[2] == 0)
             {
-                win = 0;
+                win = 3;
             }
             for (int i = 0; i < boardWidth; i++)
             {
@@ -155,6 +128,21 @@ namespace GameBrain
             }
         }
 
+        public void CheckForOptions()
+        {
+            if (chipsLeft[1] == 2)
+            {
+                Console.WriteLine("1st player");
+                player1Options = true;
+            }
+
+            if (chipsLeft[2] == 2)
+            {
+                Console.WriteLine("2nd player");
+                player2Options = true;
+            }
+        }
+
         public bool placeChip(int x, int y)
         {
             if (board[x, y] == 0)
@@ -162,7 +150,17 @@ namespace GameBrain
                 board[x, y] = playerNumber;
                 CheckForWinner();
                 chipsLeft[playerNumber]--;
+                CheckForOptions();
                 playerNumber = playerNumber == 1 ? 2 : 1;
+                return true;
+            }
+            return false;
+        }
+
+        public bool moveChip(int x1, int y1, int x2, int y2)
+        {
+            if (board[x1, y1] == 1 && board[x2, y2] == 2)
+            {
                 return true;
             }
             return false;
@@ -237,6 +235,7 @@ namespace GameBrain
             gridY = newGridY;
             
             playerNumber = playerNumber == 1 ? 2 : 1;
+            
             return true;
         }
 
@@ -259,9 +258,12 @@ namespace GameBrain
                 GridX = gridX,
                 GridY = gridY,
                 ChipsLeft = chipsLeft,
-                PlayerNumber = playerNumber
+                PlayerNumber = playerNumber,
+                Player1Options = player1Options,
+                Player2Options = player2Options,
+                Win = win
             };
-            repository.SaveGameToRepo(gameToSave);
+            repository.SaveGameState(gameToSave);
         }
         
         public override string ToString()

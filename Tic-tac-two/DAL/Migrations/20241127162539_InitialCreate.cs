@@ -42,7 +42,10 @@ namespace DAL.Migrations
                     ChipsLeftJson = table.Column<string>(type: "TEXT", nullable: false),
                     GridX = table.Column<int>(type: "INTEGER", nullable: false),
                     GridY = table.Column<int>(type: "INTEGER", nullable: false),
-                    PlayerNumber = table.Column<int>(type: "INTEGER", nullable: false)
+                    PlayerNumber = table.Column<int>(type: "INTEGER", nullable: false),
+                    Player1Options = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Player2Options = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Win = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

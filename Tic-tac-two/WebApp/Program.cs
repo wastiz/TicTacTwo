@@ -5,12 +5,8 @@ using Microsoft.EntityFrameworkCore;
 // Set up App Config
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
-connectionString = connectionString.Replace("<%location%>", FileHelper.BasePath);
-// register "how to create a db when somebody asks for it"
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseSqlite($"Data Source={FileHelper.BasePath}app.db"));
 
 //builder.Services
 //.AddTransient<>(); - create new one every time

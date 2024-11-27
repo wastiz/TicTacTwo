@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 
-public class GameRepositoryDb
+public class GameRepositoryDb : IStateRepository
 {
     private readonly AppDbContext _context;
 
@@ -18,30 +19,38 @@ public class GameRepositoryDb
         return new GameStateDB
         {
             StateName = gameState.StateName,
-            GameConfig = gameState.GameConfig,
-            Board = gameState.Board,
+            GameConfigJson = JsonSerializer.Serialize(gameState.GameConfig),
+            BoardJson = JsonSerializer.Serialize(gameState.Board),
+            ChipsLeftJson = JsonSerializer.Serialize(gameState.ChipsLeft),
             GridX = gameState.GridX,
             GridY = gameState.GridY,
-            ChipsLeft = gameState.ChipsLeft,
-            PlayerNumber = gameState.PlayerNumber
+            PlayerNumber = gameState.PlayerNumber,
+            Player1Options = gameState.Player1Options,
+            Player2Options = gameState.Player2Options,
+            Win = gameState.Win,
         };
     }
     
     private GameState ConvertFromDbModel(GameStateDB gameStateDb)
     {
+        var config = JsonSerializer.Deserialize<GameConfiguration>(gameStateDb.GameConfigJson);
+        
         return new GameState
         {
             StateName = gameStateDb.StateName,
-            GameConfig = gameStateDb.GameConfig,
-            Board = gameStateDb.Board,
+            GameConfig = config != null ? config : new GameConfiguration(),
+            Board = JsonSerializer.Deserialize<int[][]>(gameStateDb.BoardJson) ?? Array.Empty<int[]>(),
+            ChipsLeft = JsonSerializer.Deserialize<int[]>(gameStateDb.ChipsLeftJson) ?? Array.Empty<int>(),
             GridX = gameStateDb.GridX,
             GridY = gameStateDb.GridY,
-            ChipsLeft = gameStateDb.ChipsLeft,
-            PlayerNumber = gameStateDb.PlayerNumber
+            PlayerNumber = gameStateDb.PlayerNumber,
+            Player1Options = gameStateDb.Player1Options,
+            Player2Options = gameStateDb.Player2Options,
+            Win = gameStateDb.Win,
         };
     }
 
-    public void SaveGameToRepo(GameState gameState)
+    public void SaveGameState(GameState gameState)
     {
         var gameStateDb = ConvertToDbModel(gameState);
         var existingState = _context.GameStates.SingleOrDefault(gs => gs.StateName == gameState.StateName);
@@ -52,9 +61,32 @@ public class GameRepositoryDb
         }
         else
         {
-            _context.Entry(existingState).CurrentValues.SetValues(gameStateDb);
+            existingState.GameConfigJson = gameStateDb.GameConfigJson;
+            existingState.BoardJson = gameStateDb.BoardJson;
+            existingState.ChipsLeftJson = gameStateDb.ChipsLeftJson;
+            existingState.GridX = gameStateDb.GridX;
+            existingState.GridY = gameStateDb.GridY;
+            existingState.PlayerNumber = gameStateDb.PlayerNumber;
+            existingState.Player1Options = gameStateDb.Player1Options;
+            existingState.Player2Options = gameStateDb.Player2Options;
+            existingState.Win = gameStateDb.Win;
+            
+            _context.Entry(existingState).State = EntityState.Modified;
+            _context.Entry(existingState).Property(e => e.Id).IsModified = false;
         }
 
+        _context.SaveChanges();
+    }
+    
+    public void DeleteGameState(string name)
+    {
+        var gameState = _context.GameStates.SingleOrDefault(gs => gs.StateName == name);
+        if (gameState == null)
+        {
+            throw new KeyNotFoundException($"Game State '{name}' not found.");
+        }
+
+        _context.GameStates.Remove(gameState);
         _context.SaveChanges();
     }
 
@@ -80,17 +112,5 @@ public class GameRepositoryDb
         }
 
         return ConvertFromDbModel(gameStateDb);
-    }
-
-    public void DeleteGameState(string name)
-    {
-        var gameState = _context.GameStates.SingleOrDefault(gs => gs.StateName == name);
-        if (gameState == null)
-        {
-            throw new KeyNotFoundException($"Game State '{name}' not found.");
-        }
-
-        _context.GameStates.Remove(gameState);
-        _context.SaveChanges();
     }
 }

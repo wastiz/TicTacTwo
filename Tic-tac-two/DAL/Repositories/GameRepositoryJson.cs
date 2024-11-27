@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 namespace DAL;
 
-public class GameRepositoryJson
+public class GameRepositoryJson : IStateRepository
 {
     public List<GameState> _gameStates;
 
@@ -9,7 +9,7 @@ public class GameRepositoryJson
     {
         _gameStates = new List<GameState>();
     }
-    public void SaveGameToRepo(GameState gameState)
+    public void SaveGameState(GameState gameState)
     {
         
         var options = new JsonSerializerOptions
@@ -20,6 +20,21 @@ public class GameRepositoryJson
 
         var configJsonStr = System.Text.Json.JsonSerializer.Serialize(gameState, options);
         System.IO.File.WriteAllText(FileHelper.BasePath + gameState.StateName + FileHelper.GameExtension, configJsonStr);
+    }
+
+    public void DeleteGameState(string stateName)
+    {
+        string filePath = FileHelper.BasePath + stateName + FileHelper.GameExtension;
+
+        if (System.IO.File.Exists(filePath))
+        {
+            System.IO.File.Delete(filePath);
+            Console.WriteLine($"Game state {stateName} deleted successfully.");
+        }
+        else
+        {
+            Console.WriteLine($"Game state {stateName} not found.");
+        }
     }
 
     public List<GameState> GetAllGameStates()

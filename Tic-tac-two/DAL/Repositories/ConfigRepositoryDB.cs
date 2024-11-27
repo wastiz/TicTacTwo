@@ -98,11 +98,10 @@
                 MovableBoardHeight = dbConfig.MovableBoardHeight,
                 ChipsCount = JsonSerializer.Deserialize<int[]>(dbConfig.ChipsCountSerialized) ?? Array.Empty<int>(),
                 WinCondition = dbConfig.WinCondition,
-                MovePieceAfterNMoves = dbConfig.MovePieceAfterNMoves
+                ChipsToOptions = dbConfig.MovePieceAfterNMoves
             };
         }
-
-        // Преобразование GameConfiguration в GameConfigurationDB
+        
         private GameConfigurationDB DomainToDbConfig(GameConfiguration domainConfig)
         {
             return new GameConfigurationDB
@@ -114,7 +113,7 @@
                 MovableBoardHeight = domainConfig.MovableBoardHeight,
                 ChipsCountSerialized = JsonSerializer.Serialize(domainConfig.ChipsCount),
                 WinCondition = domainConfig.WinCondition,
-                MovePieceAfterNMoves = domainConfig.MovePieceAfterNMoves
+                MovePieceAfterNMoves = domainConfig.ChipsToOptions
             };
         }
     }

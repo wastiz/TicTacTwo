@@ -11,7 +11,7 @@ public class AppDbContext : DbContext
     
     public AppDbContext(DbContextOptions<AppDbContext>? options = null) 
         : base(options ?? new DbContextOptionsBuilder<AppDbContext>()
-            .UseSqlite("Data Source={connectionString}")
+            .UseSqlite($"Data Source={FileHelper.BasePath}app.db")
             .Options)
     {
     }

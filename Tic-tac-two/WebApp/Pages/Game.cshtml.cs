@@ -10,18 +10,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 public class Game : PageModel
 {
-    [BindProperty(SupportsGet = true)] public string Mode { get; set; }
-    [BindProperty(SupportsGet = true)] public string Config { get; set; }
-    [BindProperty] public string? GameId { get; set; } = null;
+    [BindProperty(SupportsGet = true)] public string GameId { get; set; }
     
     public Brain GameBrain { get; set; }
     private readonly ConfigRepositoryDb _configRepositoryDb;
     private readonly GameRepositoryDb _gameRepositoryDb;
 
     [BindProperty] public string Message { get; set; }
-    [BindProperty] public bool disableBoard { get; set; }
-    [BindProperty] public bool showOptions { get; set; }
-    [BindProperty] public bool moveBoardOptions { get; set; }
 
     public Game(ConfigRepositoryDb configRepositoryDb, GameRepositoryDb gameRepositoryDb)
     {
@@ -35,16 +30,9 @@ public class Game : PageModel
         
         if (x == null || y == null || string.IsNullOrEmpty(gameId))
         {
-            Console.WriteLine($"Mode: {Mode}, Config: {Config}, GameId: {GameId}");
-
-            if (!string.IsNullOrEmpty(Config))
-            {
-                var config = _configRepositoryDb.GetConfigurationByName(Config);
-                GameBrain = new Brain(config);
-                GameId = Guid.NewGuid().ToString();
-                GameBrain.SaveGame(GameId);
-            }
-            else if (!string.IsNullOrEmpty(GameId))
+            Console.WriteLine($"GameId: {GameId}");
+            
+            if (!string.IsNullOrEmpty(GameId))
             {
                 var gameState = _gameRepositoryDb.GetGameStateByName(GameId);
                 GameBrain = new Brain(gameState);
@@ -57,21 +45,47 @@ public class Game : PageModel
 
             Message = $"Player {GameBrain?.playerNumber} is thinking";
         }
+    }
+
+    public IActionResult OnPostClick(int x, int y, string gameId)
+    {
         
+        var gameState = _gameRepositoryDb.GetGameStateByName(gameId);
+        GameBrain = new Brain(gameState);
+        
+        bool madeMove = GameBrain.placeChip(x, y);
+        if (madeMove)
+        {
+            GameBrain.SaveGame(gameId);
+            Message = $"Player {GameBrain.playerNumber} is thinking";
+        }
         else
         {
-            Console.WriteLine($"GameId: {gameId}, x: {x}, y: {y}");
-
-            var gameState = _gameRepositoryDb.GetGameStateByName(gameId);
-            GameBrain = new Brain(gameState);
-            GameBrain.placeChip(x.Value, y.Value);
-            GameBrain.SaveGame(gameId);
-        
-            Message = $"Player {GameBrain?.playerNumber} is thinking";
+            Message = "You can't place here";
         }
+        
+        return Page();
     }
     
-    
+    public IActionResult OnPostMoveBoard(string direction, string gameId)
+    {
+        GameBrain = new Brain(_gameRepositoryDb.GetGameStateByName(gameId));
+        
+        Console.WriteLine(GameBrain.playerNumber);
+        bool madeMove = GameBrain.moveMovableBoard(direction);
+        if (madeMove)
+        {
+            GameBrain.SaveGame(GameId);
+            Console.WriteLine(GameBrain.playerNumber);
+        }
+        else
+        {
+            Message = "You can't move there";
+        }
+        
+
+        return Page();
+    }
     
     public List<List<int>> ConvertToList(int[,] matrix)
     {
