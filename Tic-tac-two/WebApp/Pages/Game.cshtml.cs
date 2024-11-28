@@ -52,6 +52,11 @@ public class Game : PageModel
         
         var gameState = _gameRepositoryDb.GetGameStateByName(gameId);
         GameBrain = new Brain(gameState);
+
+        if (GameBrain.player1Options && x == 1 && y == 1 && GameBrain.playerNumber == 1)
+        {
+            Message = "Place your piece where you want";
+        }
         
         bool madeMove = GameBrain.placeChip(x, y);
         if (madeMove)
@@ -84,6 +89,24 @@ public class Game : PageModel
         }
         
 
+        return Page();
+    }
+    
+    public IActionResult OnPostMovePiece(int sourceX, int sourceY, int targetX, int targetY, string gameId)
+    {
+        GameBrain = new Brain(_gameRepositoryDb.GetGameStateByName(gameId));
+    
+        bool moved = GameBrain.moveChip(sourceX, sourceY, targetX, targetY);
+        if (moved)
+        {
+            GameBrain.SaveGame(gameId);
+            Message = $"Player {GameBrain.playerNumber} moved a piece.";
+        }
+        else
+        {
+            Message = "Invalid move.";
+        }
+    
         return Page();
     }
     

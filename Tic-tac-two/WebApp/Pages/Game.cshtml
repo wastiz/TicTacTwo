@@ -1,6 +1,8 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model WebApp.Pages.Game
 
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
 <div class="container mt-4">
     <h1 class="mb-5">Tic-Tac-Two</h1>
     @if (Model.GameBrain.win == 3)
@@ -17,58 +19,56 @@
         </a>
     }
     else
-    { 
-        <p>@Model.Message</p>
+    {
+        <p class="handler-text">@Model.Message</p>
         <div class="row">
             <div class="col-6">
-
                 <form method="post">
                     <div class="d-flex flex-wrap position-relative" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
-
                         @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
                         {
-                        for (int j = 0; j < Model.GameBrain.boardWidth; j++)
-                        {
-                        bool isInsideMovableGrid = i >= Model.GameBrain.gridX && i < Model.GameBrain.gridX + 3 &&
-                        j >= Model.GameBrain.gridY && j < Model.GameBrain.gridY + 3;
+                            for (int j = 0; j < Model.GameBrain.boardWidth; j++)
+                            {
+                                bool isInsideMovableGrid = i >= Model.GameBrain.gridY && i < Model.GameBrain.gridY + 3 &&
+                                                           j >= Model.GameBrain.gridX && j < Model.GameBrain.gridX + 3;
 
-                        <button type="submit"
-                                class="btn btn-outline-primary border position-relative"
-                                style="width: 80px; height: 80px; font-size: 24px;"
-                                name="x"
-                                value="@i"
-                                formaction="?handler=Click&x=@i&y=@j&gameId=@Model.GameId"
-                                @(isInsideMovableGrid ? "" : "disabled")>
-                            @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
-                            {
-                            @:X
+                                bool isMovable = false;
+                                if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1 && Model.GameBrain.player1Options)
+                                {
+                                    isMovable = true;
+                                }
+                                else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2 && Model.GameBrain.player2Options)
+                                {
+                                    isMovable = true;
+                                }
+
+                                <button type="submit"
+                                        class="btn btn-outline-primary border game-cell"
+                                        style="width: 80px; height: 80px; font-size: 24px;"
+                                        id="piece-@i-@j"
+                                        data-x="@i"
+                                        data-y="@j"
+                                        @(isInsideMovableGrid ? "" : "disabled")
+                                        formaction="?handler=Click&x=@i&y=@j&gameId=@Model.GameId">
+                                    @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
+                                    {
+                                        @:X
+                                    }
+                                    else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
+                                    {
+                                        @:O
+                                    }
+                                </button>
                             }
-                            else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
-                            {
-                            @:O
-                            }
-                            else
-                            {
-                            @:
-                            }
-                        </button>
-                        }
                         }
 
-                        <div class="movable-grid" style="
-                            width: 240px;
-                            height: 240px;
-                            border: 3px solid red;
-                            position: absolute;
-                            top: @(Model.GameBrain.gridX * 80)px;
-                            left: @(Model.GameBrain.gridY * 80)px;
-                            pointer-events: none;">
+                        <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; top: @(Model.GameBrain.gridY * 80)px; left: @(Model.GameBrain.gridX * 80)px; pointer-events: none;">
                         </div>
                     </div>
 
                     @if ((Model.GameBrain.playerNumber == 1 && Model.GameBrain.player1Options) || (Model.GameBrain.playerNumber == 2 && Model.GameBrain.player2Options))
                     {
-                        <div>
+                        <div class="mt-5">
                             <p>Player @Model.GameBrain.playerNumber, you can move board (in directions below) or move your chip or place chip</p>
                         </div>
                         <button formaction="?handler=MoveBoard&direction=up&gameId=@Model.GameId">Up</button>
@@ -81,10 +81,7 @@
                         <button formaction="?handler=MoveBoard&direction=down-right&gameId=@Model.GameId">Down-Right</button>
                     }
                 </form>
-                
             </div>
-
-
 
             <div class="col-6 justify-content-end">
                 <a asp-page="/NewGame">
@@ -94,3 +91,41 @@
         </div>
     }
 </div>
+
+@* <script> *@
+@*     let selectedPiece = null; *@
+@* *@
+@*     // Функция, которая будет вызываться при клике на фишку *@
+@*     function selectPiece(event, x, y) { *@
+@*         // Если уже есть выбранная фишка, отменяем её выбор *@
+@*         if (selectedPiece) { *@
+@*             selectedPiece.classList.remove("selected"); *@
+@*         } *@
+@* *@
+@*         // Помечаем текущую фишку как выбранную *@
+@*         selectedPiece = event.target; *@
+@*         selectedPiece.classList.add("selected"); *@
+@*         document.querySelector('.handler-text').innerText = "Click on an empty cell to move the piece."; *@
+@*         selectedPiece.dataset.selected = "true"; *@
+@*     } *@
+@* *@
+@*     // Функция для перемещения фишки на новое место *@
+@*     function movePiece(event, x, y) { *@
+@*         // Проверяем, что место пустое и фишка выбрана *@
+@*         if (!event.target.classList.contains('selected') && selectedPiece) { *@
+@*             const targetX = event.target.dataset.x; *@
+@*             const targetY = event.target.dataset.y; *@
+@* *@
+@*             if (targetX && targetY && selectedPiece.dataset.selected) { *@
+@*                 // Отправляем запрос на сервер для перемещения фишки *@
+@*                 fetch(`/Game?handler=MovePiece&sourceX=${selectedPiece.dataset.x}&sourceY=${selectedPiece.dataset.y}&targetX=${targetX}&targetY=${targetY}&gameId=${document.getElementById('gameId').value}`, { *@
+@*                     method: 'POST' *@
+@*                 }).then(response => response.text()) *@
+@*                     .then(data => { *@
+@*                         location.reload(); *@
+@*                     }) *@
+@*                     .catch(error => console.error('Error:', error)); *@
+@*             } *@
+@*         } *@
+@*     } *@
+@* </script> *@

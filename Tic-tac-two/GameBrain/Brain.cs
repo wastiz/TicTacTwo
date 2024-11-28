@@ -157,10 +157,13 @@ namespace GameBrain
             return false;
         }
 
-        public bool moveChip(int x1, int y1, int x2, int y2)
+        public bool moveChip(int sourceX, int sourceY, int targetX, int targetY)
         {
-            if (board[x1, y1] == 1 && board[x2, y2] == 2)
+            if (board[sourceX, sourceY] == playerNumber && board[targetX, targetY] == 0)
             {
+                board[targetX, targetY] = playerNumber;
+                board[sourceX, sourceY] = 0;
+                playerNumber = playerNumber == 1 ? 2 : 1;
                 return true;
             }
             return false;
