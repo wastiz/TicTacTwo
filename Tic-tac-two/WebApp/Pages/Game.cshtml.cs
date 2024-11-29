@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 public class Game : PageModel
 {
     [BindProperty(SupportsGet = true)] public string GameId { get; set; }
+    public int[]? replacingChip { get; set; } = null;
+    public bool replacing { get; set; } = false;
     
     public Brain GameBrain { get; set; }
     private readonly ConfigRepositoryDb _configRepositoryDb;
@@ -49,28 +51,57 @@ public class Game : PageModel
 
     public IActionResult OnPostClick(int x, int y, string gameId)
     {
-        
         var gameState = _gameRepositoryDb.GetGameStateByName(gameId);
         GameBrain = new Brain(gameState);
-
-        if (GameBrain.player1Options && x == 1 && y == 1 && GameBrain.playerNumber == 1)
-        {
-            Message = "Place your piece where you want";
-        }
         
-        bool madeMove = GameBrain.placeChip(x, y);
-        if (madeMove)
+        replacing = TempData["replacing"] as bool? ?? false;
+
+        if (replacingChip == null && !replacing)
         {
-            GameBrain.SaveGame(gameId);
-            Message = $"Player {GameBrain.playerNumber} is thinking";
+            if ((GameBrain.player1Options && GameBrain.playerNumber == 1 && GameBrain.board[x, y] == 1) ||
+                (GameBrain.player2Options && GameBrain.playerNumber == 2 && GameBrain.board[x, y] == 2))
+            {
+                replacingChip = new[] { x, y };
+                replacing = true;
+                Message = "Place your piece where you want";
+            }
+            else
+            {
+                bool madeMove = GameBrain.placeChip(x, y);
+                if (madeMove)
+                {
+                    GameBrain.SaveGame(gameId);
+                    Message = $"Player {GameBrain.playerNumber} is thinking";
+                }
+                else
+                {
+                    Message = "You can't place here";
+                }
+            }
         }
         else
         {
-            Message = "You can't place here";
+            bool madeMove = GameBrain.moveChip(replacingChip[0], replacingChip[1], x, y);
+            replacingChip = null;
+            replacing = false;
+            if (madeMove)
+            {
+                GameBrain.SaveGame(gameId);
+                Message = $"Player {GameBrain.playerNumber} is thinking";
+            }
+            else
+            {
+                Message = "You can't place here";
+            }
         }
         
+        TempData["replacing"] = replacing;
+        TempData["replacingChip"] = replacingChip;
+
         return Page();
     }
+
+
     
     public IActionResult OnPostMoveBoard(string direction, string gameId)
     {

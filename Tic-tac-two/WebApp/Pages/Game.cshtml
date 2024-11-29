@@ -92,40 +92,6 @@
     }
 </div>
 
-@* <script> *@
-@*     let selectedPiece = null; *@
-@* *@
-@*     // Функция, которая будет вызываться при клике на фишку *@
-@*     function selectPiece(event, x, y) { *@
-@*         // Если уже есть выбранная фишка, отменяем её выбор *@
-@*         if (selectedPiece) { *@
-@*             selectedPiece.classList.remove("selected"); *@
-@*         } *@
-@* *@
-@*         // Помечаем текущую фишку как выбранную *@
-@*         selectedPiece = event.target; *@
-@*         selectedPiece.classList.add("selected"); *@
-@*         document.querySelector('.handler-text').innerText = "Click on an empty cell to move the piece."; *@
-@*         selectedPiece.dataset.selected = "true"; *@
-@*     } *@
-@* *@
-@*     // Функция для перемещения фишки на новое место *@
-@*     function movePiece(event, x, y) { *@
-@*         // Проверяем, что место пустое и фишка выбрана *@
-@*         if (!event.target.classList.contains('selected') && selectedPiece) { *@
-@*             const targetX = event.target.dataset.x; *@
-@*             const targetY = event.target.dataset.y; *@
-@* *@
-@*             if (targetX && targetY && selectedPiece.dataset.selected) { *@
-@*                 // Отправляем запрос на сервер для перемещения фишки *@
-@*                 fetch(`/Game?handler=MovePiece&sourceX=${selectedPiece.dataset.x}&sourceY=${selectedPiece.dataset.y}&targetX=${targetX}&targetY=${targetY}&gameId=${document.getElementById('gameId').value}`, { *@
-@*                     method: 'POST' *@
-@*                 }).then(response => response.text()) *@
-@*                     .then(data => { *@
-@*                         location.reload(); *@
-@*                     }) *@
-@*                     .catch(error => console.error('Error:', error)); *@
-@*             } *@
-@*         } *@
-@*     } *@
-@* </script> *@
+<script>
+    
+</script>
