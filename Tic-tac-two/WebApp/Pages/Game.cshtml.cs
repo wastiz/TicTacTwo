@@ -88,7 +88,7 @@ public class Game : PageModel
         
         GameBrain.SaveGame(request.GameId);
         
-        return new JsonResult(new { message, board = GameBrain.board });
+        return new JsonResult(new { message, board = ConvertToList(GameBrain.board) });
     }
 
     public class MoveRequest

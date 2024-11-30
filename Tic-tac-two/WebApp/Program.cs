@@ -1,5 +1,7 @@
+using System.Text.Json;
 using DAL;
 using GameBrain;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 // Set up App Config
@@ -20,7 +22,14 @@ builder.Services.AddScoped<Brain>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(o =>
+{
+    o.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+});
+
+builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+);
 
 var app = builder.Build();
 

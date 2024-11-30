@@ -37,6 +37,7 @@
                                     style="width: 80px; height: 80px; font-size: 24px;"
                                     data-x="@i"
                                     data-y="@j"
+                                    id="piece-@i-@j"
                                     @(isInsideMovableGrid ? "" : "disabled")
                                     onclick="handleCellClick(@i, @j)">
                                 @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
@@ -61,14 +62,14 @@
                         <div class="mt-5">
                             <p>Player @Model.GameBrain.playerNumber, you can move board (in directions below) or move your chip or place chip</p>
                         </div>
-                        <button formaction="?handler=MoveBoard&direction=up&gameId=@Model.GameId">Up</button>
-                        <button formaction="?handler=MoveBoard&direction=down&gameId=@Model.GameId">Down</button>
-                        <button formaction="?handler=MoveBoard&direction=left&gameId=@Model.GameId">Left</button>
-                        <button formaction="?handler=MoveBoard&direction=right&gameId=@Model.GameId">Right</button>
-                        <button formaction="?handler=MoveBoard&direction=up-left&gameId=@Model.GameId">Up-Left</button>
-                        <button formaction="?handler=MoveBoard&direction=up-right&gameId=@Model.GameId">Up-Right</button>
-                        <button formaction="?handler=MoveBoard&direction=down-left&gameId=@Model.GameId">Down-left</button>
-                        <button formaction="?handler=MoveBoard&direction=down-right&gameId=@Model.GameId">Down-Right</button>
+                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=up&gameId=@Model.GameId">Up</button>
+                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=down&gameId=@Model.GameId">Down</button>
+                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=left&gameId=@Model.GameId">Left</button>
+                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=right&gameId=@Model.GameId">Right</button>
+                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=up-left&gameId=@Model.GameId">Up-Left</button>
+                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=up-right&gameId=@Model.GameId">Up-Right</button>
+                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=down-left&gameId=@Model.GameId">Down-left</button>
+                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=down-right&gameId=@Model.GameId">Down-Right</button>
                     }
             </div>
 
