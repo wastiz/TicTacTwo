@@ -49,56 +49,53 @@ public class Game : PageModel
         }
     }
 
-    public IActionResult OnPostClick(int x, int y, string gameId)
+    [HttpPost]
+    public IActionResult OnPostClick([FromBody] MoveRequest request)
     {
-        var gameState = _gameRepositoryDb.GetGameStateByName(gameId);
-        GameBrain = new Brain(gameState);
+        var gameState = _gameRepositoryDb.GetGameStateByName(request.GameId);
+        if (gameState == null)
+        {
+            return BadRequest("Game not found.");
+        }
         
-        replacing = TempData["replacing"] as bool? ?? false;
+        GameBrain = new Brain(gameState);
+
+        bool madeMove;
+        string message;
 
         if (replacingChip == null && !replacing)
         {
-            if ((GameBrain.player1Options && GameBrain.playerNumber == 1 && GameBrain.board[x, y] == 1) ||
-                (GameBrain.player2Options && GameBrain.playerNumber == 2 && GameBrain.board[x, y] == 2))
+            if ((GameBrain.player1Options && GameBrain.playerNumber == 1 && GameBrain.board[request.X, request.Y] == 1) ||
+                (GameBrain.player2Options && GameBrain.playerNumber == 2 && GameBrain.board[request.X, request.Y] == 2))
             {
-                replacingChip = new[] { x, y };
+                replacingChip = new[] { request.X, request.Y };
                 replacing = true;
-                Message = "Place your piece where you want";
+                message = "Place your piece where you want";
             }
             else
             {
-                bool madeMove = GameBrain.placeChip(x, y);
-                if (madeMove)
-                {
-                    GameBrain.SaveGame(gameId);
-                    Message = $"Player {GameBrain.playerNumber} is thinking";
-                }
-                else
-                {
-                    Message = "You can't place here";
-                }
+                madeMove = GameBrain.placeChip(request.X, request.Y);
+                message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "You can't place here";
             }
         }
         else
         {
-            bool madeMove = GameBrain.moveChip(replacingChip[0], replacingChip[1], x, y);
+            madeMove = GameBrain.moveChip(replacingChip[0], replacingChip[1], request.X, request.Y);
             replacingChip = null;
             replacing = false;
-            if (madeMove)
-            {
-                GameBrain.SaveGame(gameId);
-                Message = $"Player {GameBrain.playerNumber} is thinking";
-            }
-            else
-            {
-                Message = "You can't place here";
-            }
+            message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "You can't place here";
         }
         
-        TempData["replacing"] = replacing;
-        TempData["replacingChip"] = replacingChip;
+        GameBrain.SaveGame(request.GameId);
+        
+        return new JsonResult(new { message, board = GameBrain.board });
+    }
 
-        return Page();
+    public class MoveRequest
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public string GameId { get; set; }
     }
 
 

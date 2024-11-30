@@ -23,48 +23,38 @@
         <p class="handler-text">@Model.Message</p>
         <div class="row">
             <div class="col-6">
-                <form method="post">
-                    <div class="d-flex flex-wrap position-relative" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
-                        @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
+                <div class="d-flex flex-wrap position-relative" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
+                    
+                    @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
+                    {
+                        for (int j = 0; j < Model.GameBrain.boardWidth; j++)
                         {
-                            for (int j = 0; j < Model.GameBrain.boardWidth; j++)
-                            {
-                                bool isInsideMovableGrid = i >= Model.GameBrain.gridY && i < Model.GameBrain.gridY + 3 &&
-                                                           j >= Model.GameBrain.gridX && j < Model.GameBrain.gridX + 3;
+                            bool isInsideMovableGrid = i >= Model.GameBrain.gridY && i < Model.GameBrain.gridY + 3 &&
+                                                       j >= Model.GameBrain.gridX && j < Model.GameBrain.gridX + 3;
 
-                                bool isMovable = false;
-                                if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1 && Model.GameBrain.player1Options)
+                            <button type="button"
+                                    class="btn btn-outline-primary border game-cell"
+                                    style="width: 80px; height: 80px; font-size: 24px;"
+                                    data-x="@i"
+                                    data-y="@j"
+                                    @(isInsideMovableGrid ? "" : "disabled")
+                                    onclick="handleCellClick(@i, @j)">
+                                @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
                                 {
-                                    isMovable = true;
+                                    @:X
                                 }
-                                else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2 && Model.GameBrain.player2Options)
+                                else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
                                 {
-                                    isMovable = true;
+                                    @:O
                                 }
-
-                                <button type="submit"
-                                        class="btn btn-outline-primary border game-cell"
-                                        style="width: 80px; height: 80px; font-size: 24px;"
-                                        id="piece-@i-@j"
-                                        data-x="@i"
-                                        data-y="@j"
-                                        @(isInsideMovableGrid ? "" : "disabled")
-                                        formaction="?handler=Click&x=@i&y=@j&gameId=@Model.GameId">
-                                    @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
-                                    {
-                                        @:X
-                                    }
-                                    else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
-                                    {
-                                        @:O
-                                    }
-                                </button>
-                            }
+                            </button>
                         }
+                    }
 
-                        <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; top: @(Model.GameBrain.gridY * 80)px; left: @(Model.GameBrain.gridX * 80)px; pointer-events: none;">
-                        </div>
+
+                    <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; top: @(Model.GameBrain.gridY * 80)px; left: @(Model.GameBrain.gridX * 80)px; pointer-events: none;">
                     </div>
+                </div>
 
                     @if ((Model.GameBrain.playerNumber == 1 && Model.GameBrain.player1Options) || (Model.GameBrain.playerNumber == 2 && Model.GameBrain.player2Options))
                     {
@@ -80,7 +70,6 @@
                         <button formaction="?handler=MoveBoard&direction=down-left&gameId=@Model.GameId">Down-left</button>
                         <button formaction="?handler=MoveBoard&direction=down-right&gameId=@Model.GameId">Down-Right</button>
                     }
-                </form>
             </div>
 
             <div class="col-6 justify-content-end">
@@ -93,5 +82,41 @@
 </div>
 
 <script>
-    
+    async function handleCellClick(x, y) {
+        const gameId = '@Model.GameId';
+
+        try {
+            const response = await fetch('/Game?handler=Click', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ x: x, y: y, gameId: gameId })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            console.log(data);
+
+            if (data.message) {
+                document.querySelector('.handler-text').innerText = data.message;
+            }
+            
+            updateBoard(data.board);
+        } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+        }
+    }
+
+    function updateBoard(board) {
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                const cell = document.querySelector(`#piece-${i}-${j}`);
+                cell.innerText = board[i][j] === 1 ? 'X' : board[i][j] === 2 ? 'O' : '';
+            }
+        }
+    }
 </script>

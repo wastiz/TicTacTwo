@@ -1,0 +1,54 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome @Model.Name</h1>
+</div>
+
+<h2>Login</h2>
+
+<form id="loginForm">
+    <label for="Username">Username</label>
+    <input type="text" id="Username" name="Username" />
+
+    <label for="Password">Password</label>
+    <input type="password" id="Password" name="Password" />
+
+    <button type="submit">Submit</button>
+</form>
+
+<div id="responseDiv"></div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById('Username').value;
+        const password = document.getElementById('Password').value;
+
+        fetch('/Index?handler=OnPost', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+
+
+
+
