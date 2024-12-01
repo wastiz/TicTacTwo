@@ -39,6 +39,7 @@ namespace GameBrain
             chipsLeft = config.ChipsCount;
             chipsToOptions = config.ChipsToOptions;
             gameConfig = config;
+            win = 0;
         }
         
         public Brain(GameState state)
@@ -67,6 +68,7 @@ namespace GameBrain
             chipsLeft = state.ChipsLeft;
             chipsToOptions = state.GameConfig.ChipsToOptions;
             gameConfig = state.GameConfig;
+            win = state.Win;
         }
         
         public void CheckForWinner()

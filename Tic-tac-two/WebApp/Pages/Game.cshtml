@@ -2,7 +2,6 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model WebApp.Pages.Game
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
 <div class="container mt-4">
     <h1 class="mb-5">Tic-Tac-Two</h1>
     @if (Model.GameBrain.win == 3)
@@ -37,9 +36,10 @@
                                     style="width: 80px; height: 80px; font-size: 24px;"
                                     data-x="@i"
                                     data-y="@j"
+                                    data-number="@Model.GameBrain.board[i, j]"
                                     id="piece-@i-@j"
                                     @(isInsideMovableGrid ? "" : "disabled")
-                                    onclick="handleCellClick(@i, @j)">
+                                    onclick="handleCellClick(@i, @j, this)">
                                 @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
                                 {
                                     @:X
@@ -56,21 +56,22 @@
                     <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; top: @(Model.GameBrain.gridY * 80)px; left: @(Model.GameBrain.gridX * 80)px; pointer-events: none;">
                     </div>
                 </div>
-
+                <div class="options-container">
                     @if ((Model.GameBrain.playerNumber == 1 && Model.GameBrain.player1Options) || (Model.GameBrain.playerNumber == 2 && Model.GameBrain.player2Options))
                     {
                         <div class="mt-5">
                             <p>Player @Model.GameBrain.playerNumber, you can move board (in directions below) or move your chip or place chip</p>
                         </div>
-                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=up&gameId=@Model.GameId">Up</button>
-                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=down&gameId=@Model.GameId">Down</button>
-                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=left&gameId=@Model.GameId">Left</button>
-                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=right&gameId=@Model.GameId">Right</button>
-                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=up-left&gameId=@Model.GameId">Up-Left</button>
-                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=up-right&gameId=@Model.GameId">Up-Right</button>
-                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=down-left&gameId=@Model.GameId">Down-left</button>
-                        <button class="btn btn-primary" formaction="?handler=MoveBoard&direction=down-right&gameId=@Model.GameId">Down-Right</button>
+                        <button class="btn btn-primary">Up</button>
+                        <button class="btn btn-primary">Down</button>
+                        <button class="btn btn-primary">Left</button>
+                        <button class="btn btn-primary">Right</button>
+                        <button class="btn btn-primary">Up-Left</button>
+                        <button class="btn btn-primary">Up-Right</button>
+                        <button class="btn btn-primary">Down-left</button>
+                        <button class="btn btn-primary">Down-Right</button>
                     }
+                </div>
             </div>
 
             <div class="col-6 justify-content-end">
@@ -82,42 +83,204 @@
     }
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
 <script>
-    async function handleCellClick(x, y) {
-        const gameId = '@Model.GameId';
-
-        try {
-            const response = await fetch('/Game?handler=Click', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ x: x, y: y, gameId: gameId })
+    const gameId = '@Model.GameId';
+    const movableGrid = document.querySelector(".movable-grid");
+    const optionsContainer = document.querySelector(".options-container");
+    if (optionsContainer.hasChildNodes()){
+        document.querySelectorAll('.move-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                handleMoveBoard(e.target.dataset.direction);
             });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
+        });
+    }
+    const handlerText = document.querySelector('.handler-text');
+    const cells = document.querySelectorAll('.game-cell');
+    let playerNumber = @Model.GameBrain.playerNumber;
+    let movingChip = false;
+    let chipPosition = [0, 0]
+    
+    async function handleCellClick(x, y, buttonElement) {
+        const number = +buttonElement.dataset.number
+        
+        console.log(buttonElement)
+        console.log(number)
+        console.log(playerNumber)
+        
+        if (number === playerNumber) {
+            movingChip = true;
+            chipPosition = [x, y]
+            buttonElement.dataset.number = 0
+            handlerText.innerText = "Move chip somewhere"
+        } else if (movingChip){
+            const data = await fetchWithHandler('/Game?handler=MoveChip', { startX: chipPosition[0], startY: chipPosition[1], endX: x, endY: y, gameId: gameId });
+            movingChip = false;
+            chipPosition = [0,0]
+            buttonElement.dataset.number = data.board[x][y]
+            handlerText.innerText = data.message
+            updateBoard(data.board)
+        } else {
+            const data = await fetchWithHandler('/Game?handler=Click', { x: x, y: y, gameId: gameId });
             console.log(data);
-
+            buttonElement.dataset.number = data.board[x][y]
+            buttonElement.innerText = data.board[x][y] === 1 ? 'X' : data.board[x][y] === 2 ? 'O' : '';
             if (data.message) {
-                document.querySelector('.handler-text').innerText = data.message;
+                handlerText.innerText = data.message;
             }
-            
-            updateBoard(data.board);
-        } catch (error) {
-            console.error('There has been a problem with your fetch operation:', error);
         }
+    }
+    
+    async function handleMoveBoard (direction) {
+        const data = await fetchWithHandler('/Game?handler=MoveBoard', { direction: direction, gameId: gameId });
+        console.log(data);
+        updateMovableGrid(data.gridX, data.gridY)
+
+        if (data.message) {
+            handlerText.innerText = data.message;
+        }
+    }
+
+    async function fetchWithHandler(url, body) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+            const data = await response.json()
+            checkForWin(data.win)
+            playerNumber = data.playerNumber
+            showOptions(playerNumber, data.player1Options, data.player2Options);
+            return data;
+        } catch (error) {
+            console.error('Fetch error:', error);
+            alert("Something went wrong, please try again.");
+        }
+    }
+    
+    function updateCell(x, y, board){
+        document.querySelector(`#piece-${x}-${y}`).innerText = board[x][y] === 1 ? 'X' : board[x][y] === 2 ? 'O' : '';
     }
 
     function updateBoard(board) {
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[i].length; j++) {
-                const cell = document.querySelector(`#piece-${i}-${j}`);
-                cell.innerText = board[i][j] === 1 ? 'X' : board[i][j] === 2 ? 'O' : '';
+        cells.forEach(cell => {
+            const x = +cell.dataset.x;
+            const y = +cell.dataset.y;
+            cell.innerText = board[x][y] === 1 ? 'X' : board[x][y] === 2 ? 'O' : '';
+        });
+    }
+
+
+    function updateMovableGrid(gridX, gridY) {
+        movableGrid.style.top = 0;
+        movableGrid.style.left = 0;
+        movableGrid.style.transform = `translate(${gridX * 80}px, ${gridY * 80}px)`;
+
+        cells.forEach(cell => {
+            const x = +cell.dataset.x;
+            const y = +cell.dataset.y;
+            const isWithinGrid = x >= gridY && x < gridY + 3 && y >= gridX && y < gridX + 3;
+            cell.disabled = !isWithinGrid;
+        });
+    }
+
+    function checkForWin(win) {
+        if (win === 1) {
+            handlerText.innerText = "Player 1 wins!";
+            disableAllButtons();
+        } else if (win === 2) {
+            handlerText.innerText = "Player 2 wins!";
+            disableAllButtons();
+        } else if (win === 3) {
+            handlerText.innerText = "It's a draw!";
+            disableAllButtons();
+        }
+    }
+
+    function disableAllButtons() {
+        cells.forEach(cell => {
+            cell.disabled = true;
+        });
+    }
+    
+    function showOptions(playerNumber, player1Options, player2Options){
+        optionsContainer.innerHTML = '';
+        if (!optionsContainer.hasChildNodes()){
+            if ((playerNumber === 1 && player1Options) || (playerNumber === 2 && player2Options)) {
+                optionsContainer.innerHTML = `
+                <div class="mt-5">
+                    <p>Player ${playerNumber}, choose an action:</p>
+                    <button class="btn btn-primary move-btn" data-direction="up">Up</button>
+                    <button class="btn btn-primary move-btn" data-direction="down">Down</button>
+                    <button class="btn btn-primary move-btn" data-direction="left">Left</button>
+                    <button class="btn btn-primary move-btn" data-direction="right">Right</button>
+                    <button class="btn btn-primary move-btn" data-direction="up-left">Up-Left</button>
+                    <button class="btn btn-primary move-btn" data-direction="up-right">Up-Right</button>
+                    <button class="btn btn-primary move-btn" data-direction="down-left">Down-Left</button>
+                    <button class="btn btn-primary move-btn" data-direction="down-right">Down-Right</button>
+                </div>
+            `;
+
+                document.querySelectorAll('.move-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        handleMoveBoard(e.target.dataset.direction);
+                    });
+                });
             }
         }
     }
+    
+    @*const movablePiece = document.querySelector("#draggable-piece");
+    gsap.registerPlugin(Draggable);
+
+    Draggable.create(movablePiece, {
+        type: "x,y",
+        bounds: { minX: 0, minY: 0, maxX: 240, maxY: 240 },
+        onDragEnd: function() {
+            snapToGrid(this);
+        }
+    });
+
+    function snapToGrid(draggableElement) {
+        const x = draggableElement.x;
+        const y = draggableElement.y;
+
+        const closestCell = getClosestCell(x, y);
+
+        gsap.to(draggableElement.target, {
+            x: closestCell.x,
+            y: closestCell.y,
+            duration: 0.3,
+            ease: "power2.inOut"
+        });
+
+        updateBoard(closestCell);
+    }
+
+    function getClosestCell(x, y) {
+        let minDist = Infinity;
+        let closestCell = null;
+
+        cells.forEach(cell => {
+            const cellX = cell.offsetLeft + cell.offsetWidth / 2;
+            const cellY = cell.offsetTop + cell.offsetHeight / 2;
+
+            const dist = Math.sqrt(Math.pow(x - cellX, 2) + Math.pow(y - cellY, 2));
+
+            if (dist < minDist) {
+                minDist = dist;
+                closestCell = {
+                    x: cell.offsetLeft,
+                    y: cell.offsetTop,
+                    dataX: cell.dataset.x,
+                    dataY: cell.dataset.y
+                };
+            }
+        });
+
+        return closestCell;
+    }*@
+
 </script>
