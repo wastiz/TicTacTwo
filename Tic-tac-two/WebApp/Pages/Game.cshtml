@@ -3,7 +3,12 @@
 @model WebApp.Pages.Game
 
 <div class="container mt-4">
-    <h1 class="mb-5">Tic-Tac-Two</h1>
+    <h1>Tic-Tac-Two</h1>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 justify-content-end mt-2 mb-2">
+        <a asp-page="/NewGame">
+            <button class="btn btn-primary">Save and back to Menu</button>
+        </a>
+    </div>
     @if (Model.GameBrain.win == 3)
     {
         <h1>It's a draw</h1>
@@ -19,9 +24,11 @@
     }
     else
     {
-        <p class="handler-text">@Model.Message</p>
+        <div id="message-container">
+            <p class="handler-text">@Model.Message</p>
+        </div>
         <div class="row">
-            <div class="col-6">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                 <div class="d-flex flex-wrap position-relative" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
                     
                     @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
@@ -51,10 +58,8 @@
                             </button>
                         }
                     }
-
-
-                    <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; top: @(Model.GameBrain.gridY * 80)px; left: @(Model.GameBrain.gridX * 80)px; pointer-events: none;">
-                    </div>
+                    
+                    <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; pointer-events: none;"></div>
                 </div>
                 <div class="options-container">
                     @if ((Model.GameBrain.playerNumber == 1 && Model.GameBrain.player1Options) || (Model.GameBrain.playerNumber == 2 && Model.GameBrain.player2Options))
@@ -62,29 +67,27 @@
                         <div class="mt-5">
                             <p>Player @Model.GameBrain.playerNumber, you can move board (in directions below) or move your chip or place chip</p>
                         </div>
-                        <button class="btn btn-primary">Up</button>
-                        <button class="btn btn-primary">Down</button>
-                        <button class="btn btn-primary">Left</button>
-                        <button class="btn btn-primary">Right</button>
-                        <button class="btn btn-primary">Up-Left</button>
-                        <button class="btn btn-primary">Up-Right</button>
-                        <button class="btn btn-primary">Down-left</button>
-                        <button class="btn btn-primary">Down-Right</button>
+                        <button class="move-btn btn btn-primary">Up</button>
+                        <button class="move-btn btn btn-primary">Down</button>
+                        <button class="move-btn btn btn-primary">Left</button>
+                        <button class="move-btn btn btn-primary">Right</button>
+                        <button class="move-btn btn btn-primary">Up-Left</button>
+                        <button class="move-btn btn btn-primary">Up-Right</button>
+                        <button class="move-btn btn btn-primary">Down-left</button>
+                        <button class="move-btn btn btn-primary">Down-Right</button>
                     }
                 </div>
-            </div>
-
-            <div class="col-6 justify-content-end">
-                <a asp-page="/NewGame">
-                    <button class="btn btn-primary">Back to Menu</button>
-                </a>
             </div>
         </div>
     }
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
-<script>
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/409445/jquery-3.4.1.min.js"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/409445/verletExpress.js"></script>
+    <script>
     const gameId = '@Model.GameId';
     const movableGrid = document.querySelector(".movable-grid");
     const optionsContainer = document.querySelector(".options-container");
@@ -101,13 +104,15 @@
     let movingChip = false;
     let chipPosition = [0, 0]
     
+    updateMovableGrid(@Model.GameBrain.gridX, @Model.GameBrain.gridY);
+
     async function handleCellClick(x, y, buttonElement) {
         const number = +buttonElement.dataset.number
-        
+
         console.log(buttonElement)
         console.log(number)
         console.log(playerNumber)
-        
+
         if (number === playerNumber) {
             movingChip = true;
             chipPosition = [x, y]
@@ -125,12 +130,9 @@
             console.log(data);
             buttonElement.dataset.number = data.board[x][y]
             buttonElement.innerText = data.board[x][y] === 1 ? 'X' : data.board[x][y] === 2 ? 'O' : '';
-            if (data.message) {
-                handlerText.innerText = data.message;
-            }
         }
     }
-    
+
     async function handleMoveBoard (direction) {
         const data = await fetchWithHandler('/Game?handler=MoveBoard', { direction: direction, gameId: gameId });
         console.log(data);
@@ -150,16 +152,21 @@
             });
             if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
             const data = await response.json()
-            checkForWin(data.win)
-            playerNumber = data.playerNumber
+            playerNumber = data.playerNumber;
+            gridX = data.gridX;
+            gridY = data.gridY;
             showOptions(playerNumber, data.player1Options, data.player2Options);
+            if (data.message) {
+                handlerText.innerText = data.message;
+            }
+            checkForWin(data.win)
             return data;
         } catch (error) {
             console.error('Fetch error:', error);
             alert("Something went wrong, please try again.");
         }
     }
-    
+
     function updateCell(x, y, board){
         document.querySelector(`#piece-${x}-${y}`).innerText = board[x][y] === 1 ? 'X' : board[x][y] === 2 ? 'O' : '';
     }
@@ -174,8 +181,6 @@
 
 
     function updateMovableGrid(gridX, gridY) {
-        movableGrid.style.top = 0;
-        movableGrid.style.left = 0;
         movableGrid.style.transform = `translate(${gridX * 80}px, ${gridY * 80}px)`;
 
         cells.forEach(cell => {
@@ -185,6 +190,38 @@
             cell.disabled = !isWithinGrid;
         });
     }
+
+    @*function updateMovableGrid(direction) {
+
+        switch (direction) {
+            case 'up':
+                Y = -;
+                break;
+            case 'down':
+                translateY = 80;
+                break;
+            case 'left':
+                translateX = -80;
+                break;
+            case 'right':
+                translateX = 80;
+                break;
+            case 'up-left':
+                
+            default:
+                console.warn('Invalid direction');
+                return;
+        }
+
+        movableGrid.style.transform = `translate(${translateX}px, ${translateY}px)`;
+
+        cells.forEach(cell => {
+            const x = +cell.dataset.x;
+            const y = +cell.dataset.y;
+            const isWithinGrid = x >= gridY && x < gridY + 3 && y >= gridX && y < gridX + 3;
+            cell.disabled = !isWithinGrid;
+        });
+    }*@
 
     function checkForWin(win) {
         if (win === 1) {
@@ -203,8 +240,20 @@
         cells.forEach(cell => {
             cell.disabled = true;
         });
+        document.querySelectorAll('.move-btn').forEach(btn => {
+            btn.disabled = true;
+        })
     }
-    
+
+    function setWinScreen () {
+        document.querySelector('#message-container').innerHTML = `
+        <div id="canvas-container-div">
+          <canvas id="canvas"></canvas>
+        </div>
+        `;
+        refresh()
+    }
+
     function showOptions(playerNumber, player1Options, player2Options){
         optionsContainer.innerHTML = '';
         if (!optionsContainer.hasChildNodes()){
@@ -231,7 +280,7 @@
             }
         }
     }
-    
+
     @*const movablePiece = document.querySelector("#draggable-piece");
     gsap.registerPlugin(Draggable);
 
@@ -284,3 +333,4 @@
     }*@
 
 </script>
+}
