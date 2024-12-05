@@ -22,6 +22,7 @@ public class GameRepositoryDb : IStateRepository
             GameConfigJson = JsonSerializer.Serialize(gameState.GameConfig),
             BoardJson = JsonSerializer.Serialize(gameState.Board),
             ChipsLeftJson = JsonSerializer.Serialize(gameState.ChipsLeft),
+            PlayersMovesJson = JsonSerializer.Serialize(gameState.PlayersMoves),
             GridX = gameState.GridX,
             GridY = gameState.GridY,
             PlayerNumber = gameState.PlayerNumber,
@@ -41,6 +42,7 @@ public class GameRepositoryDb : IStateRepository
             GameConfig = config != null ? config : new GameConfiguration(),
             Board = JsonSerializer.Deserialize<int[][]>(gameStateDb.BoardJson) ?? Array.Empty<int[]>(),
             ChipsLeft = JsonSerializer.Deserialize<int[]>(gameStateDb.ChipsLeftJson) ?? Array.Empty<int>(),
+            PlayersMoves = JsonSerializer.Deserialize<int[]>(gameStateDb.PlayersMovesJson) ?? Array.Empty<int>(),
             GridX = gameStateDb.GridX,
             GridY = gameStateDb.GridY,
             PlayerNumber = gameStateDb.PlayerNumber,
@@ -64,6 +66,7 @@ public class GameRepositoryDb : IStateRepository
             existingState.GameConfigJson = gameStateDb.GameConfigJson;
             existingState.BoardJson = gameStateDb.BoardJson;
             existingState.ChipsLeftJson = gameStateDb.ChipsLeftJson;
+            existingState.PlayersMovesJson = gameStateDb.PlayersMovesJson;
             existingState.GridX = gameStateDb.GridX;
             existingState.GridY = gameStateDb.GridY;
             existingState.PlayerNumber = gameStateDb.PlayerNumber;

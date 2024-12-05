@@ -12,6 +12,7 @@ public class GameStateDB
     public string GameConfigJson { get; set; } = default!;
     public string BoardJson { get; set; } = default!;
     public string ChipsLeftJson { get; set; } = default!;
+    public string PlayersMovesJson { get; set; } = default!;
     public int GridX { get; set; }
     public int GridY { get; set; }
     public int PlayerNumber { get; set; } = default!;

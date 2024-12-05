@@ -86,6 +86,10 @@ namespace DAL.Migrations
                     b.Property<int>("PlayerNumber")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("PlayersMovesJson")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("StateName")
                         .IsRequired()
                         .HasColumnType("TEXT");

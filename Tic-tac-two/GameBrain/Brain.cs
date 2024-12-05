@@ -13,6 +13,7 @@ namespace GameBrain
         public int gridX;
         public int gridY;
         public int[] chipsLeft; //chipsLeft[1] - player 1 chips, chipsLeft[2] - player 2 chips
+        public int[] playersMoves;
         public int playerNumber;
         public int chipsToOptions; // How many chips have player to place to get options
         public bool player1Options; // player 1 have more options
@@ -34,6 +35,7 @@ namespace GameBrain
             gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
             gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
             playerNumber = 1;
+            playersMoves = [0, 0, 0];
             player1Options = config.Player1Options;
             player2Options = config.Player2Options;
             chipsLeft = config.ChipsCount;
@@ -66,6 +68,7 @@ namespace GameBrain
             player1Options = state.Player1Options;
             player2Options = state.Player2Options;
             chipsLeft = state.ChipsLeft;
+            playersMoves = state.PlayersMoves;
             chipsToOptions = state.GameConfig.ChipsToOptions;
             gameConfig = state.GameConfig;
             win = state.Win;
@@ -132,15 +135,17 @@ namespace GameBrain
 
         public void CheckForOptions()
         {
-            if (chipsLeft[1] == 2)
+            if (playersMoves[1] == chipsToOptions)
             {
-                Console.WriteLine("1st player");
+                Console.WriteLine(playersMoves[1]);
+                Console.WriteLine(chipsToOptions);
+                Console.WriteLine("got");
                 player1Options = true;
             }
 
-            if (chipsLeft[2] == 2)
+            if (playersMoves[2] == chipsToOptions)
             {
-                Console.WriteLine("2nd player");
+                Console.WriteLine("got2");
                 player2Options = true;
             }
         }
@@ -153,6 +158,7 @@ namespace GameBrain
                 CheckForWinner();
                 chipsLeft[playerNumber]--;
                 CheckForOptions();
+                playersMoves[playerNumber] += 1;
                 playerNumber = playerNumber == 1 ? 2 : 1;
                 return true;
             }
@@ -165,6 +171,7 @@ namespace GameBrain
             {
                 board[targetX, targetY] = playerNumber;
                 board[sourceX, sourceY] = 0;
+                playersMoves[playerNumber] += 1;
                 playerNumber = playerNumber == 1 ? 2 : 1;
                 return true;
             }
@@ -178,6 +185,7 @@ namespace GameBrain
                 board[x, y] = 0;
                 CheckForWinner();
                 chipsLeft[board[x, y]]++;
+                playersMoves[playerNumber] += 1;
                 playerNumber = playerNumber == 1 ? 2 : 1;
                 return true;
             }
@@ -239,6 +247,7 @@ namespace GameBrain
             gridX = newGridX;
             gridY = newGridY;
             
+            playersMoves[playerNumber] += 1;
             playerNumber = playerNumber == 1 ? 2 : 1;
             
             return true;
@@ -264,6 +273,7 @@ namespace GameBrain
                 GridY = gridY,
                 ChipsLeft = chipsLeft,
                 PlayerNumber = playerNumber,
+                PlayersMoves = playersMoves,
                 Player1Options = player1Options,
                 Player2Options = player2Options,
                 Win = win

@@ -40,6 +40,7 @@ namespace DAL.Migrations
                     GameConfigJson = table.Column<string>(type: "TEXT", nullable: false),
                     BoardJson = table.Column<string>(type: "TEXT", nullable: false),
                     ChipsLeftJson = table.Column<string>(type: "TEXT", nullable: false),
+                    PlayersMovesJson = table.Column<string>(type: "TEXT", nullable: false),
                     GridX = table.Column<int>(type: "INTEGER", nullable: false),
                     GridY = table.Column<int>(type: "INTEGER", nullable: false),
                     PlayerNumber = table.Column<int>(type: "INTEGER", nullable: false),

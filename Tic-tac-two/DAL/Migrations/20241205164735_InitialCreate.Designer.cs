@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241129222703_InitialCreate")]
+    [Migration("20241205164735_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -88,6 +88,10 @@ namespace DAL.Migrations
 
                     b.Property<int>("PlayerNumber")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("PlayersMovesJson")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("StateName")
                         .IsRequired()

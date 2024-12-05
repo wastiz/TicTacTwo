@@ -8,6 +8,7 @@ public record struct GameState()
     public int GridX { get; set; } = default!;
     public int GridY { get; set; } = default!;
     public int[] ChipsLeft { get; set; } = default!;
+    public int[] PlayersMoves { get; set; } = default!;
     public int PlayerNumber { get; set; } = default!;
     public bool Player1Options { get; set; } = default!;
     public bool Player2Options { get; set; } = default!;
