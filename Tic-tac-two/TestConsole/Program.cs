@@ -1,27 +1,12 @@
-﻿namespace TestConsole
+﻿using System.Text.Json;
+
+namespace TestConsole
 {
     class Program
     {
         static void Main(string[] args)
         {
-            int[,] board = new int[7, 10];
-            // {
-            //     { 1, 0, 2, 0, 1, 0, 2 },
-            //     { 0, 1, 0, 2, 0, 1, 0 },
-            //     { 2, 0, 1, 0, 2, 0, 1 },
-            //     { 0, 2, 0, 1, 0, 2, 0 },
-            //     { 1, 0, 2, 0, 1, 0, 2 },
-            //     { 0, 1, 0, 2, 0, 1, 0 },
-            //     { 2, 0, 1, 0, 2, 0, 1 }, 
-            //     { 1, 2, 0, 1, 2, 0, 1 }, 
-            //     { 0, 1, 2, 0, 1, 2, 0 }, 
-            //     { 1, 0, 1, 2, 0, 1, 2 }  
-            // };
-
-
-            int[,] movableBoard = new int[3, 3];
-
-            DrawBoard(board, movableBoard);
+            Console.WriteLine(JsonSerializer.Serialize(new int[] { 0, 6, 6 }));
         }
         
         static void DrawBoard(int[,] board, int[,] movableBoard)

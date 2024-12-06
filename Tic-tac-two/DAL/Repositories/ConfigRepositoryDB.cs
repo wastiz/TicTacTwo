@@ -25,9 +25,9 @@
                         BoardSizeHeight = 10,
                         MovableBoardWidth = 5,
                         MovableBoardHeight = 5,
-                        ChipsCount = new int[] { 0, 6, 6 },
+                        ChipsCount = JsonSerializer.Serialize(new int[] { 0, 6, 6 }),
                         WinCondition = 4,
-                        MovePieceAfterNMoves = 3,
+                        OptionsAfterNMoves = 3,
                     },
                 };
                 
@@ -44,7 +44,7 @@
         public List<GameConfiguration> GetAllConfigs()
         {
             return _context.GameConfigurations
-                .Select(dbConfig => DbToDomainConfig(dbConfig))
+                .Select(dbConfig => ConvertFromDbModel(dbConfig))
                 .ToList();
         }
         
@@ -55,12 +55,12 @@
             {
                 throw new KeyNotFoundException($"Configuration '{name}' not found.");
             }
-            return DbToDomainConfig(configDb);
+            return ConvertFromDbModel(configDb);
         }
         
         public void SaveConfiguration(GameConfiguration gameConfiguration)
         {
-            var configDb = DomainToDbConfig(gameConfiguration);
+            var configDb = ConvertToDbModel(gameConfiguration);
             var existingConfig = _context.GameConfigurations.SingleOrDefault(gc => gc.Name == configDb.Name);
 
             if (existingConfig == null)
@@ -87,7 +87,7 @@
             _context.SaveChanges();
         }
         
-        private GameConfiguration DbToDomainConfig(GameConfigurationDB dbConfig)
+        private GameConfiguration ConvertFromDbModel(GameConfigurationDB dbConfig)
         {
             return new GameConfiguration
             {
@@ -96,24 +96,24 @@
                 BoardSizeHeight = dbConfig.BoardSizeHeight,
                 MovableBoardWidth = dbConfig.MovableBoardWidth,
                 MovableBoardHeight = dbConfig.MovableBoardHeight,
-                ChipsCount = JsonSerializer.Deserialize<int[]>(dbConfig.ChipsCountSerialized) ?? Array.Empty<int>(),
+                ChipsCount = JsonSerializer.Deserialize<int[]>(dbConfig.ChipsCount) ?? Array.Empty<int>(),
                 WinCondition = dbConfig.WinCondition,
-                ChipsToOptions = dbConfig.MovePieceAfterNMoves
+                OptionsAfterNMoves = dbConfig.OptionsAfterNMoves
             };
         }
         
-        private GameConfigurationDB DomainToDbConfig(GameConfiguration domainConfig)
+        private GameConfigurationDB ConvertToDbModel(GameConfiguration jsonConfig)
         {
             return new GameConfigurationDB
             {
-                Name = domainConfig.Name,
-                BoardSizeWidth = domainConfig.BoardSizeWidth,
-                BoardSizeHeight = domainConfig.BoardSizeHeight,
-                MovableBoardWidth = domainConfig.MovableBoardWidth,
-                MovableBoardHeight = domainConfig.MovableBoardHeight,
-                ChipsCountSerialized = JsonSerializer.Serialize(domainConfig.ChipsCount),
-                WinCondition = domainConfig.WinCondition,
-                MovePieceAfterNMoves = domainConfig.ChipsToOptions
+                Name = jsonConfig.Name,
+                BoardSizeWidth = jsonConfig.BoardSizeWidth,
+                BoardSizeHeight = jsonConfig.BoardSizeHeight,
+                MovableBoardWidth = jsonConfig.MovableBoardWidth,
+                MovableBoardHeight = jsonConfig.MovableBoardHeight,
+                ChipsCount = JsonSerializer.Serialize(jsonConfig.ChipsCount),
+                WinCondition = jsonConfig.WinCondition,
+                OptionsAfterNMoves = jsonConfig.OptionsAfterNMoves
             };
         }
     }

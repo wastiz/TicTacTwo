@@ -30,7 +30,7 @@ public class ConfigRepositoryJson : IConfigRepository
                     MovableBoardHeight = 5,
                     ChipsCount = new int[] { 0, 6, 6 },
                     WinCondition = 4,
-                    ChipsToOptions = 3,
+                    OptionsAfterNMoves = 3,
                 },
             };
 

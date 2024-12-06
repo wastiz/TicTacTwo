@@ -24,4 +24,12 @@
       <ProjectReference Include="..\GameBrain\GameBrain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Configs\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Configs\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Configs\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Configs\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Configs\Index.cshtml" />
+    </ItemGroup>
+
 </Project>

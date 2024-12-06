@@ -150,7 +150,7 @@ namespace MenuApp
                 MovableBoardHeight = movableBoardHeight,
                 ChipsCount = new int[] { 0, chipsCountX, chipsCountO },
                 WinCondition = winCondition,
-                ChipsToOptions = movePieceAfterNMoves
+                OptionsAfterNMoves = movePieceAfterNMoves
             };
             
             repository.SaveConfiguration(newConfig);

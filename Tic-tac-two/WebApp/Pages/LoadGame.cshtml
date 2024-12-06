@@ -1,0 +1,27 @@
+﻿@page
+@model WebApp.Pages.LoadGame
+
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <form method="post" class="container h-100 d-flex flex-column align-items-center justify-content-center">
+                <div class="row">
+                    @foreach (var confName in Model.Games)
+                    {
+                        <div class="col-12">
+                            <input type="radio" class="btn-check" asp-for="GameName" id="@confName" value="@confName" autocomplete="off">
+                            <label class="btn" for="@confName">@confName</label>
+                        </div>
+                    }
+                    <div class="col-12 mt-5">
+                        <button type="submit" class="btn btn-primary">Start Game</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="col-8 d-flex align-items-center justify-content-center">
+            <img src="img/animation.gif" alt="animation" id="home-animation">
+        </div>
+    </div>
+</div>

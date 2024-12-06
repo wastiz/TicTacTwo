@@ -21,9 +21,9 @@ namespace DAL.Migrations
                     BoardSizeHeight = table.Column<int>(type: "INTEGER", nullable: false),
                     MovableBoardWidth = table.Column<int>(type: "INTEGER", nullable: false),
                     MovableBoardHeight = table.Column<int>(type: "INTEGER", nullable: false),
-                    ChipsCountSerialized = table.Column<string>(type: "TEXT", nullable: false),
+                    ChipsCount = table.Column<string>(type: "TEXT", nullable: false),
                     WinCondition = table.Column<int>(type: "INTEGER", nullable: false),
-                    MovePieceAfterNMoves = table.Column<int>(type: "INTEGER", nullable: false)
+                    OptionsAfterNMoves = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,11 +36,11 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    StateName = table.Column<string>(type: "TEXT", nullable: false),
-                    GameConfigJson = table.Column<string>(type: "TEXT", nullable: false),
-                    BoardJson = table.Column<string>(type: "TEXT", nullable: false),
-                    ChipsLeftJson = table.Column<string>(type: "TEXT", nullable: false),
-                    PlayersMovesJson = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    GameConfig = table.Column<string>(type: "TEXT", nullable: false),
+                    Board = table.Column<string>(type: "TEXT", nullable: false),
+                    ChipsLeft = table.Column<string>(type: "TEXT", nullable: false),
+                    PlayersMoves = table.Column<string>(type: "TEXT", nullable: false),
                     GridX = table.Column<int>(type: "INTEGER", nullable: false),
                     GridY = table.Column<int>(type: "INTEGER", nullable: false),
                     PlayerNumber = table.Column<int>(type: "INTEGER", nullable: false),

@@ -36,13 +36,15 @@ namespace GameBrain
             gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
             playerNumber = 1;
             playersMoves = [0, 0, 0];
-            player1Options = config.Player1Options;
-            player2Options = config.Player2Options;
+            player1Options = false;
+            player2Options = false;
             chipsLeft = config.ChipsCount;
-            chipsToOptions = config.ChipsToOptions;
+            chipsToOptions = config.OptionsAfterNMoves; 
             gameConfig = config;
             win = 0;
         }
+        
+        
         
         public Brain(GameState state)
         {
@@ -69,7 +71,7 @@ namespace GameBrain
             player2Options = state.Player2Options;
             chipsLeft = state.ChipsLeft;
             playersMoves = state.PlayersMoves;
-            chipsToOptions = state.GameConfig.ChipsToOptions;
+            chipsToOptions = state.GameConfig.OptionsAfterNMoves;
             gameConfig = state.GameConfig;
             win = state.Win;
         }

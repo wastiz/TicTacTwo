@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241205164735_InitialCreate")]
+    [Migration("20241206230141_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -31,7 +31,7 @@ namespace DAL.Migrations
                     b.Property<int>("BoardSizeWidth")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ChipsCountSerialized")
+                    b.Property<string>("ChipsCount")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -41,12 +41,12 @@ namespace DAL.Migrations
                     b.Property<int>("MovableBoardWidth")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("MovePieceAfterNMoves")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OptionsAfterNMoves")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("WinCondition")
                         .HasColumnType("INTEGER");
@@ -62,15 +62,15 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("BoardJson")
+                    b.Property<string>("Board")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ChipsLeftJson")
+                    b.Property<string>("ChipsLeft")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("GameConfigJson")
+                    b.Property<string>("GameConfig")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -79,6 +79,10 @@ namespace DAL.Migrations
 
                     b.Property<int>("GridY")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("Player1Options")
                         .HasColumnType("INTEGER");
@@ -89,11 +93,7 @@ namespace DAL.Migrations
                     b.Property<int>("PlayerNumber")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("PlayersMovesJson")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("StateName")
+                    b.Property<string>("PlayersMoves")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

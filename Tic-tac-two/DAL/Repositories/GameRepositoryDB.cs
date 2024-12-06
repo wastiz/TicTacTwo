@@ -18,11 +18,11 @@ public class GameRepositoryDb : IStateRepository
     {
         return new GameStateDB
         {
-            StateName = gameState.StateName,
-            GameConfigJson = JsonSerializer.Serialize(gameState.GameConfig),
-            BoardJson = JsonSerializer.Serialize(gameState.Board),
-            ChipsLeftJson = JsonSerializer.Serialize(gameState.ChipsLeft),
-            PlayersMovesJson = JsonSerializer.Serialize(gameState.PlayersMoves),
+            Name = gameState.StateName,
+            GameConfig = JsonSerializer.Serialize(gameState.GameConfig),
+            Board = JsonSerializer.Serialize(gameState.Board),
+            ChipsLeft = JsonSerializer.Serialize(gameState.ChipsLeft),
+            PlayersMoves = JsonSerializer.Serialize(gameState.PlayersMoves),
             GridX = gameState.GridX,
             GridY = gameState.GridY,
             PlayerNumber = gameState.PlayerNumber,
@@ -34,15 +34,15 @@ public class GameRepositoryDb : IStateRepository
     
     private GameState ConvertFromDbModel(GameStateDB gameStateDb)
     {
-        var config = JsonSerializer.Deserialize<GameConfiguration>(gameStateDb.GameConfigJson);
+        var config = JsonSerializer.Deserialize<GameConfiguration>(gameStateDb.GameConfig);
         
         return new GameState
         {
-            StateName = gameStateDb.StateName,
+            StateName = gameStateDb.Name,
             GameConfig = config != null ? config : new GameConfiguration(),
-            Board = JsonSerializer.Deserialize<int[][]>(gameStateDb.BoardJson) ?? Array.Empty<int[]>(),
-            ChipsLeft = JsonSerializer.Deserialize<int[]>(gameStateDb.ChipsLeftJson) ?? Array.Empty<int>(),
-            PlayersMoves = JsonSerializer.Deserialize<int[]>(gameStateDb.PlayersMovesJson) ?? Array.Empty<int>(),
+            Board = JsonSerializer.Deserialize<int[][]>(gameStateDb.Board) ?? Array.Empty<int[]>(),
+            ChipsLeft = JsonSerializer.Deserialize<int[]>(gameStateDb.ChipsLeft) ?? Array.Empty<int>(),
+            PlayersMoves = JsonSerializer.Deserialize<int[]>(gameStateDb.PlayersMoves) ?? Array.Empty<int>(),
             GridX = gameStateDb.GridX,
             GridY = gameStateDb.GridY,
             PlayerNumber = gameStateDb.PlayerNumber,
@@ -55,7 +55,7 @@ public class GameRepositoryDb : IStateRepository
     public void SaveGameState(GameState gameState)
     {
         var gameStateDb = ConvertToDbModel(gameState);
-        var existingState = _context.GameStates.SingleOrDefault(gs => gs.StateName == gameState.StateName);
+        var existingState = _context.GameStates.SingleOrDefault(gs => gs.Name == gameState.StateName);
 
         if (existingState == null)
         {
@@ -63,10 +63,10 @@ public class GameRepositoryDb : IStateRepository
         }
         else
         {
-            existingState.GameConfigJson = gameStateDb.GameConfigJson;
-            existingState.BoardJson = gameStateDb.BoardJson;
-            existingState.ChipsLeftJson = gameStateDb.ChipsLeftJson;
-            existingState.PlayersMovesJson = gameStateDb.PlayersMovesJson;
+            existingState.GameConfig = gameStateDb.GameConfig;
+            existingState.Board = gameStateDb.Board;
+            existingState.ChipsLeft = gameStateDb.ChipsLeft;
+            existingState.PlayersMoves = gameStateDb.PlayersMoves;
             existingState.GridX = gameStateDb.GridX;
             existingState.GridY = gameStateDb.GridY;
             existingState.PlayerNumber = gameStateDb.PlayerNumber;
@@ -83,7 +83,7 @@ public class GameRepositoryDb : IStateRepository
     
     public void DeleteGameState(string name)
     {
-        var gameState = _context.GameStates.SingleOrDefault(gs => gs.StateName == name);
+        var gameState = _context.GameStates.SingleOrDefault(gs => gs.Name == name);
         if (gameState == null)
         {
             throw new KeyNotFoundException($"Game State '{name}' not found.");
@@ -102,12 +102,12 @@ public class GameRepositoryDb : IStateRepository
 
     public List<string> GetAllStateNames()
     {
-        return _context.GameStates.Select(gs => gs.StateName).ToList();
+        return _context.GameStates.Select(gs => gs.Name).ToList();
     }
 
     public GameState GetGameStateByName(string name)
     {
-        var gameStateDb = _context.GameStates.SingleOrDefault(gs => gs.StateName == name);
+        var gameStateDb = _context.GameStates.SingleOrDefault(gs => gs.Name == name);
 
         if (gameStateDb == null)
         {
@@ -115,5 +115,10 @@ public class GameRepositoryDb : IStateRepository
         }
 
         return ConvertFromDbModel(gameStateDb);
+    }
+
+    public string GetGameIdByName(string name)
+    {
+        return "some str";
     }
 }
