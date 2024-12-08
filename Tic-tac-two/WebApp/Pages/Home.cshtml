@@ -1,9 +1,29 @@
 ﻿@page
 @model WebApp.Pages.Home
 
-<div class="container">
-    <div class="row">
-        <div class="col-4 d-flex flex-column">
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="SaveName">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enter Game Password to connect</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="gamePassword" class="form-control" placeholder="Type here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Continue</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container h-100">
+    <div class="row h-100">
+        <div class="col-4 d-flex flex-column h-100">
             <h2>Tic-Tac-Two</h2>
             <p>Welcome, @Model.Username</p>
             <a asp-page="/NewGame">
@@ -12,12 +32,15 @@
             <a asp-page="/LoadGame">
                 <button class="btn btn-primary mb-2">Load Game</button>
             </a>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Connect to Game
+            </button>
             <a asp-page="GameConfigs">
                 <button class="btn btn-primary mb-2">Game Configurations</button>
             </a>
         </div>
-        <div class="col-8 d-flex align-items-center justify-content-center">
-            <img src="img/animation.gif" alt="animation" id="home-animation">
+        <div class="col-8 h-100 d-flex align-items-center justify-content-center">
+            <img src="img/animation.gif" width="400" height="400" alt="animation" id="home-animation">
         </div>
     </div>
 </div> 
