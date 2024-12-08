@@ -1,10 +1,12 @@
-﻿namespace DAL;
+﻿using DAL.DTO;
+
+namespace DAL;
 
 public interface IStateRepository
 {
-    List<string> GetAllStateNames();
+    List<GameStateDto> GetAllStateDto();
     List<GameState> GetAllGameStates();
-    GameState GetGameStateByName(string name);
+    GameState GetGameStateById(string name);
     void SaveGameState(GameState gameState);
     void DeleteGameState(string stateName);
 }

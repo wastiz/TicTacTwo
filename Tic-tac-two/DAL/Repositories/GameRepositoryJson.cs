@@ -1,4 +1,6 @@
 ﻿using System.Text.Json;
+using DAL.DTO;
+
 namespace DAL;
 
 public class GameRepositoryJson : IStateRepository
@@ -19,7 +21,7 @@ public class GameRepositoryJson : IStateRepository
         };
 
         var configJsonStr = System.Text.Json.JsonSerializer.Serialize(gameState, options);
-        System.IO.File.WriteAllText(FileHelper.BasePath + gameState.StateName + FileHelper.GameExtension, configJsonStr);
+        System.IO.File.WriteAllText(FileHelper.BasePath + gameState.Name + FileHelper.GameExtension, configJsonStr);
     }
 
     public void DeleteGameState(string stateName)
@@ -55,9 +57,9 @@ public class GameRepositoryJson : IStateRepository
         return gameStates;
     }
 
-    public List<string> GetAllStateNames()
+    public List<GameStateDto> GetAllStateDto()
     {
-        List<string> gameNames = new List<string>();
+        List<GameStateDto> gameNames = new List<GameStateDto>();
         var files = System.IO.Directory.GetFiles(FileHelper.BasePath, "*" + FileHelper.GameExtension);
         foreach (var file in files)
         {
@@ -66,13 +68,17 @@ public class GameRepositoryJson : IStateRepository
             
             if (game != null)
             {
-                gameNames.Add(game.StateName);
+                gameNames.Add(new GameStateDto()
+                {
+                    Id = game.Id,
+                    Name = game.Name
+                });
             }
         }
         return gameNames;
     }
 
-    public GameState GetGameStateByName(string name)
+    public GameState GetGameStateById(string name)
     {
         var statePath = FileHelper.BasePath + name + FileHelper.GameExtension;
         

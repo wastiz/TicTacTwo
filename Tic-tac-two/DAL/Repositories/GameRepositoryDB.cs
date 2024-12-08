@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.Json;
 using DAL;
+using DAL.DTO;
 using Microsoft.EntityFrameworkCore;
 
 public class GameRepositoryDb : IStateRepository
@@ -18,8 +19,9 @@ public class GameRepositoryDb : IStateRepository
     {
         return new GameStateDB
         {
-            Name = gameState.StateName,
-            GameConfig = JsonSerializer.Serialize(gameState.GameConfig),
+            Id = gameState.Id,
+            Name = gameState.Name,
+            GameConfigName = JsonSerializer.Serialize(gameState.GameConfig),
             Board = JsonSerializer.Serialize(gameState.Board),
             ChipsLeft = JsonSerializer.Serialize(gameState.ChipsLeft),
             PlayersMoves = JsonSerializer.Serialize(gameState.PlayersMoves),
@@ -34,11 +36,12 @@ public class GameRepositoryDb : IStateRepository
     
     private GameState ConvertFromDbModel(GameStateDB gameStateDb)
     {
-        var config = JsonSerializer.Deserialize<GameConfiguration>(gameStateDb.GameConfig);
+        var config = JsonSerializer.Deserialize<GameConfiguration>(gameStateDb.GameConfigName);
         
         return new GameState
         {
-            StateName = gameStateDb.Name,
+            Id = gameStateDb.Id,
+            Name = gameStateDb.Name,
             GameConfig = config != null ? config : new GameConfiguration(),
             Board = JsonSerializer.Deserialize<int[][]>(gameStateDb.Board) ?? Array.Empty<int[]>(),
             ChipsLeft = JsonSerializer.Deserialize<int[]>(gameStateDb.ChipsLeft) ?? Array.Empty<int>(),
@@ -55,7 +58,7 @@ public class GameRepositoryDb : IStateRepository
     public void SaveGameState(GameState gameState)
     {
         var gameStateDb = ConvertToDbModel(gameState);
-        var existingState = _context.GameStates.SingleOrDefault(gs => gs.Name == gameState.StateName);
+        var existingState = _context.GameStates.SingleOrDefault(gs => gs.Id == gameState.Id);
 
         if (existingState == null)
         {
@@ -63,7 +66,7 @@ public class GameRepositoryDb : IStateRepository
         }
         else
         {
-            existingState.GameConfig = gameStateDb.GameConfig;
+            existingState.GameConfigName = gameStateDb.GameConfigName;
             existingState.Board = gameStateDb.Board;
             existingState.ChipsLeft = gameStateDb.ChipsLeft;
             existingState.PlayersMoves = gameStateDb.PlayersMoves;
@@ -80,13 +83,25 @@ public class GameRepositoryDb : IStateRepository
 
         _context.SaveChanges();
     }
-    
-    public void DeleteGameState(string name)
+
+    public void SaveStateName(string gameId, string name)
     {
-        var gameState = _context.GameStates.SingleOrDefault(gs => gs.Name == name);
+        var existingState = _context.GameStates.SingleOrDefault(gs => gs.Id == gameId);
+        if (existingState == null)
+        {
+            throw new KeyNotFoundException($"Game State '{gameId}' not found.");
+        }
+        existingState.Name = name;
+        _context.Entry(existingState).State = EntityState.Modified;
+        _context.SaveChanges();
+    }
+    
+    public void DeleteGameState(string id)
+    {
+        var gameState = _context.GameStates.SingleOrDefault(gs => gs.Id == id);
         if (gameState == null)
         {
-            throw new KeyNotFoundException($"Game State '{name}' not found.");
+            throw new KeyNotFoundException($"Game State '{id}' not found.");
         }
 
         _context.GameStates.Remove(gameState);
@@ -99,19 +114,26 @@ public class GameRepositoryDb : IStateRepository
             .Select(gsDb => ConvertFromDbModel(gsDb))
             .ToList();
     }
-
-    public List<string> GetAllStateNames()
+    
+    public List<GameStateDto> GetAllStateDto()
     {
-        return _context.GameStates.Select(gs => gs.Name).ToList();
+        return _context.GameStates
+            .Select(gs => new GameStateDto()
+            {
+                Id = gs.Id,
+                Name = gs.Name,
+            })
+            .ToList();
     }
+    
 
-    public GameState GetGameStateByName(string name)
+    public GameState GetGameStateById(string id)
     {
-        var gameStateDb = _context.GameStates.SingleOrDefault(gs => gs.Name == name);
+        var gameStateDb = _context.GameStates.SingleOrDefault(gs => gs.Id == id);
 
         if (gameStateDb == null)
         {
-            throw new KeyNotFoundException($"Game State '{name}' not found.");
+            throw new KeyNotFoundException($"Game State '{id}' not found.");
         }
 
         return ConvertFromDbModel(gameStateDb);
@@ -119,6 +141,12 @@ public class GameRepositoryDb : IStateRepository
 
     public string GetGameIdByName(string name)
     {
-        return "some str";
+        var gameStateDb = _context.GameStates.SingleOrDefault(gs => gs.Name == name);
+        if (gameStateDb == null)
+        {
+            throw new KeyNotFoundException($"Game State '{name}' not found.");
+        }
+
+        return gameStateDb.Id;
     }
 }

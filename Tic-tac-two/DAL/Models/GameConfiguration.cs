@@ -2,6 +2,7 @@
 
 public record struct GameConfiguration()
 {
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = default!;
     public int BoardSizeWidth { get; set; } = 5;
     public int BoardSizeHeight { get; set; } = 5;

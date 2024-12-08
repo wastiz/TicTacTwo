@@ -2,7 +2,8 @@
 
 public record struct GameState()
 {
-    public string StateName { get; set; } = default!;
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public string Name { get; set; } = default!;
     public GameConfiguration GameConfig { get; set; } = default!;
     public int[][] Board { get; set; } = default!;
     public int GridX { get; set; } = default!;
@@ -15,7 +16,7 @@ public record struct GameState()
     public int Win = default!;
 
     public override string ToString() =>
-        $"State Name: {StateName}\n" +
+        $"State Name: {Name}\n" +
         $"Config Name: {GameConfig}\n" +
         $"Board: {Board}\n" +
         $"GridX: {GridX}\n" +

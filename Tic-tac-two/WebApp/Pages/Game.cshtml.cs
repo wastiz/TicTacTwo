@@ -37,7 +37,7 @@ public class Game : PageModel
             
             if (!string.IsNullOrEmpty(GameId))
             {
-                var gameState = _gameRepositoryDb.GetGameStateByName(GameId);
+                var gameState = _gameRepositoryDb.GetGameStateById(GameId);
                 GameBrain = new Brain(gameState);
                 GameBrain.SaveGame(GameId);
             }
@@ -61,7 +61,7 @@ public class Game : PageModel
     [HttpPost]
     public IActionResult OnPostClick([FromBody] PlaceChipRequest request)
     {
-        var gameState = _gameRepositoryDb.GetGameStateByName(request.GameId);
+        var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
         GameBrain = new Brain(gameState);
         
         bool madeMove = GameBrain.placeChip(request.X, request.Y);
@@ -94,7 +94,7 @@ public class Game : PageModel
 
     public IActionResult OnPostMoveChip([FromBody] MoveChipRequest request)
     {
-        var gameState = _gameRepositoryDb.GetGameStateByName(request.GameId);
+        var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
         GameBrain = new Brain(gameState);
         
         bool madeMove = GameBrain.moveChip(request.StartX, request.StartY, request.EndX, request.EndY);
@@ -124,7 +124,7 @@ public class Game : PageModel
     
     public IActionResult OnPostMoveBoard([FromBody] MoveBoardRequest request)
     {
-        GameBrain = new Brain(_gameRepositoryDb.GetGameStateByName(request.GameId));
+        GameBrain = new Brain(_gameRepositoryDb.GetGameStateById(request.GameId));
         string message;
         
         Console.WriteLine(request);
@@ -166,6 +166,20 @@ public class Game : PageModel
             list.Add(row);
         }
         return list;
+    }
+    
+    public IActionResult OnPostSaveName(string gameId, string name)
+    {
+        Console.WriteLine("string name");
+        Console.WriteLine(name);
+        if (string.IsNullOrWhiteSpace(name))
+        {   
+            return RedirectToPage("/NewGame");
+        }
+        
+        _gameRepositoryDb.SaveStateName(GameId, name);
+        
+        return RedirectToPage("/NewGame");
     }
 }
 

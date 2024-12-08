@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class GameConfigurationDB
 {
-    public int Id { get; set; }  // Primary key for EF Core
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = default!;
     public int BoardSizeWidth { get; set; } = 5;
     public int BoardSizeHeight { get; set; } = 5;

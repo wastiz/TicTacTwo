@@ -2,25 +2,47 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model WebApp.Pages.Game
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="SaveName">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Would you like to give a name for save?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="gameId" value="@Model.GameId">
+                    <input type="text" name="name" class="form-control" placeholder="Type here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                </div>
+                <div class="modal-footer">
+                    
+                    <button type="submit" class="btn btn-primary">Continue</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="container mt-4">
     <h1>Tic-Tac-Two</h1>
     <div class="col-12 col-sm-12 col-md-12 col-lg-6 justify-content-end mt-2 mb-2">
-        <a asp-page="/NewGame">
-            <button class="btn btn-primary">Save and back to Menu</button>
-        </a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Save and back to Menu
+        </button>
     </div>
     @if (Model.GameBrain.win == 3)
     {
         <h1>It's a draw</h1>
-        <a asp-page="/NewGame">
-            <button class="btn btn-primary">Back to Menu</button>
-        </a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Save and back to Menu
+        </button>
     } else if (Model.GameBrain.win == 1 || Model.GameBrain.win == 2)
     {
         <h1>Player @Model.GameBrain.win wins!</h1>
-        <a asp-page="/NewGame">
-            <button class="btn btn-primary">Back to Menu</button>
-        </a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Save and back to Menu
+        </button>
     }
     else
     {

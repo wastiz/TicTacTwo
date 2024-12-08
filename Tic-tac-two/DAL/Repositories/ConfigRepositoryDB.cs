@@ -26,7 +26,7 @@
                         MovableBoardWidth = 5,
                         MovableBoardHeight = 5,
                         ChipsCount = JsonSerializer.Serialize(new int[] { 0, 6, 6 }),
-                        WinCondition = 4,
+                        WinCondition = 3,
                         OptionsAfterNMoves = 3,
                     },
                 };

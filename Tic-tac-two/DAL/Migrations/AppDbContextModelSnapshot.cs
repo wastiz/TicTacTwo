@@ -18,9 +18,8 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.GameConfigurationDB", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("BoardSizeHeight")
                         .HasColumnType("INTEGER");
@@ -55,9 +54,8 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.GameStateDB", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Board")
                         .IsRequired()
@@ -67,7 +65,7 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("GameConfig")
+                    b.Property<string>("GameConfigName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

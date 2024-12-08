@@ -33,7 +33,7 @@ namespace MenuApp
             activeOptionIndex = 0;
             menuGuidance = "Choose game configuration or create your own. Press \"Esc\" to exit. Press enter to select an option. Move with arrows";
             optionsArray.Clear();
-            List<string> gameStates = gameRepository.GetAllStateNames();
+            List<string> gameStates = gameRepository.GetAllStateDto();
 
             foreach (var gameState in gameStates)
             {
@@ -242,7 +242,7 @@ namespace MenuApp
         private void StartGameWithState(string stateName)
         {
             exit = true;
-            Brain gameBrain = new Brain(gameRepository.GetGameStateByName(stateName));
+            Brain gameBrain = new Brain(gameRepository.GetGameStateById(stateName));
             Game game = new Game(gameMode, gameBrain);
             game.StartGame();
         }

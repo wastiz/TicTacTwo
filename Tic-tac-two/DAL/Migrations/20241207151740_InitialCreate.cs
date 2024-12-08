@@ -14,8 +14,7 @@ namespace DAL.Migrations
                 name: "GameConfigurations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     BoardSizeWidth = table.Column<int>(type: "INTEGER", nullable: false),
                     BoardSizeHeight = table.Column<int>(type: "INTEGER", nullable: false),
@@ -34,10 +33,9 @@ namespace DAL.Migrations
                 name: "GameStates",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    GameConfigName = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    GameConfig = table.Column<string>(type: "TEXT", nullable: false),
                     Board = table.Column<string>(type: "TEXT", nullable: false),
                     ChipsLeft = table.Column<string>(type: "TEXT", nullable: false),
                     PlayersMoves = table.Column<string>(type: "TEXT", nullable: false),
