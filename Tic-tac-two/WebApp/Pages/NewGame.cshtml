@@ -22,11 +22,11 @@
                         <label class="btn" for="connect">Connect to game</label>
                     </div>
                     <h3>Choose Game Configuration:</h3>
-                    @foreach (var confName in Model.GameConfigs)
+                    @foreach (var configDto in Model.GameConfigs)
                     {
                         <div class="col-12">
-                            <input type="radio" class="btn-check" asp-for="GameConfig" id="@confName" value="@confName" autocomplete="off">
-                            <label class="btn" for="@confName">@confName</label>
+                            <input type="radio" class="btn-check" asp-for="ConfigId" id="@configDto.Id" value="@configDto.Id" autocomplete="off">
+                            <label class="btn" for="@configDto.Id">@configDto.Name</label>
                         </div>
                     }
                     <div class="col-12 mt-5">

@@ -1,4 +1,6 @@
-﻿namespace DAL
+﻿using DAL.DTO;
+
+namespace DAL
 {
     using System.Text.Json;
     public class ConfigRepositoryDb : IConfigRepository
@@ -48,12 +50,23 @@
                 .ToList();
         }
         
-        public GameConfiguration GetConfigurationByName(string name)
+        public List<GameConfigDto> GetAllConfigDto()
         {
-            var configDb = _context.GameConfigurations.SingleOrDefault(gc => gc.Name == name);
+            return _context.GameConfigurations
+                .Select(gs => new GameConfigDto()
+                {
+                    Id = gs.Id,
+                    Name = gs.Name,
+                })
+                .ToList();
+        }
+        
+        public GameConfiguration GetConfigurationById(string id)
+        {
+            var configDb = _context.GameConfigurations.SingleOrDefault(gc => gc.Id == id);
             if (configDb == null)
             {
-                throw new KeyNotFoundException($"Configuration '{name}' not found.");
+                throw new KeyNotFoundException($"Configuration '{id}' not found.");
             }
             return ConvertFromDbModel(configDb);
         }

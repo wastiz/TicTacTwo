@@ -1,14 +1,12 @@
 ﻿namespace DAL;
 
-using System.Text.Json;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 public class GameStateDB
 {
     [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
-    public string GameConfigName { get; set; } = default!;
+    public string GameConfigId { get; set; } = default!;
     public string Name { get; set; } = default!;
     public string Board { get; set; } = default!;
     public string ChipsLeft { get; set; } = default!;

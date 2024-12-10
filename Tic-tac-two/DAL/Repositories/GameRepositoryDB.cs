@@ -21,7 +21,7 @@ public class GameRepositoryDb : IStateRepository
         {
             Id = gameState.Id,
             Name = gameState.Name,
-            GameConfigName = JsonSerializer.Serialize(gameState.GameConfig),
+            GameConfigId = JsonSerializer.Serialize(gameState.GameConfig),
             Board = JsonSerializer.Serialize(gameState.Board),
             ChipsLeft = JsonSerializer.Serialize(gameState.ChipsLeft),
             PlayersMoves = JsonSerializer.Serialize(gameState.PlayersMoves),
@@ -36,7 +36,7 @@ public class GameRepositoryDb : IStateRepository
     
     private GameState ConvertFromDbModel(GameStateDB gameStateDb)
     {
-        var config = JsonSerializer.Deserialize<GameConfiguration>(gameStateDb.GameConfigName);
+        var config = JsonSerializer.Deserialize<GameConfiguration>(gameStateDb.GameConfigId);
         
         return new GameState
         {
@@ -66,7 +66,7 @@ public class GameRepositoryDb : IStateRepository
         }
         else
         {
-            existingState.GameConfigName = gameStateDb.GameConfigName;
+            existingState.GameConfigId = gameStateDb.GameConfigId;
             existingState.Board = gameStateDb.Board;
             existingState.ChipsLeft = gameStateDb.ChipsLeft;
             existingState.PlayersMoves = gameStateDb.PlayersMoves;

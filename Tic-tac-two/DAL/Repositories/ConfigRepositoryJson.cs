@@ -80,9 +80,9 @@ public class ConfigRepositoryJson : IConfigRepository
         return configs;
     }
 
-    public GameConfiguration GetConfigurationByName(string name)
+    public GameConfiguration GetConfigurationById(string id)
     {
-        var configPath = FileHelper.BasePath + name + FileHelper.ConfigExtension;
+        var configPath = FileHelper.BasePath + id + FileHelper.ConfigExtension;
 
         if (System.IO.File.Exists(configPath))
         {
@@ -91,7 +91,7 @@ public class ConfigRepositoryJson : IConfigRepository
             return config;
         }
 
-        throw new FileNotFoundException($"Configuration '{name}' not found.");
+        throw new FileNotFoundException($"Configuration '{id}' not found.");
     }
 
     public void SaveConfiguration(GameConfiguration gameConfiguration)

@@ -1,4 +1,5 @@
 ﻿using DAL;
+using DAL.DTO;
 using GameBrain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,28 +9,31 @@ namespace WebApp.Pages;
 public class NewGame : PageModel
 {
     private ConfigRepositoryDb _configRepository;
-    private GameRepositoryDb _gameRepository;
+    [BindProperty] public string GameMode { get; set; }
+    [BindProperty] public string ConfigId { get; set; }
+    public List<GameConfigDto> GameConfigs { get; set; }
 
     public NewGame(AppDbContext context)
     {
         _configRepository = new ConfigRepositoryDb();
-        _gameRepository = new GameRepositoryDb();
     }
-    
-    public List<string> GameConfigs { get; set; } = new List<string>();
-    public void OnGet() 
+
+    public void OnGet()
     {
-        GameConfigs = _configRepository.GetAllConfigNames();
+        GameConfigs = _configRepository.GetAllConfigDto();
     }
-    [BindProperty] public string GameMode { get; set; }
-    [BindProperty] public string GameConfig { get; set; }
-    public string GameId { get; set; }
 
     public IActionResult OnPost()
     {
-        Brain gameBrain = new Brain(_configRepository.GetConfigurationByName(GameConfig));
-        GameId = Guid.NewGuid().ToString();
-        gameBrain.SaveGame(GameId);
-        return RedirectToPage("/Game", new { gameId = GameId });
+        var selectedConfig = _configRepository.GetConfigurationById(ConfigId);
+        if (selectedConfig != null)
+        {
+            Brain gameBrain = new Brain(selectedConfig);
+            string gameId = Guid.NewGuid().ToString();
+            gameBrain.SaveGame(gameId);
+            return RedirectToPage("/Game", new { gameId = gameId });
+        }
+        
+        return Page();
     }
 }
