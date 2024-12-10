@@ -34,7 +34,7 @@ namespace DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
-                    GameConfigName = table.Column<string>(type: "TEXT", nullable: false),
+                    GameConfigId = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Board = table.Column<string>(type: "TEXT", nullable: false),
                     ChipsLeft = table.Column<string>(type: "TEXT", nullable: false),
@@ -55,8 +55,7 @@ namespace DAL.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
                     Username = table.Column<string>(type: "TEXT", nullable: false),
                     Password = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -64,6 +63,52 @@ namespace DAL.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "GameSessions",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    GameStateId = table.Column<string>(type: "TEXT", nullable: true),
+                    Player1Id = table.Column<string>(type: "TEXT", nullable: true),
+                    Player2Id = table.Column<string>(type: "TEXT", nullable: true),
+                    GameMode = table.Column<string>(type: "TEXT", nullable: false),
+                    GamePassword = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GameSessions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GameSessions_GameStates_GameStateId",
+                        column: x => x.GameStateId,
+                        principalTable: "GameStates",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GameSessions_Users_Player1Id",
+                        column: x => x.Player1Id,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GameSessions_Users_Player2Id",
+                        column: x => x.Player2Id,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GameSessions_GameStateId",
+                table: "GameSessions",
+                column: "GameStateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GameSessions_Player1Id",
+                table: "GameSessions",
+                column: "Player1Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GameSessions_Player2Id",
+                table: "GameSessions",
+                column: "Player2Id");
         }
 
         /// <inheritdoc />
@@ -71,6 +116,9 @@ namespace DAL.Migrations
         {
             migrationBuilder.DropTable(
                 name: "GameConfigurations");
+
+            migrationBuilder.DropTable(
+                name: "GameSessions");
 
             migrationBuilder.DropTable(
                 name: "GameStates");

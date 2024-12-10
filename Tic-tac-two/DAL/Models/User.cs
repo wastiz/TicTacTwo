@@ -2,7 +2,7 @@
 
 public class User
 {
-    public int Id { get; set; }
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Username { get; set; }
     public string Password { get; set; }
 }

@@ -6,12 +6,7 @@ namespace WebApp.Pages;
 
 public class Home : PageModel
 {
-    [BindProperty(SupportsGet = true)]
-    public string Username { get; set; }
-    public IActionResult OnGet()
+    public void OnGet()
     {
-        TempData["Message"] = "Firstly you have to log in or create a new account.";
-        if (Username.IsNullOrEmpty()) return RedirectToPage("/Index");
-        return Page();
     }
 }

@@ -11,15 +11,15 @@
                         <input type="radio" class="btn-check" asp-for="GameMode" id="two-players" value="two-players" autocomplete="off" checked>
                         <label class="btn" for="two-players">Two Player, One Pc</label>
 
-                        <input type="radio" class="btn-check" asp-for="GameMode" id="vs-ai" value="vs-ai" autocomplete="off">
-                        <label class="btn" for="vs-ai">You vs AI</label>
+                        <input type="radio" class="btn-check" asp-for="GameMode" id="two-players-conn" value="two-players-conn" autocomplete="off" disabled>
+                        <label class="btn" for="two-players-conn">Two Players with Connection</label>
                     </div>
                     <div class="col-6">
+                        <input type="radio" class="btn-check" asp-for="GameMode" id="vs-ai" value="vs-ai" autocomplete="off">
+                        <label class="btn" for="vs-ai">You vs AI</label>
+                        
                         <input type="radio" class="btn-check" asp-for="GameMode" id="ai-vs-ai" value="ai-vs-ai" autocomplete="off">
                         <label class="btn" for="ai-vs-ai">AI vs AI</label>
-
-                        <input type="radio" class="btn-check" asp-for="GameMode" id="connect" value="connect" autocomplete="off" disabled>
-                        <label class="btn" for="connect">Connect to game</label>
                     </div>
                     <h3>Choose Game Configuration:</h3>
                     @foreach (var configDto in Model.GameConfigs)

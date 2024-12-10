@@ -12,7 +12,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="gameId" value="@Model.GameId">
+                    <input type="hidden" name="gameId" value="@Model.StateId">
                     <input type="text" name="name" class="form-control" placeholder="Type here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                 </div>
                 <div class="modal-footer">
@@ -110,7 +110,7 @@
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/409445/jquery-3.4.1.min.js"></script>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/409445/verletExpress.js"></script>
     <script>
-    const gameId = '@Model.GameId';
+    const gameId = '@Model.StateId';
     const movableGrid = document.querySelector(".movable-grid");
     const optionsContainer = document.querySelector(".options-container");
     if (optionsContainer.hasChildNodes()){

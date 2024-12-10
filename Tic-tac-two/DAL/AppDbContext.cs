@@ -6,6 +6,8 @@ public class AppDbContext : DbContext
 {
     public DbSet<GameStateDB> GameStates { get; set; } = default!;
     public DbSet<GameConfigurationDB> GameConfigurations { get; set; } = default!;
+    
+    public DbSet<GameSessionDB> GameSessions { get; set; } = default!;
 
     public DbSet<User> Users { get; set; }
     

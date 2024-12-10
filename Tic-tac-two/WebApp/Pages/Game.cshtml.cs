@@ -10,45 +10,27 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 public class Game : PageModel
 {
-    [BindProperty(SupportsGet = true)] public string GameId { get; set; }
-    public int[]? replacingChip { get; set; } = null;
-    public bool replacing { get; set; } = false;
-    
+    [BindProperty(SupportsGet = true)] public string SessionId { get; set; }
+    public string StateId;
     public Brain GameBrain { get; set; }
-    private readonly ConfigRepositoryDb _configRepositoryDb;
     private readonly GameRepositoryDb _gameRepositoryDb;
-
+    private AppDbContext _context;
     [BindProperty] public string Message { get; set; }
     [BindProperty] public int PlayerNumber { get; set; }
 
-    public Game(ConfigRepositoryDb configRepositoryDb, GameRepositoryDb gameRepositoryDb)
+    public Game(AppDbContext context, GameRepositoryDb gameRepositoryDb)
     {
-        _configRepositoryDb = configRepositoryDb;
         _gameRepositoryDb = gameRepositoryDb;
+        _context = context;
     }
     
     
-    public void OnGet(int? x, int? y, string gameId)
+    public void OnGet()
     {
-        
-        if (x == null || y == null || string.IsNullOrEmpty(gameId))
-        {
-            Console.WriteLine($"GameId: {GameId}");
-            
-            if (!string.IsNullOrEmpty(GameId))
-            {
-                var gameState = _gameRepositoryDb.GetGameStateById(GameId);
-                GameBrain = new Brain(gameState);
-                GameBrain.SaveGame(GameId);
-            }
-            else
-            {
-                RedirectToPage("/Error");
-            }
-
-            PlayerNumber = GameBrain.playerNumber;
-            Message = $"Player {GameBrain?.playerNumber} is thinking";
-        }
+        GameSessionDB session = _context.GameSessions.FirstOrDefault(s => s.Id == SessionId);
+        StateId = session.GameStateId;
+        var gameState = _gameRepositoryDb.GetGameStateById(StateId);
+        GameBrain = new Brain(gameState);
     }
     
     public class PlaceChipRequest
@@ -177,7 +159,7 @@ public class Game : PageModel
             return RedirectToPage("/NewGame");
         }
         
-        _gameRepositoryDb.SaveStateName(GameId, name);
+        _gameRepositoryDb.SaveStateName(StateId, name);
         
         return RedirectToPage("/NewGame");
     }

@@ -52,6 +52,38 @@ namespace DAL.Migrations
                     b.ToTable("GameConfigurations");
                 });
 
+            modelBuilder.Entity("DAL.GameSessionDB", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GameMode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GamePassword")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GameStateId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Player1Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Player2Id")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameStateId");
+
+                    b.HasIndex("Player1Id");
+
+                    b.HasIndex("Player2Id");
+
+                    b.ToTable("GameSessions");
+                });
+
             modelBuilder.Entity("DAL.GameStateDB", b =>
                 {
                     b.Property<string>("Id")
@@ -65,7 +97,7 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("GameConfigName")
+                    b.Property<string>("GameConfigId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -102,9 +134,8 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -117,6 +148,27 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("DAL.GameSessionDB", b =>
+                {
+                    b.HasOne("DAL.GameStateDB", "GameState")
+                        .WithMany()
+                        .HasForeignKey("GameStateId");
+
+                    b.HasOne("DAL.User", "Player1")
+                        .WithMany()
+                        .HasForeignKey("Player1Id");
+
+                    b.HasOne("DAL.User", "Player2")
+                        .WithMany()
+                        .HasForeignKey("Player2Id");
+
+                    b.Navigation("GameState");
+
+                    b.Navigation("Player1");
+
+                    b.Navigation("Player2");
                 });
 #pragma warning restore 612, 618
         }

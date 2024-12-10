@@ -37,12 +37,14 @@ public class IndexModel : PageModel
 
         if (existingUser.Password != Password)
         {
-            Message = "Wrong password!";
+            Message = "Wrong username/password!";
             return Page();
         }
 
         Message = "Welcome!";
-        return RedirectToPage("./Home", new { username = Username });
+        TempData["Username"] = existingUser.Username;
+        TempData["UserId"] = existingUser.Id;
+        return RedirectToPage("/Home");
     }
 
 }
