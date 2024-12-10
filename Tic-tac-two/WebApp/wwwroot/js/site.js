@@ -273,6 +273,55 @@ $( window ).on( "load", ()=> {
 
     beginConfetti();
 
+const movablePiece = document.querySelector("#draggable-piece");
+    gsap.registerPlugin(Draggable);
 
+    Draggable.create(movablePiece, {
+        type: "x,y",
+        bounds: { minX: 0, minY: 0, maxX: 240, maxY: 240 },
+        onDragEnd: function() {
+            snapToGrid(this);
+        }
+    });
+
+    function snapToGrid(draggableElement) {
+        const x = draggableElement.x;
+        const y = draggableElement.y;
+
+        const closestCell = getClosestCell(x, y);
+
+        gsap.to(draggableElement.target, {
+            x: closestCell.x,
+            y: closestCell.y,
+            duration: 0.3,
+            ease: "power2.inOut"
+        });
+
+        updateBoard(closestCell);
+    }
+
+    function getClosestCell(x, y) {
+        let minDist = Infinity;
+        let closestCell = null;
+
+        cells.forEach(cell => {
+            const cellX = cell.offsetLeft + cell.offsetWidth / 2;
+            const cellY = cell.offsetTop + cell.offsetHeight / 2;
+
+            const dist = Math.sqrt(Math.pow(x - cellX, 2) + Math.pow(y - cellY, 2));
+
+            if (dist < minDist) {
+                minDist = dist;
+                closestCell = {
+                    x: cell.offsetLeft,
+                    y: cell.offsetTop,
+                    dataX: cell.dataset.x,
+                    dataY: cell.dataset.y
+                };
+            }
+        });
+
+        return closestCell;
+    }
 
 });

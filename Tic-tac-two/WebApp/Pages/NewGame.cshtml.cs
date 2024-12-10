@@ -44,7 +44,18 @@ public class NewGame : PageModel
             gameBrain.SaveGame(gameId);
             _context.GameSessions.Add(newSession);
             _context.SaveChanges();
-            return RedirectToPage("/Game", new { sessionId = sessionId });
+            if (GameMode == "two-players")
+            {
+                return RedirectToPage("/Game" , new { sessionId = sessionId });
+            }
+            else if (GameMode == "two-players-online")
+            {
+                return RedirectToPage("/GameOnline", new { sessionId = sessionId });
+            }
+            else
+            {
+                return Page();
+            }
         }
         
         return Page();

@@ -7,18 +7,18 @@
             <form method="post" class="container h-100 d-flex flex-column align-items-center justify-content-center">
                 <div class="row">
                     <h3>Choose Game Mode:</h3>
-                    <div class="col-6 mb-3">
+                    <div class="col-6 mb-3 d-flex flex-column">
                         <input type="radio" class="btn-check" asp-for="GameMode" id="two-players" value="two-players" autocomplete="off" checked>
-                        <label class="btn" for="two-players">Two Player, One Pc</label>
+                        <label class="btn" for="two-players">Local Game</label>
 
-                        <input type="radio" class="btn-check" asp-for="GameMode" id="two-players-conn" value="two-players-conn" autocomplete="off" disabled>
-                        <label class="btn" for="two-players-conn">Two Players with Connection</label>
+                        <input type="radio" class="btn-check" asp-for="GameMode" id="two-players-online" value="two-players-online" autocomplete="off">
+                        <label class="btn" for="two-players-online">Online Game</label>
                     </div>
-                    <div class="col-6">
-                        <input type="radio" class="btn-check" asp-for="GameMode" id="vs-ai" value="vs-ai" autocomplete="off">
-                        <label class="btn" for="vs-ai">You vs AI</label>
+                    <div class="col-6 d-flex flex-column mb-3">
+                        <input type="radio" class="btn-check" asp-for="GameMode" id="vs-ai" value="vs-ai" autocomplete="off" disabled>
+                        <label class="btn" for="vs-ai">vs AI</label>
                         
-                        <input type="radio" class="btn-check" asp-for="GameMode" id="ai-vs-ai" value="ai-vs-ai" autocomplete="off">
+                        <input type="radio" class="btn-check" asp-for="GameMode" id="ai-vs-ai" value="ai-vs-ai" autocomplete="off" disabled>
                         <label class="btn" for="ai-vs-ai">AI vs AI</label>
                     </div>
                     <h3>Choose Game Configuration:</h3>

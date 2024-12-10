@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 public class Game : PageModel
 {
     [BindProperty(SupportsGet = true)] public string SessionId { get; set; }
+    public GameStateDB Session = 
     public string StateId;
     public Brain GameBrain { get; set; }
     private readonly GameRepositoryDb _gameRepositoryDb;

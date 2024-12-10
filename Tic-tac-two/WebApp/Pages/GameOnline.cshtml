@@ -25,7 +25,7 @@
 </div>
 
 <div class="container mt-4">
-    <h1>Tic-Tac-Two</h1>
+    <h1>Tic-Tac-Two Online</h1>
     <div class="col-12 col-sm-12 col-md-12 col-lg-6 justify-content-end mt-2 mb-2">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Save and back to Menu
@@ -37,6 +37,9 @@
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Save and back to Menu
         </button>
+    } else if (Model.SessionI)
+    {
+        
     } else if (Model.GameBrain.win == 1 || Model.GameBrain.win == 2)
     {
         <h1>Player @Model.GameBrain.win wins!</h1>
