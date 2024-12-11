@@ -8,21 +8,28 @@ namespace WebApp.Pages;
 public class Home : PageModel
 {
     AppDbContext _context;
+    public string UserId { get; set; }
+    public string Username { get; set; }
+    
     public Home(AppDbContext context)
     {
         _context = context;
     }
     public void OnGet()
     {
+        UserId = HttpContext.Session.GetString("UserId");
+        Username = HttpContext.Session.GetString("Username");
     }
 
     public IActionResult OnPostConnect(string sessionId)
     {
-        bool sessionExists = _context.GameSessions.Any(s => s.Id == sessionId);
-        Console.WriteLine($"Session Exists: {sessionExists}, SessionId: {sessionId}");
-        if (sessionExists)
+        var session = _context.GameSessions.FirstOrDefault(s => s.Id == sessionId);
+        if (session != null)
         {   
-            return RedirectToPage("/GameOnline", new { sessionId = sessionId, connected = true });
+            session.Player2Id = HttpContext.Session.GetString("UserId");
+            _context.SaveChanges();
+            
+            return RedirectToPage("/GameOnline", new { sessionId = sessionId });
         }
         return RedirectToPage("/Home");
         

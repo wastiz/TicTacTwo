@@ -42,8 +42,8 @@ public class IndexModel : PageModel
         }
 
         Message = "Welcome!";
-        TempData["Username"] = existingUser.Username;
-        TempData["UserId"] = existingUser.Id;
+        HttpContext.Session.SetString("UserId", existingUser.Id);
+        HttpContext.Session.SetString("Username", existingUser.Username);
         return RedirectToPage("/Home");
     }
 

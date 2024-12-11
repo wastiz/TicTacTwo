@@ -12,11 +12,12 @@ namespace WebApp.Pages
         [BindProperty(SupportsGet = true)] public bool Connected { get; set; }
         public GameSessionDB Session;
         public string StateId;
+        public string UserId;
+        public string Username;
         public Brain GameBrain { get; set; }
         private readonly GameRepositoryDb _gameRepositoryDb;
         private AppDbContext _context;
         [BindProperty] public string Message { get; set; }
-        public string CurrentPlayer { get; set; }
 
         public GameOnline(AppDbContext context, GameRepositoryDb gameRepositoryDb)
         {
@@ -26,36 +27,44 @@ namespace WebApp.Pages
 
         public void OnGet()
         {
-            // Load session and game state
             Session = _context.GameSessions.FirstOrDefault(s => s.Id == SessionId);
-
+    
             if (Session == null)
             {
                 Message = "Game session not found!";
                 return;
             }
-
-            if (Connected && Session.Player2Id == null)
-            {
-                if (TempData["UserId"] != null)
-                {
-                    Session.Player2Id = TempData["UserId"].ToString();
-                    CurrentPlayer = Session.Player1Id;
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    Message = "User ID not found in TempData!";
-                    return;
-                }
-            }
-
+            
             StateId = Session.GameStateId;
             var gameState = _gameRepositoryDb.GetGameStateById(StateId);
+            
+            if (gameState == null)
+            {
+                Message = "Game state not found!";
+                return;
+            }
+
+            UserId = HttpContext.Session.GetString("UserId");
+            Console.WriteLine(UserId);
+            Username = HttpContext.Session.GetString("Username");
+            GameBrain = new Brain(gameState);
+            
+            if (UserId == Session.Player1Id)
+            {
+                ViewData["PlayerRole"] = 1; // Player 1
+            }
+            else if (UserId == Session.Player2Id)
+            {
+                ViewData["PlayerRole"] = 2; // Player 2
+            }
+            else
+            {
+                ViewData["PlayerRole"] = 0; // Наблюдатель или ошибка
+            }
+
             GameBrain = new Brain(gameState);
         }
-
-        // Handling chip placement
+        
         public class PlaceChipRequest
         {
             public int X { get; set; }
@@ -69,8 +78,7 @@ namespace WebApp.Pages
         {
             var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
             GameBrain = new Brain(gameState);
-
-            // Ensure it's the player's turn
+            
             if (GameBrain.playerNumber != request.PlayerNumber)
             {
                 return new JsonResult(new { message = "It's not your turn!" });
@@ -88,13 +96,12 @@ namespace WebApp.Pages
                 message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "You can't place here",
                 board = ConvertToList(GameBrain.board),
                 win = GameBrain.win,
-                playerNumber = GameBrain.playerNumber,
+                currentPlayer = GameBrain.playerNumber == 1 ? Session.Player1Id : Session.Player2Id,
                 gridX = GameBrain.gridX,
                 gridY = GameBrain.gridY
             });
         }
-
-        // Handling chip movement
+        
         public class MoveChipRequest
         {
             public int StartX { get; set; }
@@ -108,8 +115,7 @@ namespace WebApp.Pages
         {
             var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
             GameBrain = new Brain(gameState);
-
-            // Ensure it's the player's turn
+            
             if (GameBrain.playerNumber != request.StartX)
             {
                 return new JsonResult(new { message = "It's not your turn!" });
@@ -132,8 +138,7 @@ namespace WebApp.Pages
                 gridY = GameBrain.gridY,
             });
         }
-
-        // Handling movable board moves
+        
         public class MoveBoardRequest
         {
             public string Direction { get; set; }
@@ -168,8 +173,7 @@ namespace WebApp.Pages
                 gridY = GameBrain.gridY,
             });
         }
-
-        // Convert game board array to list
+        
         public List<List<int>> ConvertToList(int[,] matrix)
         {
             var list = new List<List<int>>();
@@ -184,8 +188,7 @@ namespace WebApp.Pages
             }
             return list;
         }
-
-        // Save game name
+        
         public IActionResult OnPostSaveName(string gameId, string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -197,8 +200,7 @@ namespace WebApp.Pages
 
             return RedirectToPage("/NewGame");
         }
-
-        // Handle game state fetch
+        
         public IActionResult OnPostGetState([FromBody] PlaceChipRequest request)
         {
             var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
@@ -209,7 +211,6 @@ namespace WebApp.Pages
                 board = ConvertToList(GameBrain.board),
                 win = GameBrain.win,
                 playerNumber = GameBrain.playerNumber,
-                currentPlayerId = GameBrain.playerNumber == 1 ? Session.Player1Id : Session.Player2Id,
                 gridX = GameBrain.gridX,
                 gridY = GameBrain.gridY
             });

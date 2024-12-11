@@ -11,14 +11,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 public class Game : PageModel
 {
     [BindProperty(SupportsGet = true)] public string SessionId { get; set; }
-    [BindProperty(SupportsGet = true)] public bool Connected { get; set; }
     public GameSessionDB Session;
     public string StateId;
     public Brain GameBrain { get; set; }
     private readonly GameRepositoryDb _gameRepositoryDb;
     private AppDbContext _context;
     [BindProperty] public string Message { get; set; }
-    public string CurrentPlayer { get; set; }
 
     public Game(AppDbContext context, GameRepositoryDb gameRepositoryDb)
     {
@@ -34,21 +32,6 @@ public class Game : PageModel
         {
             Message = "Game session not found!";
             return;
-        }
-
-        if (Connected && Session.Player2Id == null)
-        {
-            if (TempData["UserId"] != null)
-            {
-                Session.Player2Id = TempData["UserId"].ToString();
-                CurrentPlayer = Session.Player1Id;
-                _context.SaveChanges();
-            }
-            else
-            {
-                Message = "User ID not found in TempData!";
-                return;
-            }
         }
         
         StateId = Session.GameStateId;
@@ -70,11 +53,6 @@ public class Game : PageModel
     {
         var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
         GameBrain = new Brain(gameState);
-
-        if (GameBrain.playerNumber != request.PlayerNumber)
-        {
-            return new JsonResult(new { message = "It's not your turn!" });
-        }
 
         bool madeMove = GameBrain.placeChip(request.X, request.Y);
 

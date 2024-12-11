@@ -23,11 +23,11 @@
 
 <div class="container h-100">
     <div class="row h-100">
-        <div class="col-4 d-flex flex-column h-100">
+        <div class="col-4 d-flex flex-column h-100 new-game-section">
             <h2>Tic-Tac-Two</h2>
-            <p>Welcome, @TempData["Username"]</p>
+            <p>Welcome, @Model.Username</p>
             <a asp-page="/NewGame">
-                <button class="btn btn-primary mb-2">New Game</button>
+                <button class="btn btn-primary mb-2" asp-page="/NewGame">New Game</button>
             </a>
             <a asp-page="/LoadGame">
                 <button class="btn btn-primary mb-2">Load Game</button>

@@ -32,8 +32,6 @@
             Save and back to Menu
         </button>
     </div>
-
-    <!-- Game Status -->
     @if (Model.Session.Player2Id == null)
     {
         <h1>Waiting for second player. Send this id below, so they can connect)</h1>
@@ -126,7 +124,6 @@
         const movableGrid = document.querySelector(".movable-grid");
         const optionsContainer = document.querySelector(".options-container");
 
-        // Set up event listeners for move buttons if options are available
         if (optionsContainer.hasChildNodes()) {
             document.querySelectorAll('.move-btn').forEach(button => {
                 button.addEventListener('click', (e) => {
@@ -135,17 +132,35 @@
             });
         }
 
-        // Update the status message
         const handlerText = document.querySelector('.handler-text');
         const cells = document.querySelectorAll('.game-cell');
-        let playerNumber = @Model.GameBrain.playerNumber;
         let movingChip = false;
         let chipPosition = [0, 0];
-        const userId = @TempData["UserId"].ToString();
 
         updateMovableGrid(@Model.GameBrain.gridX, @Model.GameBrain.gridY);
+        
+        
+        let playerNumber = @Model.GameBrain.playerNumber;
+        const playerRole = @ViewData["PlayerRole"]; // 1 или 2
 
-        // Fetch game state periodically
+        console.log("You are Player:", playerRole);
+        console.log("Current turn is Player:", playerNumber);
+
+        // Проверка доступности ходов
+        function checkTurn() {
+            if (playerRole === playerNumber) {
+                enableAllButtons();
+                handlerText.innerText = "It's your turn!";
+            } else {
+                disableAllButtons();
+                handlerText.innerText = "Wait for your opponent's move.";
+            }
+        }
+
+        // Вызов при старте
+        checkTurn();
+
+
         async function fetchGameState() {
             try {
                 const response = await fetch('/Game?handler=GetState', {
@@ -157,19 +172,17 @@
 
                 updateBoard(data.board);
                 updateMovableGrid(data.gridX, data.gridY);
-                checkForWin(data.win);
-                playerNumber = data.playerNumber;
 
-                if (data.currentPlayerId !== userId) {
-                    disableAllButtons();
-                } else {
-                    enableAllButtons();
+                playerNumber = data.playerNumber; // Обновляем номер текущего игрока
+                checkTurn(); // Проверяем чей ход
+
+                if (data.win) {
+                    checkForWin(data.win);
                 }
             } catch (error) {
                 console.error('Error fetching game state:', error);
             }
         }
-
         setInterval(fetchGameState, 2000);
 
         // Handle cell click events

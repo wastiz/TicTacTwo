@@ -12,6 +12,8 @@ public class NewGame : PageModel
     private AppDbContext _context;
     [BindProperty] public string GameMode { get; set; }
     [BindProperty] public string ConfigId { get; set; }
+    public string UserId { get; set; }
+    public string Username { get; set; }
     public List<GameConfigDto> GameConfigs { get; set; }
 
     public NewGame(AppDbContext context)
@@ -22,11 +24,16 @@ public class NewGame : PageModel
 
     public void OnGet()
     {
+        UserId = HttpContext.Session.GetString("UserId");
+        Username = HttpContext.Session.GetString("Username");
         GameConfigs = _configRepository.GetAllConfigDto();
     }
 
     public IActionResult OnPost()
     {
+        Console.WriteLine(UserId);
+        Console.WriteLine(Username);
+        
         var selectedConfig = _configRepository.GetConfigurationById(ConfigId);
         if (selectedConfig != null)
         {
@@ -37,7 +44,7 @@ public class NewGame : PageModel
             {
                 Id = sessionId,
                 GameStateId = gameId,
-                Player1Id = TempData["UserId"].ToString(),
+                Player1Id = HttpContext.Session.GetString("UserId"),
                 GameMode = GameMode,
                 GamePassword = GenerateNumericPassword(6)
             };
@@ -47,15 +54,12 @@ public class NewGame : PageModel
             if (GameMode == "two-players")
             {
                 return RedirectToPage("/Game" , new { sessionId = sessionId });
-            }
-            else if (GameMode == "two-players-online")
+            } else if (GameMode == "two-players-online")
             {
                 return RedirectToPage("/GameOnline", new { sessionId = sessionId });
             }
-            else
-            {
-                return Page();
-            }
+            return Page();
+            
         }
         
         return Page();
