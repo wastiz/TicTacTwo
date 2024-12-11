@@ -45,21 +45,20 @@ namespace WebApp.Pages
             }
 
             UserId = HttpContext.Session.GetString("UserId");
-            Console.WriteLine(UserId);
             Username = HttpContext.Session.GetString("Username");
             GameBrain = new Brain(gameState);
             
             if (UserId == Session.Player1Id)
             {
-                ViewData["PlayerRole"] = 1; // Player 1
+                ViewData["PlayerRole"] = 1;
             }
             else if (UserId == Session.Player2Id)
             {
-                ViewData["PlayerRole"] = 2; // Player 2
+                ViewData["PlayerRole"] = 2;
             }
             else
             {
-                ViewData["PlayerRole"] = 0; // Наблюдатель или ошибка
+                ViewData["PlayerRole"] = 0;
             }
 
             GameBrain = new Brain(gameState);

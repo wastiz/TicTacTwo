@@ -141,12 +141,11 @@
         
         
         let playerNumber = @Model.GameBrain.playerNumber;
-        const playerRole = @ViewData["PlayerRole"]; // 1 или 2
+        const playerRole = @ViewData["PlayerRole"];
 
         console.log("You are Player:", playerRole);
         console.log("Current turn is Player:", playerNumber);
 
-        // Проверка доступности ходов
         function checkTurn() {
             if (playerRole === playerNumber) {
                 enableAllButtons();
@@ -157,7 +156,6 @@
             }
         }
 
-        // Вызов при старте
         checkTurn();
 
 
@@ -172,9 +170,10 @@
 
                 updateBoard(data.board);
                 updateMovableGrid(data.gridX, data.gridY);
+                showOptions(playerNumber)
 
-                playerNumber = data.playerNumber; // Обновляем номер текущего игрока
-                checkTurn(); // Проверяем чей ход
+                playerNumber = data.playerNumber;
+                checkTurn();
 
                 if (data.win) {
                     checkForWin(data.win);
@@ -185,7 +184,6 @@
         }
         setInterval(fetchGameState, 2000);
 
-        // Handle cell click events
         async function handleCellClick(x, y, buttonElement) {
             const number = +buttonElement.dataset.number;
 
@@ -208,7 +206,6 @@
             }
         }
 
-        // Handle board movement
         async function handleMoveBoard(direction) {
             const data = await fetchWithHandler('/Game?handler=MoveBoard', { direction: direction, gameId: gameId });
             updateMovableGrid(data.gridX, data.gridY);
@@ -218,7 +215,6 @@
             }
         }
 
-        // Fetch game state with a custom handler
         async function fetchWithHandler(url, body) {
             try {
                 const response = await fetch(url, {
@@ -231,7 +227,7 @@
                 playerNumber = data.playerNumber;
                 gridX = data.gridX;
                 gridY = data.gridY;
-                showOptions(playerNumber, data.player1Options, data.player2Options);
+                showOptions(playerNumber);
                 if (data.message) {
                     handlerText.innerText = data.message;
                 }
@@ -243,7 +239,6 @@
             }
         }
 
-        // Update the board
         function updateBoard(board) {
             cells.forEach(cell => {
                 const x = +cell.dataset.x;
@@ -252,7 +247,6 @@
             });
         }
 
-        // Update the movable grid based on its position
         function updateMovableGrid(gridX, gridY) {
             movableGrid.style.transform = `translate(${gridX * 80}px, ${gridY * 80}px)`;
 
@@ -264,7 +258,6 @@
             });
         }
 
-        // Check for a win condition
         function checkForWin(win) {
             if (win === 1) {
                 handlerText.innerText = "Player 1 wins!";
@@ -278,7 +271,6 @@
             }
         }
 
-        // Disable all buttons (game state)
         function disableAllButtons() {
             cells.forEach(cell => {
                 cell.disabled = true;
@@ -288,7 +280,6 @@
             });
         }
 
-        // Enable all buttons (game state)
         function enableAllButtons() {
             cells.forEach(cell => {
                 cell.disabled = false;
@@ -298,11 +289,8 @@
             });
         }
 
-        // Show player options
-        function showOptions(playerNumber, player1Options, player2Options) {
-            if (playerNumber === 1 && player1Options) {
-                optionsContainer.style.display = 'block';
-            } else if (playerNumber === 2 && player2Options) {
+        function showOptions(playerNumber) {
+            if (playerNumber === playerRole) {
                 optionsContainer.style.display = 'block';
             } else {
                 optionsContainer.style.display = 'none';
