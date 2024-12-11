@@ -5,13 +5,13 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" asp-page-handler="SaveName">
+            <form method="post" asp-page-handler="Connect">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enter Game Password to connect</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enter Game Id to connect</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" name="gamePassword" class="form-control" placeholder="Type here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <input type="text" name="sessionId" class="form-control" placeholder="Type here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Continue</button>

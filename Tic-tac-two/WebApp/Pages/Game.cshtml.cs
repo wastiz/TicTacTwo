@@ -11,34 +11,58 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 public class Game : PageModel
 {
     [BindProperty(SupportsGet = true)] public string SessionId { get; set; }
-    public GameStateDB Session = 
+    [BindProperty(SupportsGet = true)] public bool Connected { get; set; }
+    public GameSessionDB Session;
     public string StateId;
     public Brain GameBrain { get; set; }
     private readonly GameRepositoryDb _gameRepositoryDb;
     private AppDbContext _context;
     [BindProperty] public string Message { get; set; }
-    [BindProperty] public int PlayerNumber { get; set; }
+    public string CurrentPlayer { get; set; }
 
     public Game(AppDbContext context, GameRepositoryDb gameRepositoryDb)
     {
         _gameRepositoryDb = gameRepositoryDb;
         _context = context;
     }
-    
-    
+
     public void OnGet()
     {
-        GameSessionDB session = _context.GameSessions.FirstOrDefault(s => s.Id == SessionId);
-        StateId = session.GameStateId;
+        Session = _context.GameSessions.FirstOrDefault(s => s.Id == SessionId);
+
+        if (Session == null)
+        {
+            Message = "Game session not found!";
+            return;
+        }
+
+        if (Connected && Session.Player2Id == null)
+        {
+            if (TempData["UserId"] != null)
+            {
+                Session.Player2Id = TempData["UserId"].ToString();
+                CurrentPlayer = Session.Player1Id;
+                _context.SaveChanges();
+            }
+            else
+            {
+                Message = "User ID not found in TempData!";
+                return;
+            }
+        }
+        
+        StateId = Session.GameStateId;
         var gameState = _gameRepositoryDb.GetGameStateById(StateId);
         GameBrain = new Brain(gameState);
     }
+
     
     public class PlaceChipRequest
     {
         public int X { get; set; }
         public int Y { get; set; }
         public string GameId { get; set; }
+        public int PlayerNumber { get; set; }
     }
 
     [HttpPost]
@@ -46,23 +70,27 @@ public class Game : PageModel
     {
         var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
         GameBrain = new Brain(gameState);
-        
+
+        if (GameBrain.playerNumber != request.PlayerNumber)
+        {
+            return new JsonResult(new { message = "It's not your turn!" });
+        }
+
         bool madeMove = GameBrain.placeChip(request.X, request.Y);
-        string message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "You can't place here";
-        
-        
-        GameBrain.SaveGame(request.GameId);
-        
+
+        if (madeMove)
+        {
+            GameBrain.SaveGame(request.GameId);
+        }
+
         return new JsonResult(new
         {
-            message,
+            message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "You can't place here",
             board = ConvertToList(GameBrain.board),
             win = GameBrain.win,
             playerNumber = GameBrain.playerNumber,
-            player1Options = GameBrain.player1Options,
-            player2Options = GameBrain.player2Options,
             gridX = GameBrain.gridX,
-            gridY = GameBrain.gridY,
+            gridY = GameBrain.gridY
         });
     }
 
@@ -153,8 +181,6 @@ public class Game : PageModel
     
     public IActionResult OnPostSaveName(string gameId, string name)
     {
-        Console.WriteLine("string name");
-        Console.WriteLine(name);
         if (string.IsNullOrWhiteSpace(name))
         {   
             return RedirectToPage("/NewGame");
@@ -163,6 +189,21 @@ public class Game : PageModel
         _gameRepositoryDb.SaveStateName(StateId, name);
         
         return RedirectToPage("/NewGame");
+    }
+    
+    public IActionResult OnPostGetState([FromBody] PlaceChipRequest request)
+    {
+        var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
+        GameBrain = new Brain(gameState);
+
+        return new JsonResult(new
+        {
+            board = ConvertToList(GameBrain.board),
+            win = GameBrain.win,
+            playerNumber = GameBrain.playerNumber,
+            gridX = GameBrain.gridX,
+            gridY = GameBrain.gridY
+        });
     }
 }
 

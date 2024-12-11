@@ -1,6 +1,6 @@
 ﻿@page
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model WebApp.Pages.Game
+@model WebApp.Pages.GameOnline
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -16,7 +16,6 @@
                     <input type="text" name="name" class="form-control" placeholder="Type here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                 </div>
                 <div class="modal-footer">
-                    
                     <button type="submit" class="btn btn-primary">Continue</button>
                 </div>
             </form>
@@ -26,21 +25,28 @@
 
 <div class="container mt-4">
     <h1>Tic-Tac-Two Online</h1>
+
+    <!-- Save and Back to Menu Button -->
     <div class="col-12 col-sm-12 col-md-12 col-lg-6 justify-content-end mt-2 mb-2">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Save and back to Menu
         </button>
     </div>
-    @if (Model.GameBrain.win == 3)
+
+    <!-- Game Status -->
+    @if (Model.Session.Player2Id == null)
+    {
+        <h1>Waiting for second player. Send this id below, so they can connect)</h1>
+        <p>@Model.SessionId</p>
+    }
+    else if (Model.GameBrain.win == 3)
     {
         <h1>It's a draw</h1>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Save and back to Menu
         </button>
-    } else if (Model.SessionI)
-    {
-        
-    } else if (Model.GameBrain.win == 1 || Model.GameBrain.win == 2)
+    }
+    else if (Model.GameBrain.win == 1 || Model.GameBrain.win == 2)
     {
         <h1>Player @Model.GameBrain.win wins!</h1>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -52,10 +58,12 @@
         <div id="message-container">
             <p class="handler-text">@Model.Message</p>
         </div>
+
+        <!-- Game Board -->
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                 <div class="d-flex flex-wrap position-relative" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
-                    
+
                     @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
                     {
                         for (int j = 0; j < Model.GameBrain.boardWidth; j++)
@@ -83,23 +91,26 @@
                             </button>
                         }
                     }
-                    
+
+                    <!-- Movable Grid -->
                     <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; pointer-events: none;"></div>
                 </div>
+
+                <!-- Player Options -->
                 <div class="options-container">
                     @if ((Model.GameBrain.playerNumber == 1 && Model.GameBrain.player1Options) || (Model.GameBrain.playerNumber == 2 && Model.GameBrain.player2Options))
                     {
                         <div class="mt-5">
-                            <p>Player @Model.GameBrain.playerNumber, you can move board (in directions below) or move your chip or place chip</p>
+                            <p>Player @Model.GameBrain.playerNumber, you can move the board (in directions below) or move your chip or place a chip</p>
                         </div>
-                        <button class="move-btn btn btn-primary">Up</button>
-                        <button class="move-btn btn btn-primary">Down</button>
-                        <button class="move-btn btn btn-primary">Left</button>
-                        <button class="move-btn btn btn-primary">Right</button>
-                        <button class="move-btn btn btn-primary">Up-Left</button>
-                        <button class="move-btn btn btn-primary">Up-Right</button>
-                        <button class="move-btn btn btn-primary">Down-left</button>
-                        <button class="move-btn btn btn-primary">Down-Right</button>
+                        <button class="move-btn btn btn-primary" data-direction="up">Up</button>
+                        <button class="move-btn btn btn-primary" data-direction="down">Down</button>
+                        <button class="move-btn btn btn-primary" data-direction="left">Left</button>
+                        <button class="move-btn btn btn-primary" data-direction="right">Right</button>
+                        <button class="move-btn btn btn-primary" data-direction="up-left">Up-Left</button>
+                        <button class="move-btn btn btn-primary" data-direction="up-right">Up-Right</button>
+                        <button class="move-btn btn btn-primary" data-direction="down-left">Down-Left</button>
+                        <button class="move-btn btn btn-primary" data-direction="down-right">Down-Right</button>
                     }
                 </div>
             </div>
@@ -109,170 +120,180 @@
 
 @section Scripts
 {
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
-    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/409445/jquery-3.4.1.min.js"></script>
-    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/409445/verletExpress.js"></script>
+    <script src="~/js/gameFunctions.js" asp-append-version="true"></script>
     <script>
-    const gameId = '@Model.StateId';
-    const movableGrid = document.querySelector(".movable-grid");
-    const optionsContainer = document.querySelector(".options-container");
-    if (optionsContainer.hasChildNodes()){
-        document.querySelectorAll('.move-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                handleMoveBoard(e.target.dataset.direction);
+        const gameId = '@Model.StateId';
+        const movableGrid = document.querySelector(".movable-grid");
+        const optionsContainer = document.querySelector(".options-container");
+
+        // Set up event listeners for move buttons if options are available
+        if (optionsContainer.hasChildNodes()) {
+            document.querySelectorAll('.move-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    handleMoveBoard(e.target.dataset.direction);
+                });
             });
-        });
-    }
-    const handlerText = document.querySelector('.handler-text');
-    const cells = document.querySelectorAll('.game-cell');
-    let playerNumber = @Model.GameBrain.playerNumber;
-    let movingChip = false;
-    let chipPosition = [0, 0]
-    
-    updateMovableGrid(@Model.GameBrain.gridX, @Model.GameBrain.gridY);
-
-    async function handleCellClick(x, y, buttonElement) {
-        const number = +buttonElement.dataset.number
-
-        console.log(buttonElement)
-        console.log(number)
-        console.log(playerNumber)
-
-        if (number === playerNumber) {
-            movingChip = true;
-            chipPosition = [x, y]
-            buttonElement.dataset.number = 0
-            handlerText.innerText = "Move chip somewhere"
-        } else if (movingChip){
-            const data = await fetchWithHandler('/Game?handler=MoveChip', { startX: chipPosition[0], startY: chipPosition[1], endX: x, endY: y, gameId: gameId });
-            movingChip = false;
-            chipPosition = [0,0]
-            buttonElement.dataset.number = data.board[x][y]
-            handlerText.innerText = data.message
-            updateBoard(data.board)
-        } else {
-            const data = await fetchWithHandler('/Game?handler=Click', { x: x, y: y, gameId: gameId });
-            console.log(data);
-            buttonElement.dataset.number = data.board[x][y]
-            buttonElement.innerText = data.board[x][y] === 1 ? 'X' : data.board[x][y] === 2 ? 'O' : '';
         }
-    }
 
-    async function handleMoveBoard (direction) {
-        const data = await fetchWithHandler('/Game?handler=MoveBoard', { direction: direction, gameId: gameId });
-        console.log(data);
-        updateMovableGrid(data.gridX, data.gridY)
+        // Update the status message
+        const handlerText = document.querySelector('.handler-text');
+        const cells = document.querySelectorAll('.game-cell');
+        let playerNumber = @Model.GameBrain.playerNumber;
+        let movingChip = false;
+        let chipPosition = [0, 0];
+        const userId = @TempData["UserId"].ToString();
 
-        if (data.message) {
-            handlerText.innerText = data.message;
+        updateMovableGrid(@Model.GameBrain.gridX, @Model.GameBrain.gridY);
+
+        // Fetch game state periodically
+        async function fetchGameState() {
+            try {
+                const response = await fetch('/Game?handler=GetState', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ gameId: gameId })
+                });
+                const data = await response.json();
+
+                updateBoard(data.board);
+                updateMovableGrid(data.gridX, data.gridY);
+                checkForWin(data.win);
+                playerNumber = data.playerNumber;
+
+                if (data.currentPlayerId !== userId) {
+                    disableAllButtons();
+                } else {
+                    enableAllButtons();
+                }
+            } catch (error) {
+                console.error('Error fetching game state:', error);
+            }
         }
-    }
 
-    async function fetchWithHandler(url, body) {
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
-            const data = await response.json()
-            playerNumber = data.playerNumber;
-            gridX = data.gridX;
-            gridY = data.gridY;
-            showOptions(playerNumber, data.player1Options, data.player2Options);
+        setInterval(fetchGameState, 2000);
+
+        // Handle cell click events
+        async function handleCellClick(x, y, buttonElement) {
+            const number = +buttonElement.dataset.number;
+
+            if (number === playerNumber) {
+                movingChip = true;
+                chipPosition = [x, y];
+                buttonElement.dataset.number = 0;
+                handlerText.innerText = "Move chip somewhere";
+            } else if (movingChip) {
+                const data = await fetchWithHandler('/Game?handler=MoveChip', { startX: chipPosition[0], startY: chipPosition[1], endX: x, endY: y, gameId: gameId });
+                movingChip = false;
+                chipPosition = [0, 0];
+                buttonElement.dataset.number = data.board[x][y];
+                handlerText.innerText = data.message;
+                updateBoard(data.board);
+            } else {
+                const data = await fetchWithHandler('/Game?handler=Click', { x: x, y: y, gameId: gameId });
+                buttonElement.dataset.number = data.board[x][y];
+                buttonElement.innerText = data.board[x][y] === 1 ? 'X' : data.board[x][y] === 2 ? 'O' : '';
+            }
+        }
+
+        // Handle board movement
+        async function handleMoveBoard(direction) {
+            const data = await fetchWithHandler('/Game?handler=MoveBoard', { direction: direction, gameId: gameId });
+            updateMovableGrid(data.gridX, data.gridY);
+
             if (data.message) {
                 handlerText.innerText = data.message;
             }
-            checkForWin(data.win)
-            return data;
-        } catch (error) {
-            console.error('Fetch error:', error);
-            alert("Something went wrong, please try again.");
         }
-    }
 
-    function updateCell(x, y, board){
-        document.querySelector(`#piece-${x}-${y}`).innerText = board[x][y] === 1 ? 'X' : board[x][y] === 2 ? 'O' : '';
-    }
-
-    function updateBoard(board) {
-        cells.forEach(cell => {
-            const x = +cell.dataset.x;
-            const y = +cell.dataset.y;
-            cell.innerText = board[x][y] === 1 ? 'X' : board[x][y] === 2 ? 'O' : '';
-        });
-    }
-
-
-    function updateMovableGrid(gridX, gridY) {
-        movableGrid.style.transform = `translate(${gridX * 80}px, ${gridY * 80}px)`;
-
-        cells.forEach(cell => {
-            const x = +cell.dataset.x;
-            const y = +cell.dataset.y;
-            const isWithinGrid = x >= gridY && x < gridY + 3 && y >= gridX && y < gridX + 3;
-            cell.disabled = !isWithinGrid;
-        });
-    }
-
-    function checkForWin(win) {
-        if (win === 1) {
-            handlerText.innerText = "Player 1 wins!";
-            disableAllButtons();
-        } else if (win === 2) {
-            handlerText.innerText = "Player 2 wins!";
-            disableAllButtons();
-        } else if (win === 3) {
-            handlerText.innerText = "It's a draw!";
-            disableAllButtons();
-        }
-    }
-
-    function disableAllButtons() {
-        cells.forEach(cell => {
-            cell.disabled = true;
-        });
-        document.querySelectorAll('.move-btn').forEach(btn => {
-            btn.disabled = true;
-        })
-    }
-
-    function setWinScreen () {
-        document.querySelector('#message-container').innerHTML = `
-        <div id="canvas-container-div">
-          <canvas id="canvas"></canvas>
-        </div>
-        `;
-        refresh()
-    }
-
-    function showOptions(playerNumber, player1Options, player2Options){
-        optionsContainer.innerHTML = '';
-        if (!optionsContainer.hasChildNodes()){
-            if ((playerNumber === 1 && player1Options) || (playerNumber === 2 && player2Options)) {
-                optionsContainer.innerHTML = `
-                <div class="mt-5">
-                    <p>Player ${playerNumber}, choose an action:</p>
-                    <button class="btn btn-primary move-btn" data-direction="up">Up</button>
-                    <button class="btn btn-primary move-btn" data-direction="down">Down</button>
-                    <button class="btn btn-primary move-btn" data-direction="left">Left</button>
-                    <button class="btn btn-primary move-btn" data-direction="right">Right</button>
-                    <button class="btn btn-primary move-btn" data-direction="up-left">Up-Left</button>
-                    <button class="btn btn-primary move-btn" data-direction="up-right">Up-Right</button>
-                    <button class="btn btn-primary move-btn" data-direction="down-left">Down-Left</button>
-                    <button class="btn btn-primary move-btn" data-direction="down-right">Down-Right</button>
-                </div>
-            `;
-
-                document.querySelectorAll('.move-btn').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        handleMoveBoard(e.target.dataset.direction);
-                    });
+        // Fetch game state with a custom handler
+        async function fetchWithHandler(url, body) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
                 });
+                if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+                const data = await response.json();
+                playerNumber = data.playerNumber;
+                gridX = data.gridX;
+                gridY = data.gridY;
+                showOptions(playerNumber, data.player1Options, data.player2Options);
+                if (data.message) {
+                    handlerText.innerText = data.message;
+                }
+                checkForWin(data.win);
+                return data;
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert("Something went wrong, please try again.");
             }
         }
-    }
 
-</script>
+        // Update the board
+        function updateBoard(board) {
+            cells.forEach(cell => {
+                const x = +cell.dataset.x;
+                const y = +cell.dataset.y;
+                cell.innerText = board[x][y] === 1 ? 'X' : board[x][y] === 2 ? 'O' : '';
+            });
+        }
+
+        // Update the movable grid based on its position
+        function updateMovableGrid(gridX, gridY) {
+            movableGrid.style.transform = `translate(${gridX * 80}px, ${gridY * 80}px)`;
+
+            cells.forEach(cell => {
+                const x = +cell.dataset.x;
+                const y = +cell.dataset.y;
+                const isWithinGrid = x >= gridY && x < gridY + 3 && y >= gridX && y < gridX + 3;
+                cell.disabled = !isWithinGrid;
+            });
+        }
+
+        // Check for a win condition
+        function checkForWin(win) {
+            if (win === 1) {
+                handlerText.innerText = "Player 1 wins!";
+                disableAllButtons();
+            } else if (win === 2) {
+                handlerText.innerText = "Player 2 wins!";
+                disableAllButtons();
+            } else if (win === 3) {
+                handlerText.innerText = "It's a draw!";
+                disableAllButtons();
+            }
+        }
+
+        // Disable all buttons (game state)
+        function disableAllButtons() {
+            cells.forEach(cell => {
+                cell.disabled = true;
+            });
+            document.querySelectorAll('.move-btn').forEach(btn => {
+                btn.disabled = true;
+            });
+        }
+
+        // Enable all buttons (game state)
+        function enableAllButtons() {
+            cells.forEach(cell => {
+                cell.disabled = false;
+            });
+            document.querySelectorAll('.move-btn').forEach(btn => {
+                btn.disabled = false;
+            });
+        }
+
+        // Show player options
+        function showOptions(playerNumber, player1Options, player2Options) {
+            if (playerNumber === 1 && player1Options) {
+                optionsContainer.style.display = 'block';
+            } else if (playerNumber === 2 && player2Options) {
+                optionsContainer.style.display = 'block';
+            } else {
+                optionsContainer.style.display = 'none';
+            }
+        }
+    </script>
 }
