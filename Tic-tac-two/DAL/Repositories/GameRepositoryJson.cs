@@ -57,7 +57,7 @@ public class GameRepositoryJson : IStateRepository
         return gameStates;
     }
 
-    public List<GameStateDto> GetAllStateDto()
+    /*public List<GameStateDto> GetAllStateDto()
     {
         List<GameStateDto> gameNames = new List<GameStateDto>();
         var files = System.IO.Directory.GetFiles(FileHelper.BasePath, "*" + FileHelper.GameExtension);
@@ -76,7 +76,7 @@ public class GameRepositoryJson : IStateRepository
             }
         }
         return gameNames;
-    }
+    }*/
 
     public GameState GetGameStateById(string name)
     {

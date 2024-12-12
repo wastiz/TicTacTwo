@@ -2,6 +2,6 @@
 
 public class GameStateDto
 {
-    public string Id { get; set; }
-    public string Name { get; set; }
+    public string SessionId { get; set; }
+    public string StateName { get; set; }
 }

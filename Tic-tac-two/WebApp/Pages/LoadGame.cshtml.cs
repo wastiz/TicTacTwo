@@ -2,35 +2,49 @@
 using DAL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Pages;
 
 public class LoadGame : PageModel
 {
-    private GameRepositoryDb _gameRepository;
-    [BindProperty] public string GameId { get; set; }
+    private AppDbContext _context;
+    [BindProperty] public string SessionId { get; set; }
     public List<GameStateDto> Games { get; set; }
 
 
     public LoadGame(AppDbContext context)
     {
-        _gameRepository = new GameRepositoryDb();
+        _context = context;
     }
     
     public void OnGet()
     {
-        Games = _gameRepository.GetAllStateDto();
+        Games = _context.GameSessions
+            .Include(gs => gs.GameState)
+            .Include(gs => gs.Player1)
+            .Include(gs => gs.Player2)
+            .Select(gs => new GameStateDto
+            {
+                SessionId = gs.Id,
+                StateName = gs.GameState.Name
+            })
+            .ToList();
     }
 
     public IActionResult OnPost()
     {
-        var selectedGame = _gameRepository.GetGameStateById(GameId);
-    
-        if (selectedGame != null)
+        if (SessionId != null)
         {
-            return RedirectToPage("/Game", new { gameId = selectedGame.Id, gameName = selectedGame.Name });
+            return RedirectToPage("/Game", new { sessionId = SessionId });
         }
         return Page();
     }
 
 }
+
+
+
+
+
+

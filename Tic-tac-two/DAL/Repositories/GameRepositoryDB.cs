@@ -115,16 +115,16 @@ public class GameRepositoryDb : IStateRepository
             .ToList();
     }
     
-    public List<GameStateDto> GetAllStateDto()
-    {
-        return _context.GameStates
-            .Select(gs => new GameStateDto()
-            {
-                Id = gs.Id,
-                Name = gs.Name,
-            })
-            .ToList();
-    }
+    // public List<GameStateDto> GetAllStateDto()
+    // {
+    //     return _context.GameStates
+    //         .Select(gs => new GameStateDto()
+    //         {
+    //             Id = gs.Id,
+    //             Name = gs.Name,
+    //         })
+    //         .ToList();
+    // }
     
 
     public GameState GetGameStateById(string id)

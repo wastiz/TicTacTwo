@@ -23,7 +23,7 @@ namespace GameBrain
         public int win = 0; //0 - nothing, 1 - player 1 won, 2 - player 2 won, 3 - draw
         
         
-        public Brain () {}
+        //public Brain () {}
         public Brain(GameConfiguration config)
         {
             board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
@@ -139,15 +139,11 @@ namespace GameBrain
         {
             if (playersMoves[1] == chipsToOptions)
             {
-                Console.WriteLine(playersMoves[1]);
-                Console.WriteLine(chipsToOptions);
-                Console.WriteLine("got");
                 player1Options = true;
             }
 
             if (playersMoves[2] == chipsToOptions)
             {
-                Console.WriteLine("got2");
                 player2Options = true;
             }
         }

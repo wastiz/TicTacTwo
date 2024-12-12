@@ -1,4 +1,5 @@
 ﻿@page
+@using System.ComponentModel
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model WebApp.Pages.Game
 
@@ -16,7 +17,6 @@
                     <input type="text" name="name" class="form-control" placeholder="Type here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                 </div>
                 <div class="modal-footer">
-                    
                     <button type="submit" class="btn btn-primary">Continue</button>
                 </div>
             </form>
@@ -25,34 +25,34 @@
 </div>
 
 <div class="container mt-4">
-    <h1>Tic-Tac-Two</h1>
-    <div class="col-12 col-sm-12 col-md-12 col-lg-6 justify-content-end mt-2 mb-2">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Save and back to Menu
-        </button>
-    </div>
-    @if (Model.GameBrain.win == 3)
-    {
-        <h1>It's a draw</h1>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Save and back to Menu
-        </button>
-    } else if (Model.GameBrain.win == 1 || Model.GameBrain.win == 2)
-    {
-        <h1>Player @Model.GameBrain.win wins!</h1>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Save and back to Menu
-        </button>
-    }
-    else
-    {
-        <div id="message-container">
-            <p class="handler-text">@Model.Message</p>
-        </div>
-        <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
-                <div class="d-flex flex-wrap position-relative" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
-                    
+    <div class="row">
+        @if (Model.GameBrain.win == 3)
+        {
+            <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                <h1 class="mb-3">It's a draw</h1>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Save and back to Menu
+                </button>
+            </div>
+        }
+        else if (Model.GameBrain.win == 1 || Model.GameBrain.win == 2)
+        {
+            <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                <h1>Player @Model.GameBrain.win wins!</h1>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Save and back to Menu
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <div id="message-container" class="mb-3">
+                    <b class="handler-text">Player @Model.GameBrain.playerNumber is thinking</b>
+                </div>
+
+                <div class="d-flex flex-wrap board" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
+
                     @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
                     {
                         for (int j = 0; j < Model.GameBrain.boardWidth; j++)
@@ -80,196 +80,200 @@
                             </button>
                         }
                     }
-                    
+
                     <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; pointer-events: none;"></div>
-                </div>
-                <div class="options-container">
-                    @if ((Model.GameBrain.playerNumber == 1 && Model.GameBrain.player1Options) || (Model.GameBrain.playerNumber == 2 && Model.GameBrain.player2Options))
+
+                    @if(Model.GameBrain.player1Options || Model.GameBrain.player2Options)
                     {
-                        <div class="mt-5">
-                            <p>Player @Model.GameBrain.playerNumber, you can move board (in directions below) or move your chip or place chip</p>
-                        </div>
-                        <button class="move-btn btn btn-primary">Up</button>
-                        <button class="move-btn btn btn-primary">Down</button>
-                        <button class="move-btn btn btn-primary">Left</button>
-                        <button class="move-btn btn btn-primary">Right</button>
-                        <button class="move-btn btn btn-primary">Up-Left</button>
-                        <button class="move-btn btn btn-primary">Up-Right</button>
-                        <button class="move-btn btn btn-primary">Down-left</button>
-                        <button class="move-btn btn btn-primary">Down-Right</button>
+                        <button class="move-btn btn btn-outline-primary border move-up" data-direction="up" onclick="handleMoveBoard(event, this.dataset.direction)">↑</button>
+                        <button class="move-btn btn btn-outline-primary border move-left" data-direction="left" onclick="handleMoveBoard(event, this.dataset.direction)">←</button>
+                        <button class="move-btn btn btn-outline-primary border move-right" data-direction="right" onclick="handleMoveBoard(event, this.dataset.direction)">→</button>
+                        <button class="move-btn btn btn-outline-primary border move-down" data-direction="down" onclick="handleMoveBoard(event, this.dataset.direction)">↓</button>
+
+                        <button class="move-btn btn btn-outline-primary border move-up-left" data-direction="up-left" onclick="handleMoveBoard(event, this.dataset.direction)">↖</button>
+                        <button class="move-btn btn btn-outline-primary border move-up-right" data-direction="up-right" onclick="handleMoveBoard(event, this.dataset.direction)">↗</button>
+                        <button class="move-btn btn btn-outline-primary border move-down-left" data-direction="down-left" onclick="handleMoveBoard(event, this.dataset.direction)">↙</button>
+                        <button class="move-btn btn btn-outline-primary border move-down-right" data-direction="down-right" onclick="handleMoveBoard(event, this.dataset.direction)">↘</button>
                     }
+                    else
+                    {
+                        <button class="move-btn btn btn-outline-primary border move-up" data-direction="up" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↑</button>
+                        <button class="move-btn btn btn-outline-primary border move-left" data-direction="left" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>←</button>
+                        <button class="move-btn btn btn-outline-primary border move-right" data-direction="right" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>→</button>
+                        <button class="move-btn btn btn-outline-primary border move-down" data-direction="down" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↓</button>
+
+                        <button class="move-btn btn btn-outline-primary border move-up-left" data-direction="up-left" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↖</button>
+                        <button class="move-btn btn btn-outline-primary border move-up-right" data-direction="up-right" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↗</button>
+                        <button class="move-btn btn btn-outline-primary border move-down-left" data-direction="down-left" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↙</button>
+                        <button class="move-btn btn btn-outline-primary border move-down-right" data-direction="down-right" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↘</button>
+                    }
+
+                </div>
+                
+            </div>
+            
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <button type="button" class="btn btn-primary mb-2 mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Save and back to Menu
+                </button>
+                
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                <b>Rules & Guide</b>
+                            </button>
+                        </h2>
+                        <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                Here will be some rules and guides how to play
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
 
 @section Scripts
 {
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
-    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/409445/jquery-3.4.1.min.js"></script>
-    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/409445/verletExpress.js"></script>
     <script>
-    const gameId = '@Model.StateId';
-    const movableGrid = document.querySelector(".movable-grid");
-    const optionsContainer = document.querySelector(".options-container");
-    if (optionsContainer.hasChildNodes()){
-        document.querySelectorAll('.move-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                handleMoveBoard(e.target.dataset.direction);
-            });
-        });
-    }
-    const handlerText = document.querySelector('.handler-text');
-    const cells = document.querySelectorAll('.game-cell');
-    let playerNumber = @Model.GameBrain.playerNumber;
-    let movingChip = false;
-    let chipPosition = [0, 0]
-    
-    updateMovableGrid(@Model.GameBrain.gridX, @Model.GameBrain.gridY);
+        const gameId = '@Model.StateId';
+        const movableGrid = document.querySelector(".movable-grid");
+        const handlerText = document.querySelector('.handler-text');
+        const cells = document.querySelectorAll('.game-cell');
+        const moveButtons = document.querySelectorAll(".move-btn");
+        let playerNumber = @Model.GameBrain.playerNumber;
+        let movingChip = false;
+        let chipPosition = [0, 0]
 
-    async function handleCellClick(x, y, buttonElement) {
-        const number = +buttonElement.dataset.number
+        movableGrid.style.left = `${@Model.GameBrain.gridX * 80}px`;
+        movableGrid.style.top = `${@Model.GameBrain.gridY * 80}px`;
 
-        console.log(buttonElement)
-        console.log(number)
-        console.log(playerNumber)
-
-        if (number === playerNumber) {
-            movingChip = true;
-            chipPosition = [x, y]
-            buttonElement.dataset.number = 0
-            handlerText.innerText = "Move chip somewhere"
-        } else if (movingChip){
-            const data = await fetchWithHandler('/Game?handler=MoveChip', { startX: chipPosition[0], startY: chipPosition[1], endX: x, endY: y, gameId: gameId });
-            movingChip = false;
-            chipPosition = [0,0]
-            buttonElement.dataset.number = data.board[x][y]
-            handlerText.innerText = data.message
-            updateBoard(data.board)
-        } else {
-            const data = await fetchWithHandler('/Game?handler=Click', { x: x, y: y, gameId: gameId });
-            console.log(data);
-            buttonElement.dataset.number = data.board[x][y]
-            buttonElement.innerText = data.board[x][y] === 1 ? 'X' : data.board[x][y] === 2 ? 'O' : '';
+        async function fetchWithHandler(url, body) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+                const data = await response.json()
+                playerNumber = data.playerNumber;
+                gridX = data.gridX;
+                gridY = data.gridY;
+                showOptions(data.player1Options, data.player2Options);
+                if (data.message) {
+                    handlerText.innerText = data.message;
+                }
+                checkForWin(data.win)
+                return data;
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert("Something went wrong, please try again.");
+            }
         }
-    }
 
-    async function handleMoveBoard (direction) {
-        const data = await fetchWithHandler('/Game?handler=MoveBoard', { direction: direction, gameId: gameId });
-        console.log(data);
-        updateMovableGrid(data.gridX, data.gridY)
+        async function handleCellClick(x, y, buttonElement) {
+            const number = +buttonElement.dataset.number
 
-        if (data.message) {
-            handlerText.innerText = data.message;
+            console.log(buttonElement)
+            console.log(number)
+            console.log(playerNumber)
+
+            if (number === playerNumber) {
+                movingChip = true;
+                chipPosition = [x, y]
+                buttonElement.dataset.number = 0
+                handlerText.innerText = "Move chip somewhere"
+            } else if (movingChip){
+                const data = await fetchWithHandler('/Game?handler=MoveChip', { startX: chipPosition[0], startY: chipPosition[1], endX: x, endY: y, gameId: gameId });
+                movingChip = false;
+                chipPosition = [0,0]
+                buttonElement.dataset.number = data.board[x][y]
+                handlerText.innerText = data.message
+                updateBoard(data.board)
+            } else {
+                const data = await fetchWithHandler('/Game?handler=Click', { x: x, y: y, gameId: gameId });
+                console.log(data);
+                buttonElement.dataset.number = data.board[x][y]
+                buttonElement.innerText = data.board[x][y] === 1 ? 'X' : data.board[x][y] === 2 ? 'O' : '';
+            }
         }
-    }
 
-    async function fetchWithHandler(url, body) {
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
-            const data = await response.json()
-            playerNumber = data.playerNumber;
-            gridX = data.gridX;
-            gridY = data.gridY;
-            showOptions(playerNumber, data.player1Options, data.player2Options);
+        async function handleMoveBoard (event, direction) {
+            const data = await fetchWithHandler('/Game?handler=MoveBoard', { direction: direction, gameId: gameId });
+            updateMovableGrid(data.gridX, data.gridY)
+
             if (data.message) {
                 handlerText.innerText = data.message;
             }
-            checkForWin(data.win)
-            return data;
-        } catch (error) {
-            console.error('Fetch error:', error);
-            alert("Something went wrong, please try again.");
+}
+
+        function updateBoard(board) {
+            cells.forEach(cell => {
+                const x = +cell.dataset.x;
+                const y = +cell.dataset.y;
+                cell.innerText = board[x][y] === 1 ? 'X' : board[x][y] === 2 ? 'O' : '';
+            });
         }
-    }
-
-    function updateCell(x, y, board){
-        document.querySelector(`#piece-${x}-${y}`).innerText = board[x][y] === 1 ? 'X' : board[x][y] === 2 ? 'O' : '';
-    }
-
-    function updateBoard(board) {
-        cells.forEach(cell => {
-            const x = +cell.dataset.x;
-            const y = +cell.dataset.y;
-            cell.innerText = board[x][y] === 1 ? 'X' : board[x][y] === 2 ? 'O' : '';
-        });
-    }
 
 
-    function updateMovableGrid(gridX, gridY) {
-        movableGrid.style.transform = `translate(${gridX * 80}px, ${gridY * 80}px)`;
+        function updateMovableGrid(gridX, gridY) {
+            movableGrid.style.left = `${gridX * 80}px`;
+            movableGrid.style.top = `${gridY * 80}px`;
 
-        cells.forEach(cell => {
-            const x = +cell.dataset.x;
-            const y = +cell.dataset.y;
-            const isWithinGrid = x >= gridY && x < gridY + 3 && y >= gridX && y < gridX + 3;
-            cell.disabled = !isWithinGrid;
-        });
-    }
-
-    function checkForWin(win) {
-        if (win === 1) {
-            handlerText.innerText = "Player 1 wins!";
-            disableAllButtons();
-        } else if (win === 2) {
-            handlerText.innerText = "Player 2 wins!";
-            disableAllButtons();
-        } else if (win === 3) {
-            handlerText.innerText = "It's a draw!";
-            disableAllButtons();
+            cells.forEach(cell => {
+                const x = +cell.dataset.x;
+                const y = +cell.dataset.y;
+                const isWithinGrid = x >= gridY && x < gridY + 3 && y >= gridX && y < gridX + 3;
+                cell.disabled = !isWithinGrid;
+            });
         }
-    }
 
-    function disableAllButtons() {
-        cells.forEach(cell => {
-            cell.disabled = true;
-        });
-        document.querySelectorAll('.move-btn').forEach(btn => {
-            btn.disabled = true;
-        })
-    }
-
-    function setWinScreen () {
-        document.querySelector('#message-container').innerHTML = `
-        <div id="canvas-container-div">
-          <canvas id="canvas"></canvas>
-        </div>
-        `;
-        refresh()
-    }
-
-    function showOptions(playerNumber, player1Options, player2Options){
-        optionsContainer.innerHTML = '';
-        if (!optionsContainer.hasChildNodes()){
-            if ((playerNumber === 1 && player1Options) || (playerNumber === 2 && player2Options)) {
-                optionsContainer.innerHTML = `
-                <div class="mt-5">
-                    <p>Player ${playerNumber}, choose an action:</p>
-                    <button class="btn btn-primary move-btn" data-direction="up">Up</button>
-                    <button class="btn btn-primary move-btn" data-direction="down">Down</button>
-                    <button class="btn btn-primary move-btn" data-direction="left">Left</button>
-                    <button class="btn btn-primary move-btn" data-direction="right">Right</button>
-                    <button class="btn btn-primary move-btn" data-direction="up-left">Up-Left</button>
-                    <button class="btn btn-primary move-btn" data-direction="up-right">Up-Right</button>
-                    <button class="btn btn-primary move-btn" data-direction="down-left">Down-Left</button>
-                    <button class="btn btn-primary move-btn" data-direction="down-right">Down-Right</button>
-                </div>
-            `;
-
-                document.querySelectorAll('.move-btn').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        handleMoveBoard(e.target.dataset.direction);
-                    });
-                });
+        function checkForWin(win) {
+            if (win === 1) {
+                handlerText.innerText = "Player 1 wins!";
+                disableAllButtons();
+            } else if (win === 2) {
+                handlerText.innerText = "Player 2 wins!";
+                disableAllButtons();
+            } else if (win === 3) {
+                handlerText.innerText = "It's a draw!";
+                disableAllButtons();
             }
         }
-    }
 
-</script>
+        function disableAllButtons() {
+            disableAllCells();
+            disableMoveButtons();
+        }
+        
+        function disableAllCells(){
+            cells.forEach(cell => {
+                cell.disabled = true;
+            });
+        }
+        
+        function disableMoveButtons() {
+            moveButtons.forEach(btn => {
+                btn.disabled = true;
+            })
+        }
+        
+        function enableMoveButtons() {
+            moveButtons.forEach(btn => {
+                btn.disabled = false;
+            })
+        }
+
+        function showOptions(player1Options, player2Options){
+            if (player1Options || player2Options) {
+                enableMoveButtons()
+            } else {
+                disableMoveButtons()
+            }
+        }
+    </script>
 }

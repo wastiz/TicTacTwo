@@ -4,20 +4,19 @@
 <div class="container">
     <div class="row">
         <div class="col-4">
-            <form method="post" class="container h-100 d-flex flex-column align-items-center justify-content-center">
-                <div class="row">
+            <form method="post">
+                <h1>Select Game Session:</h1>
+                <div class="load-game-container">
                     @foreach (var stateDto in Model.Games)
                     {
-                        <div class="col-12">
-                            <input type="radio" class="btn-check" asp-for="GameId" 
-                                   id="game-@stateDto.Id" value="@stateDto.Id" autocomplete="off">
-                            <label class="btn" for="game-@stateDto.Id">@stateDto.Name</label>
-                        </div>
+                        <input type="radio" class="btn-check" asp-for="SessionId"
+                               id="game-@stateDto.SessionId" value="@stateDto.SessionId" autocomplete="off">
+                        <label class="btn" for="game-@stateDto.SessionId">@stateDto.StateName</label>
                     }
+                </div>
 
-                    <div class="col-12 mt-5">
-                        <button type="submit" class="btn btn-primary">Start Game</button>
-                    </div>
+                <div class="col-12 mt-5">
+                    <button type="submit" class="btn btn-primary">Start Game</button>
                 </div>
             </form>
         </div>

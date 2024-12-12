@@ -11,8 +11,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 public class Game : PageModel
 {
     [BindProperty(SupportsGet = true)] public string SessionId { get; set; }
+    [BindProperty] public string StateId { get; set; }
     public GameSessionDB Session;
-    public string StateId;
     public Brain GameBrain { get; set; }
     private readonly GameRepositoryDb _gameRepositoryDb;
     private AppDbContext _context;
@@ -45,7 +45,6 @@ public class Game : PageModel
         public int X { get; set; }
         public int Y { get; set; }
         public string GameId { get; set; }
-        public int PlayerNumber { get; set; }
     }
 
     [HttpPost]
@@ -67,6 +66,8 @@ public class Game : PageModel
             board = ConvertToList(GameBrain.board),
             win = GameBrain.win,
             playerNumber = GameBrain.playerNumber,
+            player1Options = GameBrain.player1Options,
+            player2Options = GameBrain.player2Options,
             gridX = GameBrain.gridX,
             gridY = GameBrain.gridY
         });
@@ -164,24 +165,9 @@ public class Game : PageModel
             return RedirectToPage("/NewGame");
         }
         
-        _gameRepositoryDb.SaveStateName(StateId, name);
+        _gameRepositoryDb.SaveStateName(gameId, name);
         
         return RedirectToPage("/NewGame");
-    }
-    
-    public IActionResult OnPostGetState([FromBody] PlaceChipRequest request)
-    {
-        var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
-        GameBrain = new Brain(gameState);
-
-        return new JsonResult(new
-        {
-            board = ConvertToList(GameBrain.board),
-            win = GameBrain.win,
-            playerNumber = GameBrain.playerNumber,
-            gridX = GameBrain.gridX,
-            gridY = GameBrain.gridY
-        });
     }
 }
 

@@ -24,127 +24,142 @@
 </div>
 
 <div class="container mt-4">
-    <h1>Tic-Tac-Two Online</h1>
+    <div class="row">
+        @if (Model.Session.Player2Id == null)
+        {
+            <h1>Waiting for other Player to connect. Send him this code below)</h1>
+            <p>@Model.SessionId</p>
+        } 
+        else if (Model.GameBrain.win == 3)
+        {
+        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+            <h1 class="mb-3">It's a draw</h1>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Save and back to Menu
+            </button>
+        </div>
+        }
+        else if (Model.GameBrain.win == 1 || Model.GameBrain.win == 2)
+        {
+        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+            <h1>Player @Model.GameBrain.win wins!</h1>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Save and back to Menu
+            </button>
+        </div>
+        }
+        else
+        {
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <div id="message-container" class="mb-3">
+                <b class="handler-text">Player @Model.GameBrain.playerNumber is thinking</b>
+            </div>
 
-    <!-- Save and Back to Menu Button -->
-    <div class="col-12 col-sm-12 col-md-12 col-lg-6 justify-content-end mt-2 mb-2">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Save and back to Menu
-        </button>
-    </div>
-    @if (Model.Session.Player2Id == null)
-    {
-        <h1>Waiting for second player. Send this id below, so they can connect)</h1>
-        <p>@Model.SessionId</p>
-    }
-    else if (Model.GameBrain.win == 3)
-    {
-        <h1>It's a draw</h1>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Save and back to Menu
-        </button>
-    }
-    else if (Model.GameBrain.win == 1 || Model.GameBrain.win == 2)
-    {
-        <h1>Player @Model.GameBrain.win wins!</h1>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Save and back to Menu
-        </button>
-    }
-    else
-    {
-        <div id="message-container">
-            <p class="handler-text">@Model.Message</p>
+            <div class="d-flex flex-wrap board" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
+
+                @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
+                {
+                for (int j = 0; j < Model.GameBrain.boardWidth; j++)
+                {
+                bool isInsideMovableGrid = i >= Model.GameBrain.gridY && i < Model.GameBrain.gridY + 3 &&
+                j >= Model.GameBrain.gridX && j < Model.GameBrain.gridX + 3;
+
+                <button type="button"
+                        class="btn btn-outline-primary border game-cell"
+                        style="width: 80px; height: 80px; font-size: 24px;"
+                        data-x="@i"
+                        data-y="@j"
+                        data-number="@Model.GameBrain.board[i, j]"
+                        id="piece-@i-@j"
+                        @(isInsideMovableGrid ? "" : "disabled")
+                        onclick="handleCellClick(@i, @j, this)">
+                    @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
+                    {
+                    @:X
+                    }
+                    else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
+                    {
+                    @:O
+                    }
+                </button>
+                }
+                }
+
+                <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; pointer-events: none;"></div>
+
+                @if(Model.GameBrain.player1Options || Model.GameBrain.player2Options)
+                {
+                <button class="move-btn btn btn-outline-primary border move-up" data-direction="up" onclick="handleMoveBoard(event, this.dataset.direction)">↑</button>
+                <button class="move-btn btn btn-outline-primary border move-left" data-direction="left" onclick="handleMoveBoard(event, this.dataset.direction)">←</button>
+                <button class="move-btn btn btn-outline-primary border move-right" data-direction="right" onclick="handleMoveBoard(event, this.dataset.direction)">→</button>
+                <button class="move-btn btn btn-outline-primary border move-down" data-direction="down" onclick="handleMoveBoard(event, this.dataset.direction)">↓</button>
+
+                <button class="move-btn btn btn-outline-primary border move-up-left" data-direction="up-left" onclick="handleMoveBoard(event, this.dataset.direction)">↖</button>
+                <button class="move-btn btn btn-outline-primary border move-up-right" data-direction="up-right" onclick="handleMoveBoard(event, this.dataset.direction)">↗</button>
+                <button class="move-btn btn btn-outline-primary border move-down-left" data-direction="down-left" onclick="handleMoveBoard(event, this.dataset.direction)">↙</button>
+                <button class="move-btn btn btn-outline-primary border move-down-right" data-direction="down-right" onclick="handleMoveBoard(event, this.dataset.direction)">↘</button>
+                }
+                else
+                {
+                <button class="move-btn btn btn-outline-primary border move-up" data-direction="up" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↑</button>
+                <button class="move-btn btn btn-outline-primary border move-left" data-direction="left" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>←</button>
+                <button class="move-btn btn btn-outline-primary border move-right" data-direction="right" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>→</button>
+                <button class="move-btn btn btn-outline-primary border move-down" data-direction="down" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↓</button>
+
+                <button class="move-btn btn btn-outline-primary border move-up-left" data-direction="up-left" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↖</button>
+                <button class="move-btn btn btn-outline-primary border move-up-right" data-direction="up-right" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↗</button>
+                <button class="move-btn btn btn-outline-primary border move-down-left" data-direction="down-left" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↙</button>
+                <button class="move-btn btn btn-outline-primary border move-down-right" data-direction="down-right" onclick="handleMoveBoard(event, this.dataset.direction)" disabled>↘</button>
+                }
+
+            </div>
+
         </div>
 
-        <!-- Game Board -->
-        <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
-                <div class="d-flex flex-wrap position-relative" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <button type="button" class="btn btn-primary mb-2 mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Save and back to Menu
+            </button>
 
-                    @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
-                    {
-                        for (int j = 0; j < Model.GameBrain.boardWidth; j++)
-                        {
-                            bool isInsideMovableGrid = i >= Model.GameBrain.gridY && i < Model.GameBrain.gridY + 3 &&
-                                                       j >= Model.GameBrain.gridX && j < Model.GameBrain.gridX + 3;
-
-                            <button type="button"
-                                    class="btn btn-outline-primary border game-cell"
-                                    style="width: 80px; height: 80px; font-size: 24px;"
-                                    data-x="@i"
-                                    data-y="@j"
-                                    data-number="@Model.GameBrain.board[i, j]"
-                                    id="piece-@i-@j"
-                                    @(isInsideMovableGrid ? "" : "disabled")
-                                    onclick="handleCellClick(@i, @j, this)">
-                                @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
-                                {
-                                    @:X
-                                }
-                                else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
-                                {
-                                    @:O
-                                }
-                            </button>
-                        }
-                    }
-
-                    <!-- Movable Grid -->
-                    <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; pointer-events: none;"></div>
-                </div>
-
-                <!-- Player Options -->
-                <div class="options-container">
-                    @if ((Model.GameBrain.playerNumber == 1 && Model.GameBrain.player1Options) || (Model.GameBrain.playerNumber == 2 && Model.GameBrain.player2Options))
-                    {
-                        <div class="mt-5">
-                            <p>Player @Model.GameBrain.playerNumber, you can move the board (in directions below) or move your chip or place a chip</p>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            <b>Rules & Guide</b>
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            Here will be some rules and guides how to play
                         </div>
-                        <button class="move-btn btn btn-primary" data-direction="up">Up</button>
-                        <button class="move-btn btn btn-primary" data-direction="down">Down</button>
-                        <button class="move-btn btn btn-primary" data-direction="left">Left</button>
-                        <button class="move-btn btn btn-primary" data-direction="right">Right</button>
-                        <button class="move-btn btn btn-primary" data-direction="up-left">Up-Left</button>
-                        <button class="move-btn btn btn-primary" data-direction="up-right">Up-Right</button>
-                        <button class="move-btn btn btn-primary" data-direction="down-left">Down-Left</button>
-                        <button class="move-btn btn btn-primary" data-direction="down-right">Down-Right</button>
-                    }
+                    </div>
                 </div>
             </div>
         </div>
-    }
+        }
+    </div>
 </div>
 
 @section Scripts
 {
-    <script src="~/js/gameFunctions.js" asp-append-version="true"></script>
     <script>
         const gameId = '@Model.StateId';
         const movableGrid = document.querySelector(".movable-grid");
-        const optionsContainer = document.querySelector(".options-container");
-
-        if (optionsContainer.hasChildNodes()) {
-            document.querySelectorAll('.move-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    handleMoveBoard(e.target.dataset.direction);
-                });
-            });
-        }
-
         const handlerText = document.querySelector('.handler-text');
         const cells = document.querySelectorAll('.game-cell');
+        const moveButtons = document.querySelectorAll('.move-btn')
         let movingChip = false;
         let chipPosition = [0, 0];
-
-        updateMovableGrid(@Model.GameBrain.gridX, @Model.GameBrain.gridY);
-        
-        
         let playerNumber = @Model.GameBrain.playerNumber;
         const playerRole = @ViewData["PlayerRole"];
 
+        movableGrid.style.left = `${@Model.GameBrain.gridX * 80}px`;
+        movableGrid.style.top = `${@Model.GameBrain.gridY * 80}px`;
+
         console.log("You are Player:", playerRole);
         console.log("Current turn is Player:", playerNumber);
+        
+        
 
         function checkTurn() {
             if (playerRole === playerNumber) {
@@ -248,7 +263,8 @@
         }
 
         function updateMovableGrid(gridX, gridY) {
-            movableGrid.style.transform = `translate(${gridX * 80}px, ${gridY * 80}px)`;
+            movableGrid.style.left = `${gridX * 80}px`;
+            movableGrid.style.top = `${gridY * 80}px`;
 
             cells.forEach(cell => {
                 const x = +cell.dataset.x;
@@ -272,28 +288,45 @@
         }
 
         function disableAllButtons() {
-            cells.forEach(cell => {
-                cell.disabled = true;
-            });
-            document.querySelectorAll('.move-btn').forEach(btn => {
-                btn.disabled = true;
-            });
+            disableAllCells();
+            disableMoveButtons();
         }
 
         function enableAllButtons() {
+            enableAllCells()
+            enableMoveButtons()
+        }
+        
+        function enableAllCells(){
             cells.forEach(cell => {
                 cell.disabled = false;
             });
-            document.querySelectorAll('.move-btn').forEach(btn => {
-                btn.disabled = false;
+        }
+
+        function disableAllCells(){
+            cells.forEach(cell => {
+                cell.disabled = true;
             });
         }
 
-        function showOptions(playerNumber) {
-            if (playerNumber === playerRole) {
-                optionsContainer.style.display = 'block';
+        function enableMoveButtons() {
+            moveButtons.forEach(btn => {
+                btn.disabled = false;
+            })
+        }
+
+        function disableMoveButtons() {
+            moveButtons.forEach(btn => {
+                btn.disabled = true;
+            })
+        }
+
+    
+        function showOptions(number) {
+            if (number === playerNumber && number === playerRole) {
+                enableMoveButtons()
             } else {
-                optionsContainer.style.display = 'none';
+                disableMoveButtons()
             }
         }
     </script>
