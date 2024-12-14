@@ -10,7 +10,7 @@ public class LoadGame : PageModel
 {
     private AppDbContext _context;
     [BindProperty] public string SessionId { get; set; }
-    public List<GameStateDto> Games { get; set; }
+    public List<GameSessionDto> Games { get; set; }
 
 
     public LoadGame(AppDbContext context)
@@ -24,7 +24,7 @@ public class LoadGame : PageModel
             .Include(gs => gs.GameState)
             .Include(gs => gs.Player1)
             .Include(gs => gs.Player2)
-            .Select(gs => new GameStateDto
+            .Select(gs => new GameSessionDto
             {
                 SessionId = gs.Id,
                 StateName = gs.GameState.Name

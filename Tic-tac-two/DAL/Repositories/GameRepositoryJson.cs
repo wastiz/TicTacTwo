@@ -57,9 +57,9 @@ public class GameRepositoryJson : IStateRepository
         return gameStates;
     }
 
-    /*public List<GameStateDto> GetAllStateDto()
+    /*public List<GameSessionDto> GetAllStateDto()
     {
-        List<GameStateDto> gameNames = new List<GameStateDto>();
+        List<GameSessionDto> gameNames = new List<GameSessionDto>();
         var files = System.IO.Directory.GetFiles(FileHelper.BasePath, "*" + FileHelper.GameExtension);
         foreach (var file in files)
         {
@@ -68,7 +68,7 @@ public class GameRepositoryJson : IStateRepository
             
             if (game != null)
             {
-                gameNames.Add(new GameStateDto()
+                gameNames.Add(new GameSessionDto()
                 {
                     Id = game.Id,
                     Name = game.Name

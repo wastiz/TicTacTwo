@@ -251,7 +251,7 @@ namespace GameBrain
             return true;
         }
 
-        public void SaveGame(string? stateId = null)
+        public void SaveGame(string? stateId = null, string? stateName = null)
         {
             int[][] formattedBoard = new int[board.GetLength(0)][];
             for (int i = 0; i < board.GetLength(0); i++)
@@ -265,7 +265,7 @@ namespace GameBrain
             GameState gameToSave = new GameState()
             {
                 Id = stateId ?? Guid.NewGuid().ToString(),
-                Name = "Autosave",
+                Name = stateName ?? "Autosave",
                 GameConfig = gameConfig,
                 Board = formattedBoard,
                 GridX = gridX,

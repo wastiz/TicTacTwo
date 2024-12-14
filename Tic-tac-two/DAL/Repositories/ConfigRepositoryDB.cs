@@ -55,8 +55,8 @@ namespace DAL
             return _context.GameConfigurations
                 .Select(gs => new GameConfigDto()
                 {
-                    Id = gs.Id,
-                    Name = gs.Name,
+                    ConfigId = gs.Id,
+                    ConfigName = gs.Name,
                 })
                 .ToList();
         }

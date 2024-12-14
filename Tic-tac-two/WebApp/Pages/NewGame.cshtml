@@ -27,8 +27,8 @@
                     @foreach (var configDto in Model.GameConfigs)
                     {
                         <div class="col-12">
-                            <input type="radio" class="btn-check" asp-for="ConfigId" id="@configDto.Id" value="@configDto.Id" autocomplete="off">
-                            <label class="btn" for="@configDto.Id">@configDto.Name</label>
+                            <input type="radio" class="btn-check" asp-for="ConfigId" id="@configDto.ConfigId" value="@configDto.ConfigId" autocomplete="off">
+                            <label class="btn" for="@configDto.ConfigId">@configDto.ConfigName</label>
                         </div>
                     }
                     <div class="col-12 mt-5">

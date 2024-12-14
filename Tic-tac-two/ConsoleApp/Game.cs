@@ -1,18 +1,21 @@
-﻿using GameBrain;
+﻿using DAL;
+using GameBrain;
 
 namespace GameVisualizer
 {
     public class Game
     {
         private Brain gameBrain;
+        private string stateId;
         private int[] cursorPosition;
-        private bool player1MadeChoice = false;
-        private bool player2MadeChoice = false;
         private string optionalMessage = "";
         private bool gameRunning = true;
+        private int[] startMovingPosition = [-1, -1];
+        private int[] endMovingPosition;
 
-        public Game(string gameMode, Brain gameBrain)
+        public Game(string gameMode, Brain gameBrain, string stateId = null)
         {
+            stateId = stateId;
             this.gameBrain = gameBrain;
             cursorPosition = new int[] { gameBrain.boardWidth / 2, gameBrain.boardHeight / 2 };
         }
@@ -23,20 +26,10 @@ namespace GameVisualizer
             {
                 string playerChip = gameBrain.playerNumber == 1 ? "X" : "O";
                 DisplayGrid(gameBrain.board, gameBrain.movableBoard, gameBrain.gridX, gameBrain.gridY, "Player " + gameBrain.playerNumber + " is making choice (" + playerChip + ")...", optionalMessage);
-                if (gameBrain.win == 0)
-                {
-                    Console.WriteLine("Game over! Draw");
-                    Console.WriteLine("Back to Main Menu? (press Enter, other key to exit game)");
-                    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-                    if (keyInfo.Key == ConsoleKey.Enter)
-                    {
-                        Console.WriteLine("Need somehow to show main menu");
-                    }
-                    break;
-                }
 
                 if (gameBrain.win == 1)
                 {
+                    gameRunning = false;
                     Console.WriteLine("Game over! Player 1 wins");
                     Console.WriteLine("Back to Main Menu? (press Enter, other key to exit game)");
                     ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -44,11 +37,11 @@ namespace GameVisualizer
                     {
                         Console.WriteLine("Need somehow to show main menu");
                     }
-                    break;
                 }
 
                 if (gameBrain.win == 2)
                 {
+                    gameRunning = false;
                     Console.WriteLine("Game over! Player 2 wins");
                     Console.WriteLine("Back to Main Menu? (press Enter, other key to exit game)");
                     ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -56,7 +49,18 @@ namespace GameVisualizer
                     {
                         Console.WriteLine("Need somehow to show main menu");
                     }
-                    break;
+                }
+                
+                if (gameBrain.win == 3)
+                {
+                    gameRunning = false;
+                    Console.WriteLine("Game over! Draw");
+                    Console.WriteLine("Back to Main Menu? (press Enter, other key to exit game)");
+                    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                    if (keyInfo.Key == ConsoleKey.Enter)
+                    {
+                        Console.WriteLine("Need somehow to show main menu");
+                    }
                 }
             }
         }
@@ -75,9 +79,40 @@ namespace GameVisualizer
                 for (var col = 0; col < boardHeight; col++)
                 {
                     if (board[row, col] == 1)
-                        Console.Write(" X ");
+                        if (cursorPosition[0] == row && cursorPosition[1] == col)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            Console.Write(" X ");
+                            Console.ResetColor();
+                        } else if (startMovingPosition[0] == row && cursorPosition[0] == col)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.Write(" X ");
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.Write(" X ");
+                            Console.ResetColor();
+                        }
                     else if (board[row, col] == 2)
-                        Console.Write(" O ");
+                        if (cursorPosition[0] == row && cursorPosition[1] == col) 
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            Console.Write(" O ");
+                            Console.ResetColor();
+                        } else if (startMovingPosition[0] == row && cursorPosition[0] == col)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.Write(" O ");
+                            Console.ResetColor();
+                        } else
+                        {
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.Write(" O ");
+                            Console.ResetColor();
+                        }
                     else if (cursorPosition[0] == row && cursorPosition[1] == col)
                         Console.Write(" _ ");
                     else
@@ -149,25 +184,14 @@ namespace GameVisualizer
             Console.WriteLine("Player 1 chips left: " + gameBrain.chipsLeft[1]);
             Console.WriteLine("Player 2 chips left: " + gameBrain.chipsLeft[2]);
             
-            Console.WriteLine(gameBrain.gridX);
-            Console.WriteLine(gameBrain.gridY);
-            
-            Console.WriteLine(DAL.FileHelper.BasePath);
-            
-            bool playerMadeChoice = gameBrain.playerNumber == 1 ? player1MadeChoice : player2MadeChoice;
-            
-            if (gameBrain.chipsLeft[gameBrain.playerNumber] == 2 && !playerMadeChoice)
+            if (gameBrain.player1Options || gameBrain.player2Options)
             {
-                if (gameBrain.playerNumber == 1) 
-                    player1MadeChoice = true;
-                else 
-                    player2MadeChoice = true;
+                Console.WriteLine();
+                Console.WriteLine("Player " + gameBrain.playerNumber + ", you have options:");
+                Console.WriteLine("Move Board (1)");
+                Console.WriteLine("Remove player's chip (2)");
                 
-                Console.WriteLine("Place chip (1)");
-                Console.WriteLine("Move Board (2)");
-                Console.WriteLine("Remove player's chip (3)");
-                
-                var pressedKey = Input("Player " + gameBrain.playerNumber + ", make a choice:");
+                var pressedKey = Input("Press number from brackets: ");
                 HandleChoice(pressedKey);
             }
             else
@@ -186,7 +210,14 @@ namespace GameVisualizer
             {
                 gameRunning = false;
                 string stateName = TextInput("Name the saving...");
-                gameBrain.SaveGame(stateName);
+                if (stateId != null)
+                {
+                    gameBrain.SaveGame(stateId, stateName);
+                }
+                else
+                {
+                    gameBrain.SaveGame(null, stateName);
+                }
             }
             return keyInfo;
         }
@@ -251,22 +282,103 @@ namespace GameVisualizer
             switch (pressedKey.Key)
             {
                 case ConsoleKey.D1:
-                    var nextPressedKey = Input("Player " + gameBrain.playerNumber + " is thinking:");
-                    HandleCursor(nextPressedKey);
+                    HandleBoardMove();
                     break;
 
                 case ConsoleKey.D2:
                     HandleBoardMove();
                     break;
-
-                case ConsoleKey.D3:
-                    var nexttPressedKey = Input("Player " + gameBrain.playerNumber + " is thinking:");
-                    HandleCursor(nexttPressedKey);
+                
+                case ConsoleKey.UpArrow:
+                    HandleArrowMovement(-1, 0, "You cannot move up...");
+                    break;
+                
+                case ConsoleKey.DownArrow:
+                    HandleArrowMovement(1, 0, "You cannot move down...");
+                    break;
+                
+                case ConsoleKey.LeftArrow:
+                    HandleArrowMovement(0, -1, "You cannot move left...");
+                    break;
+                
+                case ConsoleKey.RightArrow:
+                    HandleArrowMovement(0, 1, "You cannot move right...");
+                    break;
+                
+                case ConsoleKey.Enter:
+                    if (gameBrain.board[cursorPosition[0], cursorPosition[1]] == gameBrain.playerNumber)
+                    {
+                        if (startMovingPosition[0] == -1 && startMovingPosition[1] == -1)
+                        {
+                            startMovingPosition = new[] { cursorPosition[0], cursorPosition[1] };
+                            optionalMessage = "Choose a new position for the chip (use arrows, press Enter to confirm).";
+                        }
+                        else
+                        {
+                            bool moved = HandleMoveChip(cursorPosition[0], cursorPosition[1]);
+                            if (!moved)
+                            {
+                                optionalMessage = "Invalid move. Try again.";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (startMovingPosition[0] == -1 && startMovingPosition[1] == -1)
+                        {
+                            bool madeMove = gameBrain.placeChip(cursorPosition[0], cursorPosition[1]);
+                            if (!madeMove)
+                            {
+                                optionalMessage = "You cannot place here...";
+                            }
+                        }
+                        else
+                        {
+                            bool moved = HandleMoveChip(cursorPosition[0], cursorPosition[1]);
+                            if (!moved)
+                            {
+                                optionalMessage = "Invalid move. Try again.";
+                            }
+                        }
+                    }
                     break;
 
                 default:
-                    HandleChoice(Input("Invalid choice. Please press 1, 2, or 3."));
+                    HandleChoice(Input("Invalid choice. Please press option number, place chip or move chip"));
                     break;
+            }
+        }
+
+        private bool HandleMoveChip(int x, int y)
+        {
+            if (startMovingPosition[0] == -1 && startMovingPosition[1] == -1)
+            {
+                if (gameBrain.board[x, y] == gameBrain.playerNumber)
+                {
+                    startMovingPosition = new[] { x, y };
+                    optionalMessage = "Choose a new position for the chip (use arrows, press Enter to confirm).";
+                    return false;
+                }
+                else
+                {
+                    optionalMessage = "This chip does not belong to you!";
+                    return false;
+                }
+            }
+            else
+            {
+                bool madeMove = gameBrain.moveChip(startMovingPosition[0], startMovingPosition[1], cursorPosition[0], cursorPosition[1]);
+                if (madeMove)
+                {
+                    optionalMessage = "Chip moved successfully!";
+                    startMovingPosition = new[] { -1, -1 };
+                    return true;
+                }
+                else
+                {
+                    optionalMessage = "You cannot place the chip here. Choose another position.";
+                    return false;
+                }
             }
         }
 
@@ -281,10 +393,10 @@ namespace GameVisualizer
                 switch (nextMoveText)
                 {
                     case "up":
-                        cursorPosition[0]++;
+                        cursorPosition[0]--;
                         break;
                     case "down":
-                        cursorPosition[0]--;
+                        cursorPosition[0]++;
                         break;
                     case "left":
                         cursorPosition[1]--;
@@ -293,20 +405,20 @@ namespace GameVisualizer
                         cursorPosition[1]++;
                         break;
                     case "up-left":
-                        cursorPosition[0]++;
+                        cursorPosition[0]--;
                         cursorPosition[1]--;
                         break;
                     case "up-right":
-                        cursorPosition[0]++;
+                        cursorPosition[0]--;
                         cursorPosition[1]++;
                         break;
                     case "down-left":
+                        cursorPosition[0]++;
                         cursorPosition[1]--;
-                        cursorPosition[0]--;
                         break;
                     case "down-right":
+                        cursorPosition[0]++;
                         cursorPosition[1]++;
-                        cursorPosition[0]--;
                         break;
                 }
                 if (movedBoard)

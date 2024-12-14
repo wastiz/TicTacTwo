@@ -2,6 +2,6 @@
 
 public class GameConfigDto
 {
-    public string Id { get; set; }
-    public string Name { get; set; }
+    public string ConfigId { get; set; }
+    public string ConfigName { get; set; }
 }

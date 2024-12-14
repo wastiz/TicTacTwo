@@ -1,6 +1,8 @@
 ﻿using GameVisualizer;
 using DAL;
+using DAL.DTO;
 using GameBrain;
+using Microsoft.EntityFrameworkCore;
 
 namespace MenuApp
 {
@@ -8,6 +10,7 @@ namespace MenuApp
     {
         ConfigRepositoryDb repository = new ConfigRepositoryDb();
         GameRepositoryDb gameRepository = new GameRepositoryDb();
+        AppDbContext context = new AppDbContext();
         private string gameMode;
         private string selectedConfigName;
         
@@ -33,18 +36,18 @@ namespace MenuApp
             activeOptionIndex = 0;
             menuGuidance = "Choose game configuration or create your own. Press \"Esc\" to exit. Press enter to select an option. Move with arrows";
             optionsArray.Clear();
-            List<string> gameStates = gameRepository.GetAllStateDto();
+            List<GameStateDto> gameStates = gameRepository.GetConsoleGamesDto();
 
             foreach (var gameState in gameStates)
             {
-                optionsArray.Add(gameState);
+                optionsArray.Add(gameState.StateName);
             }
             optionsArray.Add("Back");
             menuActions = new Action[optionsArray.Count];
             for (int i = 0; i < gameStates.Count; i++)
             {
                 int index = i;
-                menuActions[index] = () => StartGameWithState(gameStates[index]);
+                menuActions[index] = () => StartGameWithState(gameStates[index].StateId);
             }
             menuActions[gameStates.Count] = ShowMainMenu;
             
@@ -55,12 +58,12 @@ namespace MenuApp
             activeOptionIndex = 0;
             menuGuidance = "Choose game configuration or create your own. Press \"Esc\" to exit. Press enter to select an option. Move with arrows";
             
-            List<string> allConfigs = repository.GetAllConfigNames();
+            List<GameConfigDto> allConfigs = repository.GetAllConfigDto();
             
             optionsArray.Clear();
-            foreach (string gameConfigName in allConfigs)
+            foreach (GameConfigDto gameConfig in allConfigs)
             {
-                optionsArray.Add(gameConfigName);
+                optionsArray.Add(gameConfig.ConfigName);
             }
     
             optionsArray.Add("Create Game Config");
@@ -71,7 +74,7 @@ namespace MenuApp
             for (int i = 0; i < allConfigs.Count; i++)
             {
                 int index = i;
-                menuActions[index] = () => ShowConfig(allConfigs[index]);
+                menuActions[index] = () => ShowConfig(allConfigs[index].ConfigId);
             }
             
             menuActions[allConfigs.Count] = () => ShowCreateConfig();
@@ -98,11 +101,11 @@ namespace MenuApp
             StartMenu();
         }
 
-        public void ShowConfig(string name)
+        public void ShowConfig(string configId)
         {
             optionsArray = new List<string> { "Edit", "Delete", "Back"};
             activeOptionIndex = 0;
-            GameConfiguration config = repository.GetConfigurationByName(name);
+            GameConfiguration config = repository.GetConfigurationById(configId);
             menuGuidance = config.ToString();
 
             menuActions = new Action[]
@@ -222,10 +225,10 @@ namespace MenuApp
             activeOptionIndex = 0;
             menuGuidance = "Choose config with arrows and enter";
             optionsArray.Clear();
-            List<string> confNames = repository.GetAllConfigNames();
-            foreach (var name in confNames)
+            List<GameConfigDto> confNames = repository.GetAllConfigDto();
+            foreach (var config in confNames)
             {
-                optionsArray.Add(name);
+                optionsArray.Add(config.ConfigName);
             }
 
             menuActions = new Action[optionsArray.Count];
@@ -233,24 +236,24 @@ namespace MenuApp
             for (int i = 0; i < confNames.Count; i++)
             {
                 int index = i;
-                menuActions[index] = () => StartGameWithConf(confNames[index]);
+                menuActions[index] = () => StartGameWithConf(confNames[index].ConfigId);
             }
             
             StartMenu();
         }
 
-        private void StartGameWithState(string stateName)
+        private void StartGameWithState(string stateId)
         {
             exit = true;
-            Brain gameBrain = new Brain(gameRepository.GetGameStateById(stateName));
-            Game game = new Game(gameMode, gameBrain);
+            Brain gameBrain = new Brain(gameRepository.GetGameStateById(stateId));
+            Game game = new Game(gameMode, gameBrain, stateId);
             game.StartGame();
         }
 
-        private void StartGameWithConf(string configName)
+        private void StartGameWithConf(string configId)
         {
             exit = true;
-            Brain gameBrain = new Brain(repository.GetConfigurationByName(configName));
+            Brain gameBrain = new Brain(repository.GetConfigurationById(configId));
             Game game = new Game(gameMode, gameBrain);
             game.StartGame();
         }
