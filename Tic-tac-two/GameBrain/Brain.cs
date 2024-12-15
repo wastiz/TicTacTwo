@@ -150,7 +150,7 @@ namespace GameBrain
 
         public bool placeChip(int x, int y)
         {
-            if (board[x, y] == 0)
+            if (board[x, y] == 0 && chipsLeft[playerNumber] > 0)
             {
                 board[x, y] = playerNumber;
                 CheckForWinner();
@@ -169,6 +169,7 @@ namespace GameBrain
             {
                 board[targetX, targetY] = playerNumber;
                 board[sourceX, sourceY] = 0;
+                CheckForWinner();
                 playersMoves[playerNumber] += 1;
                 playerNumber = playerNumber == 1 ? 2 : 1;
                 return true;

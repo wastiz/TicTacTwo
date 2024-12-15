@@ -200,7 +200,7 @@ namespace WebApp.Pages
             return RedirectToPage("/NewGame");
         }
         
-        public IActionResult OnPostGetState([FromBody] PlaceChipRequest request)
+        public IActionResult OnPostGetState([FromBody] StateRequest request)
         {
             var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
             GameBrain = new Brain(gameState);
@@ -213,6 +213,11 @@ namespace WebApp.Pages
                 gridX = GameBrain.gridX,
                 gridY = GameBrain.gridY
             });
+        }
+        
+        public class StateRequest
+        {
+            public string GameId { get; set; }
         }
     }
 }

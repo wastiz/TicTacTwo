@@ -190,7 +190,7 @@
                 playerNumber = data.playerNumber;
                 checkTurn();
 
-                if (data.win) {
+                if (data.win !== 0) {
                     checkForWin(data.win);
                 }
             } catch (error) {

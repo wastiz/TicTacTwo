@@ -57,8 +57,8 @@
                     {
                         for (int j = 0; j < Model.GameBrain.boardWidth; j++)
                         {
-                            bool isInsideMovableGrid = i >= Model.GameBrain.gridY && i < Model.GameBrain.gridY + 3 &&
-                                                       j >= Model.GameBrain.gridX && j < Model.GameBrain.gridX + 3;
+                            bool isInsideMovableGrid = i >= Model.GameBrain.gridY && i < Model.GameBrain.gridY + Model.GameBrain.movableBoardHeight &&
+                                                       j >= Model.GameBrain.gridX && j < Model.GameBrain.gridX + Model.GameBrain.movableBoardWidth;
 
                             <button type="button"
                                     class="btn btn-outline-primary border game-cell"
@@ -81,7 +81,14 @@
                         }
                     }
 
-                    <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; pointer-events: none;"></div>
+                    <div class="movable-grid"
+                         style="width: @(Model.GameBrain.movableBoardWidth * 80)px;
+                             height: @(Model.GameBrain.movableBoardHeight * 80)px;
+                             border: 3px solid red;
+                             position: absolute;
+                             pointer-events: none;">
+                    </div> 
+                         
 
                     @if(Model.GameBrain.player1Options || Model.GameBrain.player2Options)
                     {

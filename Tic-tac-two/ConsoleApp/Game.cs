@@ -84,7 +84,7 @@ namespace GameVisualizer
                             Console.ForegroundColor = ConsoleColor.DarkBlue;
                             Console.Write(" X ");
                             Console.ResetColor();
-                        } else if (startMovingPosition[0] == row && cursorPosition[0] == col)
+                        } else if (startMovingPosition[0] == row && startMovingPosition[1] == col)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
                             Console.Write(" X ");
@@ -102,7 +102,7 @@ namespace GameVisualizer
                             Console.ForegroundColor = ConsoleColor.DarkBlue;
                             Console.Write(" O ");
                             Console.ResetColor();
-                        } else if (startMovingPosition[0] == row && cursorPosition[0] == col)
+                        } else if (startMovingPosition[0] == row && startMovingPosition[1] == col)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
                             Console.Write(" O ");
@@ -188,8 +188,10 @@ namespace GameVisualizer
             {
                 Console.WriteLine();
                 Console.WriteLine("Player " + gameBrain.playerNumber + ", you have options:");
-                Console.WriteLine("Move Board (1)");
-                Console.WriteLine("Remove player's chip (2)");
+                Console.WriteLine("Move Board (press 1)");
+                Console.WriteLine("Move your own chip by entering and setting new position");
+                Console.WriteLine("As always place another chip");
+                
                 
                 var pressedKey = Input("Press number from brackets: ");
                 HandleChoice(pressedKey);
@@ -282,10 +284,6 @@ namespace GameVisualizer
             switch (pressedKey.Key)
             {
                 case ConsoleKey.D1:
-                    HandleBoardMove();
-                    break;
-
-                case ConsoleKey.D2:
                     HandleBoardMove();
                     break;
                 
