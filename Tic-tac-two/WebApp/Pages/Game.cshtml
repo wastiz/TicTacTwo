@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model WebApp.Pages.Game
 
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -46,7 +47,7 @@
         }
         else
         {
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                 <div id="message-container" class="mb-3">
                     <b class="handler-text">Player @Model.GameBrain.playerNumber is thinking</b>
                 </div>
@@ -86,7 +87,10 @@
                              height: @(Model.GameBrain.movableBoardHeight * 80)px;
                              border: 3px solid red;
                              position: absolute;
-                             pointer-events: none;">
+                             pointer-events: none;
+                             left: @(Model.GameBrain.gridX * 80)px;
+                             top: @(Model.GameBrain.gridY * 80)px;
+                    ">
                     </div> 
                          
 
@@ -119,7 +123,7 @@
                 
             </div>
             
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                 <button type="button" class="btn btn-primary mb-2 mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Save and back to Menu
                 </button>
@@ -154,9 +158,6 @@
         let playerNumber = @Model.GameBrain.playerNumber;
         let movingChip = false;
         let chipPosition = [0, 0]
-
-        movableGrid.style.left = `${@Model.GameBrain.gridX * 80}px`;
-        movableGrid.style.top = `${@Model.GameBrain.gridY * 80}px`;
 
         async function fetchWithHandler(url, body) {
             try {

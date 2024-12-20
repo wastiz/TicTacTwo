@@ -204,16 +204,34 @@ namespace WebApp.Pages
         {
             var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
             GameBrain = new Brain(gameState);
+            bool yourTurn = false;
+            
+            if ((UserId == Session.Player1Id && GameBrain.playerNumber == 1) || 
+                (UserId == Session.Player2Id && GameBrain.playerNumber == 2))
+            {
+                if (GameBrain.win == 0)
+                {
+                    if ((GameBrain.playerNumber == 1 && GameBrain.win == 0) || 
+                        (GameBrain.playerNumber == 2 && GameBrain.win == 0))
+                    {
+                        yourTurn = true;
+                    }
+                }
+            }
 
             return new JsonResult(new
             {
                 board = ConvertToList(GameBrain.board),
                 win = GameBrain.win,
                 playerNumber = GameBrain.playerNumber,
+                player1Options = GameBrain.player1Options,
+                player2Options = GameBrain.player2Options,
+                isYourTurn = yourTurn,
                 gridX = GameBrain.gridX,
                 gridY = GameBrain.gridY
             });
         }
+
         
         public class StateRequest
         {

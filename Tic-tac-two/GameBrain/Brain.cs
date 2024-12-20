@@ -20,12 +20,14 @@ namespace GameBrain
         public bool player2Options; // player 2 have more options
         private GameConfiguration gameConfig;
         private GameRepositoryDb repository = new GameRepositoryDb();
+        private int WinCondition;
         public int win = 0; //0 - nothing, 1 - player 1 won, 2 - player 2 won, 3 - draw
         
         
         //public Brain () {}
         public Brain(GameConfiguration config)
         {
+            gameConfig = config;
             board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
             boardWidth = config.BoardSizeWidth;
             boardHeight = config.BoardSizeHeight;
@@ -40,7 +42,7 @@ namespace GameBrain
             player2Options = false;
             chipsLeft = config.ChipsCount;
             chipsToOptions = config.OptionsAfterNMoves; 
-            gameConfig = config;
+            WinCondition = config.WinCondition;
             win = 0;
         }
         
@@ -73,68 +75,103 @@ namespace GameBrain
             playersMoves = state.PlayersMoves;
             chipsToOptions = state.GameConfig.OptionsAfterNMoves;
             gameConfig = state.GameConfig;
+            WinCondition = state.GameConfig.WinCondition;
             win = state.Win;
         }
         
         public void CheckForWinner()
         {
-            if (chipsLeft[1] == 0 && chipsLeft[2] == 0)
+            
+            if (WinCondition > boardHeight || WinCondition > boardWidth)
             {
-                win = 3;
+                return;
             }
-            for (int i = 0; i < boardWidth; i++)
+            
+            for (int i = 0; i < boardHeight; i++)
             {
-                for (int j = 0; j <= boardHeight - 3; j++)
+                for (int j = 0; j <= boardWidth - WinCondition; j++)
                 {
-                    if (board[i, j] != 0 &&
-                        board[i, j] == board[i, j + 1] &&
-                        board[i, j] == board[i, j + 2])
+                    bool winConditionMet = true;
+                    for (int k = 1; k < WinCondition; k++)
+                    {
+                        if (board[i, j] == 0 || board[i, j] != board[i, j + k])
+                        {
+                            winConditionMet = false;
+                            break;
+                        }
+                    }
+                    if (winConditionMet)
                     {
                         win = playerNumber;
+                        return;
                     }
                 }
             }
             
-            for (int j = 0; j < boardHeight; j++)
+            for (int j = 0; j < boardWidth; j++)
             {
-                for (int i = 0; i <= boardWidth - 3; i++)
+                for (int i = 0; i <= boardHeight - WinCondition; i++)
                 {
-                    if (board[i, j] != 0 &&
-                        board[i, j] == board[i + 1, j] &&
-                        board[i, j] == board[i + 2, j])
+                    bool winConditionMet = true;
+                    for (int k = 1; k < WinCondition; k++)
                     {
-                        win = playerNumber;
+                        if (board[i, j] == 0 || board[i, j] != board[i + k, j])
+                        {
+                            winConditionMet = false;
+                            break;
+                        }
                     }
-                }
-            }
-
-            for (int i = 0; i <= boardWidth - 3; i++)
-            {
-                for (int j = 0; j <= boardHeight - 3; j++)
-                {
-                    if (board[i, j] != 0 &&
-                        board[i, j] == board[i + 1, j + 1] &&
-                        board[i, j] == board[i + 2, j + 2])
+                    if (winConditionMet)
                     {
                         win = playerNumber;
+                        return;
                     }
                 }
             }
             
-            for (int i = 0; i <= boardWidth - 3; i++)
+            for (int i = 0; i <= boardHeight - WinCondition; i++)
             {
-                for (int j = 2; j < boardHeight; j++)
+                for (int j = 0; j <= boardWidth - WinCondition; j++)
                 {
-                    if (board[i, j] != 0 &&
-                        board[i, j] == board[i + 1, j - 1] &&
-                        board[i, j] == board[i + 2, j - 2])
+                    bool winConditionMet = true;
+                    for (int k = 1; k < WinCondition; k++)
+                    {
+                        if (board[i, j] == 0 || board[i, j] != board[i + k, j + k])
+                        {
+                            winConditionMet = false;
+                            break;
+                        }
+                    }
+                    if (winConditionMet)
                     {
                         win = playerNumber;
+                        return;
+                    }
+                }
+            }
+            
+            for (int i = 0; i <= boardHeight - WinCondition; i++)
+            {
+                for (int j = WinCondition - 1; j < boardWidth; j++)
+                {
+                    bool winConditionMet = true;
+                    for (int k = 1; k < WinCondition; k++)
+                    {
+                        if (board[i, j] == 0 || board[i, j] != board[i + k, j - k])
+                        {
+                            winConditionMet = false;
+                            break;
+                        }
+                    }
+                    if (winConditionMet)
+                    {
+                        win = playerNumber;
+                        return;
                     }
                 }
             }
         }
-
+        
         public void CheckForOptions()
         {
             if (playersMoves[1] == chipsToOptions)

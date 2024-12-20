@@ -2,11 +2,6 @@ html {
   font-size: 14px;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
@@ -37,12 +32,7 @@ main {
   width: 300px;
   height: 300px;
 }
-.movable-grid {
-  position: relative;
-  box-shadow: 0 0 5px 2px rgba(255, 0, 0, 0.5);
-  z-index: 10;
-  transition: left 0.5s ease, top 0.5s ease;
-}
+
 .selected {
   border: 3px solid green;
 }
@@ -53,65 +43,6 @@ main {
   width: 100%;
 }
 
-.board {
-  position: relative;
-  margin: 80px;
-  margin-top: 100px;
-}
-
-.move-btn {
-  position: absolute;
-  z-index: 10;
-  width: 80px;
-  height: 80px;
-  font-size: 24px;
-  text-align: center;
-  line-height: 50px;
-}
-
-.move-up {
-  top: -80px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.move-right {
-  right: -80px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.move-down {
-  bottom: -80px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.move-left {
-  left: -80px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.move-up-left {
-  top: -80px;
-  left: -80px;
-}
-
-.move-up-right {
-  top: -80px;
-  right: -80px;
-}
-
-.move-down-left {
-  bottom: -80px;
-  left: -80px;
-}
-
-.move-down-right {
-  bottom: -80px;
-  right: -80px;
-}
 .load-game-container {
   display: flex;
   flex-direction: column;
@@ -119,6 +50,99 @@ main {
   align-items: center;
   max-height: 400px;
   overflow-y: scroll;
+}
+
+/*Game*/
+
+:root {
+  --cell-size: 80px;
+  --negative-cell-size: -80px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --cell-size: 60px;
+    --negative-cell-size: -60px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --cell-size: 40px;
+    --negative-cell-size: -40px;
+  }
+}
+
+.board {
+  position: relative;
+  margin: var(--cell-size);
+  margin-top: calc(var(--cell-size) + 20px);
+}
+
+.movable-grid {
+  position: relative;
+  box-shadow: 0 0 5px 2px rgba(255, 0, 0, 0.5);
+  z-index: 10;
+  transition: left 0.5s ease, top 0.5s ease;
+}
+
+.move-btn {
+  position: absolute;
+  z-index: 10;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  font-size: 24px;
+  text-align: center;
+  line-height: 50px;
+}
+
+.move-up {
+  top: var(--negative-cell-size);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.move-right {
+  right: var(--negative-cell-size);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.move-down {
+  bottom: var(--negative-cell-size);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.move-left {
+  left: var(--negative-cell-size);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.move-up-left {
+  top: var(--negative-cell-size);
+  left: var(--negative-cell-size);
+}
+
+.move-up-right {
+  top: var(--negative-cell-size);
+  right: var(--negative-cell-size);
+}
+
+.move-down-left {
+  bottom: var(--negative-cell-size);
+  left: var(--negative-cell-size);
+}
+
+.move-down-right {
+  bottom: var(--negative-cell-size);
+  right: var(--negative-cell-size);
+}
+.move-btn::before {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1;
 }
 
 

@@ -85,7 +85,7 @@
                 }
                 }
 
-                <div class="movable-grid" style="width: 240px; height: 240px; border: 3px solid red; position: absolute; pointer-events: none;"></div>
+                <div class="movable-grid" style="width: @(Model.GameBrain.movableBoardWidth * 80)px; height: @(Model.GameBrain.movableBoardHeight * 80)px; border: 3px solid red; position: absolute; pointer-events: none; left: @(Model.GameBrain.gridX * 80)px; top: @(Model.GameBrain.gridY * 80)px;"></div>
 
                 @if(Model.GameBrain.player1Options || Model.GameBrain.player2Options)
                 {
@@ -144,25 +144,19 @@
 {
     <script>
         const gameId = '@Model.StateId';
+        const userId = '@Model.UserId';
         const movableGrid = document.querySelector(".movable-grid");
         const handlerText = document.querySelector('.handler-text');
         const cells = document.querySelectorAll('.game-cell');
         const moveButtons = document.querySelectorAll('.move-btn')
         let movingChip = false;
         let chipPosition = [0, 0];
-        let playerNumber = @Model.GameBrain.playerNumber;
-        const playerRole = @ViewData["PlayerRole"];
 
-        movableGrid.style.left = `${@Model.GameBrain.gridX * 80}px`;
-        movableGrid.style.top = `${@Model.GameBrain.gridY * 80}px`;
-
-        console.log("You are Player:", playerRole);
-        console.log("Current turn is Player:", playerNumber);
         
         
 
-        function checkTurn() {
-            if (playerRole === playerNumber) {
+        function checkTurn(isYourTurn) {
+            if (isYourTurn) {
                 enableAllButtons();
                 handlerText.innerText = "It's your turn!";
             } else {
@@ -171,18 +165,18 @@
             }
         }
 
-        checkTurn();
-
 
         async function fetchGameState() {
             try {
-                const response = await fetch('/Game?handler=GetState', {
+                const response = await fetch('/GameOnline?handler=GetState', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ gameId: gameId })
+                    body: JSON.stringify({ 
+                        gameId: gameId
+                     })
                 });
                 const data = await response.json();
-
+                checkTurn(data.isYourTurn)
                 updateBoard(data.board);
                 updateMovableGrid(data.gridX, data.gridY);
                 showOptions(playerNumber)
@@ -208,21 +202,21 @@
                 buttonElement.dataset.number = 0;
                 handlerText.innerText = "Move chip somewhere";
             } else if (movingChip) {
-                const data = await fetchWithHandler('/Game?handler=MoveChip', { startX: chipPosition[0], startY: chipPosition[1], endX: x, endY: y, gameId: gameId });
+                const data = await fetchWithHandler('/GameOnline?handler=MoveChip', { startX: chipPosition[0], startY: chipPosition[1], endX: x, endY: y, gameId: gameId });
                 movingChip = false;
                 chipPosition = [0, 0];
                 buttonElement.dataset.number = data.board[x][y];
                 handlerText.innerText = data.message;
                 updateBoard(data.board);
             } else {
-                const data = await fetchWithHandler('/Game?handler=Click', { x: x, y: y, gameId: gameId });
+                const data = await fetchWithHandler('/GameOnline?handler=Click', { x: x, y: y, gameId: gameId });
                 buttonElement.dataset.number = data.board[x][y];
                 buttonElement.innerText = data.board[x][y] === 1 ? 'X' : data.board[x][y] === 2 ? 'O' : '';
             }
         }
 
         async function handleMoveBoard(direction) {
-            const data = await fetchWithHandler('/Game?handler=MoveBoard', { direction: direction, gameId: gameId });
+            const data = await fetchWithHandler('/GameOnline?handler=MoveBoard', { direction: direction, gameId: gameId });
             updateMovableGrid(data.gridX, data.gridY);
 
             if (data.message) {
@@ -322,8 +316,8 @@
         }
 
     
-        function showOptions(number) {
-            if (number === playerNumber && number === playerRole) {
+        function showOptions(player1Options, player2Options) {
+            if (player1Options || player2Options) {
                 enableMoveButtons()
             } else {
                 disableMoveButtons()
