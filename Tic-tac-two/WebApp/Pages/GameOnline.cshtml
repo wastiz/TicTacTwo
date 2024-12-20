@@ -143,16 +143,12 @@
 @section Scripts
 {
     <script>
-        const gameId = '@Model.StateId';
-        const userId = '@Model.UserId';
         const movableGrid = document.querySelector(".movable-grid");
         const handlerText = document.querySelector('.handler-text');
         const cells = document.querySelectorAll('.game-cell');
         const moveButtons = document.querySelectorAll('.move-btn')
         let movingChip = false;
         let chipPosition = [0, 0];
-
-        
         
 
         function checkTurn(isYourTurn) {
@@ -168,21 +164,16 @@
 
         async function fetchGameState() {
             try {
-                const response = await fetch('/GameOnline?handler=GetState', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        gameId: gameId
-                     })
+                const response = await fetch('/GameOnline?handler=GameState', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
                 });
                 const data = await response.json();
-                checkTurn(data.isYourTurn)
+                console.log(data)
                 updateBoard(data.board);
                 updateMovableGrid(data.gridX, data.gridY);
                 showOptions(playerNumber)
-
-                playerNumber = data.playerNumber;
-                checkTurn();
+                checkTurn(data.isYourTurn)
 
                 if (data.win !== 0) {
                     checkForWin(data.win);
@@ -191,7 +182,8 @@
                 console.error('Error fetching game state:', error);
             }
         }
-        setInterval(fetchGameState, 2000);
+        
+        setInterval(fetchGameState, 2000)
 
         async function handleCellClick(x, y, buttonElement) {
             const number = +buttonElement.dataset.number;
@@ -202,21 +194,21 @@
                 buttonElement.dataset.number = 0;
                 handlerText.innerText = "Move chip somewhere";
             } else if (movingChip) {
-                const data = await fetchWithHandler('/GameOnline?handler=MoveChip', { startX: chipPosition[0], startY: chipPosition[1], endX: x, endY: y, gameId: gameId });
+                const data = await fetchWithHandler('/GameOnline?handler=MoveChip', { startX: chipPosition[0], startY: chipPosition[1], endX: x, endY: y});
                 movingChip = false;
                 chipPosition = [0, 0];
                 buttonElement.dataset.number = data.board[x][y];
                 handlerText.innerText = data.message;
                 updateBoard(data.board);
             } else {
-                const data = await fetchWithHandler('/GameOnline?handler=Click', { x: x, y: y, gameId: gameId });
+                const data = await fetchWithHandler('/GameOnline?handler=Click', { x: x, y: y});
                 buttonElement.dataset.number = data.board[x][y];
                 buttonElement.innerText = data.board[x][y] === 1 ? 'X' : data.board[x][y] === 2 ? 'O' : '';
             }
         }
 
         async function handleMoveBoard(direction) {
-            const data = await fetchWithHandler('/GameOnline?handler=MoveBoard', { direction: direction, gameId: gameId });
+            const data = await fetchWithHandler('/GameOnline?handler=MoveBoard', { direction: direction });
             updateMovableGrid(data.gridX, data.gridY);
 
             if (data.message) {
@@ -240,6 +232,7 @@
                 if (data.message) {
                     handlerText.innerText = data.message;
                 }
+                checkTurn(data.isYourTurn)
                 checkForWin(data.win);
                 return data;
             } catch (error) {

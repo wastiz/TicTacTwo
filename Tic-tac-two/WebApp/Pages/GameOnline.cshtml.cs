@@ -9,14 +9,14 @@ namespace WebApp.Pages
     public class GameOnline : PageModel
     {
         [BindProperty(SupportsGet = true)] public string SessionId { get; set; }
-        [BindProperty(SupportsGet = true)] public bool Connected { get; set; }
-        public GameSessionDB Session;
-        public string StateId;
-        public string UserId;
-        public string Username;
-        public Brain GameBrain { get; set; }
         private readonly GameRepositoryDb _gameRepositoryDb;
         private AppDbContext _context;
+        public GameSessionDB Session;
+        public string StateId;
+        public Brain GameBrain { get; set; }
+        public string UserId;
+        public string Username;
+        public bool isPlayerTurn;
         [BindProperty] public string Message { get; set; }
 
         public GameOnline(AppDbContext context, GameRepositoryDb gameRepositoryDb)
@@ -25,80 +25,82 @@ namespace WebApp.Pages
             _context = context;
         }
 
-        public void OnGet()
+        public void CheckYourTurn()
+        {
+            isPlayerTurn = (UserId == Session.Player1Id && GameBrain.playerNumber == 1) || (UserId == Session.Player2Id && GameBrain.playerNumber == 2);
+        }
+        public void InitializeGame()
         {
             Session = _context.GameSessions.FirstOrDefault(s => s.Id == SessionId);
-    
-            if (Session == null)
-            {
-                Message = "Game session not found!";
-                return;
-            }
-            
             StateId = Session.GameStateId;
             var gameState = _gameRepositoryDb.GetGameStateById(StateId);
-            
-            if (gameState == null)
-            {
-                Message = "Game state not found!";
-                return;
-            }
-
+            GameBrain = new Brain(gameState);
             UserId = HttpContext.Session.GetString("UserId");
             Username = HttpContext.Session.GetString("Username");
-            GameBrain = new Brain(gameState);
-            
-            if (UserId == Session.Player1Id)
-            {
-                ViewData["PlayerRole"] = 1;
-            }
-            else if (UserId == Session.Player2Id)
-            {
-                ViewData["PlayerRole"] = 2;
-            }
-            else
-            {
-                ViewData["PlayerRole"] = 0;
-            }
+            CheckYourTurn();
+        }
+        
+        public IActionResult OnGetGameState()
+        {
+            InitializeGame();
 
-            GameBrain = new Brain(gameState);
+            return new JsonResult(new
+            {
+                success = true,
+                board = ConvertToList(GameBrain.board),
+                win = GameBrain.win,
+                playerNumber = GameBrain.playerNumber,
+                player1Options = GameBrain.player1Options,
+                player2Options = GameBrain.player2Options,
+                isYourTurn = isPlayerTurn,
+                gridX = GameBrain.gridX,
+                gridY = GameBrain.gridY
+            });
+        }
+        
+        public void OnGet()
+        {
+            InitializeGame();
         }
         
         public class PlaceChipRequest
         {
             public int X { get; set; }
             public int Y { get; set; }
-            public string GameId { get; set; }
-            public int PlayerNumber { get; set; }
+            
         }
 
         [HttpPost]
         public IActionResult OnPostClick([FromBody] PlaceChipRequest request)
         {
-            var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
-            GameBrain = new Brain(gameState);
-            
-            if (GameBrain.playerNumber != request.PlayerNumber)
+            InitializeGame();
+            if (isPlayerTurn)
             {
-                return new JsonResult(new { message = "It's not your turn!" });
+                bool madeMove = GameBrain.placeChip(request.X, request.Y);
+
+                if (madeMove)
+                {
+                    GameBrain.SaveGame(StateId);
+                }
+                CheckYourTurn();
+                return new JsonResult(new
+                {
+                    message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "You can't place here",
+                    board = ConvertToList(GameBrain.board),
+                    win = GameBrain.win,
+                    isYourTurn = isPlayerTurn,
+                    gridX = GameBrain.gridX,
+                    gridY = GameBrain.gridY
+                });
             }
-
-            bool madeMove = GameBrain.placeChip(request.X, request.Y);
-
-            if (madeMove)
+            else
             {
-                GameBrain.SaveGame(request.GameId);
-            }
-
-            return new JsonResult(new
-            {
-                message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "You can't place here",
-                board = ConvertToList(GameBrain.board),
-                win = GameBrain.win,
-                currentPlayer = GameBrain.playerNumber == 1 ? Session.Player1Id : Session.Player2Id,
-                gridX = GameBrain.gridX,
-                gridY = GameBrain.gridY
-            });
+                return new JsonResult(new
+                {
+                    message = "It's not your turn!",
+                });
+            }   
+        }
         }
         
         public class MoveChipRequest
@@ -107,23 +109,18 @@ namespace WebApp.Pages
             public int StartY { get; set; }
             public int EndX { get; set; }
             public int EndY { get; set; }
-            public string GameId { get; set; }
         }
 
         public IActionResult OnPostMoveChip([FromBody] MoveChipRequest request)
         {
-            var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
-            GameBrain = new Brain(gameState);
-            
-            if (GameBrain.playerNumber != request.StartX)
-            {
-                return new JsonResult(new { message = "It's not your turn!" });
-            }
+            InitializeGame();
 
             bool madeMove = GameBrain.moveChip(request.StartX, request.StartY, request.EndX, request.EndY);
             string message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "Invalid move";
 
-            GameBrain.SaveGame(request.GameId);
+            GameBrain.SaveGame(StateId);
+            
+            CheckYourTurn();
 
             return new JsonResult(new
             {
@@ -141,24 +138,25 @@ namespace WebApp.Pages
         public class MoveBoardRequest
         {
             public string Direction { get; set; }
-            public string GameId { get; set; }
         }
 
         public IActionResult OnPostMoveBoard([FromBody] MoveBoardRequest request)
         {
-            GameBrain = new Brain(_gameRepositoryDb.GetGameStateById(request.GameId));
+            InitializeGame();
             string message;
 
             bool madeMove = GameBrain.moveMovableBoard(request.Direction);
             if (madeMove)
             {
-                GameBrain.SaveGame(request.GameId);
+                GameBrain.SaveGame(StateId);
                 message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "You can't move there";
             }
             else
             {
                 message = "Invalid move";
             }
+            
+            CheckYourTurn();
 
             return new JsonResult(new
             {
@@ -168,6 +166,7 @@ namespace WebApp.Pages
                 playerNumber = GameBrain.playerNumber,
                 player1Options = GameBrain.player1Options,
                 player2Options = GameBrain.player2Options,
+                isYourTurn = isPlayerTurn,
                 gridX = GameBrain.gridX,
                 gridY = GameBrain.gridY,
             });
@@ -199,43 +198,6 @@ namespace WebApp.Pages
 
             return RedirectToPage("/NewGame");
         }
-        
-        public IActionResult OnPostGetState([FromBody] StateRequest request)
-        {
-            var gameState = _gameRepositoryDb.GetGameStateById(request.GameId);
-            GameBrain = new Brain(gameState);
-            bool yourTurn = false;
-            
-            if ((UserId == Session.Player1Id && GameBrain.playerNumber == 1) || 
-                (UserId == Session.Player2Id && GameBrain.playerNumber == 2))
-            {
-                if (GameBrain.win == 0)
-                {
-                    if ((GameBrain.playerNumber == 1 && GameBrain.win == 0) || 
-                        (GameBrain.playerNumber == 2 && GameBrain.win == 0))
-                    {
-                        yourTurn = true;
-                    }
-                }
-            }
 
-            return new JsonResult(new
-            {
-                board = ConvertToList(GameBrain.board),
-                win = GameBrain.win,
-                playerNumber = GameBrain.playerNumber,
-                player1Options = GameBrain.player1Options,
-                player2Options = GameBrain.player2Options,
-                isYourTurn = yourTurn,
-                gridX = GameBrain.gridX,
-                gridY = GameBrain.gridY
-            });
-        }
-
-        
-        public class StateRequest
-        {
-            public string GameId { get; set; }
-        }
     }
 }
