@@ -3,12 +3,12 @@ using DAL;
 using GameBrain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Hubs;
 
 // Set up App Config
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AppDbContext>(options => 
-    options.UseSqlite($"Data Source={FileHelper.BasePath}app.db"));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Data Source={FileHelper.BasePath}app.db"));
 
 //builder.Services
 //.AddTransient<>(); - create new one every time
@@ -35,6 +35,8 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromDays(365);
 });
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,8 +55,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapHub<GameHub>("/gameHub");
+
 app.MapStaticAssets();
-app.MapRazorPages()
-    .WithStaticAssets();
+app.MapRazorPages().WithStaticAssets();
 
 app.Run();
