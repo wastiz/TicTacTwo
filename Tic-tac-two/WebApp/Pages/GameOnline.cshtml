@@ -72,27 +72,27 @@
 
                 @if (Model.GameBrain.player1Options || Model.GameBrain.player2Options)
                 {
-                    <button class="move-btn btn btn-outline-primary border move-up" data-direction="up" onclick="handleMoveBoard('up')">↑</button>
-                    <button class="move-btn btn btn-outline-primary border move-left" data-direction="left" onclick="handleMoveBoard('left')">←</button>
-                    <button class="move-btn btn btn-outline-primary border move-right" data-direction="right" onclick="handleMoveBoard('right')">→</button>
-                    <button class="move-btn btn btn-outline-primary border move-down" data-direction="down" onclick="handleMoveBoard('down')">↓</button>
+                    <button class="move-btn btn btn-outline-primary border move-up" data-direction="up" onclick="handleMoveBoard('up')"><i class="fa-regular fa-regular fa-arrow-up"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-left" data-direction="left" onclick="handleMoveBoard('left')"><i class="fa-regular fa-arrow-left"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-right" data-direction="right" onclick="handleMoveBoard('right')"><i class="fa-regular fa-arrow-right"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-down" data-direction="down" onclick="handleMoveBoard('down')"><i class="fa-regular fa-arrow-down"></i></button>
 
-                    <button class="move-btn btn btn-outline-primary border move-up-left" data-direction="up-left" onclick="handleMoveBoard('up-left')">↖</button>
-                    <button class="move-btn btn btn-outline-primary border move-up-right" data-direction="up-right" onclick="handleMoveBoard('up-right')">↗</button>
-                    <button class="move-btn btn btn-outline-primary border move-down-left" data-direction="down-left" onclick="handleMoveBoard('down-left')">↙</button>
-                    <button class="move-btn btn btn-outline-primary border move-down-right" data-direction="down-right" onclick="handleMoveBoard('down-right')">↘</button>
+                    <button class="move-btn btn btn-outline-primary border move-up-left" data-direction="up-left" onclick="handleMoveBoard('up-left')"><i class="fa-regular fa-arrow-up-left"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-up-right" data-direction="up-right" onclick="handleMoveBoard('up-right')"><i class="fa-regular fa-arrow-up-right"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-down-left" data-direction="down-left" onclick="handleMoveBoard('down-left')"><i class="fa-regular fa-arrow-down-left"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-down-right" data-direction="down-right" onclick="handleMoveBoard('down-right')"><i class="fa-regular fa-arrow-down-right"></i></button>
                 }
                 else
                 {
-                    <button class="move-btn btn btn-outline-primary border move-up" data-direction="up" onclick="handleMoveBoard('up')" disabled>↑</button>
-                    <button class="move-btn btn btn-outline-primary border move-left" data-direction="left" onclick="handleMoveBoard('left')" disabled>←</button>
-                    <button class="move-btn btn btn-outline-primary border move-right" data-direction="right" onclick="handleMoveBoard('right')" disabled>→</button>
-                    <button class="move-btn btn btn-outline-primary border move-down" data-direction="down" onclick="handleMoveBoard('down')" disabled>↓</button>
+                    <button class="move-btn btn btn-outline-primary border move-up" data-direction="up" onclick="handleMoveBoard('up')" disabled><i class="fa-regular fa-regular fa-arrow-up"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-left" data-direction="left" onclick="handleMoveBoard('left')" disabled><i class="fa-regular fa-arrow-left"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-right" data-direction="right" onclick="handleMoveBoard('right')" disabled><i class="fa-regular fa-arrow-right"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-down" data-direction="down" onclick="handleMoveBoard('down')" disabled><i class="fa-regular fa-arrow-down"></i></button>
 
-                    <button class="move-btn btn btn-outline-primary border move-up-left" data-direction="up-left" onclick="handleMoveBoard('up-left')" disabled>↖</button>
-                    <button class="move-btn btn btn-outline-primary border move-up-right" data-direction="up-right" onclick="handleMoveBoard('up-right')" disabled>↗</button>
-                    <button class="move-btn btn btn-outline-primary border move-down-left" data-direction="down-left" onclick="handleMoveBoard('down-left')" disabled>↙</button>
-                    <button class="move-btn btn btn-outline-primary border move-down-right" data-direction="down-right" onclick="handleMoveBoard('down-right')" disabled>↘</button>
+                    <button class="move-btn btn btn-outline-primary border move-up-left" data-direction="up-left" onclick="handleMoveBoard('up-left')" disabled><i class="fa-regular fa-arrow-up-left"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-up-right" data-direction="up-right" onclick="handleMoveBoard('up-right')" disabled><i class="fa-regular fa-arrow-up-right"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-down-left" data-direction="down-left" onclick="handleMoveBoard('down-left')" disabled><i class="fa-regular fa-arrow-down-left"></i></button>
+                    <button class="move-btn btn btn-outline-primary border move-down-right" data-direction="down-right" onclick="handleMoveBoard('down-right')" disabled><i class="fa-regular fa-arrow-down-right"></i></button>
                 }
 
             </div>
@@ -183,7 +183,7 @@
 
     function handleCellClick(x, y, buttonElement) {
         const number = +buttonElement.dataset.number;
-
+        
         if (number === userNumber) {
             movingChip = true;
             chipPosition = [x, y];
@@ -206,6 +206,7 @@
             const x = +cell.dataset.x;
             const y = +cell.dataset.y;
             cell.innerText = board[x][y] === 1 ? "X" : board[x][y] === 2 ? "O" : "";
+            cell.dataset.number = board[x][y]
         });
     }
 
