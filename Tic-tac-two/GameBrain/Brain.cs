@@ -18,9 +18,9 @@ namespace GameBrain
         public int chipsToOptions; // How many chips have player to place to get options
         public bool player1Options; // player 1 have more options
         public bool player2Options; // player 2 have more options
-        private GameConfiguration gameConfig;
+        public GameConfiguration gameConfig;
         private GameRepositoryDb repository = new GameRepositoryDb();
-        private int WinCondition;
+        public int WinCondition;
         public int win = 0; //0 - nothing, 1 - player 1 won, 2 - player 2 won, 3 - draw
         
         

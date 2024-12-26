@@ -31,6 +31,10 @@
                         <a class="nav-link text-dark" asp-area="" asp-page="/Configs/Index">Configs</a>
                     </li>
                 </ul>
+                <div class="d-flex align-items-center ms-auto gap-3">
+                    <b>@(Model.Username != null ? $"Welcome back,{Model.Username}" : "")</b>
+                    <i class="fa-solid fa-user"></i>
+                </div>
             </div>
         </div>
     </nav>

@@ -22,7 +22,7 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-       
+       Username = HttpContext.Session.GetString("Username");
     }
 
     public IActionResult OnPost()

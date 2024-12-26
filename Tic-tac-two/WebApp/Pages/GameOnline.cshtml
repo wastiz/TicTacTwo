@@ -113,7 +113,13 @@
                     </h2>
                     <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body">
-                            Here will be some rules and guides how to play
+                            The goal is to score @Model.GameBrain.WinCondition chips in a row
+                            <br>
+                            Both players have @Model.GameBrain.gameConfig.ChipsCount[1] chips to make this
+                            <br>
+                            You can place/move chips only in grid @Model.GameBrain.movableBoardWidth x @Model.GameBrain.movableBoardHeight (it's bordered by red line)
+                            <br>
+                            To move board or your chip you have to place @Model.GameBrain.gameConfig.OptionsAfterNMoves chips firstly
                         </div>
                     </div>
                 </div>

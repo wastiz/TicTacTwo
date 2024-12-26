@@ -23,20 +23,38 @@
 
 <div class="container h-100">
     <div class="row h-100">
-        <div class="col-4 d-flex flex-column h-100 new-game-section">
-            <h4><b>Welcome back, @Model.Username</b></h4>
-            <br>
-            <a asp-page="/NewGame">
-                <button class="btn btn-primary mb-2" asp-page="/NewGame">New Game</button>
+        <div class="col-4 d-flex flex-column h-100 new-game-section mt-5">
+            <a asp-page="/NewGame" class="home-menu-link">
+                <button class="home-menu-item btn btn-primary mb-2">
+                    <span class="text-main">New Game</span>
+                    <div class="extra-content">
+                        <span class="extra-text">Start new game with any modes and configs</span>
+                    </div>
+                </button>
             </a>
-            <a asp-page="/LoadGame">
-                <button class="btn btn-primary mb-2">Load Game</button>
+            <a asp-page="/LoadGame" class="home-menu-link">
+                <button class="home-menu-item btn btn-primary mb-2">
+                    <span class="text-main">Load Game</span>
+                    <div class="extra-content">
+                        <span class="extra-text">Load saved game to continue your game</span>
+                    </div>
+                </button>
             </a>
-            <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Connect to Game
-            </button>
-            <a asp-page="GameConfigs">
-                <button class="btn btn-primary mb-2">Game Configurations</button>
+            <a class="home-menu-link">
+                <button type="button" class="home-menu-item btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <span class="text-main">Connect to Game</span>
+                    <div class="extra-content">
+                        <span class="extra-text">Connect to game via session id</span>
+                    </div>
+                </button>
+            </a>
+            <a asp-page="GameConfigs" class="home-menu-link">
+                <button class="home-menu-item btn btn-primary mb-2">
+                    <span class="text-main">Game Configurations</span>
+                    <div class="extra-content">
+                        <span class="extra-text">Create or edit configs. Make your own game</span>
+                    </div>
+                </button>
             </a>
         </div>
         <div class="col-8 h-100 d-flex align-items-center justify-content-center">

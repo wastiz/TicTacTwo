@@ -137,7 +137,13 @@
                         </h2>
                         <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body">
-                                Here will be some rules and guides how to play
+                                The goal is to score @Model.GameBrain.WinCondition chips in a row
+                                <br>
+                                Both players have @Model.GameBrain.gameConfig.ChipsCount[1] chips to make this
+                                <br>
+                                You can place/move chips only in grid @Model.GameBrain.movableBoardWidth x @Model.GameBrain.movableBoardHeight (it's bordered by red line)
+                                <br>
+                                To move board or your chip you have to place @Model.GameBrain.gameConfig.OptionsAfterNMoves chips firstly
                             </div>
                         </div>
                     </div>
@@ -156,6 +162,8 @@
         const cells = document.querySelectorAll('.game-cell');
         const moveButtons = document.querySelectorAll(".move-btn");
         let playerNumber = @Model.GameBrain.playerNumber;
+        let player1Options = false;
+        let player2Options = false;
         let movingChip = false;
         let chipPosition = [0, 0]
 
@@ -169,8 +177,8 @@
                 if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
                 const data = await response.json()
                 playerNumber = data.playerNumber;
-                gridX = data.gridX;
-                gridY = data.gridY;
+                player1Options = data.player1Options;
+                player2Options = data.player2Options;
                 showOptions(data.player1Options, data.player2Options);
                 if (data.message) {
                     handlerText.innerText = data.message;
@@ -190,7 +198,7 @@
             console.log(number)
             console.log(playerNumber)
 
-            if (number === playerNumber) {
+            if (number === playerNumber && (player1Options || player2Options)) {
                 movingChip = true;
                 chipPosition = [x, y]
                 buttonElement.dataset.number = 0
