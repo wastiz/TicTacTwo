@@ -285,7 +285,7 @@
         }
 
         function showOptions(player1Options, player2Options){
-            if (player1Options || player2Options) {
+            if (player1Options && playerNumber === 1 || player2Options && playerNumber === 2) {
                 enableMoveButtons()
             } else {
                 disableMoveButtons()

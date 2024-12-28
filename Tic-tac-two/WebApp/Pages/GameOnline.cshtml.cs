@@ -17,7 +17,7 @@ namespace WebApp.Pages
         public string UserId;
         public string Username;
         public bool isPlayerTurn;
-        [BindProperty] public string Message { get; set; }
+        public string Message { get; set; }
 
         public GameOnline(AppDbContext context, GameRepositoryDb gameRepositoryDb)
         {

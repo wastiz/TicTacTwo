@@ -47,10 +47,14 @@ namespace WebApp.Hubs
             if (gameState.Player1Id == null)
             {
                 gameState.Player1Id = userId;
+                gameState.Player1Name = _context.Users.FirstOrDefault(u => u.Id == userId).Username;
+                gameState.SetCurrentPlayerName(userId);
+                gameState.Message = $"Player {gameState.CurrentPlayerName} is thinking.";
             }
             else if (gameState.Player2Id == null)
             {
                 gameState.Player2Id = userId;
+                gameState.Player2Name = _context.Users.FirstOrDefault(u => u.Id == userId).Username;
             }
 
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
@@ -146,10 +150,25 @@ namespace WebApp.Hubs
         public Brain GameBrain { get; }
         public string Player1Id { get; set; }
         public string Player2Id { get; set; }
+        public string Player1Name { get; set; }
+        public string Player2Name { get; set; }
+        public string CurrentPlayerName { get; set; }
+        public string Message {get; set;}
         public bool IsPlayerTurn(string userId)
         {
             return (userId == Player1Id && GameBrain.playerNumber == 1) || 
                    (userId == Player2Id && GameBrain.playerNumber == 2);
+        }
+
+        public void SetCurrentPlayerName(string userId)
+        {
+            if (GameBrain.playerNumber == 1 && userId == Player1Id)
+            {
+                CurrentPlayerName = Player2Name;
+            } else if (GameBrain.playerNumber == 2 && userId == Player2Id)
+            {
+                CurrentPlayerName = Player1Name;
+            }
         }
 
         public GameState(string sessionId, Brain gameBrain)
@@ -170,7 +189,8 @@ namespace WebApp.Hubs
             {
                 return (false, "Invalid move.", null);
             }
-
+            SetCurrentPlayerName(userId);
+            Message = $"Player {CurrentPlayerName} is thinking.";
             return (true, "Move successful.", GetGameState(userId));
         }
         
@@ -186,6 +206,8 @@ namespace WebApp.Hubs
             {
                 return (false, "Invalid move.", null);
             }
+            SetCurrentPlayerName(userId);
+            Message = $"Player {CurrentPlayerName} is thinking.";
 
             return (true, "Move successful.", GetGameState(userId));
         }
@@ -202,6 +224,8 @@ namespace WebApp.Hubs
             {
                 return (false, "Invalid move.", null);
             }
+            SetCurrentPlayerName(userId);
+            Message = $"Player {CurrentPlayerName} is thinking.";
 
             return (true, "Move successful.", GetGameState(userId));
         }
@@ -217,7 +241,8 @@ namespace WebApp.Hubs
                 gridY = GameBrain.gridY,
                 player1Options = GameBrain.player1Options,
                 player2Options = GameBrain.player2Options,
-                win = GameBrain.win
+                win = GameBrain.win,
+                message = Message,
             };
         }
         

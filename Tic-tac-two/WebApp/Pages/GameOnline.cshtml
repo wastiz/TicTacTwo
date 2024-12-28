@@ -177,6 +177,7 @@
         updateMovableGrid(gameState.gridX, gameState.gridY)
         showOptions(gameState.player1Options, gameState.player2Options)
         checkForWin(gameState.win)
+        handlerText.innerText = gameState.message
     });
     
     connection.on("GameStateUpdated", (gameState) => {
@@ -185,6 +186,7 @@
         updateMovableGrid(gameState.gridX, gameState.gridY)
         showOptions(gameState.player1Options, gameState.player2Options)
         checkForWin(gameState.win)
+        handlerText.innerText = gameState.message
     });
 
     function handleCellClick(x, y, buttonElement) {

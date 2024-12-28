@@ -33,55 +33,50 @@ main {
   height: 300px;
 }
 
-/* Основной стиль кнопки */
 .home-menu-item {
   position: relative;
-  height: 50px; /* Начальная высота кнопки */
-  width: 200px; /* Фиксированная ширина */
-  transition: height 0.5s ease; /* Плавное увеличение высоты */
-  overflow: hidden; /* Скрываем содержимое, выходящее за пределы */
+  height: 50px;
+  width: 200px;
+  transition: height 0.5s ease;
+  overflow: hidden;
 }
 
 .text-main {
   position: absolute;
-  top: 24px; /* Центр по вертикали */
-  left: 10px; /* Выравнивание слева с отступом */
-  transform: translateY(-50%); /* Центрирование по вертикали */
+  top: 24px;
+  left: 10px;
+  transform: translateY(-50%);
   font-size: 16px;
   color: white;
   z-index: 2;
-  text-align: left; /* Выравнивание текста по левому краю */
-  white-space: nowrap; /* Предотвращаем перенос текста */
+  text-align: left;
+  white-space: nowrap;
 }
 
-/* Скрытый дополнительный контент */
 .extra-content {
   position: absolute;
-  bottom: 0; /* Находится внизу кнопки */
+  bottom: 0;
   left: 0;
   width: 100%;
-  padding: 10px; /* Отступы для дополнительного текста */
-  background-color: rgba(255, 255, 255, 0.1); /* Лёгкий фон для контента */
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
   text-align: center;
-  opacity: 0; /* Скрываем по умолчанию */
+  opacity: 0;
   transition: opacity 0.5s ease;
 }
 
-/* Дополнительный текст */
 .extra-text {
   display: block;
   font-size: 14px;
   color: white;
-  margin-top: 5px;
 }
 
-/* Анимация при наведении */
 .home-menu-link:hover .home-menu-item {
-  height: 100px; /* Увеличиваем высоту */
+  height: 100px;
 }
 
 .home-menu-link:hover .extra-content {
-  opacity: 1; /* Показываем дополнительный контент */
+  opacity: 1;
 }
 
 
