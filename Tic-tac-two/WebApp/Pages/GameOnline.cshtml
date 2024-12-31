@@ -100,7 +100,7 @@
         </div>
 
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-            <button type="button" class="btn btn-primary mb-2 mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" id="save-game-btn" class="btn btn-primary mb-2 mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Save and back to Menu
             </button>
 
@@ -130,8 +130,8 @@
 
 @section Scripts
 {
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
-<script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <script>
 
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/gameHub")
@@ -141,8 +141,12 @@
     const url = new URL(currentUrl);
     const params = new URLSearchParams(url.search);
     const sessionId = params.get('sessionId');
-    const userId = "@Model.UserId"
+    const userId = "@Model.UserId";
     const userNumber = @ViewData["userNumber"]
+    
+    if (userNumber === 2) {
+        document.getElementById('save-game-btn').disabled = true;
+    }
 
     const movableGrid = document.querySelector(".movable-grid");
     const handlerText = document.querySelector('.handler-text');

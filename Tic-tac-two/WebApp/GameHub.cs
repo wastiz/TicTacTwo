@@ -25,6 +25,12 @@ namespace WebApp.Hubs
             if (!Games.ContainsKey(sessionId))
             {
                 Session = _context.GameSessions.FirstOrDefault(s => s.Id == sessionId);
+                if (Session == null)
+                {
+                    await Clients.Caller.SendAsync("Error", "Game session not found.");
+                    return;
+                }
+
                 StateId = Session.GameStateId;
                 GameBrain = new Brain(_gameRepositoryDb.GetGameStateById(StateId));
                 Games.TryAdd(sessionId, new GameState(sessionId, GameBrain));
@@ -32,40 +38,39 @@ namespace WebApp.Hubs
 
             var gameState = Games[sessionId];
 
-            if ((gameState.Player1Id == userId || gameState.Player2Id == userId) && (gameState.Player1Id != null && gameState.Player2Id != null))
+            if (gameState.Player1Id == userId || gameState.Player2Id == userId)
             {
-                await Clients.Group(sessionId).SendAsync("GameStarted", gameState.GetGameState(userId));
+                await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
+                await Clients.Caller.SendAsync("GameStarted", gameState.GetGameState(userId));
                 return;
             }
-            
+
             if (gameState.Player1Id != null && gameState.Player2Id != null)
             {
-                await Clients.Caller.SendAsync("Error", "Game is already full.");
-                return;
+                await Clients.Group(sessionId).SendAsync("GameStarted", gameState.GetGameState(userId));
             }
+
 
             if (gameState.Player1Id == null)
             {
                 gameState.Player1Id = userId;
-                gameState.Player1Name = _context.Users.FirstOrDefault(u => u.Id == userId).Username;
-                gameState.SetCurrentPlayerName(userId);
-                gameState.Message = $"Player {gameState.CurrentPlayerName} is thinking.";
+                gameState.Player1Name = _context.Users.FirstOrDefault(u => u.Id == userId)?.Username;
             }
             else if (gameState.Player2Id == null)
             {
                 gameState.Player2Id = userId;
-                gameState.Player2Name = _context.Users.FirstOrDefault(u => u.Id == userId).Username;
+                gameState.Player2Name = _context.Users.FirstOrDefault(u => u.Id == userId)?.Username;
             }
 
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
-            
             await Clients.Group(sessionId).SendAsync("PlayerJoined", userId);
-            
+
             if (gameState.Player1Id != null && gameState.Player2Id != null)
             {
                 await Clients.Group(sessionId).SendAsync("GameStarted", gameState.GetGameState(userId));
             }
         }
+
 
         public async Task PlaceChip(string sessionId, string userId, int x, int y)
         {
@@ -142,7 +147,7 @@ namespace WebApp.Hubs
             await base.OnDisconnectedAsync(exception);
         }
     }
-
+    
 
     public class GameState
     {
@@ -152,24 +157,14 @@ namespace WebApp.Hubs
         public string Player2Id { get; set; }
         public string Player1Name { get; set; }
         public string Player2Name { get; set; }
-        public string CurrentPlayerName { get; set; }
         public string Message {get; set;}
         public bool IsPlayerTurn(string userId)
         {
             return (userId == Player1Id && GameBrain.playerNumber == 1) || 
                    (userId == Player2Id && GameBrain.playerNumber == 2);
         }
+        
 
-        public void SetCurrentPlayerName(string userId)
-        {
-            if (GameBrain.playerNumber == 1 && userId == Player1Id)
-            {
-                CurrentPlayerName = Player2Name;
-            } else if (GameBrain.playerNumber == 2 && userId == Player2Id)
-            {
-                CurrentPlayerName = Player1Name;
-            }
-        }
 
         public GameState(string sessionId, Brain gameBrain)
         {
@@ -189,12 +184,11 @@ namespace WebApp.Hubs
             {
                 return (false, "Invalid move.", null);
             }
-            SetCurrentPlayerName(userId);
-            Message = $"Player {CurrentPlayerName} is thinking.";
+            
             return (true, "Move successful.", GetGameState(userId));
         }
-        
-        public (bool Success, string Message, object GameState) MoveChip (string userId, int startX, int startY, int endX, int endY)
+
+        public (bool Success, string Message, object GameState) MoveChip(string userId, int startX, int startY, int endX, int endY)
         {
             if (!IsPlayerTurn(userId))
             {
@@ -206,13 +200,11 @@ namespace WebApp.Hubs
             {
                 return (false, "Invalid move.", null);
             }
-            SetCurrentPlayerName(userId);
-            Message = $"Player {CurrentPlayerName} is thinking.";
-
+            
             return (true, "Move successful.", GetGameState(userId));
         }
-        
-        public (bool Success, string Message, object GameState) MoveBoard (string userId, string direction)
+
+        public (bool Success, string Message, object GameState) MoveBoard(string userId, string direction)
         {
             if (!IsPlayerTurn(userId))
             {
@@ -224,15 +216,27 @@ namespace WebApp.Hubs
             {
                 return (false, "Invalid move.", null);
             }
-            SetCurrentPlayerName(userId);
-            Message = $"Player {CurrentPlayerName} is thinking.";
-
+            
+            
             return (true, "Move successful.", GetGameState(userId));
+        }
+
+        private void UpdateMessage()
+        {
+            if (GameBrain.playerNumber == 1)
+            {
+                Message = $"Player {Player1Name} is thinking.";
+            }
+            else if (GameBrain.playerNumber == 2)
+            {
+                Message = $"Player {Player2Name} is thinking.";
+            }
         }
 
 
         public object GetGameState(string userId)
         {
+            UpdateMessage();
             return new
             {
                 board = ConvertToList(GameBrain.board),
@@ -245,6 +249,7 @@ namespace WebApp.Hubs
                 message = Message,
             };
         }
+
         
         public List<List<int>> ConvertToList(int[,] matrix)
         {
