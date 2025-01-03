@@ -7,16 +7,19 @@ namespace GameVisualizer
     {
         private Brain gameBrain;
         private string stateId;
+        private string gameMode;
         private int[] cursorPosition;
         private string optionalMessage = "";
         private bool gameRunning = true;
         private int[] startMovingPosition = [-1, -1];
         private int[] endMovingPosition;
+        private GameRepositoryDb gameRepository = new GameRepositoryDb();
 
-        public Game(string gameMode, Brain gameBrain, string stateId = null)
+        public Game(string gameMode, Brain gameBrain, string stateId)
         {
-            stateId = stateId;
+            this.gameMode = gameMode;
             this.gameBrain = gameBrain;
+            this.stateId = stateId;
             cursorPosition = new int[] { gameBrain.boardWidth / 2, gameBrain.boardHeight / 2 };
         }
 
@@ -210,16 +213,11 @@ namespace GameVisualizer
             Console.WriteLine();
             if (keyInfo.Key == ConsoleKey.S)
             {
-                gameRunning = false;
                 string stateName = TextInput("Name the saving...");
-                if (stateId != null)
-                {
-                    gameBrain.SaveGame(stateId, stateName);
-                }
-                else
-                {
-                    gameBrain.SaveGame(null, stateName);
-                }
+                Console.WriteLine(stateName);
+                gameBrain.SaveGame(stateId);
+                gameRepository.SaveStateName(stateId, stateName);
+                gameRunning = false;
             }
             return keyInfo;
         }
@@ -227,9 +225,8 @@ namespace GameVisualizer
         public string TextInput(string prompt)
         {
             Console.WriteLine(prompt);
-            string input = Console.ReadLine();
-            Console.WriteLine();
-            return input;
+            string input = Console.ReadLine()?.Trim();
+            return input ?? string.Empty;
         }
 
         private void HandleCursor(ConsoleKeyInfo pressedKey)

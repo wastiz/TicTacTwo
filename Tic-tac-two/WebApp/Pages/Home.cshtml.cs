@@ -9,7 +9,6 @@ public class Home : PageModel
 {
     AppDbContext _context;
     public string UserId { get; set; }
-    public string Username { get; set; }
     
     public Home(AppDbContext context)
     {
@@ -18,7 +17,7 @@ public class Home : PageModel
     public void OnGet()
     {
         UserId = HttpContext.Session.GetString("UserId");
-        Username = HttpContext.Session.GetString("Username");
+        ViewData["Username"] = HttpContext.Session.GetString("Username");
     }
 
     public IActionResult OnPostConnect(string sessionId)

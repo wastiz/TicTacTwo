@@ -15,7 +15,6 @@ namespace WebApp.Pages
         public string StateId;
         public Brain GameBrain { get; set; }
         public string UserId;
-        public string Username;
         public bool isPlayerTurn;
         public string Message { get; set; }
 
@@ -42,7 +41,7 @@ namespace WebApp.Pages
 
             GameBrain = new Brain(gameState);
             UserId = HttpContext.Session.GetString("UserId");
-            Username = HttpContext.Session.GetString("Username");
+            ViewData["Username"] = HttpContext.Session.GetString("Username");
             ViewData["userNumber"] = Session.Player1Id == UserId ? 1 : 2;
         }
 

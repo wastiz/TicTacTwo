@@ -10,7 +10,6 @@ public class LoadGame : PageModel
 {
     private AppDbContext _context;
     [BindProperty] public string SessionId { get; set; }
-    [BindProperty] public string Username { get; set; }
     public List<GameSessionDto> Games { get; set; }
 
 
@@ -21,7 +20,7 @@ public class LoadGame : PageModel
     
     public void OnGet()
     {
-        Username = HttpContext.Session.GetString("Username");
+        ViewData["Username"] = HttpContext.Session.GetString("Username");
         Games = _context.GameSessions
             .Include(gs => gs.GameState)
             .Include(gs => gs.Player1)

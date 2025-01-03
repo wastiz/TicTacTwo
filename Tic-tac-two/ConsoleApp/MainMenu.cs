@@ -8,7 +8,7 @@ namespace MenuApp
 {
     public class MainMenu : Menu
     {
-        ConfigRepositoryDb repository = new ConfigRepositoryDb();
+        ConfigRepositoryDb configRepository = new ConfigRepositoryDb();
         GameRepositoryDb gameRepository = new GameRepositoryDb();
         AppDbContext context = new AppDbContext();
         private string gameMode;
@@ -58,7 +58,7 @@ namespace MenuApp
             activeOptionIndex = 0;
             menuGuidance = "Choose game configuration or create your own. Press \"Esc\" to exit. Press enter to select an option. Move with arrows";
             
-            List<GameConfigDto> allConfigs = repository.GetAllConfigDto();
+            List<GameConfigDto> allConfigs = configRepository.GetAllConfigDto();
             
             optionsArray.Clear();
             foreach (GameConfigDto gameConfig in allConfigs)
@@ -105,7 +105,7 @@ namespace MenuApp
         {
             optionsArray = new List<string> { "Edit", "Delete", "Back"};
             activeOptionIndex = 0;
-            GameConfiguration config = repository.GetConfigurationById(configId);
+            GameConfiguration config = configRepository.GetConfigurationById(configId);
             menuGuidance = config.ToString();
 
             menuActions = new Action[]
@@ -156,7 +156,7 @@ namespace MenuApp
                 OptionsAfterNMoves = movePieceAfterNMoves
             };
             
-            repository.SaveConfiguration(newConfig);
+            configRepository.SaveConfiguration(newConfig);
             Console.WriteLine("Configuration saved successfully. Press any key to return.");
             Console.ReadKey();
             ShowOptions();
@@ -193,7 +193,7 @@ namespace MenuApp
 
         private void HandleDeleteConfig(string name)
         {
-            repository.DeleteConfiguration(name);
+            configRepository.DeleteConfiguration(name);
             ShowOptions();
         }
 
@@ -225,7 +225,7 @@ namespace MenuApp
             activeOptionIndex = 0;
             menuGuidance = "Choose config with arrows and enter";
             optionsArray.Clear();
-            List<GameConfigDto> confNames = repository.GetAllConfigDto();
+            List<GameConfigDto> confNames = configRepository.GetAllConfigDto();
             foreach (var config in confNames)
             {
                 optionsArray.Add(config.ConfigName);
@@ -245,16 +245,43 @@ namespace MenuApp
         private void StartGameWithState(string stateId)
         {
             exit = true;
-            Brain gameBrain = new Brain(gameRepository.GetGameStateById(stateId));
+            
+            var gameState = gameRepository.GetGameStateById(stateId);
+            Brain gameBrain = new Brain(gameState);
+            string sessionId = Guid.NewGuid().ToString();
+            GameSessionDB newSession = new GameSessionDB()
+            {
+                Id = sessionId,
+                GameStateId = stateId,
+                GameMode = "two-players",
+            };
+            context.GameSessions.Add(newSession);
+            context.SaveChanges();
+            
             Game game = new Game(gameMode, gameBrain, stateId);
             game.StartGame();
         }
 
+
         private void StartGameWithConf(string configId)
         {
             exit = true;
-            Brain gameBrain = new Brain(repository.GetConfigurationById(configId));
-            Game game = new Game(gameMode, gameBrain);
+            
+            var selectedConfig = configRepository.GetConfigurationById(configId);
+            Brain gameBrain = new Brain(selectedConfig);
+            string gameId = Guid.NewGuid().ToString();
+            string sessionId = Guid.NewGuid().ToString();
+            GameSessionDB newSession = new GameSessionDB()
+            {
+                Id = sessionId,
+                GameStateId = gameId,
+                GameMode = gameMode,
+            };
+            gameBrain.SaveGame(gameId);
+            context.GameSessions.Add(newSession);
+            context.SaveChanges();
+            
+            Game game = new Game(gameMode, gameBrain, gameId);
             game.StartGame();
         }
     }

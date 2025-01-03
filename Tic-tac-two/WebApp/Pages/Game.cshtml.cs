@@ -17,7 +17,6 @@ public class Game : PageModel
     private readonly GameRepositoryDb _gameRepositoryDb;
     private AppDbContext _context;
     [BindProperty] public string Message { get; set; }
-    [BindProperty] public string Username { get; set; }
 
     public Game(AppDbContext context, GameRepositoryDb gameRepositoryDb)
     {
@@ -27,7 +26,7 @@ public class Game : PageModel
 
     public void OnGet()
     {
-        Username = HttpContext.Session.GetString("Username");
+        ViewData["Username"] = HttpContext.Session.GetString("Username");
         Session = _context.GameSessions.FirstOrDefault(s => s.Id == SessionId);
 
         if (Session == null)

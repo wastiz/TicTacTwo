@@ -3,6 +3,7 @@ using DAL.DTO;
 using GameBrain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace WebApp.Pages;
 
@@ -25,7 +26,7 @@ public class NewGame : PageModel
     public void OnGet()
     {
         UserId = HttpContext.Session.GetString("UserId");
-        Username = HttpContext.Session.GetString("Username");
+        ViewData["Username"] = HttpContext.Session.GetString("Username");
         GameConfigs = _configRepository.GetAllConfigDto();
     }
 

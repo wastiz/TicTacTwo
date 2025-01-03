@@ -32,7 +32,7 @@
                     </li>
                 </ul>
                 <div class="d-flex align-items-center ms-auto gap-3">
-                    <b>@(Model.Username != null ? $"Welcome back,{Model.Username}" : "")</b>
+                    <b>@(ViewData["Username"] != null ? $"Welcome back, {ViewData["Username"]}" : "")</b>
                     <i class="fa-solid fa-user"></i>
                 </div>
             </div>
