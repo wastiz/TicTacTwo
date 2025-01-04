@@ -220,7 +220,7 @@ namespace WebApp.Hubs
             
             return (true, "Move successful.", GetGameState(userId));
         }
-
+    
         private void UpdateMessage()
         {
             if (GameBrain.playerNumber == 1)

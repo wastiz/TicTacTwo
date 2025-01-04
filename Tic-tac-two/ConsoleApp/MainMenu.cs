@@ -199,7 +199,7 @@ namespace MenuApp
 
         private void HandleTwoplayer()
         {
-            gameMode = "two players";
+            gameMode = "two-players";
             ShowConfigToChoose();
         }
 
