@@ -11,7 +11,8 @@ public class GameSession
     public string Name { get; set; } = "Autosave " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
     public string? GameConfigId { get; set; } = null!;
     [ForeignKey(nameof(GameConfigId))] public GameConfiguration GameConfiguration { get; set; }
-    public GameState GameState { get; set; } = null!;
+    public string? GameStateId { get; set; } = null!;
+    [ForeignKey(nameof(GameStateId))] public GameState? GameState { get; set; } = null!;
     public string? Player1Id { get; set; } = null!;
     [ForeignKey(nameof(Player1Id))] public User Player1 { get; set; }
     public string? Player2Id { get; set; } = null!;

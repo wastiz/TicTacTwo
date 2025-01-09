@@ -1,7 +1,5 @@
 ﻿using DAL;
 using GameBrain;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Pages;
 
@@ -14,26 +12,19 @@ public class Game : PageModel
     public GameSession Session;
     public Brain GameBrain { get; set; }
     private readonly SessionRepository _sessionRepository;
-    private AppDbContext _context;
     [BindProperty] public string Message { get; set; }
+    private AppDbContext _context;
 
-    public Game(AppDbContext context, SessionRepository sessionRepository)
+    public Game(SessionRepository sessionRepository, AppDbContext context)
     {
-        _sessionRepository = sessionRepository;
         _context = context;
+        _sessionRepository = sessionRepository;
     }
 
     public void OnGet()
     {
         ViewData["Username"] = HttpContext.Session.GetString("Username");
-        Session = _context.GameSessions.FirstOrDefault(s => s.Id == SessionId);
-
-        if (Session == null)
-        {
-            Message = "Game session not found!";
-            return;
-        }
-        
+        Session = _sessionRepository.GetSessionById(SessionId);
         GameBrain = new Brain(Session.GameConfiguration, Session.GameState);
     }
 
@@ -47,8 +38,10 @@ public class Game : PageModel
     [HttpPost]
     public IActionResult OnPostClick([FromBody] PlaceChipRequest request)
     {
-        var session = _sessionRepository.GetSessionById(SessionId);
-        GameBrain = new Brain(session.GameConfiguration, session.GameState);
+        Session = _sessionRepository.GetSessionById(SessionId);
+        var gameConf = _context.GameConfigurations.SingleOrDefault(g => g.Id == Session.GameConfigId);
+        var gameState = _context.GameStates.SingleOrDefault(g => g.Id == Session.GameStateId);
+        GameBrain = new Brain(gameConf, gameState);
 
         bool madeMove = GameBrain.placeChip(request.X, request.Y);
 
@@ -104,7 +97,6 @@ public class Game : PageModel
     public class MoveBoardRequest
     {
         public string Direction { get; set; }
-
     }
     
     public IActionResult OnPostMoveBoard([FromBody] MoveBoardRequest request)

@@ -24,8 +24,7 @@ namespace GameBrain
         public int win = 0; //0 - nothing, 1 - player 1 won, 2 - player 2 won, 3 - draw
         
         
-        //public Brain () {}
-        public Brain(GameConfiguration config)
+        /*public Brain(GameConfiguration config)
         {
             gameConfig = config;
             board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
@@ -44,7 +43,7 @@ namespace GameBrain
             chipsToOptions = config.OptionsAfterNMoves; 
             WinCondition = config.WinCondition;
             win = 0;
-        }
+        }*/
         
         
         

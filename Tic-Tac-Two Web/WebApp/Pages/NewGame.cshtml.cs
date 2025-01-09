@@ -32,10 +32,7 @@ public class NewGame : PageModel
 
     public IActionResult OnPost()
     {
-        var session = _sessionRepository.CreateGameSession(ConfigId);
-
-        Brain gameBrain = new Brain(session.GameConfiguration, session.GameState);
-        gameBrain.SaveGame(session.Id);
+        var session = _sessionRepository.CreateGameSession(_configRepository.GetConfigurationById(ConfigId));
             
         if (GameMode == "two-players")
         {

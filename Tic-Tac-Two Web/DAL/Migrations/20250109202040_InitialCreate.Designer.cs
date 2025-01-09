@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250109122848_InitialCreate")]
+    [Migration("20250109202040_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -65,13 +65,15 @@ namespace DAL.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("GameConfigId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("GameMode")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("GamePassword")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GameStateId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LastSaveAt")
@@ -91,11 +93,53 @@ namespace DAL.Migrations
 
                     b.HasIndex("GameConfigId");
 
+                    b.HasIndex("GameStateId");
+
                     b.HasIndex("Player1Id");
 
                     b.HasIndex("Player2Id");
 
                     b.ToTable("GameSessions");
+                });
+
+            modelBuilder.Entity("DAL.GameState", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BoardJson")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ChipsLeftJson")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("GridX")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("GridY")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Player1Options")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Player2Options")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PlayerNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PlayersMovesJson")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Win")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GameStates");
                 });
 
             modelBuilder.Entity("DAL.User", b =>
@@ -120,70 +164,23 @@ namespace DAL.Migrations
                 {
                     b.HasOne("DAL.GameConfiguration", "GameConfiguration")
                         .WithMany()
-                        .HasForeignKey("GameConfigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GameConfigId");
+
+                    b.HasOne("DAL.GameState", "GameState")
+                        .WithMany()
+                        .HasForeignKey("GameStateId");
 
                     b.HasOne("DAL.User", "Player1")
                         .WithMany()
-                        .HasForeignKey("Player1Id")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("Player1Id");
 
                     b.HasOne("DAL.User", "Player2")
                         .WithMany()
-                        .HasForeignKey("Player2Id")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.OwnsOne("DAL.GameState", "GameState", b1 =>
-                        {
-                            b1.Property<string>("GameSessionId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("BoardJson")
-                                .IsRequired()
-                                .HasColumnType("TEXT")
-                                .HasColumnName("BoardJson");
-
-                            b1.Property<string>("ChipsLeftJson")
-                                .IsRequired()
-                                .HasColumnType("TEXT")
-                                .HasColumnName("ChipsLeftJson");
-
-                            b1.Property<int>("GridX")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<int>("GridY")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<bool>("Player1Options")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<bool>("Player2Options")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<int>("PlayerNumber")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<string>("PlayersMovesJson")
-                                .IsRequired()
-                                .HasColumnType("TEXT")
-                                .HasColumnName("PlayersMovesJson");
-
-                            b1.Property<int>("Win")
-                                .HasColumnType("INTEGER");
-
-                            b1.HasKey("GameSessionId");
-
-                            b1.ToTable("GameSessions");
-
-                            b1.WithOwner()
-                                .HasForeignKey("GameSessionId");
-                        });
+                        .HasForeignKey("Player2Id");
 
                     b.Navigation("GameConfiguration");
 
-                    b.Navigation("GameState")
-                        .IsRequired();
+                    b.Navigation("GameState");
 
                     b.Navigation("Player1");
 

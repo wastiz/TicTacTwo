@@ -192,10 +192,6 @@
         async function handleCellClick(x, y, buttonElement) {
             const number = +buttonElement.dataset.number
 
-            console.log(buttonElement)
-            console.log(number)
-            console.log(playerNumber)
-
             if (number === playerNumber && (player1Options || player2Options)) {
                 movingChip = true;
                 chipPosition = [x, y]
