@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DAL\DAL.csproj" />
+      <ProjectReference Include="..\GameBrain\GameBrain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Configs\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Configs\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Configs\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Configs\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Configs\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Games\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Games\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Games\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Games\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Games\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Pages\Configs\Create.cshtml" />
+      <UpToDateCheckInput Remove="Pages\Configs\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Pages\Configs\Details.cshtml" />
+      <UpToDateCheckInput Remove="Pages\Configs\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Pages\Configs\Index.cshtml" />
+      <UpToDateCheckInput Remove="Pages\Games\Create.cshtml" />
+      <UpToDateCheckInput Remove="Pages\Games\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Pages\Games\Details.cshtml" />
+      <UpToDateCheckInput Remove="Pages\Games\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Pages\Games\Index.cshtml" />
+    </ItemGroup>
+
+</Project>
