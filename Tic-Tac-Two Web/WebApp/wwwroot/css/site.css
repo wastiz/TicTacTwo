@@ -100,24 +100,23 @@ main {
   overflow-y: scroll;
 }
 
-/*Game*/
-
 :root {
   --cell-size: 80px;
-  --negative-cell-size: -80px;
+  --negative-cell-size: calc(var(--cell-size) * -1);
+  --font-size: 24px;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --cell-size: 60px;
+    --font-size: 20px;
+  }
 }
 
 @media (max-width: 768px) {
   :root {
-    --cell-size: 60px;
-    --negative-cell-size: -60px;
-  }
-}
-
-@media (max-width: 480px) {
-  :root {
     --cell-size: 40px;
-    --negative-cell-size: -40px;
+    --font-size: 16px;
   }
 }
 
@@ -125,6 +124,12 @@ main {
   position: relative;
   margin: var(--cell-size);
   margin-top: calc(var(--cell-size) + 20px);
+}
+
+.game-cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  font-size: var(--font-size);
 }
 
 .movable-grid {
@@ -139,9 +144,8 @@ main {
   z-index: 10;
   width: var(--cell-size);
   height: var(--cell-size);
-  font-size: 24px;
+  font-size: var(--font-size);
   text-align: center;
-  line-height: 50px;
 }
 
 .move-up {
@@ -151,8 +155,8 @@ main {
 }
 
 .move-right {
-  right: var(--negative-cell-size);
   top: 50%;
+  right: var(--negative-cell-size);
   transform: translateY(-50%);
 }
 
@@ -163,8 +167,8 @@ main {
 }
 
 .move-left {
-  left: var(--negative-cell-size);
   top: 50%;
+  left: var(--negative-cell-size);
   transform: translateY(-50%);
 }
 
@@ -187,11 +191,13 @@ main {
   bottom: var(--negative-cell-size);
   right: var(--negative-cell-size);
 }
+
 .move-btn::before {
   display: inline-block;
-  font-size: 18px;
+  font-size: calc(var(--font-size) * 0.75);
   line-height: 1;
 }
+
 
 
 

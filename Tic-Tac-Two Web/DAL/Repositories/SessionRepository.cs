@@ -99,9 +99,15 @@ public class SessionRepository
             .ToList();
     }
 
+    public (GameConfiguration config, GameState state) GetGameState(string sessionId)
+    {
+        var session = GetSessionById(sessionId);
+        return (session.GameConfiguration, session.GameState);
+    }
+
     public void SaveGameState(GameState gameState, string sessionId)
     {
-        var existingSession = _context.GameSessions.SingleOrDefault(session => session.Id == sessionId);
+        var existingSession = GetSessionById(sessionId);
         if (existingSession == null)
         {
             throw new KeyNotFoundException($"Game Session with ID '{sessionId}' not found.");
@@ -111,9 +117,9 @@ public class SessionRepository
         _context.SaveChanges();
     }
 
-    public void SaveSessionName(string sessionName, string sessionId)
+    public void SaveSessionName(string sessionId, string sessionName)
     {
-        var existingSession = _context.GameSessions.SingleOrDefault(session => session.Id == sessionId);
+        var existingSession = GetSessionById(sessionId);
         if (existingSession == null)
         {
             throw new KeyNotFoundException($"Game Session with ID '{sessionId}' not found.");

@@ -13,19 +13,17 @@ public class Game : PageModel
     public Brain GameBrain { get; set; }
     private readonly SessionRepository _sessionRepository;
     [BindProperty] public string Message { get; set; }
-    private AppDbContext _context;
 
-    public Game(SessionRepository sessionRepository, AppDbContext context)
+    public Game(SessionRepository sessionRepository)
     {
-        _context = context;
         _sessionRepository = sessionRepository;
     }
 
     public void OnGet()
     {
         ViewData["Username"] = HttpContext.Session.GetString("Username");
-        Session = _sessionRepository.GetSessionById(SessionId);
-        GameBrain = new Brain(Session.GameConfiguration, Session.GameState);
+        var (config, state) = _sessionRepository.GetGameState(SessionId);
+        GameBrain = new Brain(config, state);
     }
 
     
@@ -33,26 +31,30 @@ public class Game : PageModel
     {
         public int X { get; set; }
         public int Y { get; set; }
+        public string SessionId { get; set; }
     }
 
     [HttpPost]
     public IActionResult OnPostClick([FromBody] PlaceChipRequest request)
     {
-        Session = _sessionRepository.GetSessionById(SessionId);
-        var gameConf = _context.GameConfigurations.SingleOrDefault(g => g.Id == Session.GameConfigId);
-        var gameState = _context.GameStates.SingleOrDefault(g => g.Id == Session.GameStateId);
-        GameBrain = new Brain(gameConf, gameState);
+        SessionId = request.SessionId;
+        var (config, state) = _sessionRepository.GetGameState(SessionId);
+        GameBrain = new Brain(config, state);
 
         bool madeMove = GameBrain.placeChip(request.X, request.Y);
-
         if (madeMove)
         {
             GameBrain.SaveGame(SessionId);
+            Message = $"Player {GameBrain.playerNumber} is thinking";
+        }
+        else
+        {
+            Message = "You can't place here";
         }
 
         return new JsonResult(new
         {
-            message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "You can't place here",
+            Message,
             board = ConvertToList(GameBrain.board),
             win = GameBrain.win,
             playerNumber = GameBrain.playerNumber,
@@ -69,21 +71,31 @@ public class Game : PageModel
         public int StartY { get; set; }
         public int EndX { get; set; }
         public int EndY { get; set; }
+        public string SessionId { get; set; }
     }
 
     public IActionResult OnPostMoveChip([FromBody] MoveChipRequest request)
     {
-        var session = _sessionRepository.GetSessionById(SessionId);
-        GameBrain = new Brain(session.GameConfiguration, session.GameState);
+        SessionId = request.SessionId;
+        var (config, state) = _sessionRepository.GetGameState(SessionId);
+        GameBrain = new Brain(config, state);
         
         bool madeMove = GameBrain.moveChip(request.StartX, request.StartY, request.EndX, request.EndY);
-        string message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "You can't place here";
+        if (madeMove)
+        {
+            GameBrain.SaveGame(SessionId);
+            Message = $"Player {GameBrain.playerNumber} is thinking";
+        }
+        else
+        {
+            Message = "You can't move there";
+        }
         
         GameBrain.SaveGame(SessionId);
 
         return new JsonResult(new
         {
-            message,
+            Message,
             board = ConvertToList(GameBrain.board),
             win = GameBrain.win,
             playerNumber = GameBrain.playerNumber,
@@ -97,29 +109,29 @@ public class Game : PageModel
     public class MoveBoardRequest
     {
         public string Direction { get; set; }
+        public string SessionId { get; set; }
     }
     
     public IActionResult OnPostMoveBoard([FromBody] MoveBoardRequest request)
     {
-        var session = _sessionRepository.GetSessionById(SessionId);
-        GameBrain = new Brain(session.GameConfiguration, session.GameState);
-        
-        string message;
+        SessionId = request.SessionId;
+        var (config, state) = _sessionRepository.GetGameState(SessionId);
+        GameBrain = new Brain(config, state);
         
         bool madeMove = GameBrain.moveMovableBoard(request.Direction);
         if (madeMove)
         {
             GameBrain.SaveGame(SessionId);
-            message = madeMove ? $"Player {GameBrain.playerNumber} is thinking" : "You can't place here";
+            Message = $"Player {GameBrain.playerNumber} is thinking";
         }
         else
         {
-            message = "You can't move there";
+            Message = "You can't move there";
         }
 
         return new JsonResult(new
         {
-            message,
+            Message,
             board = ConvertToList(GameBrain.board),
             win = GameBrain.win,
             playerNumber = GameBrain.playerNumber,
@@ -145,14 +157,14 @@ public class Game : PageModel
         return list;
     }
     
-    public IActionResult OnPostSaveName(string name)
+    public IActionResult OnPostSaveName(string sessionId, string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {   
             return RedirectToPage("/NewGame");
         }
         
-        _sessionRepository.SaveSessionName(SessionId, name);
+        _sessionRepository.SaveSessionName(sessionId, name);
         
         return RedirectToPage("/NewGame");
     }
