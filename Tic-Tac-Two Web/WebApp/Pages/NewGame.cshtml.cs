@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using System.IdentityModel.Tokens.Jwt;
+using DAL;
 using DAL.DTO;
 using GameBrain;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +26,17 @@ public class NewGame : PageModel
 
     public void OnGet()
     {
-        UserId = HttpContext.Session.GetString("UserId");
-        ViewData["Username"] = HttpContext.Session.GetString("Username");
+        var token = HttpContext.Request.Cookies["authToken"];
+
+        if (!string.IsNullOrEmpty(token))
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+
+            UserId = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            Username = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName)?.Value;
+        }
+        
         GameConfigs = _configRepository.GetAllConfigDto();
     }
 

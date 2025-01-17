@@ -105,6 +105,12 @@ public class SessionRepository
         return (session.GameConfiguration, session.GameState);
     }
 
+    public void SaveSecondPlayer(GameSession session, string player2Id)
+    {
+        session.Player2Id = player2Id;
+        _context.SaveChanges();
+    }
+
     public void SaveGameState(GameState gameState, string sessionId)
     {
         var existingSession = GetSessionById(sessionId);

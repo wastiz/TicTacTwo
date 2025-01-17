@@ -1,32 +1,42 @@
-﻿using DAL;
+﻿using System.IdentityModel.Tokens.Jwt;
+using DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.IdentityModel.Tokens;
 
 namespace WebApp.Pages;
 
 public class Home : PageModel
 {
-    AppDbContext _context;
+    SessionRepository _sessionRepository;
     public string UserId { get; set; }
+    [BindProperty] public string Username { get; set; }
     
-    public Home(AppDbContext context)
+    
+    public Home(SessionRepository sessionRepository)
     {
-        _context = context;
+        _sessionRepository = sessionRepository;
     }
+    
     public void OnGet()
     {
-        UserId = HttpContext.Session.GetString("UserId");
-        ViewData["Username"] = HttpContext.Session.GetString("Username");
+        var token = HttpContext.Request.Cookies["authToken"];
+
+        if (!string.IsNullOrEmpty(token))
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+
+            UserId = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            Username = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName)?.Value;
+        }
     }
 
     public IActionResult OnPostConnect(string sessionId)
     {
-        var session = _context.GameSessions.FirstOrDefault(s => s.Id == sessionId);
+        var session = _sessionRepository.GetSessionById(sessionId);
         if (session != null)
         {   
-            session.Player2Id = HttpContext.Session.GetString("UserId");
-            _context.SaveChanges();
+            _sessionRepository.SaveSecondPlayer(session, UserId);
             
             return RedirectToPage("/GameOnline", new { sessionId = sessionId });
         }

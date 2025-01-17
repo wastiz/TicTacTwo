@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using System.IdentityModel.Tokens.Jwt;
+using DAL;
 using GameBrain;
 
 namespace WebApp.Pages;
@@ -8,11 +9,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 public class Game : PageModel
 {
+    private readonly SessionRepository _sessionRepository;
     [BindProperty(SupportsGet = true)] public string SessionId { get; set; }
     public GameSession Session;
     public Brain GameBrain { get; set; }
-    private readonly SessionRepository _sessionRepository;
     [BindProperty] public string Message { get; set; }
+    [BindProperty] public string Username { get; set; }
+    [BindProperty] public string UserId { get; set; }
 
     public Game(SessionRepository sessionRepository)
     {
@@ -21,7 +24,17 @@ public class Game : PageModel
 
     public void OnGet()
     {
-        ViewData["Username"] = HttpContext.Session.GetString("Username");
+        var token = HttpContext.Request.Cookies["authToken"];
+
+        if (!string.IsNullOrEmpty(token))
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+
+            UserId = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            Username = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName)?.Value;
+        }
+        
         var (config, state) = _sessionRepository.GetGameState(SessionId);
         GameBrain = new Brain(config, state);
     }

@@ -2,36 +2,54 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Welcome to Tic-Tac-Two";
+    ViewData["css-page"] = "index.css";
 }
 
-
-
-<div class="container">
-    <div class="row">
-        <h1 class="display-4 text-center">Welcome to Tic-Tac-Two</h1>
-        <div class="col-4"></div>
-        <div class="col-4">
-            @if (TempData["Message"] != null)
-            {
-            <div class="alert alert-warning">
-                @TempData["Message"]
+<main role="main" class="pb-3">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <h1 class="display-4 text-center mb-5">Welcome to Tic-Tac-Two</h1>
+                <h5><b>Log in</b></h5>
+                <div id="alert-container"></div>
+                <form id="login-form" class="d-flex flex-column">
+                    <label for="username">Username:</label>
+                    <input id="username" name="username" type="text" required>
+                    <label for="password">Password:</label>
+                    <input id="password" name="password" type="password" class="mb-3" required>
+                    <a class="mb-3" asp-page="/Register">Create account if you don't have one</a>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
-            }
-            @if (@Model.Message != null)
-            {
-            <div class="alert alert-danger" role="alert">
-                @Model.Message
-            </div>
-            }
-            <form method="post" class="d-flex flex-column">
-                <label for="username">Username:</label>
-                <input id="username" name="username" type="text">
-                <label for="password">Password:</label>
-                <input id="password" name="password" type="password" class="mb-3">
-                <a class="mb-3" asp-page="/Register">Create account if you don't have one</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            <div class="col-3"></div>
         </div>
-        <div class="col-4"></div>
     </div>
-</div>
+</main>
+
+<script>
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        const response = await fetch(window.location.href, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            document.cookie = `authToken=${result.token}; path=/; max-age=${60 * 60 * 24 * 31}; SameSite=Strict`;
+            document.cookie = `userId=${result.userId}; path=/; max-age=${60 * 60 * 24 * 31}; SameSite=Strict`;
+            document.cookie = `username=${username}; path=/; max-age=${60 * 60 * 24 * 31}; SameSite=Strict`;
+            window.location.href = "/Home";
+        } else {
+            const alertContainer = document.getElementById("alert-container");
+            alertContainer.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;
+        }
+    });
+</script>

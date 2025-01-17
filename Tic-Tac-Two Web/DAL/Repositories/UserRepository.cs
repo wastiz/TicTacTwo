@@ -66,5 +66,22 @@ namespace DAL
         {
             return _context.Users.ToList();
         }
+
+        public (bool, string, User?) Login (string username, string password)
+        {
+            var existingUser = _context.Users.FirstOrDefault(u => u.Username == username);
+            
+            if (existingUser == null)
+            {
+                return (false, "User not found!", null);
+            }
+
+            if (existingUser.Password != password)
+            {
+                return (false, "Wrong username/password!", null);
+            }
+            
+            return (true, "Successfully logged in", existingUser);
+        }
     }
 }
