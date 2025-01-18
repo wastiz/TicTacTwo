@@ -3147,11 +3147,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\Tic-Tac-Two Console\\Tic-Tac-Two Console\\ConsoleApp\\ConsoleApp.csproj",
+      "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo Console\\Tic-Tac-Two Console\\ConsoleApp\\ConsoleApp.csproj",
       "projectName": "ConsoleApp",
-      "projectPath": "C:\\Users\\Valer4ik\\Desktop\\Tic-Tac-Two Console\\Tic-Tac-Two Console\\ConsoleApp\\ConsoleApp.csproj",
+      "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo Console\\Tic-Tac-Two Console\\ConsoleApp\\ConsoleApp.csproj",
       "packagesPath": "C:\\Users\\Valer4ik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Valer4ik\\Desktop\\Tic-Tac-Two Console\\Tic-Tac-Two Console\\ConsoleApp\\obj\\",
+      "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo Console\\Tic-Tac-Two Console\\ConsoleApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Valer4ik\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -3166,8 +3166,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\Valer4ik\\Desktop\\Tic-Tac-Two Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj": {
-              "projectPath": "C:\\Users\\Valer4ik\\Desktop\\Tic-Tac-Two Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj"
+            "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj": {
+              "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj"
             }
           }
         }

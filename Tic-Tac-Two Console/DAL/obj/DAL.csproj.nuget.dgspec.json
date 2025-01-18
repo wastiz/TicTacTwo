@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Valer4ik\\Desktop\\Tic-Tac-Two Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj": {}
+    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Valer4ik\\Desktop\\Tic-Tac-Two Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj": {
+    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\Tic-Tac-Two Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj",
+        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\Tic-Tac-Two Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj",
+        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo Console\\Tic-Tac-Two Console\\DAL\\DAL.csproj",
         "packagesPath": "C:\\Users\\Valer4ik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\Tic-Tac-Two Console\\Tic-Tac-Two Console\\DAL\\obj\\",
+        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo Console\\Tic-Tac-Two Console\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Valer4ik\\AppData\\Roaming\\NuGet\\NuGet.Config"
