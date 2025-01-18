@@ -27,3 +27,6 @@ dotnet ef database update --project DAL --startup-project WebApp
 To install scaffolding:
 dotnet aspnet-codegenerator razorpage -m GameSessionDB -dc AppDbContext -udl -outDir Pages/Games --referenceScriptLibraries
 dotnet aspnet-codegenerator razorpage -m GameConfigurationDB -dc AppDbContext -udl -outDir Pages/Configs --referenceScriptLibraries
+
+
+dotnet aspnet-codegenerator razorpage -m Recipe -dc AppDbContext -udl -outDir Pages/Recipes --referenceScriptLibraries
