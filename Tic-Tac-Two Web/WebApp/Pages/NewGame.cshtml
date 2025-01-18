@@ -1,59 +1,75 @@
 ﻿@page
 @model WebApp.Pages.NewGame
 
-<div class="container">
-    <div class="row">
-        <div class="col-4">
-            <form method="post" class="container h-100 d-flex flex-column align-items-center justify-content-center">
-                <div class="row">
-                    <h3>Choose Game Mode:</h3>
-                    <div class="col-6 mb-3 d-flex flex-column">
-                        <input type="radio" class="btn-check" asp-for="GameMode" id="two-players" value="two-players" autocomplete="off" checked>
-                        <label class="btn" for="two-players">Local Game</label>
+@{
+    ViewData["Title"] = "New Game";
+    ViewData["css-page"] = "new-game.css";
+    ViewData["Username"] = $"Welcome back, {Model.Username}";
+}
 
-                        <input type="radio" class="btn-check" asp-for="GameMode" id="two-players-online" value="two-players-online" autocomplete="off">
-                        <label class="btn position-relative" for="two-players-online">
-                            Online Game
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-info">
+<main role="main" class="pb-3">
+    <div class="container h-100">
+        <div class="row h-100">
+            <div class="col-12 col-sm-12 col-md-4 col-lg-4 mt-5">
+                <form method="post" class="container h-100 d-flex flex-column">
+                    <div class="row">
+                        <h3>Choose Game Mode:</h3>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3 d-flex flex-column">
+                            <input type="radio" class="btn-check" asp-for="GameMode" id="two-players" value="two-players" autocomplete="off" checked>
+                            <label class="btn" for="two-players">Local Game</label>
+
+                            <input type="radio" class="btn-check" asp-for="GameMode" id="two-players-online" value="two-players-online" autocomplete="off">
+                            <label class="btn position-relative" for="two-players-online">
+                                Online Game
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-info">
                                 Beta
                             </span>
-                        </label>
-                    </div>
-                    <div class="col-6 d-flex flex-column mb-3">
-                        <input type="radio" class="btn-check" asp-for="GameMode" id="vs-ai" value="vs-ai" autocomplete="off" disabled>
-                        <label class="btn position-relative" for="vs-ai">
-                            vs AI
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-warning">
+                            </label>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex flex-column mb-3">
+                            <input type="radio" class="btn-check" asp-for="GameMode" id="vs-ai" value="vs-ai" autocomplete="off" disabled>
+                            <label class="btn position-relative" for="vs-ai">
+                                vs AI
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-warning">
                                 Coming Soon
                             </span>
-                        </label>
-                        
+                            </label>
 
-                        <input type="radio" class="btn-check" asp-for="GameMode" id="ai-vs-ai" value="ai-vs-ai" autocomplete="off" disabled>
-                        <label class="btn position-relative" for="ai-vs-ai">
-                            AI vs AI
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-warning">
+
+                            <input type="radio" class="btn-check" asp-for="GameMode" id="ai-vs-ai" value="ai-vs-ai" autocomplete="off" disabled>
+                            <label class="btn position-relative" for="ai-vs-ai">
+                                AI vs AI
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-warning">
                                 Coming Soon
                             </span>
-                        </label>
-                    </div>
-                    <h3>Choose Game Configuration:</h3>
-                    @foreach (var configDto in Model.GameConfigs)
-                    {
+                            </label>
+                        </div>
+                        <h3>Choose Game Configuration:</h3>
+                        <div class="col-12">
+                            <input type="radio" class="btn-check" asp-for="ConfigId" id="classic" value="classic" autocomplete="off">
+                            <label class="btn" for="classic">Classical</label>
+                        </div>
+                        <div class="col-12">
+                            <input type="radio" class="btn-check" asp-for="ConfigId" id="big-game" value="big-game" autocomplete="off">
+                            <label class="btn" for="big-game">Big Game</label>
+                        </div>
+                        @foreach (var configDto in Model.GameConfigs)
+                        {
                         <div class="col-12">
                             <input type="radio" class="btn-check" asp-for="ConfigId" id="@configDto.ConfigId" value="@configDto.ConfigId" autocomplete="off">
                             <label class="btn" for="@configDto.ConfigId">@configDto.ConfigName</label>
                         </div>
-                    }
-                    <div class="col-12 mt-5">
-                        <button type="submit" class="btn btn-primary">Start Game</button>
+                        }
+                        <div class="col-12 mt-5">
+                            <button type="submit" class="btn btn-primary">Start Game</button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
 
-        <div class="col-8 h-100 d-flex align-items-center justify-content-center mt-5">
-            <img src="img/animation.gif" width="400" height="400" alt="animation" id="home-animation">
+            <div class="col-12 col-sm-12 col-md-8 col-lg-8 d-flex align-items-center justify-content-center mt-5">
+                <img src="img/animation.gif" width="400" height="400" alt="animation" id="home-animation">
+            </div>
         </div>
     </div>
-</div> 
+</main>

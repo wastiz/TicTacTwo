@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using System.IdentityModel.Tokens.Jwt;
+using DAL;
 using GameBrain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,13 +13,12 @@ namespace WebApp.Pages
         private readonly SessionRepository _sessionRepository;
         public GameSession Session;
         public Brain GameBrain { get; set; }
-        public string UserId;
-        public bool isPlayerTurn;
-        public string Message { get; set; }
+        public string UserId { get; set; }
+        [BindProperty] public string Username { get; set; }
 
-        public GameOnline(SessionRepository gameRepository)
+        public GameOnline(SessionRepository sessionRepository)
         {
-            _sessionRepository = gameRepository;
+            _sessionRepository = sessionRepository;
         }
 
         public void InitializeGame()
@@ -30,31 +30,22 @@ namespace WebApp.Pages
             }
 
             GameBrain = new Brain(Session.GameConfiguration, Session.GameState);
-            UserId = HttpContext.Session.GetString("UserId");
-            ViewData["Username"] = HttpContext.Session.GetString("Username");
             ViewData["userNumber"] = Session.Player1Id == UserId ? 1 : 2;
-        }
-
-        public IActionResult OnGetGameState()
-        {
-            InitializeGame();
-
-            return new JsonResult(new
-            {
-                success = true,
-                board = ConvertToList(GameBrain.board),
-                win = GameBrain.win,
-                playerNumber = GameBrain.playerNumber,
-                player1Options = GameBrain.player1Options,
-                player2Options = GameBrain.player2Options,
-                isYourTurn = isPlayerTurn,
-                gridX = GameBrain.gridX,
-                gridY = GameBrain.gridY
-            });
         }
 
         public void OnGet()
         {
+            var token = HttpContext.Request.Cookies["authToken"];
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jwtToken = tokenHandler.ReadJwtToken(token);
+
+                UserId = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+                Username = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName)?.Value;
+            }
+            
             InitializeGame();
         }
         

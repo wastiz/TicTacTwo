@@ -20,8 +20,9 @@ namespace DAL
             {
                 List<GameConfiguration> initialConfigurations = new List<GameConfiguration>()
                 {
-                    new GameConfiguration() { Name = "Classical" },
+                    new GameConfiguration() { Id = "classic", Name = "Classical" },
                     new GameConfiguration() {
+                        Id = "big-game",
                         Name = "Big Game",
                         BoardSizeWidth = 10,
                         BoardSizeHeight = 10,
@@ -38,11 +39,6 @@ namespace DAL
             }
         }
         
-        public List<string> GetAllConfigNames()
-        {
-            return _context.GameConfigurations.Select(gc => gc.Name).ToList();
-        }
-        
         public List<GameConfiguration> GetAllConfigs()
         {
             return _context.GameConfigurations
@@ -50,16 +46,18 @@ namespace DAL
                 .ToList();
         }
         
-        public List<GameConfigDto> GetAllConfigDto()
+        public List<GameConfigDto> GetAllUserConfigDto(string userId)
         {
             return _context.GameConfigurations
-                .Select(gs => new GameConfigDto()
+                .Where(gc => gc.CreatedBy == userId)
+                .Select(gc => new GameConfigDto
                 {
-                    ConfigId = gs.Id,
-                    ConfigName = gs.Name,
+                    ConfigId = gc.Id,
+                    ConfigName = gc.Name
                 })
                 .ToList();
         }
+
         
         public GameConfiguration GetConfigurationById(string id)
         {
@@ -70,10 +68,16 @@ namespace DAL
             }
             return configDb;
         }
-        
-        public void SaveConfiguration(GameConfiguration gameConfiguration)
+
+        public void CreateGameConfiguration(GameConfiguration config)
         {
-            var existingConfig = _context.GameConfigurations.SingleOrDefault(gc => gc.Name == gameConfiguration.Name);
+            _context.GameConfigurations.Add(config);
+            _context.SaveChanges();
+        }
+        
+        public void UpdateConfiguration(string id, GameConfiguration gameConfiguration)
+        {
+            var existingConfig = _context.GameConfigurations.SingleOrDefault(gc => gc.Id == id);
 
             if (existingConfig == null)
             {
@@ -87,15 +91,16 @@ namespace DAL
             _context.SaveChanges();
         }
         
-        public void DeleteConfiguration(string name)
+        public void DeleteConfiguration(string configId)
         {
-            var configDb = _context.GameConfigurations.SingleOrDefault(gc => gc.Name == name);
-            if (configDb == null)
+            var config = _context.GameConfigurations.SingleOrDefault(gc => gc.Id == configId);
+            
+            if (config == null)
             {
-                throw new KeyNotFoundException($"Configuration '{name}' not found.");
+                throw new KeyNotFoundException($"Configuration '{configId}' not found.");
             }
 
-            _context.GameConfigurations.Remove(configDb);
+            _context.GameConfigurations.Remove(config);
             _context.SaveChanges();
         }
         

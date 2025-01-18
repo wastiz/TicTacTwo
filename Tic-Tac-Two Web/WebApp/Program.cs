@@ -1,8 +1,12 @@
+using System.Configuration;
+using System.Text;
 using System.Text.Json;
 using DAL;
 using GameBrain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using WebApp.Hubs;
 
 // Set up App Config
@@ -18,6 +22,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Data 
 //builder.Services.AddScoped<IConfigRepository, ConfigRepositoryJson>();
 builder.Services.AddScoped<ConfigRepository>();
 builder.Services.AddScoped<SessionRepository>();
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<JwtTokenHelper>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -47,7 +53,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+//Using Session
 app.UseSession();
+
+//Using jwt token
+app.UseAuthentication();
+app.UseMiddleware<JwtMiddleware>(); //using jwt middleware
 
 app.UseHttpsRedirection();
 
@@ -55,7 +66,12 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseExceptionHandler("/Error");
+
 app.MapHub<GameHub>("/gameHub");
+
+// To available downloads from site
+app.UseStaticFiles();
 
 app.MapStaticAssets();
 app.MapRazorPages().WithStaticAssets();

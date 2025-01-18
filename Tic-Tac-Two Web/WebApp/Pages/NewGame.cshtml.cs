@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using System.IdentityModel.Tokens.Jwt;
+using DAL;
 using DAL.DTO;
 using GameBrain;
 using Microsoft.AspNetCore.Mvc;
@@ -22,17 +23,29 @@ public class NewGame : PageModel
         _configRepository = configRepository;
         _sessionRepository = sessionRepository;
     }
+    
+    private void SetUserIdFromToken()
+    {
+        var token = HttpContext.Request.Cookies["authToken"];
+        if (!string.IsNullOrEmpty(token))
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+            UserId = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            Username = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName)?.Value;
+        }
+    }
 
     public void OnGet()
     {
-        UserId = HttpContext.Session.GetString("UserId");
-        ViewData["Username"] = HttpContext.Session.GetString("Username");
-        GameConfigs = _configRepository.GetAllConfigDto();
+        SetUserIdFromToken();
+        GameConfigs = _configRepository.GetAllUserConfigDto(UserId);
     }
 
     public IActionResult OnPost()
     {
-        var session = _sessionRepository.CreateGameSession(_configRepository.GetConfigurationById(ConfigId));
+        SetUserIdFromToken();
+        var session = _sessionRepository.CreateGameSession(_configRepository.GetConfigurationById(ConfigId), UserId);
             
         if (GameMode == "two-players")
         {

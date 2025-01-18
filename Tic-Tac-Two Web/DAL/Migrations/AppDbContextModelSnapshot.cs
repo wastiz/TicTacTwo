@@ -32,6 +32,9 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("MovableBoardHeight")
                         .HasColumnType("INTEGER");
 
@@ -49,6 +52,8 @@ namespace DAL.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
 
                     b.ToTable("GameConfigurations");
                 });
@@ -155,6 +160,15 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("DAL.GameConfiguration", b =>
+                {
+                    b.HasOne("DAL.User", "User")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAL.GameSession", b =>

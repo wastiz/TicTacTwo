@@ -3,130 +3,127 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model WebApp.Pages.Game
 
+@{
+    ViewData["Title"] = "Game";
+    ViewData["css-page"] = "game.css";
+    ViewData["Username"] = $"Welcome back, {Model.Username}";
+}
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="post" asp-page-handler="SaveName">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Would you like to give a name for save?</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" name="name" class="form-control" placeholder="Type here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Continue</button>
-                </div>
-            </form>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="SaveName">
+                    <input type="hidden" name="sessionId" value="@Model.SessionId" />
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Would you like to give a name for save?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" name="name" class="form-control" placeholder="Type here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Continue</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container mt-4">
-    <div class="row">
-        @if (Model.GameBrain.win == 3)
-        {
+    <div class="container mt-4">
+        <div class="row">
+            @if (Model.GameBrain.win == 3)
+            {
             <div class="col-12 d-flex flex-column align-items-center justify-content-center">
                 <h1 class="mb-3">It's a draw</h1>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Save and back to Menu
                 </button>
             </div>
-        }
-        else if (Model.GameBrain.win == 1 || Model.GameBrain.win == 2)
-        {
+            }
+            else if (Model.GameBrain.win == 1 || Model.GameBrain.win == 2)
+            {
             <div class="col-12 d-flex flex-column align-items-center justify-content-center">
                 <h1>Player @Model.GameBrain.win wins!</h1>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Save and back to Menu
                 </button>
             </div>
-        }
-        else
-        {
-            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+            }
+            else
+            {
+            <div class="col-12 col-sm-12 col-md-12 col-lg-8">
                 <div id="message-container" class="mb-3">
                     <b class="handler-text">Player @Model.GameBrain.playerNumber is thinking</b>
                 </div>
 
-                <div class="d-flex flex-wrap board" style="width:@(Model.GameBrain.boardWidth * 80)px; position: relative;">
+                <div class="d-flex justify-content-center">
+                    <div class="d-flex flex-wrap board">
 
-                    @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
-                    {
+                        @for (int i = 0; i < Model.GameBrain.boardHeight; i++)
+                        {
                         for (int j = 0; j < Model.GameBrain.boardWidth; j++)
                         {
-                            bool isInsideMovableGrid = i >= Model.GameBrain.gridY && i < Model.GameBrain.gridY + Model.GameBrain.movableBoardHeight &&
-                                                       j >= Model.GameBrain.gridX && j < Model.GameBrain.gridX + Model.GameBrain.movableBoardWidth;
+                        bool isInsideMovableGrid = i >= Model.GameBrain.gridY && i < Model.GameBrain.gridY + Model.GameBrain.movableBoardHeight &&
+                        j >= Model.GameBrain.gridX && j < Model.GameBrain.gridX + Model.GameBrain.movableBoardWidth;
 
-                            <button type="button"
-                                    class="btn btn-outline-primary border game-cell"
-                                    style="width: 80px; height: 80px; font-size: 24px;"
-                                    data-x="@i"
-                                    data-y="@j"
-                                    data-number="@Model.GameBrain.board[i, j]"
-                                    id="piece-@i-@j"
-                                    @(isInsideMovableGrid ? "" : "disabled")
-                                    onclick="handleCellClick(@i, @j, this)">
-                                @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
-                                {
-                                    @:X
-                                }
-                                else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
-                                {
-                                    @:O
-                                }
-                            </button>
+                        <button type="button"
+                                class="btn btn-outline-primary border game-cell"
+                                data-x="@i"
+                                data-y="@j"
+                                data-number="@Model.GameBrain.board[i, j]"
+                                id="piece-@i-@j"
+                                @(isInsideMovableGrid ? "" : "disabled")
+                                onclick="handleCellClick(@i, @j, this)">
+                            @if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 1)
+                            {
+                            @:X
+                            }
+                            else if (Model.ConvertToList(Model.GameBrain.board)[i][j] == 2)
+                            {
+                            @:O
+                            }
+                        </button>
                         }
-                    }
+                        }
 
-                    <div class="movable-grid"
-                         style="width: @(Model.GameBrain.movableBoardWidth * 80)px;
-                             height: @(Model.GameBrain.movableBoardHeight * 80)px;
-                             border: 3px solid red;
-                             position: absolute;
-                             pointer-events: none;
-                             left: @(Model.GameBrain.gridX * 80)px;
-                             top: @(Model.GameBrain.gridY * 80)px;
-                    ">
+                        <div class="movable-grid"></div>
+
+
+                        @if (Model.GameBrain.player1Options || Model.GameBrain.player2Options)
+                        {
+                        <button class="move-btn btn btn-outline-primary border move-up game-cell" data-direction="up" onclick="handleMoveBoard('up')"><i class="fa-regular fa-regular fa-arrow-up"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-left game-cell" data-direction="left" onclick="handleMoveBoard('left')"><i class="fa-regular fa-arrow-left"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-right game-cell" data-direction="right" onclick="handleMoveBoard('right')"><i class="fa-regular fa-arrow-right"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-down game-cell" data-direction="down" onclick="handleMoveBoard('down')"><i class="fa-regular fa-arrow-down"></i></button>
+
+                        <button class="move-btn btn btn-outline-primary border move-up-left game-cell" data-direction="up-left" onclick="handleMoveBoard('up-left')"><i class="fa-regular fa-arrow-up-left"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-up-right game-cell" data-direction="up-right" onclick="handleMoveBoard('up-right')"><i class="fa-regular fa-arrow-up-right"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-down-left game-cell" data-direction="down-left" onclick="handleMoveBoard('down-left')"><i class="fa-regular fa-arrow-down-left"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-down-right game-cell" data-direction="down-right" onclick="handleMoveBoard('down-right')"><i class="fa-regular fa-arrow-down-right"></i></button>
+                        }
+                        else
+                        {
+                        <button class="move-btn btn btn-outline-primary border move-up game-cell" data-direction="up" onclick="handleMoveBoard('up')" disabled><i class="fa-regular fa-regular fa-arrow-up"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-left game-cell" data-direction="left" onclick="handleMoveBoard('left')" disabled><i class="fa-regular fa-arrow-left"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-right game-cell" data-direction="right" onclick="handleMoveBoard('right')" disabled><i class="fa-regular fa-arrow-right"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-down game-cell" data-direction="down" onclick="handleMoveBoard('down')" disabled><i class="fa-regular fa-arrow-down"></i></button>
+
+                        <button class="move-btn btn btn-outline-primary border move-up-left game-cell" data-direction="up-left" onclick="handleMoveBoard('up-left')" disabled><i class="fa-regular fa-arrow-up-left"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-up-right game-cell" data-direction="up-right" onclick="handleMoveBoard('up-right')" disabled><i class="fa-regular fa-arrow-up-right"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-down-left game-cell" data-direction="down-left" onclick="handleMoveBoard('down-left')" disabled><i class="fa-regular fa-arrow-down-left"></i></button>
+                        <button class="move-btn btn btn-outline-primary border move-down-right game-cell" data-direction="down-right" onclick="handleMoveBoard('down-right')" disabled><i class="fa-regular fa-arrow-down-right"></i></button>
+                        }
+
                     </div>
-
-
-                    @if (Model.GameBrain.player1Options || Model.GameBrain.player2Options)
-                    {
-                    <button class="move-btn btn btn-outline-primary border move-up" data-direction="up" onclick="handleMoveBoard('up')"><i class="fa-regular fa-regular fa-arrow-up"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-left" data-direction="left" onclick="handleMoveBoard('left')"><i class="fa-regular fa-arrow-left"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-right" data-direction="right" onclick="handleMoveBoard('right')"><i class="fa-regular fa-arrow-right"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-down" data-direction="down" onclick="handleMoveBoard('down')"><i class="fa-regular fa-arrow-down"></i></button>
-
-                    <button class="move-btn btn btn-outline-primary border move-up-left" data-direction="up-left" onclick="handleMoveBoard('up-left')"><i class="fa-regular fa-arrow-up-left"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-up-right" data-direction="up-right" onclick="handleMoveBoard('up-right')"><i class="fa-regular fa-arrow-up-right"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-down-left" data-direction="down-left" onclick="handleMoveBoard('down-left')"><i class="fa-regular fa-arrow-down-left"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-down-right" data-direction="down-right" onclick="handleMoveBoard('down-right')"><i class="fa-regular fa-arrow-down-right"></i></button>
-                    }
-                    else
-                    {
-                    <button class="move-btn btn btn-outline-primary border move-up" data-direction="up" onclick="handleMoveBoard('up')" disabled><i class="fa-regular fa-regular fa-arrow-up"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-left" data-direction="left" onclick="handleMoveBoard('left')" disabled><i class="fa-regular fa-arrow-left"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-right" data-direction="right" onclick="handleMoveBoard('right')" disabled><i class="fa-regular fa-arrow-right"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-down" data-direction="down" onclick="handleMoveBoard('down')" disabled><i class="fa-regular fa-arrow-down"></i></button>
-
-                    <button class="move-btn btn btn-outline-primary border move-up-left" data-direction="up-left" onclick="handleMoveBoard('up-left')" disabled><i class="fa-regular fa-arrow-up-left"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-up-right" data-direction="up-right" onclick="handleMoveBoard('up-right')" disabled><i class="fa-regular fa-arrow-up-right"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-down-left" data-direction="down-left" onclick="handleMoveBoard('down-left')" disabled><i class="fa-regular fa-arrow-down-left"></i></button>
-                    <button class="move-btn btn btn-outline-primary border move-down-right" data-direction="down-right" onclick="handleMoveBoard('down-right')" disabled><i class="fa-regular fa-arrow-down-right"></i></button>
-                    }
-
                 </div>
-                
             </div>
-            
-            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-5">
                 <button type="button" class="btn btn-primary mb-2 mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Save and back to Menu
                 </button>
-                
+
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
@@ -148,25 +145,59 @@
                     </div>
                 </div>
             </div>
-        }
+            }
+        </div>
     </div>
-</div>
 
 @section Scripts
 {
     <script>
-        const movableGrid = document.querySelector(".movable-grid");
-        const handlerText = document.querySelector('.handler-text');
+        const boardWidth = @Model.GameBrain.boardWidth
+        const movableBoardWidth = @Model.GameBrain.movableBoardWidth
+        const movableBoardHeight = @Model.GameBrain.movableBoardHeight
+        const gridX = @Model.GameBrain.gridX
+        const gridY = @Model.GameBrain.gridY
+
+        const board = document.querySelector('.board')
+        const movableGrid = document.querySelector('.movable-grid');
         const cells = document.querySelectorAll('.game-cell');
+
+        function updateStyles() {
+            const boardSize = window.innerWidth > 1024 ? 80 : window.innerWidth > 768 ? 60 : 40;
+
+            board.style.position = 'relative';
+            board.style.width = `${boardWidth * boardSize}px`;
+
+            movableGrid.style.width = `${movableBoardWidth * boardSize}px`;
+            movableGrid.style.height = `${movableBoardHeight * boardSize}px`;
+            movableGrid.style.border = '3px solid red';
+            movableGrid.style.position = 'absolute';
+            movableGrid.style.pointerEvents = 'none';
+            movableGrid.style.left = `${gridX * boardSize}px`;
+            movableGrid.style.top = `${gridY * boardSize}px`;
+
+        }
+
+        updateStyles();
+        window.addEventListener('resize', updateStyles);
+        
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        const params = new URLSearchParams(url.search);
+        const sessionId = params.get('sessionId');
+        
+        const handlerText = document.querySelector('.handler-text');
         const moveButtons = document.querySelectorAll(".move-btn");
         let playerNumber = @Model.GameBrain.playerNumber;
+    
         let player1Options = false;
         let player2Options = false;
         let movingChip = false;
-        let chipPosition = [0, 0]
+        let chipPosition = [0, 0];
 
         async function fetchWithHandler(url, body) {
             try {
+                body["sessionId"] = sessionId
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -219,7 +250,7 @@
             if (data.message) {
                 handlerText.innerText = data.message;
             }
-}
+        }
 
         function updateBoard(board) {
             cells.forEach(cell => {
@@ -285,5 +316,8 @@
                 disableMoveButtons()
             }
         }
+    
+    
+    
     </script>
 }

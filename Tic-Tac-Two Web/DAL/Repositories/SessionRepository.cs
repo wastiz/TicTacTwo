@@ -89,9 +89,11 @@ public class SessionRepository
     }
 
 
-    public List<GameSessionDto> GetSessionDtos()
+    public List<GameSessionDto> GetUserSessionDto(string userId)
     {
-        return _context.GameSessions.Select(session => new GameSessionDto()
+        return _context.GameSessions
+            .Where(session => session.Player1Id == userId)
+            .Select(session => new GameSessionDto
             {
                 SessionId = session.Id,
                 SessionName = session.Name,
@@ -99,9 +101,22 @@ public class SessionRepository
             .ToList();
     }
 
+
+    public (GameConfiguration config, GameState state) GetGameState(string sessionId)
+    {
+        var session = GetSessionById(sessionId);
+        return (session.GameConfiguration, session.GameState);
+    }
+
+    public void SaveSecondPlayer(GameSession session, string player2Id)
+    {
+        session.Player2Id = player2Id;
+        _context.SaveChanges();
+    }
+
     public void SaveGameState(GameState gameState, string sessionId)
     {
-        var existingSession = _context.GameSessions.SingleOrDefault(session => session.Id == sessionId);
+        var existingSession = GetSessionById(sessionId);
         if (existingSession == null)
         {
             throw new KeyNotFoundException($"Game Session with ID '{sessionId}' not found.");
@@ -111,9 +126,9 @@ public class SessionRepository
         _context.SaveChanges();
     }
 
-    public void SaveSessionName(string sessionName, string sessionId)
+    public void SaveSessionName(string sessionId, string sessionName)
     {
-        var existingSession = _context.GameSessions.SingleOrDefault(session => session.Id == sessionId);
+        var existingSession = GetSessionById(sessionId);
         if (existingSession == null)
         {
             throw new KeyNotFoundException($"Game Session with ID '{sessionId}' not found.");
@@ -122,4 +137,17 @@ public class SessionRepository
         _context.SaveChanges();
     }
 
+
+    public void DeleteSession(string sessionId)
+    {
+        var session = _context.GameSessions.SingleOrDefault(s => s.Id == sessionId);
+            
+        if (session == null)
+        {
+            throw new KeyNotFoundException($"Session '{sessionId}' not found.");
+        }
+
+        _context.GameSessions.Remove(session);
+        _context.SaveChanges();
+    }
 }

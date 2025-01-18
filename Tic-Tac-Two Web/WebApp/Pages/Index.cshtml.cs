@@ -5,46 +5,53 @@ using DAL;
 
 public class IndexModel : PageModel
 {
-    private readonly AppDbContext _context;
-
-    public IndexModel(AppDbContext context)
-    {
-        _context = context;
-    }
-
-    [BindProperty]
-    public string Username { get; set; }
-
-    [BindProperty]
-    public string Password { get; set; }
-
+    private readonly UserRepository _userRepository;
+    private readonly JwtTokenHelper _jwtTokenHelper;
+    [BindProperty] public string Username { get; set; }
+    [BindProperty] public string Password { get; set; }
     public string Message { get; set; }
 
-    public void OnGet()
+    public IndexModel(UserRepository userRepository, JwtTokenHelper jwtTokenHelper)
     {
-       ViewData["Username"] = HttpContext.Session.GetString("Username");
+        _userRepository = userRepository;
+        _jwtTokenHelper = jwtTokenHelper;
     }
 
-    public IActionResult OnPost()
+    public IActionResult OnGet()
     {
-        var existingUser = _context.Users.FirstOrDefault(u => u.Username == Username);
-
-        if (existingUser == null)
+        var token = HttpContext.Request.Cookies["authToken"];
+        if (!string.IsNullOrEmpty(token))
         {
-            Message = "User not found!";
-            return Page();
+            return RedirectToPage("/Home");
         }
 
-        if (existingUser.Password != Password)
+        if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            Message = "Wrong username/password!";
-            return Page();
+            return RedirectToPage("/Home");
         }
 
-        Message = "Welcome!";
-        HttpContext.Session.SetString("UserId", existingUser.Id);
-        HttpContext.Session.SetString("Username", existingUser.Username);
-        return RedirectToPage("/Home");
+        return Page();
+    }
+
+
+    public IActionResult OnPostLogin([FromBody] LoginRequest request)
+    {
+        var (logged, message, user) = _userRepository.Login(request.Username, request.Password);
+
+        if (!logged)
+        {
+            Message = message;
+            return Page();  
+        }
+
+        var token = _jwtTokenHelper.GenerateToken(user.Id.ToString(), user.Username);
+        return new JsonResult(new { success = true, token, userId = user.Id });
+    }
+
+    public class LoginRequest
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 
 }
