@@ -70,6 +70,9 @@ app.UseExceptionHandler("/Error");
 
 app.MapHub<GameHub>("/gameHub");
 
+// To available downloads from site
+app.UseStaticFiles();
+
 app.MapStaticAssets();
 app.MapRazorPages().WithStaticAssets();
 

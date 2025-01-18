@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using System.IdentityModel.Tokens.Jwt;
+using DAL;
 using DAL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +11,8 @@ public class LoadGame : PageModel
 {
     private SessionRepository _sessionRepository;
     [BindProperty] public string SessionId { get; set; }
+    public string UserId { get; set; }
+    [BindProperty] public string Username { get; set; }
     public List<GameSessionDto> Games { get; set; }
 
 
@@ -20,8 +23,18 @@ public class LoadGame : PageModel
     
     public void OnGet()
     {
-        ViewData["Username"] = HttpContext.Session.GetString("Username");
-        Games = _sessionRepository.GetSessionDtos();
+        var token = HttpContext.Request.Cookies["authToken"];
+
+        if (!string.IsNullOrEmpty(token))
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+
+            UserId = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            Username = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName)?.Value;
+        }
+        
+        Games = _sessionRepository.GetUserSessionDto(UserId);
     }
 
     public IActionResult OnPost()
@@ -32,7 +45,17 @@ public class LoadGame : PageModel
         }
         return Page();
     }
-
+    
+    public IActionResult OnPostDelete([FromBody] DeleteRequest request)
+    {
+        _sessionRepository.DeleteSession(request.SessionId);
+        return new JsonResult(new { success = true });
+    }
+    
+    public class DeleteRequest
+    {
+        public string SessionId { get; set; }
+    }
 }
 
 

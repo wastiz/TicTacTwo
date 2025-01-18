@@ -21,7 +21,7 @@ public class JwtMiddleware
         var path = context.Request.Path.Value?.ToLower();
         if (path.StartsWith("/css") || path.StartsWith("/js") || 
             path.StartsWith("/images") || path.StartsWith("/lib") || 
-            path == "/index" || path.StartsWith("/login"))
+            path == "/index" || path.StartsWith("/register"))
         {
             await _next(context);
             return;

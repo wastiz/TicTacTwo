@@ -23,26 +23,29 @@ public class NewGame : PageModel
         _configRepository = configRepository;
         _sessionRepository = sessionRepository;
     }
-
-    public void OnGet()
+    
+    private void SetUserIdFromToken()
     {
         var token = HttpContext.Request.Cookies["authToken"];
-
         if (!string.IsNullOrEmpty(token))
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtToken = tokenHandler.ReadJwtToken(token);
-
             UserId = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
             Username = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName)?.Value;
         }
-        
-        GameConfigs = _configRepository.GetAllConfigDto();
+    }
+
+    public void OnGet()
+    {
+        SetUserIdFromToken();
+        GameConfigs = _configRepository.GetAllUserConfigDto(UserId);
     }
 
     public IActionResult OnPost()
     {
-        var session = _sessionRepository.CreateGameSession(_configRepository.GetConfigurationById(ConfigId));
+        SetUserIdFromToken();
+        var session = _sessionRepository.CreateGameSession(_configRepository.GetConfigurationById(ConfigId), UserId);
             
         if (GameMode == "two-players")
         {

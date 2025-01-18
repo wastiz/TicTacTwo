@@ -22,17 +22,19 @@ public class IndexModel : PageModel
         var token = HttpContext.Request.Cookies["authToken"];
         if (!string.IsNullOrEmpty(token))
         {
-            RedirectToPage("/Home");
+            return RedirectToPage("/Home");
         }
 
-        if (User.Identity.IsAuthenticated)
+        if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            RedirectToPage("/Home");
+            return RedirectToPage("/Home");
         }
+
         return Page();
     }
 
-    public IActionResult OnPost([FromBody] LoginRequest request)
+
+    public IActionResult OnPostLogin([FromBody] LoginRequest request)
     {
         var (logged, message, user) = _userRepository.Login(request.Username, request.Password);
 
@@ -43,7 +45,6 @@ public class IndexModel : PageModel
         }
 
         var token = _jwtTokenHelper.GenerateToken(user.Id.ToString(), user.Username);
-        
         return new JsonResult(new { success = true, token, userId = user.Id });
     }
 

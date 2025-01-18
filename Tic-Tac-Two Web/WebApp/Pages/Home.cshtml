@@ -3,38 +3,8 @@
 @{
     ViewData["Title"] = "Home";
     ViewData["css-page"] = "home.css";
+    ViewData["Username"] = $"Welcome back, {Model.Username}";
 }
-
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" asp-area="" asp-page="/Home">Tic Tac Two</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Download">Download (Console version)</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Configs/Index">About this project</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center ms-auto gap-3">
-                    <b>Welcome back, @Model.Username</b>
-                    <a class="nav-link text-dark" asp-area="" asp-page="/Profile">
-                        <button class="btn btn-primary"><i class="fa-solid fa-user"></i></button>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-</header>
 
 <main role="main" class="pb-3">
     <!-- Modal -->
@@ -58,8 +28,8 @@
     </div>
 
     <div class="container h-100">
-        <div class="row left-panel">
-            <div class="col-12 col-sm-12 col-md-4 col-lg-4 d-flex flex-column h-100 new-game-section mt-5">
+        <div class="row left-panel h-100">
+            <div class="col-12 col-sm-12 col-md-4 col-lg-4 d-flex flex-column new-game-section mt-5">
                 <div class="container">
                     <div class="row">
                         <a asp-page="/NewGame" class="home-menu-link col-6 col-sm-6 col-md-12 col-lg-12">
@@ -86,7 +56,7 @@
                                 </div>
                             </button>
                         </a>
-                        <a asp-page="GameConfigs" class="home-menu-link col-6 col-sm-6 col-md-12 col-lg-12">
+                        <a asp-page="/Configs" class="home-menu-link col-6 col-sm-6 col-md-12 col-lg-12">
                             <button class="home-menu-item btn btn-primary mb-2">
                                 <span class="text-main">Game Configurations</span>
                                 <div class="extra-content">

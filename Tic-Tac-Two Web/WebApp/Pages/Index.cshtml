@@ -34,22 +34,33 @@
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
 
-        const response = await fetch(window.location.href, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        });
+        try {
+            const response = await fetch(`${window.location.pathname}?handler=Login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
 
-        const result = await response.json();
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
+            }
 
-        if (result.success) {
-            document.cookie = `authToken=${result.token}; path=/; max-age=${60 * 60 * 24 * 31}; SameSite=Strict`;
-            document.cookie = `userId=${result.userId}; path=/; max-age=${60 * 60 * 24 * 31}; SameSite=Strict`;
-            document.cookie = `username=${username}; path=/; max-age=${60 * 60 * 24 * 31}; SameSite=Strict`;
-            window.location.href = "/Home";
-        } else {
-            const alertContainer = document.getElementById("alert-container");
-            alertContainer.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;
+            const result = await response.json();
+
+            if (result.success) {
+                document.cookie = `authToken=${result.token}; path=/; max-age=${60 * 60 * 24 * 31}; SameSite=Strict; Secure`;
+                window.location.href = "/Home";
+            } else {
+                showAlert("danger", result.message);
+            }
+        } catch (error) {
+            showAlert("danger", "An unexpected error occurred. Please try again.");
+            console.error("Login error:", error);
         }
     });
+
+    function showAlert(type, message) {
+        const alertContainer = document.getElementById("alert-container");
+        alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+    }
 </script>

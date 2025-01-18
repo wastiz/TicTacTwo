@@ -89,15 +89,18 @@ public class SessionRepository
     }
 
 
-    public List<GameSessionDto> GetSessionDtos()
+    public List<GameSessionDto> GetUserSessionDto(string userId)
     {
-        return _context.GameSessions.Select(session => new GameSessionDto()
+        return _context.GameSessions
+            .Where(session => session.Player1Id == userId)
+            .Select(session => new GameSessionDto
             {
                 SessionId = session.Id,
                 SessionName = session.Name,
             })
             .ToList();
     }
+
 
     public (GameConfiguration config, GameState state) GetGameState(string sessionId)
     {
@@ -134,4 +137,17 @@ public class SessionRepository
         _context.SaveChanges();
     }
 
+
+    public void DeleteSession(string sessionId)
+    {
+        var session = _context.GameSessions.SingleOrDefault(s => s.Id == sessionId);
+            
+        if (session == null)
+        {
+            throw new KeyNotFoundException($"Session '{sessionId}' not found.");
+        }
+
+        _context.GameSessions.Remove(session);
+        _context.SaveChanges();
+    }
 }

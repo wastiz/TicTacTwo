@@ -20,6 +20,9 @@ public class GameConfiguration
     }
     public int WinCondition { get; set; } = 3; // Pieces in row to win
     public int OptionsAfterNMoves { get; set; } = 2; // 0 to disable
+    
+    public string? CreatedBy { get; set; } = null!;
+    [ForeignKey(nameof(CreatedBy))] public User User { get; set; }
 
     public override string ToString() =>
         $"Configuration Name: {Name}\n" +
