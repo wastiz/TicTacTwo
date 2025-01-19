@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using DAL.DTO;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DAL;
 
@@ -102,7 +103,7 @@ public class SessionRepositoryJson
         }
         
         session.GameState = gameState;
-        session.Name = sessionName ?? "Autosave " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        session.Name = sessionName.IsNullOrEmpty() ? "Autosave " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") : sessionName;
         session.LastSaveAt = DateTime.Now;
         
         var options = new JsonSerializerOptions

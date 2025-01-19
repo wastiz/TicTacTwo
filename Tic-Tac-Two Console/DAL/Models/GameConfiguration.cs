@@ -16,7 +16,7 @@ public record GameConfiguration()
         $"Configuration Name: {Name}\n" +
         $"Board Size: {BoardSizeWidth}x{BoardSizeHeight}\n" +
         $"Movable Board Size: {MovableBoardWidth}x{MovableBoardHeight}\n" +
-        $"Chips Count:\n\tPlayer 1 - {ChipsCount[0]}\n\tPlayer 2 - {ChipsCount[1]}\n" +
+        $"Chips Count:\n\tPlayer 1 - {ChipsCount[1]}\n\tPlayer 2 - {ChipsCount[2]}\n" +
         $"Win Condition: {WinCondition} pieces in a row\n" +
         $"Options after {OptionsAfterNMoves} moves\n";
 }

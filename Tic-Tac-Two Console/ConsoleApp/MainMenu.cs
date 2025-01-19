@@ -74,7 +74,7 @@ namespace MenuApp
             for (int i = 0; i < allConfigs.Count; i++)
             {
                 int index = i;
-                menuActions[index] = () => ShowConfig(allConfigs[index].Id);
+                menuActions[index] = () => ShowConfig(allConfigs[index]);
             }
             
             menuActions[allConfigs.Count] = () => ShowCreateConfig();
@@ -86,7 +86,7 @@ namespace MenuApp
         
         public void ShowNewGameSetup()
         {
-            optionsArray = new List<string> { "Two players", "PLayer vs AI", "AI vs AI", "Back to main menu" };
+            optionsArray = new List<string> { "Two players", "PLayer vs AI (Coming soon)", "AI vs AI (Coming soon)", "Back to main menu" };
             activeOptionIndex = 0;
             menuGuidance = "Press \"Esc\" to exit. Press enter to select an option. Move with arrows";
 
@@ -101,11 +101,10 @@ namespace MenuApp
             StartMenu();
         }
 
-        public void ShowConfig(string configId)
+        public void ShowConfig(GameConfiguration config)
         {
-            optionsArray = new List<string> { "Edit", "Delete", "Back"};
+            optionsArray = new List<string> { "Edit (not implemented yet)", "Delete", "Back"};
             activeOptionIndex = 0;
-            GameConfiguration config = configRepository.GetConfigurationById(configId);
             menuGuidance = config.ToString();
 
             menuActions = new Action[]
@@ -122,26 +121,44 @@ namespace MenuApp
             Console.Clear();
             Console.WriteLine("Creating New Game Configuration");
             Console.WriteLine();
-            
-            Console.WriteLine(optionalMessage);
-            Console.Write("Enter configuration name: ");
-            string configName = Console.ReadLine()!.Trim();
-            if (string.IsNullOrEmpty(configName))
+
+            if (!string.IsNullOrEmpty(optionalMessage))
             {
-                ShowCreateConfig("Name cannot be empty");
+                Console.WriteLine(optionalMessage);
+            }
+            
+            string configName;
+            while (true)
+            {
+                Console.Write("Enter configuration name: ");
+                configName = Console.ReadLine()!.Trim();
+
+                if (string.IsNullOrEmpty(configName))
+                {
+                    Console.WriteLine("Name cannot be empty. Please try again.");
+                    continue;
+                }
+
+                if (configRepository.ConfigurationExists(configName))
+                {
+                    Console.WriteLine($"Configuration with name '{configName}' already exists. Please choose a different name.");
+                    continue;
+                }
+
+                break;
             }
             
             int boardWidth = RequestIntegerInput("Enter board width (min: 3): ", 3);
             int boardHeight = RequestIntegerInput("Enter board height (min: 3): ", 3);
-            
+
             int movableBoardWidth = RequestIntegerInput("Enter movable board width (min: 3): ", 3);
             int movableBoardHeight = RequestIntegerInput("Enter movable board height (min: 3): ", 3);
-            
+
             int chipsCountX = RequestIntegerInput("Enter number of chips for player X (min: 1): ", 1);
             int chipsCountO = RequestIntegerInput("Enter number of chips for player O (min: 1): ", 1);
-            
+
             int winCondition = RequestIntegerInput("Enter win condition (pieces in a row to win, min: 3): ", 3);
-            
+
             int movePieceAfterNMoves = RequestIntegerInput("Enter number of moves before a piece can be moved (enter 0 to disable): ", 0);
             
             GameConfiguration newConfig = new GameConfiguration
@@ -164,7 +181,7 @@ namespace MenuApp
 
         private void ShowEditConfig()
         {
-            Console.WriteLine("Editing Configuration");
+            Console.WriteLine("Editing is not done yet");
         }
         
         private int RequestIntegerInput(string prompt, int minValue)

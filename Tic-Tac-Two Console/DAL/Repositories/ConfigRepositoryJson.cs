@@ -114,13 +114,29 @@ public class ConfigRepositoryJson
             return null;
         }
     }
-
-
-    public void SaveConfiguration(GameConfiguration gameConfiguration)
+    
+    public bool ConfigurationExists(string configName)
     {
-        var configJsonStr = System.Text.Json.JsonSerializer.Serialize(gameConfiguration);
-        System.IO.File.WriteAllText(FileHelper.BasePath + gameConfiguration.Name + FileHelper.ConfigExtension, configJsonStr);
+        var configPath = FileHelper.BasePath + configName + FileHelper.ConfigExtension;
+        return System.IO.File.Exists(configPath);
     }
+
+    public bool SaveConfiguration(GameConfiguration gameConfiguration)
+    {
+        var configPath = FileHelper.BasePath + gameConfiguration.Name + FileHelper.ConfigExtension;
+        
+        if (System.IO.File.Exists(configPath))
+        {
+            return false;
+        }
+        
+        var configJsonStr = System.Text.Json.JsonSerializer.Serialize(gameConfiguration);
+        
+        System.IO.File.WriteAllText(configPath, configJsonStr);
+
+        return true;
+    }
+
 
     public void DeleteConfiguration(string name)
     {
