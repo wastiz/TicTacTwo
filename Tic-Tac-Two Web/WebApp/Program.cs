@@ -12,7 +12,9 @@ using WebApp.Hubs;
 // Set up App Config
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Data Source={FileHelper.BasePath}app.db"));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.WebHost.UseStaticWebAssets();
 
 //builder.Services
 //.AddTransient<>(); - create new one every time
@@ -53,6 +55,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// To available downloads from site
+app.UseStaticFiles();
+
 //Using Session
 app.UseSession();
 
@@ -69,9 +74,6 @@ app.UseAuthorization();
 app.UseExceptionHandler("/Error");
 
 app.MapHub<GameHub>("/gameHub");
-
-// To available downloads from site
-app.UseStaticFiles();
 
 app.MapStaticAssets();
 app.MapRazorPages().WithStaticAssets();
