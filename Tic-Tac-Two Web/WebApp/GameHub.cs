@@ -9,15 +9,15 @@ namespace WebApp.Hubs
     {
         private static readonly ConcurrentDictionary<string, GameState> Games = new();
         private readonly SessionRepository _sessionRepository;
-        private readonly AppDbContext _context;
+        private readonly UserRepository _userRepository;
         public GameSession Session;
         public string SessionId;
         public Brain GameBrain { get; set; }
 
-        public GameHub(AppDbContext context, SessionRepository sessionRepository)
+        public GameHub(UserRepository userRepository, SessionRepository sessionRepository)
         {
             _sessionRepository = sessionRepository;
-            _context = context;
+            _userRepository = userRepository;
         }
 
         public async Task JoinGame(string sessionId, string userId)
@@ -53,12 +53,12 @@ namespace WebApp.Hubs
             if (gameState.Player1Id == null)
             {
                 gameState.Player1Id = userId;
-                gameState.Player1Name = _context.Users.FirstOrDefault(u => u.Id == userId)?.Username;
+                gameState.Player1Name = _userRepository.GetUserNameById(userId);
             }
             else if (gameState.Player2Id == null)
             {
                 gameState.Player2Id = userId;
-                gameState.Player2Name = _context.Users.FirstOrDefault(u => u.Id == userId)?.Username;
+                gameState.Player2Name = _userRepository.GetUserNameById(userId);
             }
 
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);

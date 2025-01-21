@@ -67,6 +67,11 @@ namespace DAL
             return _context.Users.ToList();
         }
 
+        public string GetUserNameById(string userId)
+        {
+            return _context.Users.FirstOrDefault(u => u.Id == userId)?.Username;
+        }
+
         public (bool, string, User?) Login (string username, string password)
         {
             var existingUser = _context.Users.FirstOrDefault(u => u.Username == username);

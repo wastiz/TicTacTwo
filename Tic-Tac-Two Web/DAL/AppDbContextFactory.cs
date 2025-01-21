@@ -13,11 +13,9 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         {
             Directory.CreateDirectory(folderPath);
         }
-        
-        string connectionString = Path.Combine(folderPath, "app.db");
 
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-        optionsBuilder.UseSqlite($"Data Source={connectionString}");
+        optionsBuilder.UseNpgsql("Host=localhost;Database=tic_tac_two;Username=postgres;Password=admin");
 
         return new AppDbContext(optionsBuilder.Options);
     }

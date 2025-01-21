@@ -12,7 +12,7 @@ using WebApp.Hubs;
 // Set up App Config
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.WebHost.UseStaticWebAssets();
 
@@ -21,7 +21,6 @@ builder.WebHost.UseStaticWebAssets();
 //.AddSingleton<>(); - create new one on first try, all the next requests get existing
 //.AddScoped<>(); - create new one for every web request
 
-//builder.Services.AddScoped<IConfigRepository, ConfigRepositoryJson>();
 builder.Services.AddScoped<ConfigRepository>();
 builder.Services.AddScoped<SessionRepository>();
 builder.Services.AddScoped<UserRepository>();

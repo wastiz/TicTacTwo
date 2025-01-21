@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 public class RegisterModel : PageModel
 {
-    private readonly AppDbContext _context;
+    private readonly UserRepository _userRepository;
 
-    public RegisterModel(AppDbContext context)
+    public RegisterModel(UserRepository userRepository)
     {
-        _context = context;
+        _userRepository = userRepository;
     }
 
     [BindProperty]
@@ -26,16 +26,13 @@ public class RegisterModel : PageModel
 
     public IActionResult OnPost()
     {
-        if (_context.Users.Any(u => u.Username == Username))
+        var (created, message) = _userRepository.CreateUser(Username, Password);
+        if (created)
         {
-            Message = "This username is already taken.";
-            return Page();
+            Message = message;
+            return RedirectToPage("/Index");
         }
-
-        var newUser = new User { Username = Username, Password = Password };
-        _context.Users.Add(newUser);
-        _context.SaveChanges();
-        Message = "Account created successfully!";
-        return RedirectToPage("/Index");
+        Message = message;
+        return Page();
     }
 }

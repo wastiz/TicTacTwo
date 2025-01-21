@@ -11,7 +11,7 @@ namespace DAL
 
         public AppDbContext(DbContextOptions<AppDbContext>? options = null)
             : base(options ?? new DbContextOptionsBuilder<AppDbContext>()
-                .UseSqlite($"Data Source={FileHelper.BasePath}app.db")
+                .UseNpgsql($"Host=localhost;Database=tic_tac_two;Username=postgres;Password=admin")
                 .Options)
         {
         }

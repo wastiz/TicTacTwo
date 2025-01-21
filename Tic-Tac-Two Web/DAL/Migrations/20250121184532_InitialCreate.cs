@@ -15,16 +15,16 @@ namespace DAL.Migrations
                 name: "GameStates",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    BoardJson = table.Column<string>(type: "TEXT", nullable: false),
-                    ChipsLeftJson = table.Column<string>(type: "TEXT", nullable: false),
-                    PlayersMovesJson = table.Column<string>(type: "TEXT", nullable: false),
-                    GridX = table.Column<int>(type: "INTEGER", nullable: false),
-                    GridY = table.Column<int>(type: "INTEGER", nullable: false),
-                    PlayerNumber = table.Column<int>(type: "INTEGER", nullable: false),
-                    Player1Options = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Player2Options = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Win = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    BoardJson = table.Column<string>(type: "text", nullable: false),
+                    ChipsLeftJson = table.Column<string>(type: "text", nullable: false),
+                    PlayersMovesJson = table.Column<string>(type: "text", nullable: false),
+                    GridX = table.Column<int>(type: "integer", nullable: false),
+                    GridY = table.Column<int>(type: "integer", nullable: false),
+                    PlayerNumber = table.Column<int>(type: "integer", nullable: false),
+                    Player1Options = table.Column<bool>(type: "boolean", nullable: false),
+                    Player2Options = table.Column<bool>(type: "boolean", nullable: false),
+                    Win = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -35,9 +35,9 @@ namespace DAL.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Username = table.Column<string>(type: "TEXT", nullable: false),
-                    Password = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,16 +48,16 @@ namespace DAL.Migrations
                 name: "GameConfigurations",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    BoardSizeWidth = table.Column<int>(type: "INTEGER", nullable: false),
-                    BoardSizeHeight = table.Column<int>(type: "INTEGER", nullable: false),
-                    MovableBoardWidth = table.Column<int>(type: "INTEGER", nullable: false),
-                    MovableBoardHeight = table.Column<int>(type: "INTEGER", nullable: false),
-                    ChipsCountJson = table.Column<string>(type: "TEXT", nullable: false),
-                    WinCondition = table.Column<int>(type: "INTEGER", nullable: false),
-                    OptionsAfterNMoves = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    BoardSizeWidth = table.Column<int>(type: "integer", nullable: false),
+                    BoardSizeHeight = table.Column<int>(type: "integer", nullable: false),
+                    MovableBoardWidth = table.Column<int>(type: "integer", nullable: false),
+                    MovableBoardHeight = table.Column<int>(type: "integer", nullable: false),
+                    ChipsCountJson = table.Column<string>(type: "text", nullable: false),
+                    WinCondition = table.Column<int>(type: "integer", nullable: false),
+                    OptionsAfterNMoves = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -73,16 +73,16 @@ namespace DAL.Migrations
                 name: "GameSessions",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    GameConfigId = table.Column<string>(type: "TEXT", nullable: true),
-                    GameStateId = table.Column<string>(type: "TEXT", nullable: true),
-                    Player1Id = table.Column<string>(type: "TEXT", nullable: true),
-                    Player2Id = table.Column<string>(type: "TEXT", nullable: true),
-                    GameMode = table.Column<string>(type: "TEXT", nullable: true),
-                    GamePassword = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    LastSaveAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    GameConfigId = table.Column<string>(type: "text", nullable: true),
+                    GameStateId = table.Column<string>(type: "text", nullable: true),
+                    Player1Id = table.Column<string>(type: "text", nullable: true),
+                    Player2Id = table.Column<string>(type: "text", nullable: true),
+                    GameMode = table.Column<string>(type: "text", nullable: true),
+                    GamePassword = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastSaveAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
