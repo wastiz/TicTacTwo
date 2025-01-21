@@ -20,8 +20,8 @@ public class GameSession
     public string? GameMode { get; set; } = null!;
     public string? GamePassword { get; set; } = null!;
     
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
-    public DateTime LastSaveAt { get; set; } = DateTime.Now;
+    public DateTime LastSaveAt { get; set; } = DateTime.UtcNow;
 
 }

@@ -11,7 +11,6 @@ namespace WebApp.Hubs
         private readonly SessionRepository _sessionRepository;
         private readonly UserRepository _userRepository;
         public GameSession Session;
-        public string SessionId;
         public Brain GameBrain { get; set; }
 
         public GameHub(UserRepository userRepository, SessionRepository sessionRepository)
