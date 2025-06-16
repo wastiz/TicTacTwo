@@ -1,0 +1,129 @@
+﻿@page "/auth"
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+
+<PageTitle>Authentication</PageTitle>
+
+<div class="auth-container">
+    <div class="auth-box @_animationClass">
+        @if (_isLoginView)
+        {
+            <h1>Login</h1>
+            <EditForm Model="_loginModel" OnValidSubmit="HandleLogin">
+                <div class="form-group">
+                    <label for="login-username">Username:</label>
+                    <InputText id="login-username" @bind-Value="_loginModel.Username" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password:</label>
+                    <InputText id="login-password" @bind-Value="_loginModel.Password" type="password" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </EditForm>
+            <p class="toggle-auth" @onclick="ToggleAuthView">Don't have an account? Register</p>
+        }
+        else
+        {
+            <h1>Register</h1>
+            <EditForm Model="_registerModel" OnValidSubmit="HandleRegister">
+                <div class="form-group">
+                    <label for="reg-username">Username:</label>
+                    <InputText id="reg-username" @bind-Value="_registerModel.Username" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password:</label>
+                    <InputText id="reg-password" @bind-Value="_registerModel.Password" type="password" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="reg-password-confirm">Confirm Password:</label>
+                    <InputText id="reg-password-confirm" @bind-Value="_registerModel.ConfirmPassword" type="password" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </EditForm>
+            <p class="toggle-auth" @onclick="ToggleAuthView">Already have an account? Login</p>
+        }
+    </div>
+    @if (!string.IsNullOrEmpty(_message))
+    {
+        <div class="alert @(_isSuccess ? "alert-success" : "alert-danger")">@_message</div>
+    }
+</div>
+
+@code {
+    private bool _isLoginView = true;
+    private string _animationClass = "";
+    private string _message = "";
+    private bool _isSuccess = false;
+
+    private LoginModel _loginModel = new();
+    private RegisterModel _registerModel = new();
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            // Здесь вызов API для логина
+            // var response = await Http.PostAsJsonAsync("api/auth/login", _loginModel);
+            // if (response.IsSuccessStatusCode) ...
+            
+            _isSuccess = true;
+            _message = "Login successful!";
+            await Task.Delay(1000);
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            _isSuccess = false;
+            _message = ex.Message;
+        }
+    }
+
+    private async Task HandleRegister()
+    {
+        try
+        {
+            if (_registerModel.Password != _registerModel.ConfirmPassword)
+            {
+                throw new Exception("Passwords don't match");
+            }
+
+            // Здесь вызов API для регистрации
+            // var response = await Http.PostAsJsonAsync("api/auth/register", _registerModel);
+            // if (response.IsSuccessStatusCode) ...
+            
+            _isSuccess = true;
+            _message = "Registration successful! Please login.";
+            await Task.Delay(1000);
+            ToggleAuthView();
+        }
+        catch (Exception ex)
+        {
+            _isSuccess = false;
+            _message = ex.Message;
+        }
+    }
+
+    private async Task ToggleAuthView()
+    {
+        _animationClass = _isLoginView ? "slide-out-left" : "slide-out-right";
+        await Task.Delay(300);
+        _isLoginView = !_isLoginView;
+        _animationClass = _isLoginView ? "slide-in-right" : "slide-in-left";
+        await Task.Delay(300);
+        _animationClass = "";
+        _message = "";
+    }
+
+    private class LoginModel
+    {
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+
+    private class RegisterModel
+    {
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = "";
+        public string ConfirmPassword { get; set; } = "";
+    }
+}
