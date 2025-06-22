@@ -1,6 +1,7 @@
-﻿@page "/auth"
+﻿@page "/login"
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
+@inject IJSRuntime JS
 
 <PageTitle>Authentication</PageTitle>
 
@@ -11,8 +12,8 @@
             <h1>Login</h1>
             <EditForm Model="_loginModel" OnValidSubmit="HandleLogin">
                 <div class="form-group">
-                    <label for="login-username">Username:</label>
-                    <InputText id="login-username" @bind-Value="_loginModel.Username" class="form-control" />
+                    <label for="login-identifier">Username or Email:</label>
+                    <InputText id="login-identifier" @bind-Value="_loginModel.UsernameOrEmail" class="form-control" />
                 </div>
                 <div class="form-group">
                     <label for="login-password">Password:</label>
@@ -31,6 +32,10 @@
                     <InputText id="reg-username" @bind-Value="_registerModel.Username" class="form-control" />
                 </div>
                 <div class="form-group">
+                    <label for="reg-email">Email:</label>
+                    <InputText id="reg-email" @bind-Value="_registerModel.Email" class="form-control" />
+                </div>
+                <div class="form-group">
                     <label for="reg-password">Password:</label>
                     <InputText id="reg-password" @bind-Value="_registerModel.Password" type="password" class="form-control" />
                 </div>
@@ -43,6 +48,7 @@
             <p class="toggle-auth" @onclick="ToggleAuthView">Already have an account? Login</p>
         }
     </div>
+
     @if (!string.IsNullOrEmpty(_message))
     {
         <div class="alert @(_isSuccess ? "alert-success" : "alert-danger")">@_message</div>
@@ -62,10 +68,13 @@
     {
         try
         {
-            // Здесь вызов API для логина
-            // var response = await Http.PostAsJsonAsync("api/auth/login", _loginModel);
-            // if (response.IsSuccessStatusCode) ...
-            
+            var response = await Http.PostAsJsonAsync("http://localhost:5192/api/auth/login", _loginModel);
+            var result = await response.Content.ReadFromJsonAsync<AuthResponse>();
+
+            if (!response.IsSuccessStatusCode || result is null)
+                throw new Exception(result?.Message ?? "Login failed.");
+
+            await JS.InvokeVoidAsync("localStorage.setItem", "accessToken", result.AccessToken);
             _isSuccess = true;
             _message = "Login successful!";
             await Task.Delay(1000);
@@ -83,14 +92,21 @@
         try
         {
             if (_registerModel.Password != _registerModel.ConfirmPassword)
-            {
-                throw new Exception("Passwords don't match");
-            }
+                throw new Exception("Passwords don't match.");
 
-            // Здесь вызов API для регистрации
-            // var response = await Http.PostAsJsonAsync("api/auth/register", _registerModel);
-            // if (response.IsSuccessStatusCode) ...
-            
+            var registerDto = new
+            {
+                Username = _registerModel.Username,
+                Email = _registerModel.Email,
+                Password = _registerModel.Password
+            };
+
+            var response = await Http.PostAsJsonAsync("http://localhost:5192/api/auth/register", registerDto);
+            var result = await response.Content.ReadFromJsonAsync<AuthResponse>();
+
+            if (!response.IsSuccessStatusCode || result is null)
+                throw new Exception(result?.Message ?? "Registration failed.");
+
             _isSuccess = true;
             _message = "Registration successful! Please login.";
             await Task.Delay(1000);
@@ -116,14 +132,21 @@
 
     private class LoginModel
     {
-        public string Username { get; set; } = "";
+        public string UsernameOrEmail { get; set; } = "";
         public string Password { get; set; } = "";
     }
 
     private class RegisterModel
     {
         public string Username { get; set; } = "";
+        public string Email { get; set; } = "";
         public string Password { get; set; } = "";
         public string ConfirmPassword { get; set; } = "";
+    }
+
+    private class AuthResponse
+    {
+        public string AccessToken { get; set; } = "";
+        public string Message { get; set; } = "";
     }
 }

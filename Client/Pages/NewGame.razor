@@ -1,0 +1,106 @@
+﻿@page "/new-game"
+@attribute [Authorize]
+
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
+
+<h3>@Username</h3>
+
+<EditForm Model="@gameModel" OnValidSubmit="HandleValidSubmit" class="container h-100 d-flex flex-column">
+    <div class="row">
+        <h3>Choose Game Mode:</h3>
+        <div class="btn-group d-flex flex-column" role="group">
+            @foreach (var mode in GameModes)
+            {
+            <button type="button"
+                    class="btn @(gameModel.GameMode == mode.Value ? "btn-primary" : "btn-outline-primary") mb-2"
+                    @onclick="() => ToggleSelection(mode.Value)">
+                @mode.Label
+            </button>
+            }
+        </div>
+
+        <h3>Choose Game Configuration:</h3>
+        <div class="col-12">
+            <InputRadioGroup @bind-Value="gameModel.ConfigId">
+                <InputRadio id="classic" Value=@("classic") />
+                <label class="btn" for="classic">Classical</label>
+
+                <InputRadio id="big-game" Value=@("big-game") />
+                <label class="btn" for="big-game">Big Game</label>
+
+                @foreach (var configDto in GameConfigs)
+                {
+                    <InputRadio id="@configDto.ConfigId" Value="@configDto.ConfigId" />
+                    <label class="btn" for="@configDto.ConfigId">@configDto.ConfigName</label>
+                }
+            </InputRadioGroup>
+        </div>
+
+        <div class="col-12 mt-5">
+            <button type="submit" class="btn btn-primary">Start Game</button>
+        </div>
+    </div>
+</EditForm>
+
+<div class="col-12 col-sm-12 col-md-8 col-lg-8 d-flex align-items-center justify-content-center mt-5">
+    <img src="img/animation.gif" width="400" height="400" alt="animation" id="home-animation" />
+</div>
+
+@code {
+    private GameModel gameModel = new GameModel
+    {
+        GameMode = "two-players",
+        ConfigId = "classic"
+    };
+
+    private string Username => $"Welcome back, {UserName}";
+
+    // Здесь можно загрузить с сервера через DI, API и т.п.
+    // Заглушка для примера:
+    private string UserName = "Player1";
+    
+    private List<(string Value, string Label)> GameModes = new()
+    {
+        ("two-players", "Local Game"),
+        ("two-players-online", "Online Game"),
+        ("vs-ai", "vs AI (coming soon)"),
+        ("ai-vs-ai", "AI vs AI (coming soon)")
+    };
+
+    private void ToggleSelection(string value)
+    {
+        if (gameModel.GameMode == value)
+            gameModel.GameMode = null;
+        else
+            gameModel.GameMode = value;
+    }
+
+    private List<GameConfigDto> GameConfigs = new List<GameConfigDto>
+    {
+        new() { ConfigId = "custom1", ConfigName = "Custom Config 1" },
+        new() { ConfigId = "custom2", ConfigName = "Custom Config 2" }
+    };
+
+    private void HandleValidSubmit()
+    {
+        // Логика старта игры с gameModel.GameMode и gameModel.ConfigId
+        Console.WriteLine($"Starting game mode: {gameModel.GameMode}, config: {gameModel.ConfigId}");
+        // Навигация, вызов сервиса и т.п.
+    }
+
+    public class GameModel
+    {
+        [Required]
+        public string GameMode { get; set; }
+
+        [Required]
+        public string ConfigId { get; set; }
+    }
+
+    public class GameConfigDto
+    {
+        public string ConfigId { get; set; }
+        public string ConfigName { get; set; }
+    }
+}

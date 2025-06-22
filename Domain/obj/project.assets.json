@@ -8,19 +8,19 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\valno\\.nuget\\packages\\": {}
+    "C:\\Users\\Valer4ik\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\valno\\Desktop\\TicTacTwo2\\Domain\\Domain.csproj",
+      "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "C:\\Users\\valno\\Desktop\\TicTacTwo2\\Domain\\Domain.csproj",
-      "packagesPath": "C:\\Users\\valno\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\valno\\Desktop\\TicTacTwo2\\Domain\\obj\\",
+      "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj",
+      "packagesPath": "C:\\Users\\Valer4ik\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\valno\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Valer4ik\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"

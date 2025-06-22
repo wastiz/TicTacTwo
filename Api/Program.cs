@@ -1,15 +1,25 @@
 using System.Text;
+using Api.Hubs;
 using DAL;
+using DAL.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using WebApp.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавляем поддержку БД (например, PostgreSQL)
+// Adding Controllers
+builder.Services.AddControllers();
+
+// Adding context to DI (Postgres)
 builder.Services.AddDbContext<AppDbContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//Adding DAL to DI
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<IConfigRepository, ConfigRepository>();
+
 
 // Добавление jwt и identity
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -30,23 +40,26 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization(); 
 
-// SignalR для реального времени
+// SignalR
 builder.Services.AddSignalR();
 
-// Настройка CORS (чтобы клиент мог подключаться)
+// CORS Config
 builder.Services.AddCors(options =>
 {
   options.AddPolicy("AllowBlazorClient", policy =>
   {
-    policy.WithOrigins("https://localhost:5001") // URL Blazor WASM
+    policy.WithOrigins("http://localhost:5157", "https://localhost:5157") // URL Blazor WASM
       .AllowAnyHeader()
-      .AllowAnyMethod();
+      .AllowAnyMethod()
+      .AllowCredentials();
   });
 });
 
 var app = builder.Build();
-
+app.UseRouting();
 app.UseCors("AllowBlazorClient");
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapHub<GameHub>("/gameHub"); // SignalR
 app.MapControllers();
 app.Run();

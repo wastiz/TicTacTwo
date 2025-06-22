@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using DAL.Contracts;
+using DAL.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _context;
 
@@ -13,21 +14,35 @@ namespace DAL
             _context.Database.EnsureCreated();
         }
         
-        public (bool Success, string Message) CreateUser(string username, string password)
+        public async Task<(bool Success, string Message, User? User)> CreateUser(UserRegister dto)
         {
-            if (_context.Users.Any(u => u.Username == username))
+            if (await _context.Users.AnyAsync(u => u.Username == dto.Username))
             {
-                return (false, "Username already exists");
+                return (false, "Username already exists", null);
             }
 
-            _context.Users.Add(new User { Username = username, Password = password });
-            _context.SaveChanges();
-            return (true, "User created successfully");
+            if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
+            {
+                return (false, "Email already exists", null);
+            }
+
+            var newUser = new User
+            {
+                Username = dto.Username,
+                Email = dto.Email,
+                Password = dto.Password
+            };
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            return (true, "User created successfully", newUser);
         }
+
         
-        public (bool Success, string Message) DeleteUser(string userId)
+        public async Task<(bool Success, string Message)> DeleteUser(string userId)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null)
             {
                 return (false, "User not found");
@@ -38,9 +53,9 @@ namespace DAL
             return (true, "User deleted successfully");
         }
         
-        public (bool Success, string Message) UpdateUser(string userId, string newUsername, string newPassword)
+        public async Task<(bool Success, string Message)> UpdateUser(string userId, string newUsername, string newPassword)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null)
             {
                 return (false, "User not found");
@@ -57,36 +72,39 @@ namespace DAL
             return (true, "User updated successfully");
         }
         
-        public User GetUserById(string userId)
+        public async Task<User> GetUserById(string userId)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == userId);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         }
         
-        public List<User> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
-            return _context.Users.ToList();
+            return await _context.Users.ToListAsync();
         }
 
-        public string GetUserNameById(string userId)
+        public async Task<string> GetUserNameById(string userId)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == userId)?.Username;
+            var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            return result.Username;
         }
 
-        public (bool, string, User?) Login (string username, string password)
+        public async Task<(bool Success, string Message, User? User)> CheckPassword(UserLogin dto)
         {
-            var existingUser = _context.Users.FirstOrDefault(u => u.Username == username);
-            
+            var existingUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == dto.UsernameOrEmail || u.Email == dto.UsernameOrEmail);
+
             if (existingUser == null)
             {
                 return (false, "User not found!", null);
             }
 
-            if (existingUser.Password != password)
+            if (existingUser.Password != dto.Password)
             {
-                return (false, "Wrong username/password!", null);
+                return (false, "Wrong username or password!", null);
             }
-            
+
             return (true, "Successfully logged in", existingUser);
         }
+
     }
 }

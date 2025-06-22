@@ -5,18 +5,12 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 
-public class JwtTokenHelper
+public static class JwtTokenHelper
 {
-  private readonly IConfiguration _configuration;
 
-  public JwtTokenHelper(IConfiguration configuration)
+  public static string GenerateToken(string userId, string userName, IConfiguration configuration)
   {
-    _configuration = configuration;
-  }
-
-  public string GenerateToken(string userId, string userName)
-  {
-    var jwtSettings = _configuration.GetSection("Jwt");
+    var jwtSettings = configuration.GetSection("Jwt");
 
     var claims = new List<Claim>
     {

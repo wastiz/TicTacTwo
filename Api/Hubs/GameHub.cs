@@ -1,19 +1,19 @@
 ﻿using DAL;
-using GameBrain;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
+using DAL.Contracts;
 
-namespace WebApp.Hubs
+namespace Api.Hubs
 { 
     public class GameHub : Hub
     {
         private static readonly ConcurrentDictionary<string, GameState> Games = new();
-        private readonly SessionRepository _sessionRepository;
-        private readonly UserRepository _userRepository;
+        private readonly ISessionRepository _sessionRepository;
+        private readonly IUserRepository _userRepository;
         public GameSession Session;
-        public GameBrain.GameBrain GameBrain { get; set; }
+        public GameBrain GameBrain { get; set; }
 
-        public GameHub(UserRepository userRepository, SessionRepository sessionRepository)
+        public GameHub(IUserRepository userRepository, ISessionRepository sessionRepository)
         {
             _sessionRepository = sessionRepository;
             _userRepository = userRepository;
@@ -52,12 +52,12 @@ namespace WebApp.Hubs
             if (gameState.Player1Id == null)
             {
                 gameState.Player1Id = userId;
-                gameState.Player1Name = _userRepository.GetUserNameById(userId);
+                gameState.Player1Name = await _userRepository.GetUserNameById(userId);
             }
             else if (gameState.Player2Id == null)
             {
                 gameState.Player2Id = userId;
-                gameState.Player2Name = _userRepository.GetUserNameById(userId);
+                gameState.Player2Name = await _userRepository.GetUserNameById(userId);
             }
 
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);

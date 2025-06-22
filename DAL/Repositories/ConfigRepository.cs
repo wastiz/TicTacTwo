@@ -1,9 +1,10 @@
-﻿using DAL.DTO;
+﻿using DAL.Contracts;
+using DAL.DTO;
 
 namespace DAL
 {
     using System.Text.Json;
-    public class ConfigRepository
+    public class ConfigRepository : IConfigRepository
     {
         private readonly AppDbContext _context;
 

@@ -1,9 +1,10 @@
-﻿using DAL.DTO;
+﻿using DAL.Contracts;
+using DAL.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL;
 
-public class SessionRepository
+public class SessionRepository : ISessionRepository
 {
     private readonly AppDbContext _context;
     

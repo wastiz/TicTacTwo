@@ -912,6 +912,19 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
+      "DAL.Contracts/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/DAL.Contracts.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DAL.Contracts.dll": {}
+        }
+      },
       "Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
@@ -2784,6 +2797,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "DAL.Contracts/1.0.0": {
+      "type": "project",
+      "path": "../DAL.Contracts/DAL.Contracts.csproj",
+      "msbuildProject": "../DAL.Contracts/DAL.Contracts.csproj"
+    },
     "Domain/1.0.0": {
       "type": "project",
       "path": "../Domain/Domain.csproj",
@@ -2792,6 +2810,7 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "DAL.Contracts >= 1.0.0",
       "Domain >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 9.0.6",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.6",
@@ -2799,19 +2818,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\valno\\.nuget\\packages\\": {}
+    "C:\\Users\\Valer4ik\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\valno\\Desktop\\TicTacTwo2\\DAL\\DAL.csproj",
+      "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL\\DAL.csproj",
       "projectName": "DAL",
-      "projectPath": "C:\\Users\\valno\\Desktop\\TicTacTwo2\\DAL\\DAL.csproj",
-      "packagesPath": "C:\\Users\\valno\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\valno\\Desktop\\TicTacTwo2\\DAL\\obj\\",
+      "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL\\DAL.csproj",
+      "packagesPath": "C:\\Users\\Valer4ik\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\valno\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Valer4ik\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -2823,8 +2842,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\valno\\Desktop\\TicTacTwo2\\Domain\\Domain.csproj": {
-              "projectPath": "C:\\Users\\valno\\Desktop\\TicTacTwo2\\Domain\\Domain.csproj"
+            "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL.Contracts\\DAL.Contracts.csproj": {
+              "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL.Contracts\\DAL.Contracts.csproj"
+            },
+            "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj"
             }
           }
         }

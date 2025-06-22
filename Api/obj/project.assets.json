@@ -514,6 +514,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
+          "DAL.Contracts": "1.0.0",
           "Domain": "1.0.0",
           "Microsoft.EntityFrameworkCore": "9.0.6",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4"
@@ -523,6 +524,19 @@
         },
         "runtime": {
           "bin/placeholder/DAL.dll": {}
+        }
+      },
+      "DAL.Contracts/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/DAL.Contracts.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DAL.Contracts.dll": {}
         }
       },
       "Domain/1.0.0": {
@@ -1271,6 +1285,11 @@
       "path": "../DAL/DAL.csproj",
       "msbuildProject": "../DAL/DAL.csproj"
     },
+    "DAL.Contracts/1.0.0": {
+      "type": "project",
+      "path": "../DAL.Contracts/DAL.Contracts.csproj",
+      "msbuildProject": "../DAL.Contracts/DAL.Contracts.csproj"
+    },
     "Domain/1.0.0": {
       "type": "project",
       "path": "../Domain/Domain.csproj",
@@ -1292,19 +1311,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\valno\\.nuget\\packages\\": {}
+    "C:\\Users\\Valer4ik\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\valno\\Desktop\\TicTacTwo2\\Api\\Api.csproj",
+      "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Api\\Api.csproj",
       "projectName": "Api",
-      "projectPath": "C:\\Users\\valno\\Desktop\\TicTacTwo2\\Api\\Api.csproj",
-      "packagesPath": "C:\\Users\\valno\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\valno\\Desktop\\TicTacTwo2\\Api\\obj\\",
+      "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Api\\Api.csproj",
+      "packagesPath": "C:\\Users\\Valer4ik\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\valno\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Valer4ik\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -1316,8 +1335,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\valno\\Desktop\\TicTacTwo2\\GameBrain\\GameBrain.csproj": {
-              "projectPath": "C:\\Users\\valno\\Desktop\\TicTacTwo2\\GameBrain\\GameBrain.csproj"
+            "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\GameBrain\\GameBrain.csproj": {
+              "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\GameBrain\\GameBrain.csproj"
             }
           }
         }

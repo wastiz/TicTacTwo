@@ -17,7 +17,7 @@ namespace DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -153,6 +153,22 @@ namespace DAL.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("GamesLost")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GamesPlayed")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GamesWon")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Password")
                         .IsRequired()

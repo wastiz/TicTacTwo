@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameBrain", "GameBrain\Game
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{1695ACA9-C4B5-4CFA-95E3-4DF8D6D32591}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.Contracts", "DAL.Contracts\DAL.Contracts.csproj", "{E00AFF6A-08D0-4345-86F4-C78D3173839B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{1695ACA9-C4B5-4CFA-95E3-4DF8D6D32591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1695ACA9-C4B5-4CFA-95E3-4DF8D6D32591}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1695ACA9-C4B5-4CFA-95E3-4DF8D6D32591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E00AFF6A-08D0-4345-86F4-C78D3173839B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E00AFF6A-08D0-4345-86F4-C78D3173839B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E00AFF6A-08D0-4345-86F4-C78D3173839B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E00AFF6A-08D0-4345-86F4-C78D3173839B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
