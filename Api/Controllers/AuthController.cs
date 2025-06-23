@@ -1,4 +1,5 @@
 ﻿using DAL.Contracts;
+using DAL.Contracts.Interfaces;
 using DAL.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@ public class AuthController : ControllerBase
 
         return Ok(new
         {
-            accessToken = JwtTokenHelper.GenerateToken(result.User.Id, result.User.Username, _configuration),
+            accessToken = JwtTokenHelper.GenerateToken(result.Data.Id, result.Data.Username, _configuration),
             message = result.Message
         });
     }
@@ -43,7 +44,7 @@ public class AuthController : ControllerBase
         if (!result.Success) return Unauthorized(result.Message);
         return Ok(new
         {
-            accessToken = JwtTokenHelper.GenerateToken(result.User.Id, result.User.Username, _configuration),
+            accessToken = JwtTokenHelper.GenerateToken(result.Data.Id, result.Data.Username, _configuration),
             message = result.Message
         });
     }

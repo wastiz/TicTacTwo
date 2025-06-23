@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
 using DAL.Contracts;
+using DAL.Contracts.Interfaces;
 
 namespace Api.Hubs
 { 

@@ -1,5 +1,8 @@
 ﻿using DAL.Contracts;
+using DAL.Contracts.DTO;
 using DAL.DTO;
+using DAL.DTO.GameConfigDtos;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
@@ -17,52 +20,61 @@ namespace DAL
         
         private void CheckAndCreateInitialConfig()
         {
-            if (!_context.GameConfigurations.Any())
+            var existingIds = _context.GameConfigurations
+                .Select(c => c.Id)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            var initialConfigurations = new List<GameConfiguration>();
+
+            if (!existingIds.Contains("classic"))
             {
-                List<GameConfiguration> initialConfigurations = new List<GameConfiguration>()
+                initialConfigurations.Add(new GameConfiguration
                 {
-                    new GameConfiguration() { Id = "classic", Name = "Classical" },
-                    new GameConfiguration() {
-                        Id = "big-game",
-                        Name = "Big Game",
-                        BoardSizeWidth = 10,
-                        BoardSizeHeight = 10,
-                        MovableBoardWidth = 5,
-                        MovableBoardHeight = 5,
-                        ChipsCount = new int[] { 0, 6, 6 },
-                        WinCondition = 3,
-                        OptionsAfterNMoves = 3,
-                    },
-                };
-                
+                    Id = "classic",
+                    Name = "Classical"
+                });
+            }
+
+            if (!existingIds.Contains("big-game"))
+            {
+                initialConfigurations.Add(new GameConfiguration
+                {
+                    Id = "big-game",
+                    Name = "Big Game",
+                    BoardSizeWidth = 10,
+                    BoardSizeHeight = 10,
+                    MovableBoardWidth = 5,
+                    MovableBoardHeight = 5,
+                    Player1Chips = 6,
+                    Player2Chips = 6,
+                    WinCondition = 3,
+                    OptionsAfterNMoves = 3,
+                });
+            }
+
+            if (initialConfigurations.Count > 0)
+            {
                 _context.GameConfigurations.AddRange(initialConfigurations);
                 _context.SaveChanges();
             }
         }
-        
-        public List<GameConfiguration> GetAllConfigs()
+        public async Task<List<GameConfig>> GetAllUserConfigDto(string userId)
         {
-            return _context.GameConfigurations
-                .Select(dbConfig => dbConfig)
-                .ToList();
-        }
-        
-        public List<GameConfigDto> GetAllUserConfigDto(string userId)
-        {
-            return _context.GameConfigurations
+            return await _context.GameConfigurations
                 .Where(gc => gc.CreatedBy == userId)
-                .Select(gc => new GameConfigDto
+                .Select(gc => new GameConfig
                 {
-                    ConfigId = gc.Id,
-                    ConfigName = gc.Name
+                    Id = gc.Id,
+                    Name = gc.Name,
+                    
                 })
-                .ToList();
+                .ToListAsync();
         }
 
         
-        public GameConfiguration GetConfigurationById(string id)
+        public async Task<GameConfig> GetConfigurationById(string id)
         {
-            var configDb = _context.GameConfigurations.SingleOrDefault(gc => gc.Id == id);
+            var configDb = await _context.GameConfigurations.SingleOrDefaultAsync(gc => gc.Id == id);
             if (configDb == null)
             {
                 throw new KeyNotFoundException($"Configuration '{id}' not found.");
@@ -70,11 +82,21 @@ namespace DAL
             return configDb;
         }
 
-        public void CreateGameConfiguration(GameConfiguration config)
+        public async Task<Response> CreateGameConfiguration(GameConfiguration config)
         {
-            _context.GameConfigurations.Add(config);
-            _context.SaveChanges();
+            try
+            {
+                await _context.GameConfigurations.AddAsync(config);
+                await _context.SaveChangesAsync();
+
+                return Response<GameConfiguration>.Ok(config, "Game configuration created");
+            }
+            catch (Exception ex)
+            {
+                return Response<GameConfiguration>.Fail($"Error creating game configuration: {ex.Message}");
+            }
         }
+
         
         public void UpdateConfiguration(string id, GameConfiguration gameConfiguration)
         {

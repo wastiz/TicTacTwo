@@ -1,0 +1,47 @@
+﻿@inject NavigationManager Navigation
+
+
+<div class="container">
+    <div class="row">
+        <a asp-page="/NewGame" class="home-menu-link col-6 col-sm-6 col-md-12 col-lg-12">
+            <button @onclick="OnNewGameClicked" class="home-menu-item btn btn-primary mb-2">
+                <span class="text-main">New Game</span>
+                <div class="extra-content">
+                    <span class="extra-text">Start new game with any modes and configs</span>
+                </div>
+            </button>
+        </a>
+        <a asp-page="/LoadGame" class="home-menu-link col-6 col-sm-6 col-md-12 col-lg-12">
+            <button class="home-menu-item btn btn-primary mb-2">
+                <span class="text-main">Load Game</span>
+                <div class="extra-content">
+                    <span class="extra-text">Load saved game to continue your game</span>
+                </div>
+            </button>
+        </a>
+        <a class="home-menu-link col-6 col-sm-6 col-md-12 col-lg-12">
+            <button type="button" class="home-menu-item btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <span class="text-main">Connect to Game</span>
+                <div class="extra-content">
+                    <span class="extra-text">Connect to game via session id</span>
+                </div>
+            </button>
+        </a>
+        <a asp-page="/Configs" class="home-menu-link col-6 col-sm-6 col-md-12 col-lg-12">
+            <button class="home-menu-item btn btn-primary mb-2">
+                <span class="text-main">Game Configurations</span>
+                <div class="extra-content">
+                    <span class="extra-text">Create or edit configs. Make your own game</span>
+                </div>
+            </button>
+        </a>
+    </div>
+</div>
+
+
+@code {
+[Parameter]
+public EventCallback OnNewGame { get; set; }
+
+private Task OnNewGameClicked() => OnNewGame.InvokeAsync();
+}
