@@ -1,6 +1,6 @@
 ﻿using DAL.Contracts;
-using DAL.DTO;
 using Microsoft.EntityFrameworkCore;
+using Shared.GameSessionDtos;
 
 namespace DAL;
 

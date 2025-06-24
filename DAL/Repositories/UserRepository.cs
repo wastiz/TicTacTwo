@@ -1,8 +1,7 @@
-﻿using DAL.Contracts;
-using DAL.Contracts.DTO;
+﻿using DAL.Contracts.DTO;
 using DAL.Contracts.Interfaces;
-using DAL.DTO;
 using Microsoft.EntityFrameworkCore;
+using Shared.UserDtos;
 
 namespace DAL
 {

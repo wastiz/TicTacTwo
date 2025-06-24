@@ -1,7 +1,5 @@
-﻿using DAL.DTO;
-using System.Collections.Generic;
-using DAL.Contracts.DTO;
-using DAL.DTO.GameConfigDtos;
+﻿using DAL.Contracts.DTO;
+using Shared.GameConfigDtos;
 
 namespace DAL.Contracts
 {

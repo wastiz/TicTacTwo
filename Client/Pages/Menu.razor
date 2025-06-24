@@ -1,7 +1,12 @@
 ﻿@page "/"
+@using System.Net
+@using System.Net.Http.Headers
 @using Microsoft.AspNetCore.Authorization
 @using Client.Components.Menu
+@using Shared.GameConfigDtos
 @attribute [Authorize]
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject HttpClient Http
 
 <PageTitle>Menu</PageTitle>
 
@@ -39,7 +44,10 @@
             break;
 
           case MenuScreen.NewGame:
-            <NewGame OnMainOptions="() => SetScreen(MenuScreen.MainOptions)" />
+            <NewGame 
+              OnMainOptions="() => SetScreen(MenuScreen.MainOptions)"
+              ConfigList="@GameConfigs"
+              />
             break;
 
           case MenuScreen.LoadGame:
@@ -47,7 +55,10 @@
             break;
 
           case MenuScreen.GameConfigs:
-            <GameConfigs OnMainOptions="() => SetScreen(MenuScreen.MainOptions)" />
+            <GameConfigs 
+              OnMainOptions="() => SetScreen(MenuScreen.MainOptions)"
+              ConfigList="@GameConfigs"
+              />
             break;
         }
       </div>
@@ -78,5 +89,15 @@
     NewGame,
     LoadGame,
     GameConfigs
+  }
+  
+  private List<GameConfig> GameConfigs;
+
+  protected override async Task OnInitializedAsync()
+  {
+    var token = await localStorage.GetItemAsync<string>("accessToken");
+    Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+    GameConfigs = await Http.GetFromJsonAsync<List<GameConfig>>("api/game-configs/user");
   }
 }

@@ -1,4 +1,4 @@
-﻿namespace DAL.DTO;
+﻿namespace Shared.GameSessionDtos;
 
 public class GameSessionDto
 {

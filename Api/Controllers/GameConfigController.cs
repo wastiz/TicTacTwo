@@ -1,9 +1,9 @@
 ﻿using DAL.Contracts;
 using DAL.Contracts.DTO;
-using DAL.DTO.GameConfigDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Shared.GameConfigDtos;
 
 namespace WebAPI.Controllers;
 

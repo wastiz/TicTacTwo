@@ -1,4 +1,4 @@
-﻿namespace DAL.DTO.GameConfigDtos;
+﻿namespace Shared.GameConfigDtos;
 
 public class GameConfig
 {

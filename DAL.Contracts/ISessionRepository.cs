@@ -1,5 +1,6 @@
 ﻿using DAL.DTO;
 using System.Collections.Generic;
+using Shared.GameSessionDtos;
 
 namespace DAL.Contracts
 {

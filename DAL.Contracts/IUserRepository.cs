@@ -1,5 +1,5 @@
 ﻿using DAL.Contracts.DTO;
-using DAL.DTO;
+using Shared.UserDtos;
 
 namespace DAL.Contracts.Interfaces
 {

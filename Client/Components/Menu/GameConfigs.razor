@@ -1,21 +1,20 @@
 ﻿@page "/configs"
 @using System.Net.Http.Headers
-@using DAL.DTO.GameConfigDtos
+@using Shared.GameConfigDtos
 @inject HttpClient Http
-@inject NavigationManager Navigation
 @inject IJSRuntime JS
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <button @onclick="OnMainOptions" class="btn btn-primary">Back</button>
 <h3>Available Configurations</h3>
-@if (gameConfigs == null)
+@if (ConfigList == null)
 {
     <p>Loading...</p>
 }
 else
 {
     <ul class="list-group mb-4">
-        @foreach (var config in gameConfigs)
+        @foreach (var config in ConfigList)
         {
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <strong>@config.Name</strong>
@@ -106,13 +105,13 @@ else
 </div>
 
 @code {
-    private List<GameConfig> gameConfigs;
+    [Parameter] public EventCallback OnMainOptions { get; set; }
+    [Parameter] public List<GameConfig> ConfigList { get; set; }
+    private Task OnNewGameClicked() => OnMainOptions.InvokeAsync();
+
     private GameConfig newConfig = new();
     private GameConfig editConfig = new();
     private bool showEditModal = false;
-    
-    [Parameter] public EventCallback OnMainOptions { get; set; }
-    private Task OnNewGameClicked() => OnMainOptions.InvokeAsync();
     
     public async Task OpenModal(GameConfig config)
     {
@@ -124,21 +123,9 @@ else
     {
         await JS.InvokeVoidAsync("bootstrapModalHelper.hide", "#editModal");
     }
-
-    protected override async Task OnInitializedAsync()
-    {
-        var token = await localStorage.GetItemAsync<string>("accessToken");
-
-        if (token != null)
+    
+    private async Task CreateConfiguration()
         {
-            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        }
-
-        gameConfigs = await Http.GetFromJsonAsync<List<GameConfig>>("http://localhost:5192/api/game-configs/user");
-    }
-
-private async Task CreateConfiguration()
-    {
         var token = await localStorage.GetItemAsync<string>("accessToken");
 
         if (token != null)
@@ -152,7 +139,7 @@ private async Task CreateConfiguration()
             var createdConfig = await response.Content.ReadFromJsonAsync<GameConfig>();
             if (createdConfig != null)
             {
-                gameConfigs.Add(createdConfig);
+                ConfigList.Add(createdConfig);
                 newConfig = new GameConfig();
             }
         }
@@ -174,10 +161,10 @@ private async Task CreateConfiguration()
         var response = await Http.PutAsJsonAsync($"http://localhost:5192/api/game-configs/{editConfig.Id}", editConfig);
         if (response.IsSuccessStatusCode)
         {
-            var index = gameConfigs.FindIndex(c => c.Id == editConfig.Id);
+            var index = ConfigList.FindIndex(c => c.Id == editConfig.Id);
             if (index >= 0)
             {
-                gameConfigs[index] = new GameConfig
+                ConfigList[index] = new GameConfig
                 {
                     Id = editConfig.Id,
                     Name = editConfig.Name,
@@ -212,10 +199,10 @@ private async Task CreateConfiguration()
         var response = await Http.DeleteAsync($"http://localhost:5192/api/game-configs/{configId}");
         if (response.IsSuccessStatusCode)
         {
-            var index = gameConfigs.FindIndex(c => c.Id == configId);
+            var index = ConfigList.FindIndex(c => c.Id == configId);
             if (index >= 0)
             {
-                gameConfigs.RemoveAt(index);
+                ConfigList.RemoveAt(index);
             }
         }
         else

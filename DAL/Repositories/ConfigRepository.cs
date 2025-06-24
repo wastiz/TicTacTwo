@@ -1,9 +1,7 @@
 ﻿using DAL.Contracts;
 using DAL.Contracts.DTO;
-using DAL.DTO;
-using DAL.DTO.GameConfigDtos;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using Shared.GameConfigDtos;
 
 namespace DAL
 {

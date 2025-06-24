@@ -1,8 +1,11 @@
 ﻿@page "/new-game"
 @attribute [Authorize]
-
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authorization
+@using Shared.GameConfigDtos
+@inject HttpClient Http
+@inject IJSRuntime JS
 
 <EditForm Model="@gameModel" OnValidSubmit="HandleValidSubmit" class="container h-100 d-flex flex-column">
     <button @onclick="OnMainOptions" class="btn btn-primary">Back</button>
@@ -28,10 +31,10 @@
                 <InputRadio id="big-game" Value=@("big-game")/>
                 <label class="btn" for="big-game">Big Game</label>
 
-                @foreach (var configDto in GameConfigs)
+                @foreach (var config in ConfigList)
                 {
-                    <InputRadio id="@configDto.ConfigId" Value="@configDto.ConfigId"/>
-                    <label class="btn" for="@configDto.ConfigId">@configDto.ConfigName</label>
+                    <InputRadio id="@config.Id" Value="@config.Id"/>
+                    <label class="btn" for="@config.Id">@config.Name</label>
                 }
             </InputRadioGroup>
         </div>
@@ -49,22 +52,9 @@
         ConfigId = "classic"
     };
     
+    [Parameter] public List<GameConfig> ConfigList { get; set; }
     [Parameter] public EventCallback OnMainOptions { get; set; }
     private Task OnNewGameClicked() => OnMainOptions.InvokeAsync();
-
-    private string Username => $"Welcome back, {UserName}";
-
-    // Здесь можно загрузить с сервера через DI, API и т.п.
-    // Заглушка для примера:
-    private string UserName = "Player1";
-    
-    private List<(string Value, string Label)> GameModes = new()
-    {
-        ("two-players", "Local Game"),
-        ("two-players-online", "Online Game"),
-        ("vs-ai", "vs AI (coming soon)"),
-        ("ai-vs-ai", "AI vs AI (coming soon)")
-    };
 
     private void ToggleSelection(string value)
     {
@@ -74,16 +64,18 @@
             gameModel.GameMode = value;
     }
 
-    private List<GameConfigDto> GameConfigs = new List<GameConfigDto>
-    {
-        new() { ConfigId = "custom1", ConfigName = "Custom Config 1" },
-        new() { ConfigId = "custom2", ConfigName = "Custom Config 2" }
-    };
-
     private void HandleValidSubmit()
     {
         Console.WriteLine($"Starting game mode: {gameModel.GameMode}, config: {gameModel.ConfigId}");
     }
+    
+    private List<(string Value, string Label)> GameModes = new()
+    {
+        ("two-players", "Local Game"),
+        ("two-players-online", "Online Game"),
+        ("vs-ai", "vs AI (coming soon)"),
+        ("ai-vs-ai", "AI vs AI (coming soon)")
+    };
 
     public class GameModel
     {
@@ -92,11 +84,5 @@
 
         [Required]
         public string ConfigId { get; set; }
-    }
-
-    public class GameConfigDto
-    {
-        public string ConfigId { get; set; }
-        public string ConfigName { get; set; }
     }
 }

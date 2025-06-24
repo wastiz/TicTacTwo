@@ -1,8 +1,6 @@
-﻿using DAL.Contracts;
-using DAL.Contracts.Interfaces;
-using DAL.DTO;
-using Microsoft.AspNetCore.Authorization;
+﻿using DAL.Contracts.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Shared.UserDtos;
 
 namespace ShiftEaseAPI.Controllers;
 
