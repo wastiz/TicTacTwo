@@ -15,7 +15,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input type="text" name="sessionId" class="form-control" placeholder="Type here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+          <input type="text" name="sessionId" class="form-control" placeholder="Type here..." />
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Continue</button>
@@ -28,24 +28,29 @@
 <div class="container h-100">
   <div class="row left-panel h-100">
     <div class="col-12 col-sm-12 col-md-4 col-lg-4 d-flex flex-column new-game-section mt-5">
-      @if (showMainOptions)
-      { 
-          <div class="@mainOptionsClass">
-              <MainOptions OnNewGame="HandleNewGameClick" OnLoadGame="HandleLoadGame" />
-          </div>
-      }
-      @if (showNewGame)
-      {
-          <div class="@newGameClass">
-              <NewGame OnMainOptions="HandleMainOptionsClick" />
-          </div>
-      }
-      @if (showLoadGame)
-      {
-        <div class="@loadGameClass">
-             <LoadGame OnMainOptions="HandleMainOptionsClick" />
-        </div>
-      }
+      <div class="@transitionClass">
+        @switch (currentScreen)
+        {
+          case MenuScreen.MainOptions:
+            <MainOptions
+              OnNewGame="() => SetScreen(MenuScreen.NewGame)"
+              OnLoadGame="() => SetScreen(MenuScreen.LoadGame)"
+              OnGameConfigs="() => SetScreen(MenuScreen.GameConfigs)" />
+            break;
+
+          case MenuScreen.NewGame:
+            <NewGame OnMainOptions="() => SetScreen(MenuScreen.MainOptions)" />
+            break;
+
+          case MenuScreen.LoadGame:
+            <LoadGame OnMainOptions="() => SetScreen(MenuScreen.MainOptions)" />
+            break;
+
+          case MenuScreen.GameConfigs:
+            <GameConfigs OnMainOptions="() => SetScreen(MenuScreen.MainOptions)" />
+            break;
+        }
+      </div>
     </div>
     <div class="col-12 col-sm-12 col-md-8 col-lg-8 d-flex align-items-center justify-content-center">
       <img src="img/animation.gif" alt="animation">
@@ -54,38 +59,24 @@
 </div>
 
 @code {
-  private bool showMainOptions = true;
-  private bool showNewGame = false;
-  private bool showLoadGame = false;
+  private MenuScreen currentScreen = MenuScreen.MainOptions;
+  private string transitionClass = "fade-in";
 
-  private string mainOptionsClass = "fade-in";
-  private string newGameClass = "fade-in hidden";
-  private string loadGameClass = "fade-in hidden";
-
-  private async Task HandleMainOptionsClick()
+  private async Task SetScreen(MenuScreen newScreen)
   {
-    newGameClass = "fade-out";
-    await Task.Delay(300);
-    showNewGame = false;
-    showMainOptions = true;
-    mainOptionsClass = "fade-in";
-  }
-  
-  private async Task HandleNewGameClick()
-  {
-    mainOptionsClass = "fade-out";
-    await Task.Delay(300);
-    showMainOptions = false;
-    showNewGame = true;
-    newGameClass = "fade-in";
+    transitionClass = "fade-out";
+    StateHasChanged();
+    await Task.Delay(400);
+    currentScreen = newScreen;
+    transitionClass = "fade-in";
+    StateHasChanged();
   }
 
-  private async Task HandleLoadGameClick()
+  private enum MenuScreen
   {
-    mainOptionsClass = "fade-out";
-    await Task.Delay(300);
-    showMainOptions = false;
-    showLoadGame = true;
-    loadGameClass = "fade-in";
+    MainOptions,
+    NewGame,
+    LoadGame,
+    GameConfigs
   }
 }

@@ -2,6 +2,7 @@ using System.Text;
 using Api.Hubs;
 using DAL;
 using DAL.Contracts;
+using DAL.Contracts.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

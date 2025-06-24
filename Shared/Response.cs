@@ -19,6 +19,6 @@ public class Response<T> : Response
     public static Response<T> Ok(T data, string message = "Success") =>
         new() { Success = true, Message = message, Data = data };
 
-    public static Response<T> Fail(string message) =>
+    public new static Response<T> Fail(string message) =>
         new() { Success = false, Message = message, Data = default };
 }

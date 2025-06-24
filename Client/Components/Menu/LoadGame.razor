@@ -37,11 +37,6 @@
                 </div>
             </EditForm>
         </div>
-
-        <!-- Анимация -->
-        <div class="col-12 col-sm-12 col-md-8 col-lg-8 d-flex align-items-center justify-content-center">
-            <img src="img/animation.gif" width="400" height="400" alt="animation" id="home-animation"/>
-        </div>
     </div>
 </div>
 
@@ -51,12 +46,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // Здесь загрузи список сессий с сервера
         Games = await Http.GetFromJsonAsync<List<GameSessionDto>>("api/sessions");
     }
     
     [Parameter] public EventCallback OnMainOptions { get; set; }
-    private Task OnNewGameClicked() => OnMainOptions.InvokeAsync();
+    private Task OnLoadGameClicked() => OnMainOptions.InvokeAsync();
 
     private async Task DeleteSession(string sessionId)
     {

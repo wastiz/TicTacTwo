@@ -1,0 +1,226 @@
+﻿@page "/configs"
+@using System.Net.Http.Headers
+@using DAL.DTO.GameConfigDtos
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<button @onclick="OnMainOptions" class="btn btn-primary">Back</button>
+<h3>Available Configurations</h3>
+@if (gameConfigs == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ul class="list-group mb-4">
+        @foreach (var config in gameConfigs)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <strong>@config.Name</strong>
+                <div class="d-flex flex-row gap-2">
+                    <button class="btn btn-info btn-sm text-white" @onclick="() => OpenModal(config)">View</button>
+                    <button class="btn btn-danger btn-sm" @onclick="() => DeleteConfiguration(config.Id)">Delete</button>
+                </div>
+            </li>
+        }
+    </ul>
+}
+<h3>Create New Configuration</h3>
+<EditForm Model="newConfig" OnValidSubmit="CreateConfiguration">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="mb-3">
+        <label class="form-label">Configuration Name</label>
+        <InputText class="form-control" @bind-Value="newConfig.Name" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Board Width</label>
+        <InputNumber class="form-control" @bind-Value="newConfig.BoardSizeWidth" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Board Height</label>
+        <InputNumber class="form-control" @bind-Value="newConfig.BoardSizeHeight" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Win Condition</label>
+        <InputNumber class="form-control" @bind-Value="newConfig.WinCondition" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Options After N Moves</label>
+        <InputNumber class="form-control" @bind-Value="newConfig.OptionsAfterNMoves" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Chips Count</label>
+        <InputNumber class="form-control" @bind-Value="newConfig.Player1Chips" />
+    </div>
+    <button class="btn btn-primary" type="submit">Create Configuration</button>
+</EditForm>
+
+
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Configuration</h5>
+                <button type="button" class="btn-close" @onclick="CloseModal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="editConfig" OnValidSubmit="UpdateConfiguration">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <input type="hidden" @bind="editConfig.Id" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Configuration Name</label>
+                        <InputText class="form-control" @bind-Value="editConfig.Name" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Board Width</label>
+                        <InputNumber class="form-control" @bind-Value="editConfig.BoardSizeWidth" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Board Height</label>
+                        <InputNumber class="form-control" @bind-Value="editConfig.BoardSizeHeight" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Win Condition</label>
+                        <InputNumber class="form-control" @bind-Value="editConfig.WinCondition" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Options After N Moves</label>
+                        <InputNumber class="form-control" @bind-Value="editConfig.OptionsAfterNMoves" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Chips Count (for both players)</label>
+                        <InputNumber class="form-control" @bind-Value="editConfig.Player1Chips" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<GameConfig> gameConfigs;
+    private GameConfig newConfig = new();
+    private GameConfig editConfig = new();
+    private bool showEditModal = false;
+    
+    [Parameter] public EventCallback OnMainOptions { get; set; }
+    private Task OnNewGameClicked() => OnMainOptions.InvokeAsync();
+    
+    public async Task OpenModal(GameConfig config)
+    {
+        editConfig = config;
+        await JS.InvokeVoidAsync("bootstrapModalHelper.show", "#editModal");
+    }
+
+    private async Task CloseModal()
+    {
+        await JS.InvokeVoidAsync("bootstrapModalHelper.hide", "#editModal");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+
+        gameConfigs = await Http.GetFromJsonAsync<List<GameConfig>>("http://localhost:5192/api/game-configs/user");
+    }
+
+private async Task CreateConfiguration()
+    {
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+        
+        var response = await Http.PostAsJsonAsync("http://localhost:5192/api/game-configs", newConfig);
+        if (response.IsSuccessStatusCode)
+        {
+            var createdConfig = await response.Content.ReadFromJsonAsync<GameConfig>();
+            if (createdConfig != null)
+            {
+                gameConfigs.Add(createdConfig);
+                newConfig = new GameConfig();
+            }
+        }
+        else
+        {
+            Console.WriteLine("Error creating config");
+        }
+    }
+
+    private async Task UpdateConfiguration()
+    {
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+        
+        var response = await Http.PutAsJsonAsync($"http://localhost:5192/api/game-configs/{editConfig.Id}", editConfig);
+        if (response.IsSuccessStatusCode)
+        {
+            var index = gameConfigs.FindIndex(c => c.Id == editConfig.Id);
+            if (index >= 0)
+            {
+                gameConfigs[index] = new GameConfig
+                {
+                    Id = editConfig.Id,
+                    Name = editConfig.Name,
+                    BoardSizeWidth = editConfig.BoardSizeWidth,
+                    BoardSizeHeight = editConfig.BoardSizeHeight,
+                    MovableBoardWidth = editConfig.MovableBoardWidth,
+                    MovableBoardHeight = editConfig.MovableBoardHeight,
+                    Player1Chips = editConfig.Player1Chips,
+                    Player2Chips = editConfig.Player2Chips,
+                    OptionsAfterNMoves = editConfig.OptionsAfterNMoves,
+                    WinCondition = editConfig.WinCondition
+                };
+            }
+            showEditModal = false;
+            await CloseModal();
+        }
+        else
+        {
+            Console.WriteLine("Error updating config");
+        }
+    }
+
+    private async Task DeleteConfiguration(string configId)
+    {
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+        
+        var response = await Http.DeleteAsync($"http://localhost:5192/api/game-configs/{configId}");
+        if (response.IsSuccessStatusCode)
+        {
+            var index = gameConfigs.FindIndex(c => c.Id == configId);
+            if (index >= 0)
+            {
+                gameConfigs.RemoveAt(index);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Error deleting config");
+        }
+    }
+}

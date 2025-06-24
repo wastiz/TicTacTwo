@@ -43,7 +43,7 @@ public class SessionRepository : ISessionRepository
         var initialState = new GameState
         {
             Board = new int[config.BoardSizeHeight, config.BoardSizeWidth],
-            ChipsLeft = new int[] { 0, config.ChipsCount[1], config.ChipsCount[2] },
+            ChipsLeft = new int[] { 0, config.Player1Chips, config.Player2Chips },
             PlayersMoves = new int[] { 0, 0, 0 },
             GridX = (config.BoardSizeWidth - config.MovableBoardWidth) / 2,
             GridY = (config.BoardSizeHeight - config.MovableBoardHeight) / 2,

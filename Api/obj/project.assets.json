@@ -530,7 +530,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
-          "Domain": "1.0.0"
+          "Domain": "1.0.0",
+          "Shared": "1.0.0"
         },
         "compile": {
           "bin/placeholder/DAL.Contracts.dll": {}
@@ -561,6 +562,16 @@
         },
         "runtime": {
           "bin/placeholder/GameBrain.dll": {}
+        }
+      },
+      "Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Shared.dll": {}
         }
       }
     }
@@ -1299,6 +1310,11 @@
       "type": "project",
       "path": "../GameBrain/GameBrain.csproj",
       "msbuildProject": "../GameBrain/GameBrain.csproj"
+    },
+    "Shared/1.0.0": {
+      "type": "project",
+      "path": "../Shared/Shared.csproj",
+      "msbuildProject": "../Shared/Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
