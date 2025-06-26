@@ -2,20 +2,24 @@
 @attribute [Authorize]
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using System.ComponentModel.DataAnnotations
+@using System.Net.Http.Headers
 @using Microsoft.AspNetCore.Authorization
+@using Shared
 @using Shared.GameConfigDtos
+@using Shared.GameSessionDtos
 @inject HttpClient Http
 @inject IJSRuntime JS
+@inject NavigationManager Nav
 
-<EditForm Model="@gameModel" OnValidSubmit="HandleValidSubmit" class="container h-100 d-flex flex-column">
+<EditForm Model="@_gameModel" OnValidSubmit="HandleValidSubmit" class="container h-100 d-flex flex-column">
     <button @onclick="OnMainOptions" class="btn btn-primary">Back</button>
     <div class="row">
         <h3>Choose Game Mode:</h3>
         <div class="btn-group d-flex flex-column" role="group">
-            @foreach (var mode in GameModes)
+            @foreach (var mode in _gameModeList)
             {
                 <button type="button"
-                        class="btn @(gameModel.GameMode == mode.Value ? "btn-primary" : "btn-outline-primary") mb-2"
+                        class="btn @(_gameModel.GameMode == mode.Value ? "btn-primary" : "btn-outline-primary") mb-2"
                         @onclick="() => ToggleSelection(mode.Value)">
                     @mode.Label
                 </button>
@@ -24,7 +28,7 @@
 
         <h3>Choose Game Configuration:</h3>
         <div class="col-12">
-            <InputRadioGroup @bind-Value="gameModel.ConfigId">
+            <InputRadioGroup @bind-Value="_gameModel.ConfigId">
                 <InputRadio id="classic" Value=@("classic")/>
                 <label class="btn" for="classic">Classical</label>
 
@@ -46,36 +50,52 @@
 </EditForm>
 
 @code {
-    private GameModel gameModel = new GameModel
+    [Parameter] public List<GameConfig> ConfigList { get; set; }
+    [Parameter] public EventCallback OnMainOptions { get; set; }
+    private Task OnNewGameClicked() => OnMainOptions.InvokeAsync();
+    
+    private GameModel _gameModel = new GameModel
     {
         GameMode = "two-players",
         ConfigId = "classic"
     };
     
-    [Parameter] public List<GameConfig> ConfigList { get; set; }
-    [Parameter] public EventCallback OnMainOptions { get; set; }
-    private Task OnNewGameClicked() => OnMainOptions.InvokeAsync();
+    private List<GameMode> _gameModeList = GameModes.All;
 
     private void ToggleSelection(string value)
     {
-        if (gameModel.GameMode == value)
-            gameModel.GameMode = null;
+        if (_gameModel.GameMode == value)
+            _gameModel.GameMode = null;
         else
-            gameModel.GameMode = value;
+            _gameModel.GameMode = value;
     }
 
-    private void HandleValidSubmit()
+    private async void HandleValidSubmit()
     {
-        Console.WriteLine($"Starting game mode: {gameModel.GameMode}, config: {gameModel.ConfigId}");
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+        
+        var response = await Http.PostAsJsonAsync("http://localhost:5192/api/game-sessions/create", new CreateSessionRequest
+        {
+            ConfigId = _gameModel.ConfigId,
+            GameMode = _gameModel.GameMode,
+            Password = null
+        });
+        
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<CreateSessionResponse>();
+            Nav.NavigateTo($"/game/{result.SessionId}");
+        }
+        else
+        {
+            Console.WriteLine("Error creating config");
+        }
     }
-    
-    private List<(string Value, string Label)> GameModes = new()
-    {
-        ("two-players", "Local Game"),
-        ("two-players-online", "Online Game"),
-        ("vs-ai", "vs AI (coming soon)"),
-        ("ai-vs-ai", "AI vs AI (coming soon)")
-    };
 
     public class GameModel
     {

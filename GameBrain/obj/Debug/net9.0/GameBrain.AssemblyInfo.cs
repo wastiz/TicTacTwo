@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GameBrain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6ee7e3bfe95b2518c397d176da487d071641ec0f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88f38dde9bdf4ce9428d37c3431bce8527e75a5d")]
 [assembly: System.Reflection.AssemblyProductAttribute("GameBrain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GameBrain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

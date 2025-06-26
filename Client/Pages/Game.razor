@@ -14,7 +14,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Model = await Http.GetFromJsonAsync<GameData>($"api/game/{SessionId}");
+        Model = await Http.GetFromJsonAsync<GameData>($"http://localhost:5192/api/game-sessions/{SessionId}");
     }
 
     private async Task HandleCellClick(int x, int y)
@@ -103,7 +103,7 @@ else
                     <div>
                         <h5>Rules & Guide</h5>
                         <p>The goal is to score @Model.WinCondition chips in a row</p>
-                        <p>Both players have @Model.GameConfig.ChipsCount[1] chips</p>
+                        <p>Both players have @Model.GameConfig.Player1Chips chips</p>
                         <p>You can act only inside the red-bordered grid</p>
                         <p>To unlock moves you must place @Model.GameConfig.OptionsAfterNMoves chips</p>
                     </div>

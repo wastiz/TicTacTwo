@@ -13,48 +13,6 @@ namespace DAL
         {
             _context = new AppDbContext();
             _context.Database.EnsureCreated();
-            CheckAndCreateInitialConfig();
-        }
-
-        private void CheckAndCreateInitialConfig()
-        {
-            var existingIds = _context.GameConfigurations
-                .Select(c => c.Id)
-                .ToHashSet(StringComparer.OrdinalIgnoreCase);
-
-            var initialConfigurations = new List<GameConfiguration>();
-
-            if (!existingIds.Contains("classic"))
-            {
-                initialConfigurations.Add(new GameConfiguration
-                {
-                    Id = "classic",
-                    Name = "Classical"
-                });
-            }
-
-            if (!existingIds.Contains("big-game"))
-            {
-                initialConfigurations.Add(new GameConfiguration
-                {
-                    Id = "big-game",
-                    Name = "Big Game",
-                    BoardSizeWidth = 10,
-                    BoardSizeHeight = 10,
-                    MovableBoardWidth = 5,
-                    MovableBoardHeight = 5,
-                    Player1Chips = 6,
-                    Player2Chips = 6,
-                    WinCondition = 3,
-                    OptionsAfterNMoves = 3
-                });
-            }
-
-            if (initialConfigurations.Any())
-            {
-                _context.GameConfigurations.AddRange(initialConfigurations);
-                _context.SaveChanges();
-            }
         }
 
         public async Task<List<GameConfig>> GetAllUserConfigDto(string userId)

@@ -91,13 +91,17 @@
     GameConfigs
   }
   
-  private List<GameConfig> GameConfigs;
+  private List<GameConfig> GameConfigs = new List<GameConfig>();
 
   protected override async Task OnInitializedAsync()
   {
     var token = await localStorage.GetItemAsync<string>("accessToken");
     Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-    GameConfigs = await Http.GetFromJsonAsync<List<GameConfig>>("api/game-configs/user");
+    var configs = await Http.GetFromJsonAsync<List<GameConfig>>("api/game-configs/user");
+    if (configs != null)
+      GameConfigs = configs;
+
+    StateHasChanged();
   }
 }

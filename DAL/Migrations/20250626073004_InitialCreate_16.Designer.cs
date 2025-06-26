@@ -3,6 +3,7 @@ using System;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250626073004_InitialCreate_16")]
+    partial class InitialCreate_16
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,34 +69,6 @@ namespace DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("GameConfigurations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "classic",
-                            BoardSizeHeight = 5,
-                            BoardSizeWidth = 5,
-                            MovableBoardHeight = 3,
-                            MovableBoardWidth = 3,
-                            Name = "Classical",
-                            OptionsAfterNMoves = 2,
-                            Player1Chips = 4,
-                            Player2Chips = 4,
-                            WinCondition = 3
-                        },
-                        new
-                        {
-                            Id = "big-game",
-                            BoardSizeHeight = 10,
-                            BoardSizeWidth = 10,
-                            MovableBoardHeight = 5,
-                            MovableBoardWidth = 5,
-                            Name = "Big Game",
-                            OptionsAfterNMoves = 3,
-                            Player1Chips = 6,
-                            Player2Chips = 6,
-                            WinCondition = 3
-                        });
                 });
 
             modelBuilder.Entity("DAL.GameSession", b =>

@@ -1,5 +1,6 @@
 ﻿using DAL.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Shared;
 using Shared.GameSessionDtos;
 
 namespace DAL;
@@ -14,29 +15,31 @@ public class SessionRepository : ISessionRepository
         _context.Database.EnsureCreated();
     }
 
-    public GameSession CreateGameSession(GameConfiguration config, string? player1Id = null, string? gameMode = null, string? password = null)
+    public GameSession CreateGameSession(string configId, string gameMode, string player1Id, string? password = null)
     {
+        var config = _context.GameConfigurations.FirstOrDefault(c => c.Id == configId);
         if (config == null)
         {
-            throw new ArgumentException($"Game configuration not found.");
+            throw new ArgumentException($"Game configuration with ID {configId} not found.");
         }
-        
+
         var initialState = CreateInitialGameState(config);
-        
+
         var gameSession = new GameSession
         {
-            GameConfigId = config.Id,
+            GameConfigId = configId,
             GameStateId = initialState.Id,
             Player1Id = player1Id,
             GameMode = gameMode,
             GamePassword = password ?? GenerateNumericPassword(6),
         };
-        
+
         _context.GameSessions.Add(gameSession);
         _context.SaveChanges();
 
         return gameSession;
     }
+
     
     public GameState CreateInitialGameState(GameConfiguration config)
     {
@@ -90,15 +93,10 @@ public class SessionRepository : ISessionRepository
     }
 
 
-    public List<GameSessionDto> GetUserSessionDto(string userId)
+    public List<GameSession> GetUserSessionDto(string userId)
     {
         return _context.GameSessions
             .Where(session => session.Player1Id == userId)
-            .Select(session => new GameSessionDto
-            {
-                SessionId = session.Id,
-                SessionName = session.Name,
-            })
             .ToList();
     }
 

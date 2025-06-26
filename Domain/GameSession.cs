@@ -6,6 +6,35 @@ using System.ComponentModel.DataAnnotations;
 
 public class GameSession
 {
+    [Key]
+    public string Id { get; set; }
+
+    public string Name { get; set; }
+
+    [ForeignKey("GameConfiguration")]
+    public string GameConfigId { get; set; }
+
+    public GameConfiguration GameConfiguration { get; set; }
+
+    [ForeignKey("GameState")]
+    public string? GameStateId { get; set; }
+    public GameState? GameState { get; set; }
+
+    [ForeignKey("Player1")]
+    public string? Player1Id { get; set; }
+    public User Player1 { get; set; }
+
+    [ForeignKey("Player2")]
+    public string? Player2Id { get; set; }
+    public User Player2 { get; set; }
+
+    public string? GameMode { get; set; }
+    public string? GamePassword { get; set; }
+
+    public GameStatus GameStatus { get; set; } = GameStatus.InProgress;
+    public DateTime CreatedAt { get; set; }
+    public DateTime LastSaveAt { get; set; }
+
     public GameSession()
     {
         Id = Guid.NewGuid().ToString();
@@ -14,33 +43,8 @@ public class GameSession
         CreatedAt = DateTime.UtcNow;
         LastSaveAt = DateTime.UtcNow;
     }
-
-    [Key] public string Id { get; set; }
-    public string Name { get; set; }
-    
-    [ForeignKey(nameof(GameConfigId))] 
-    public string? GameConfigId { get; set; } = null!;
-    public GameConfiguration GameConfiguration { get; set; }
-
-    [ForeignKey(nameof(GameStateId))] 
-    public string? GameStateId { get; set; } = null!;
-    public GameState? GameState { get; set; } = null!;
-
-    [ForeignKey(nameof(Player1Id))]  
-    public string? Player1Id { get; set; } = null!;
-    public User Player1 { get; set; }
-
-    [ForeignKey(nameof(Player2Id))] 
-    public string? Player2Id { get; set; } = null!;
-    public User Player2 { get; set; }
-
-    public string? GameMode { get; set; } = null!;
-    public string? GamePassword { get; set; }
-
-    public GameStatus GameStatus { get; set; } = GameStatus.InProgress;
-    public DateTime CreatedAt { get; set; }
-    public DateTime LastSaveAt { get; set; }
 }
+
 
 
 public enum GameStatus

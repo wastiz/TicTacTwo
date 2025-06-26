@@ -125,7 +125,7 @@ else
     }
     
     private async Task CreateConfiguration()
-        {
+    {
         var token = await localStorage.GetItemAsync<string>("accessToken");
 
         if (token != null)
