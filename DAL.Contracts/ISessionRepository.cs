@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Shared;
-using Shared.GameSessionDtos;
+﻿using Domain;
 
 namespace DAL.Contracts
 {
@@ -12,7 +10,7 @@ namespace DAL.Contracts
         List<GameSession> GetUserSessionDto(string userId);
         (GameConfiguration config, GameState state) GetGameState(string sessionId);
         void SaveSecondPlayer(GameSession session, string player2Id);
-        void SaveGameState(GameState gameState, string sessionId);
+        GameState SaveGameState(GameState gameState, string sessionId);
         void SaveSessionName(string sessionId, string sessionName);
         void DeleteSession(string sessionId);
     }

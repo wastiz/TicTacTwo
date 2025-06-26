@@ -1,5 +1,6 @@
 ﻿
 using DAL;
+using Domain;
 
 public class GameBrain
 {
@@ -17,38 +18,11 @@ public class GameBrain
     public int chipsToOptions; // How many chips have player to place to get options
     public bool player1Options; // player 1 have more options
     public bool player2Options; // player 2 have more options
-    public GameConfiguration gameConfig;
-    private SessionRepository _sessionRepository = new SessionRepository();
     public int WinCondition;
     public int win = 0; //0 - nothing, 1 - player 1 won, 2 - player 2 won, 3 - draw
     
-    
-    /*public Brain(GameConfiguration config)
-    {
-        gameConfig = config;
-        board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
-        boardWidth = config.BoardSizeWidth;
-        boardHeight = config.BoardSizeHeight;
-        movableBoard = new int[config.MovableBoardHeight, config.MovableBoardWidth];
-        movableBoardWidth = config.MovableBoardWidth;
-        movableBoardHeight = config.MovableBoardHeight;
-        gridX = (board.GetLength(1) - movableBoard.GetLength(1)) / 2;
-        gridY = (board.GetLength(0) - movableBoard.GetLength(0)) / 2;
-        playerNumber = 1;
-        playersMoves = [0, 0, 0];
-        player1Options = false;
-        player2Options = false;
-        chipsLeft = config.ChipsCount;
-        chipsToOptions = config.OptionsAfterNMoves; 
-        WinCondition = config.WinCondition;
-        win = 0;
-    }*/
-    
-    
-    
     public GameBrain(GameConfiguration config, GameState state)
     {
-        gameConfig = config;
         board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
         boardWidth = config.BoardSizeWidth;
         boardHeight = config.BoardSizeHeight;
@@ -58,7 +32,19 @@ public class GameBrain
         WinCondition = config.WinCondition;
         chipsToOptions = config.OptionsAfterNMoves;
         
-        board = state.Board;
+        int rows = state.Board.Length;
+        int cols = state.Board[0].Length;
+        var mappedBoard = new int[rows, cols];
+
+        for (int i = 0; i < rows; i++)
+        {
+          for (int j = 0; j < cols; j++)
+          {
+            mappedBoard[i, j] = state.Board[i][j];
+          }
+        }
+        
+        board = mappedBoard;
         gridX = state.GridX;
         gridY = state.GridY;
         playerNumber = state.PlayerNumber;
@@ -279,11 +265,24 @@ public class GameBrain
         return true;
     }
 
-    public void SaveGame(string sessionId)
+    public GameState SaveGame()
     {
+        int rows = board.GetLength(0);
+        int cols = board.GetLength(1);
+        var jagged = new int[rows][];
+
+        for (int i = 0; i < rows; i++)
+        {
+            jagged[i] = new int[cols];
+            for (int j = 0; j < cols; j++)
+            {
+              jagged[i][j] = board[i, j];
+            }
+        }
+        
         var state = new GameState()
         {
-            Board = board,
+            Board = jagged,
             GridX = gridX,
             GridY = gridY,
             ChipsLeft = chipsLeft,
@@ -293,7 +292,8 @@ public class GameBrain
             Player2Options = player2Options,
             Win = win
         };
-        _sessionRepository.SaveGameState(state, sessionId);
+
+        return state;
     }
     
     public override string ToString()

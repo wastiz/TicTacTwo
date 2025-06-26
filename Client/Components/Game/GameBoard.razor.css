@@ -1,0 +1,87 @@
+﻿.board {
+    display: grid;
+    position: relative;
+    gap: 0;
+    margin: var(--cell-size);
+    margin-top: calc(var(--cell-size) + 20px);
+    justify-content: center;
+    align-items: center;
+}
+
+.game-cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    font-size: var(--font-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.movable-grid {
+    position: absolute;
+    box-shadow: 0 0 5px 2px rgba(255, 0, 0, 0.5);
+    z-index: 10;
+    border: 3px solid red;
+    transition: left 0.5s ease, top 0.5s ease;
+    pointer-events: none;
+}
+
+
+.move-btn {
+    position: absolute;
+    z-index: 10;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    font-size: var(--font-size);
+    text-align: center;
+}
+
+.move-up {
+    top: var(--negative-cell-size);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.move-right {
+    top: 50%;
+    right: var(--negative-cell-size);
+    transform: translateY(-50%);
+}
+
+.move-down {
+    bottom: var(--negative-cell-size);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.move-left {
+    top: 50%;
+    left: var(--negative-cell-size);
+    transform: translateY(-50%);
+}
+
+.move-up-left {
+    top: var(--negative-cell-size);
+    left: var(--negative-cell-size);
+}
+
+.move-up-right {
+    top: var(--negative-cell-size);
+    right: var(--negative-cell-size);
+}
+
+.move-down-left {
+    bottom: var(--negative-cell-size);
+    left: var(--negative-cell-size);
+}
+
+.move-down-right {
+    bottom: var(--negative-cell-size);
+    right: var(--negative-cell-size);
+}
+
+.move-btn::before {
+    display: inline-block;
+    font-size: calc(var(--font-size) * 0.75);
+    line-height: 1;
+}

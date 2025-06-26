@@ -1,61 +1,13 @@
 ﻿@page "/game/{SessionId}"
-@using System.Net.Http.Json
-@using Shared.GameConfigDtos
+@using System.Net.Http.Headers
+@using Domain
+@using Shared.GameSessionDtos
+@using Client.Components.Game
+@using Shared.GameDtos
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
-
-@code {
-    [Parameter] public string SessionId { get; set; }
-
-    private GameData Model;
-    private bool showSaveModal = false;
-    private string SaveName = string.Empty;
-
-    protected override async Task OnInitializedAsync()
-    {
-        Model = await Http.GetFromJsonAsync<GameData>($"http://localhost:5192/api/game-sessions/{SessionId}");
-    }
-
-    private async Task HandleCellClick(int x, int y)
-    {
-        var response = await Http.PostAsJsonAsync($"/game/Click?sessionId={SessionId}", new { x, y });
-        var data = await response.Content.ReadFromJsonAsync<GameData>();
-        if (data is not null)
-        {
-            Model = data;
-        }
-    }
-
-    private async Task HandleMoveBoard(string direction)
-    {
-        var response = await Http.PostAsJsonAsync($"/game/MoveBoard?sessionId={SessionId}", new { direction });
-        var data = await response.Content.ReadFromJsonAsync<GameData>();
-        if (data is not null)
-        {
-            Model = data;
-        }
-    }
-
-    private async Task MoveChip(int startX, int startY, int endX, int endY)
-    {
-        var response = await Http.PostAsJsonAsync($"/game/MoveChip?sessionId={SessionId}", new { startX, startY, endX, endY });
-        var data = await response.Content.ReadFromJsonAsync<GameData>();
-        if (data is not null)
-        {
-            Model = data;
-        }
-    }
-
-    private async Task SaveGame()
-    {
-        await Http.PostAsJsonAsync("/game/save", new { SessionId, Name = SaveName });
-        Navigation.NavigateTo("/");
-    }
-
-    private void OpenSaveModal() => showSaveModal = true;
-    private void CloseSaveModal() => showSaveModal = false;
-}
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 @if (Model is null)
 {
@@ -64,17 +16,17 @@
 else
 {
     <div class="container mt-4">
-        @if (Model.Win == 3)
+        @if (Model.GameState.Win == 3)
         {
             <div class="text-center">
                 <h1>It's a draw</h1>
                 <button class="btn btn-primary" @onclick="OpenSaveModal">Save and back to Menu</button>
             </div>
         }
-        else if (Model.Win == 1 || Model.Win == 2)
+        else if (Model.GameState.Win == 1 || Model.GameState.Win == 2)
         {
             <div class="text-center">
-                <h1>Player @Model.Win wins!</h1>
+                <h1>Player @Model.GameState.Win wins!</h1>
                 <button class="btn btn-primary" @onclick="OpenSaveModal">Save and back to Menu</button>
             </div>
         }
@@ -82,30 +34,21 @@ else
         {
             <div class="row">
                 <div class="col-lg-8">
-                    <h4>Player @Model.PlayerNumber is thinking</h4>
-                    <div class="board d-flex flex-wrap" style="position: relative">
-                        @for (int i = 0; i < Model.BoardHeight; i++)
-                        {
-                            for (int j = 0; j < Model.BoardWidth; j++)
-                            {
-                                bool enabled = i >= Model.GridY && i < Model.GridY + Model.MovableHeight && j >= Model.GridX && j < Model.GridX + Model.MovableWidth;
-                                int value = Model.Board[i][j];
-                                string label = value == 1 ? "X" : value == 2 ? "O" : string.Empty;
-
-                                <button class="game-cell btn btn-outline-primary m-1" disabled="@(!enabled)" @onclick="() => HandleCellClick(i, j)">@label</button>
-                            }
-                        }
-                        <div class="movable-grid" style="position:absolute;border:3px solid red;width:@(Model.MovableWidth * 80)px;height:@(Model.MovableHeight * 80)px;left:@(Model.GridX * 80)px;top:@(Model.GridY * 80)px;"></div>
-                    </div>
+                    <h4>Player @Model.GameState.PlayerNumber is thinking</h4>
+                    <GameBoard GameState="@Model.GameState"
+                               GameConfig="@Model.GameConfiguration"
+                               ShowMovementOptions="Model.GameState.Player1Options || Model.GameState.Player2Options"
+                               OnCellClick="HandleCellClick"
+                               OnMoveBoard="HandleMoveBoard" />
                 </div>
                 <div class="col-lg-4 mt-4">
                     <button class="btn btn-primary mb-3" @onclick="OpenSaveModal">Save and back to Menu</button>
                     <div>
                         <h5>Rules & Guide</h5>
-                        <p>The goal is to score @Model.WinCondition chips in a row</p>
-                        <p>Both players have @Model.GameConfig.Player1Chips chips</p>
+                        <p>The goal is to score @Model.GameConfiguration.WinCondition chips in a row</p>
+                        <p>Both players have @Model.GameConfiguration.Player1Chips chips</p>
                         <p>You can act only inside the red-bordered grid</p>
-                        <p>To unlock moves you must place @Model.GameConfig.OptionsAfterNMoves chips</p>
+                        <p>To unlock moves you must place @Model.GameConfiguration.OptionsAfterNMoves chips</p>
                     </div>
                 </div>
             </div>
@@ -134,18 +77,89 @@ else
 }
 
 @code {
-    public class GameData
+    [Parameter] public string SessionId { get; set; }
+
+    private GameSessionDto Model;
+    private bool showSaveModal = false;
+    private string SaveName = string.Empty;
+
+    protected override async Task OnInitializedAsync()
     {
-        public int[][] Board { get; set; }
-        public int BoardWidth { get; set; }
-        public int BoardHeight { get; set; }
-        public int MovableWidth { get; set; }
-        public int MovableHeight { get; set; }
-        public int GridX { get; set; }
-        public int GridY { get; set; }
-        public int PlayerNumber { get; set; }
-        public int Win { get; set; }
-        public int WinCondition { get; set; }
-        public GameConfig GameConfig { get; set; }
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+        
+        Model = await Http.GetFromJsonAsync<GameSessionDto>($"http://localhost:5192/api/game-sessions/{SessionId}");
     }
-}5
+    
+    private async Task HandleCellClick((int x, int y) pos)
+    {
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+        
+        Console.WriteLine($"{pos.x}, {pos.y}");
+        
+        var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/click", new CellClickRequest() { X = pos.x, Y = pos.y });
+        var data = await response.Content.ReadFromJsonAsync<GameState>();
+        if (data is not null)
+        {
+          Model.GameState = data;
+        }
+    }
+
+    private async Task HandleMoveBoard(string direction)
+    {
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+      var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/move", new MoveRequest() { Direction = direction });
+      var data = await response.Content.ReadFromJsonAsync<GameState>();
+      if (data is not null)
+      {
+        Model.GameState = data;
+      }
+    }
+
+    private async Task MoveChip(int startX, int startY, int endX, int endY)
+    {
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+        
+      var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/move-chip", new { startX, startY, endX, endY });
+      var data = await response.Content.ReadFromJsonAsync<GameState>();
+      if (data is not null)
+      {
+        Model.GameState = data;
+      }
+    }
+
+    private async Task SaveGame()
+    {
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+        
+      await Http.PostAsJsonAsync("http://localhost:5192/api/game/save", new { SessionId, Name = SaveName });
+      Navigation.NavigateTo("/");
+    }
+
+    private void OpenSaveModal() => showSaveModal = true;
+    private void CloseSaveModal() => showSaveModal = false;
+}

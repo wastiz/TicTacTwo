@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DAL;
+namespace Domain;
 
 using System.ComponentModel.DataAnnotations;
 

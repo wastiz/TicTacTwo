@@ -1,7 +1,6 @@
 ﻿using DAL.Contracts;
+using Domain;
 using Microsoft.EntityFrameworkCore;
-using Shared;
-using Shared.GameSessionDtos;
 
 namespace DAL;
 
@@ -43,9 +42,18 @@ public class SessionRepository : ISessionRepository
     
     public GameState CreateInitialGameState(GameConfiguration config)
     {
+        int height = config.BoardSizeHeight;
+        int width = config.BoardSizeWidth;
+
+        int[][] board = new int[height][];
+        for (int i = 0; i < height; i++)
+        {
+          board[i] = new int[width];
+        }
+        
         var initialState = new GameState
         {
-            Board = new int[config.BoardSizeHeight, config.BoardSizeWidth],
+            Board = board,
             ChipsLeft = new int[] { 0, config.Player1Chips, config.Player2Chips },
             PlayersMoves = new int[] { 0, 0, 0 },
             GridX = (config.BoardSizeWidth - config.MovableBoardWidth) / 2,
@@ -113,7 +121,7 @@ public class SessionRepository : ISessionRepository
         _context.SaveChanges();
     }
 
-    public void SaveGameState(GameState gameState, string sessionId)
+    public GameState SaveGameState(GameState gameState, string sessionId)
     {
         var existingSession = GetSessionById(sessionId);
         if (existingSession == null)
@@ -123,7 +131,10 @@ public class SessionRepository : ISessionRepository
 
         existingSession.GameState = gameState;
         _context.SaveChanges();
+
+        return existingSession.GameState;
     }
+
 
     public void SaveSessionName(string sessionId, string sessionName)
     {

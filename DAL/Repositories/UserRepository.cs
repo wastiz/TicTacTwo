@@ -1,5 +1,6 @@
 ﻿using DAL.Contracts.DTO;
 using DAL.Contracts.Interfaces;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 using Shared.UserDtos;
 

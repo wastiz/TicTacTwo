@@ -1,5 +1,6 @@
 ﻿using DAL.Contracts;
 using DAL.Contracts.DTO;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 using Shared.GameConfigDtos;
 

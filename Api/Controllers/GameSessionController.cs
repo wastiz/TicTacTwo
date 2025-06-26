@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shared.GameSessionDtos;
 using System.Security.Claims;
 using DAL;
+using Domain;
 
 namespace WebAPI.Controllers;
 

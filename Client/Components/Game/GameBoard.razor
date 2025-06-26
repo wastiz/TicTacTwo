@@ -1,0 +1,78 @@
+﻿    @using Domain
+    @inject IJSRuntime JS
+
+    <div class="d-flex justify-content-center">
+        <div class="board"
+             style="grid-template-columns: repeat(@GameConfig.BoardSizeWidth, var(--cell-size));
+                 grid-template-rows: repeat(@GameConfig.BoardSizeHeight, var(--cell-size));">   
+            @for (int i = 0; i < GameConfig.BoardSizeHeight; i++)
+            {
+                for (int j = 0; j < GameConfig.BoardSizeWidth; j++)
+                {
+                    bool isInsideMovableGrid = i >= GameState.GridY && i < GameState.GridY + GameConfig.MovableBoardHeight && j >= GameState.GridY && j < GameState.GridY + GameConfig.MovableBoardWidth;
+                    int x = i;
+                    int y = j;
+
+                    <button type="button"
+                            class="btn btn-outline-primary border game-cell"
+                            data-x="@i"
+                            data-y="@j"
+                            data-number="@GameState.Board[i][j]"
+                            id="piece-@i-@j"
+                            @onclick="() => OnCellClick.InvokeAsync((x, y))"
+                            disabled="@(!isInsideMovableGrid)">
+                        @if (GameState.Board[i][j] == 1)
+                        {
+                            @:X
+                        }
+                        else if (GameState.Board[i][j] == 2)
+                        {
+                            @:O
+                        }
+                    </button>
+                }
+            }
+
+            <div class="movable-grid" style="width:@(GameConfig.MovableBoardWidth * 80)px;height:@(GameConfig.MovableBoardHeight * 80)px;left:@(GameState.GridX * 80)px;top:@(GameState.GridY * 80)px;"></div>
+
+            @foreach (var direction in Directions)
+            {
+                var (label, className) = direction.Value;
+                <button class="move-btn btn btn-outline-primary border @className game-cell"
+                        data-direction="@direction.Key"
+                        disabled="@(!ShowMovementOptions)"
+                        @onclick="() => OnMoveBoard.InvokeAsync(direction.Key)">
+                    <i class="fa-regular fa-arrow-@label"></i>
+                </button>
+            }
+        </div>
+    </div>
+
+    @code {
+        [Parameter]
+        public GameState GameState { get; set; }
+        
+        [Parameter]
+        public GameConfiguration GameConfig { get; set; }
+
+        [Parameter]
+        public bool ShowMovementOptions { get; set; }
+
+        [Parameter]
+        public EventCallback<(int x, int y)> OnCellClick { get; set; }
+
+        [Parameter]
+        public EventCallback<string> OnMoveBoard { get; set; }
+
+        private Dictionary<string, (string icon, string className)> Directions = new()
+        {
+            ["up"] = ("up", "move-up"),
+            ["down"] = ("down", "move-down"),
+            ["left"] = ("left", "move-left"),
+            ["right"] = ("right", "move-right"),
+            ["up-left"] = ("up-left", "move-up-left"),
+            ["up-right"] = ("up-right", "move-up-right"),
+            ["down-left"] = ("down-left", "move-down-left"),
+            ["down-right"] = ("down-right", "move-down-right"),
+        };
+    }

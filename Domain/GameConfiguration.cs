@@ -1,5 +1,4 @@
-﻿namespace DAL;
-using System.Text.Json;
+﻿namespace Domain;
 using System.ComponentModel.DataAnnotations.Schema;
 
 public class  GameConfiguration

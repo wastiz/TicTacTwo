@@ -1,0 +1,143 @@
+﻿@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+
+<div class="tic-tac-container">
+    <div @ref="boardElement" class="board">
+        @foreach (var cell in cells)
+        {
+            <div class="cell" @key="cell.Id">
+                @if (cell.Symbol != null)
+                {
+                    <div class="@cell.Symbol @(cell.IsAnimating ? "animating" : "")"></div>
+                }
+                @if (cell.HasWinLine)
+                {
+                    <div class="win-line" style="@cell.WinLineStyle"></div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private ElementReference boardElement;
+    private DotNetObjectReference<Animation>? dotNetHelper;
+    private readonly List<CellData> cells = new();
+    private Timer? animationTimer;
+    private int animationStep = 0;
+
+    protected override void OnInitialized()
+    {
+        for (int i = 0; i < 25; i++)
+        {
+            cells.Add(new CellData(i));
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            dotNetHelper = DotNetObjectReference.Create(this);
+            await JSRuntime.InvokeVoidAsync("ticTacAnimation.init", boardElement, dotNetHelper);
+            StartAnimation();
+        }
+    }
+
+    private void StartAnimation()
+    {
+        animationTimer = new Timer(async _ => await NextAnimationStep(), 
+            null, 500, Timeout.Infinite);
+    }
+
+    private async Task NextAnimationStep()
+    {
+        animationStep++;
+        
+        switch (animationStep)
+        {
+            case 1:
+                await AnimateCell(12, "x");
+                animationTimer?.Change(500, Timeout.Infinite);
+                break;
+                
+            case 2:
+                await AnimateCell(13, "o");
+                animationTimer?.Change(500, Timeout.Infinite);
+                break;
+                
+            case 3:
+                await AnimateCell(11, "x");
+                animationTimer?.Change(500, Timeout.Infinite);
+                break;
+                
+            case 4:
+                await AnimateCell(17, "o");
+                animationTimer?.Change(500, Timeout.Infinite);
+                break;
+                
+            case 5:
+                await AnimateCell(7, "x");
+                animationTimer?.Change(1000, Timeout.Infinite);
+                break;
+                
+            case 6:
+                await ShowWinLine(new[] { 10, 11, 12, 13, 14 });
+                animationTimer?.Dispose();
+                break;
+        }
+    }
+
+    private async Task AnimateCell(int index, string symbol)
+    {
+        cells[index].Symbol = symbol;
+        cells[index].IsAnimating = true;
+        StateHasChanged();
+        
+        await Task.Delay(300);
+        
+        cells[index].IsAnimating = false;
+        StateHasChanged();
+    }
+
+    private async Task ShowWinLine(int[] lineIndices)
+    {
+        foreach (var index in lineIndices)
+        {
+            cells[index].HasWinLine = true;
+        }
+        
+        var firstCell = lineIndices[0];
+        var lastCell = lineIndices[^1];
+        
+        await JSRuntime.InvokeVoidAsync("ticTacAnimation.positionWinLine", 
+            boardElement, 
+            firstCell, 
+            lastCell, 
+            lineIndices.Length);
+        
+        StateHasChanged();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        animationTimer?.Dispose();
+        dotNetHelper?.Dispose();
+        await JSRuntime.InvokeVoidAsync("ticTacAnimation.dispose");
+    }
+
+    private class CellData
+    {
+        public string Id { get; } = Guid.NewGuid().ToString();
+        public int Index { get; }
+        public string? Symbol { get; set; }
+        public bool IsAnimating { get; set; }
+        public bool HasWinLine { get; set; }
+        public string WinLineStyle { get; set; } = string.Empty;
+
+        public CellData(int index)
+        {
+            Index = index;
+        }
+    }
+}
