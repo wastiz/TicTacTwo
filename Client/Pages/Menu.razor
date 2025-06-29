@@ -64,7 +64,7 @@
       </div>
     </div>
     <div class="col-12 col-sm-12 col-md-8 col-lg-8 d-flex align-items-center justify-content-center">
-        <Animation/>
+        Here will be animation
     </div>
   </div>
 </div>
@@ -98,9 +98,10 @@
     var token = await localStorage.GetItemAsync<string>("accessToken");
     Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-    var configs = await Http.GetFromJsonAsync<List<GameConfig>>("api/game-configs/user");
-    if (configs != null)
-      GameConfigs = configs;
+    var configs = await Http.GetFromJsonAsync<List<GameConfig>>("http://localhost:5192/api/game-configs/user");
+    if (configs != null) GameConfigs = configs;
+    
+    Console.WriteLine(configs);
 
     StateHasChanged();
   }

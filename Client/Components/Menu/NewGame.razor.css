@@ -1,0 +1,55 @@
+.config-list-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 10px;
+}
+
+.config-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.config-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+}
+
+.config-item.selected {
+    background-color: #e9f5ff;
+    border-color: #86b7fe;
+}
+
+.config-info {
+    flex: 1;
+}
+
+.config-info h5 {
+    margin-bottom: 5px;
+}
+
+.config-info p {
+    margin-bottom: 0;
+    color: #6c757d;
+}
+
+.config-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.modal {
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+}

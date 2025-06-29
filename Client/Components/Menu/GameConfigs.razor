@@ -5,66 +5,73 @@
 @inject IJSRuntime JS
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
-<button @onclick="OnMainOptions" class="btn btn-primary">Back</button>
-<h3>Available Configurations</h3>
-@if (ConfigList == null)
+<div class="container">
+    <div class="row">
+        <div class="col-3 mb-5">
+            <button type="button" @onclick="OnMainOptions" class="btn btn-primary">Back</button>
+        </div>
+    </div>
+    @if (ConfigList == null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <h3>Available Configurations</h3>
+        <ul class="list-group mb-4">
+            @foreach (var config in ConfigList)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>@config.Name</strong>
+                    <div class="d-flex flex-row gap-2">
+                        <button class="btn btn-info btn-sm text-white" @onclick="() => OpenModal(config)">View</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => DeleteConfiguration(config.Id)">Delete</button>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+    <h3>Create New Configuration</h3>
+    <EditForm Model="newConfig" OnValidSubmit="CreateConfiguration">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="mb-3">
+            <label class="form-label">Configuration Name</label>
+            <InputText class="form-control" @bind-Value="newConfig.Name" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Board Width</label>
+            <InputNumber class="form-control" @bind-Value="newConfig.BoardSizeWidth" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Board Height</label>
+            <InputNumber class="form-control" @bind-Value="newConfig.BoardSizeHeight" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Win Condition</label>
+            <InputNumber class="form-control" @bind-Value="newConfig.WinCondition" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Options After N Moves</label>
+            <InputNumber class="form-control" @bind-Value="newConfig.OptionsAfterNMoves" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Chips Count</label>
+            <InputNumber class="form-control" @bind-Value="newConfig.Player1Chips" />
+        </div>
+        <button class="btn btn-primary" type="submit">Create Configuration</button>
+    </EditForm>
+</div>
+
+@if (showEditModal)
 {
-    <p>Loading...</p>
-}
-else
-{
-    <ul class="list-group mb-4">
-        @foreach (var config in ConfigList)
-        {
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <strong>@config.Name</strong>
-                <div class="d-flex flex-row gap-2">
-                    <button class="btn btn-info btn-sm text-white" @onclick="() => OpenModal(config)">View</button>
-                    <button class="btn btn-danger btn-sm" @onclick="() => DeleteConfiguration(config.Id)">Delete</button>
-                </div>
-            </li>
-        }
-    </ul>
-}
-<h3>Create New Configuration</h3>
-<EditForm Model="newConfig" OnValidSubmit="CreateConfiguration">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="mb-3">
-        <label class="form-label">Configuration Name</label>
-        <InputText class="form-control" @bind-Value="newConfig.Name" />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Board Width</label>
-        <InputNumber class="form-control" @bind-Value="newConfig.BoardSizeWidth" />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Board Height</label>
-        <InputNumber class="form-control" @bind-Value="newConfig.BoardSizeHeight" />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Win Condition</label>
-        <InputNumber class="form-control" @bind-Value="newConfig.WinCondition" />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Options After N Moves</label>
-        <InputNumber class="form-control" @bind-Value="newConfig.OptionsAfterNMoves" />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Chips Count</label>
-        <InputNumber class="form-control" @bind-Value="newConfig.Player1Chips" />
-    </div>
-    <button class="btn btn-primary" type="submit">Create Configuration</button>
-</EditForm>
-
-
-
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal-backdrop show"></div>
+<div class="modal show d-block" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Configuration</h5>
-                <button type="button" class="btn-close" @onclick="CloseModal" aria-label="Close"></button>
+                <h5 class="modal-title">Edit Configuration</h5>
+                <button type="button" class="btn-close" @onclick="CloseModal"></button>
             </div>
             <div class="modal-body">
                 <EditForm Model="editConfig" OnValidSubmit="UpdateConfiguration">
@@ -103,6 +110,7 @@ else
         </div>
     </div>
 </div>
+}
 
 @code {
     [Parameter] public EventCallback OnMainOptions { get; set; }
@@ -113,15 +121,17 @@ else
     private GameConfig editConfig = new();
     private bool showEditModal = false;
     
-    public async Task OpenModal(GameConfig config)
+    private void OpenModal(GameConfig config)
     {
         editConfig = config;
-        await JS.InvokeVoidAsync("bootstrapModalHelper.show", "#editModal");
+        showEditModal = true;
+        StateHasChanged();
     }
 
-    private async Task CloseModal()
+    private void CloseModal()
     {
-        await JS.InvokeVoidAsync("bootstrapModalHelper.hide", "#editModal");
+        showEditModal = false;
+        StateHasChanged();
     }
     
     private async Task CreateConfiguration()
@@ -179,7 +189,7 @@ else
                 };
             }
             showEditModal = false;
-            await CloseModal();
+            CloseModal();
         }
         else
         {

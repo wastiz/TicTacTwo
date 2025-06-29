@@ -12,35 +12,86 @@
 @inject NavigationManager Nav
 
 <EditForm Model="@_gameModel" OnValidSubmit="HandleValidSubmit" class="container h-100 d-flex flex-column">
-    <button @onclick="OnMainOptions" class="btn btn-primary">Back</button>
+    <div class="row">
+        <div class="col-3 mb-5">
+            <button type="button" @onclick="OnMainOptions" class="btn btn-primary">Back</button>
+        </div>
+    </div>
+
     <div class="row">
         <h3>Choose Game Mode:</h3>
         <div class="btn-group d-flex flex-column" role="group">
             @foreach (var mode in _gameModeList)
             {
-                <button type="button"
-                        class="btn @(_gameModel.GameMode == mode.Value ? "btn-primary" : "btn-outline-primary") mb-2"
-                        @onclick="() => ToggleSelection(mode.Value)">
-                    @mode.Label
-                </button>
+            <button type="button"
+                    class="btn @(_gameModel.GameMode == mode.Value ? "btn-primary" : "btn-outline-primary") mb-2"
+                    @onclick="() => ToggleSelection(mode.Value)">
+                @mode.Label
+            </button>
             }
         </div>
 
-        <h3>Choose Game Configuration:</h3>
-        <div class="col-12">
-            <InputRadioGroup @bind-Value="_gameModel.ConfigId">
-                <InputRadio id="classic" Value=@("classic")/>
-                <label class="btn" for="classic">Classical</label>
+        <h3 class="mt-4">Choose Game Configuration:</h3>
 
-                <InputRadio id="big-game" Value=@("big-game")/>
-                <label class="btn" for="big-game">Big Game</label>
+        <!-- Scrollable list of configs -->
+        <div class="col-12 config-list-container">
+            <div class="config-list">
+                <!-- Classic config -->
+                <div class="config-item @(_gameModel.ConfigId == "classic" ? "selected" : "")">
+                    <div class="config-info">
+                        <h5>Classical</h5>
+                        <p>Standard 3x3 game</p>
+                    </div>
+                    <div class="config-actions">
+                        <button type="button" class="btn btn-sm btn-info" @onclick='() => ShowConfigPreview("classic")'>
+                            <i class="bi bi-eye"></i> View
+                        </button>
+                        <button type="button" class="btn btn-sm btn-success"
+                                @onclick='() => SelectConfig("classic")'
+                                disabled="@(_gameModel.ConfigId == "classic")">
+                            <i class="bi bi-check"></i> Select
+                        </button>
+                    </div>
+                </div>
 
+                <!-- Big game config -->
+                <div class="config-item @(_gameModel.ConfigId == "big-game" ? "selected" : "")">
+                    <div class="config-info">
+                        <h5>Big Game</h5>
+                        <p>Extended 5x5 game</p>
+                    </div>
+                    <div class="config-actions">
+                        <button type="button" class="btn btn-sm btn-info" @onclick='() => ShowConfigPreview("big-game")'>
+                            <i class="bi bi-eye"></i> View
+                        </button>
+                        <button type="button" class="btn btn-sm btn-success"
+                                @onclick='() => SelectConfig("big-game")'
+                                disabled="@(_gameModel.ConfigId == "big-game")">
+                            <i class="bi bi-check"></i> Select
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Custom configs -->
                 @foreach (var config in ConfigList)
                 {
-                    <InputRadio id="@config.Id" Value="@config.Id"/>
-                    <label class="btn" for="@config.Id">@config.Name</label>
+                <div class="config-item @(_gameModel.ConfigId == config.Id ? "selected" : "")">
+                    <div class="config-info">
+                        <h5>@config.Name</h5>
+                    </div>
+                    <div class="config-actions">
+                        <button type="button" class="btn btn-sm btn-info" @onclick="() => ShowConfigPreview(config.Id)">
+                            <i class="bi bi-eye"></i> View
+                        </button>
+                        <button type="button" class="btn btn-sm btn-success"
+                                @onclick="() => SelectConfig(config.Id)"
+                                disabled="@(_gameModel.ConfigId == config.Id)">
+                            <i class="bi bi-check"></i> Select
+                        </button>
+                    </div>
+                </div>
                 }
-            </InputRadioGroup>
+            </div>
         </div>
 
         <div class="col-12 mt-5">
@@ -49,25 +100,94 @@
     </div>
 </EditForm>
 
+<!-- Config Preview Modal -->
+@if (_showPreview)
+{
+<div class="modal-backdrop show"></div>
+<div class="modal show d-block" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Configuration Preview</h5>
+                <button type="button" class="btn-close" @onclick="ClosePreview"></button>
+            </div>
+            <div class="modal-body">
+                @if (_previewConfigId == "classic")
+                {
+                <p><strong>Classical Configuration</strong></p>
+                <ul>
+                    <li>Board: 3x3</li>
+                    <li>Win condition: 3 in a row</li>
+                </ul>
+                }
+                else if (_previewConfigId == "big-game")
+                {
+                <p><strong>Big Game Configuration</strong></p>
+                <ul>
+                    <li>Board: 5x5</li>
+                    <li>Win condition: 4 in a row</li>
+                </ul>
+                }
+                else
+                {
+                var config = ConfigList.FirstOrDefault(c => c.Id == _previewConfigId);
+                if (config != null)
+                {
+                <p><strong>@config.Name</strong></p>
+                <ul>
+                    <li>Board: @config.BoardSizeWidth x @config.BoardSizeHeight</li>
+                    <li>Win condition: @config.WinCondition in a row</li>
+                    <li>Options after @config.OptionsAfterNMoves chips are placed</li>
+                </ul>
+                }
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="ClosePreview">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
 @code {
     [Parameter] public List<GameConfig> ConfigList { get; set; }
     [Parameter] public EventCallback OnMainOptions { get; set; }
-    private Task OnNewGameClicked() => OnMainOptions.InvokeAsync();
-    
+
     private GameModel _gameModel = new GameModel
     {
         GameMode = "two-players",
         ConfigId = "classic"
     };
-    
+
     private List<GameMode> _gameModeList = GameModes.All;
+    private bool _showPreview = false;
+    private string _previewConfigId = string.Empty;
 
     private void ToggleSelection(string value)
     {
-        if (_gameModel.GameMode == value)
-            _gameModel.GameMode = null;
-        else
-            _gameModel.GameMode = value;
+    if (_gameModel.GameMode == value)
+    _gameModel.GameMode = null;
+    else
+    _gameModel.GameMode = value;
+    }
+
+    private void SelectConfig(string configId)
+    {
+    _gameModel.ConfigId = configId;
+    }
+
+    private void ShowConfigPreview(string configId)
+    {
+    _previewConfigId = configId;
+    _showPreview = true;
+    StateHasChanged();
+    }
+
+    private void ClosePreview()
+    {
+    _showPreview = false;
+    StateHasChanged();
     }
 
     private async void HandleValidSubmit()
@@ -78,14 +198,14 @@
         {
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
-        
+
         var response = await Http.PostAsJsonAsync("http://localhost:5192/api/game-sessions/create", new CreateSessionRequest
         {
             ConfigId = _gameModel.ConfigId,
             GameMode = _gameModel.GameMode,
             Password = null
         });
-        
+
         if (response.IsSuccessStatusCode)
         {
             var result = await response.Content.ReadFromJsonAsync<CreateSessionResponse>();
@@ -97,12 +217,8 @@
         }
     }
 
-    public class GameModel
-    {
-        [Required]
-        public string GameMode { get; set; }
-
-        [Required]
-        public string ConfigId { get; set; }
+    public class GameModel {
+        [Required] public string GameMode { get; set; }
+        [Required] public string ConfigId { get; set; }
     }
 }

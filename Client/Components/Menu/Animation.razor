@@ -10,24 +10,23 @@
                 {
                     <div class="@cell.Symbol @(cell.IsAnimating ? "animating" : "")"></div>
                 }
-                @if (cell.HasWinLine)
-                {
-                    <div class="win-line" style="@cell.WinLineStyle"></div>
-                }
             </div>
         }
+        <div @ref="winLineElement" class="win-line" style="@winLineStyle"></div>
     </div>
 </div>
 
 @code {
     private ElementReference boardElement;
-    private DotNetObjectReference<Animation>? dotNetHelper;
+    private ElementReference winLineElement;
     private readonly List<CellData> cells = new();
+    private string winLineStyle = "display: none;";
     private Timer? animationTimer;
     private int animationStep = 0;
 
     protected override void OnInitialized()
     {
+        // Инициализация 25 клеток (5x5)
         for (int i = 0; i < 25; i++)
         {
             cells.Add(new CellData(i));
@@ -38,8 +37,31 @@
     {
         if (firstRender)
         {
-            dotNetHelper = DotNetObjectReference.Create(this);
-            await JSRuntime.InvokeVoidAsync("ticTacAnimation.init", boardElement, dotNetHelper);
+            // Инициализация JS функций
+            await JSRuntime.InvokeVoidAsync("eval", 
+                @"window.ticTacAnimation = {
+                    positionWinLine: function(board, winLine, startIdx, endIdx) {
+                        const cells = board.querySelectorAll('.cell');
+                        if (!cells[startIdx] || !cells[endIdx]) return;
+                        
+                        const startCell = cells[startIdx].getBoundingClientRect();
+                        const endCell = cells[endIdx].getBoundingClientRect();
+                        const boardRect = board.getBoundingClientRect();
+                        
+                        winLine.style.width = `${endCell.right - startCell.left}px`;
+                        winLine.style.height = '10px';
+                        winLine.style.left = `${startCell.left - boardRect.left}px`;
+                        winLine.style.top = `${startCell.top + startCell.height/2 - boardRect.top - 5}px`;
+                        winLine.style.display = 'block';
+                        winLine.style.transform = 'scaleX(0)';
+                        
+                        setTimeout(() => {
+                            winLine.style.transition = 'transform 0.8s ease-out';
+                            winLine.style.transform = 'scaleX(1)';
+                        }, 10);
+                    }
+                }");
+                
             StartAnimation();
         }
     }
@@ -56,74 +78,51 @@
         
         switch (animationStep)
         {
-            case 1:
-                await AnimateCell(12, "x");
-                animationTimer?.Change(500, Timeout.Infinite);
-                break;
-                
-            case 2:
-                await AnimateCell(13, "o");
-                animationTimer?.Change(500, Timeout.Infinite);
-                break;
-                
-            case 3:
-                await AnimateCell(11, "x");
-                animationTimer?.Change(500, Timeout.Infinite);
-                break;
-                
-            case 4:
-                await AnimateCell(17, "o");
-                animationTimer?.Change(500, Timeout.Infinite);
-                break;
-                
-            case 5:
-                await AnimateCell(7, "x");
-                animationTimer?.Change(1000, Timeout.Infinite);
-                break;
-                
-            case 6:
-                await ShowWinLine(new[] { 10, 11, 12, 13, 14 });
+            case 1: await AnimateCell(12, "x"); break; // Центр
+            case 2: await AnimateCell(13, "o"); break; // Право
+            case 3: await AnimateCell(11, "x"); break; // Лево
+            case 4: await AnimateCell(17, "o"); break; // Низ
+            case 5: await AnimateCell(7, "x"); break;  // Верх
+            case 6: 
+                await ShowWinLine(10, 14); // Горизонтальная линия
                 animationTimer?.Dispose();
-                break;
+                return;
         }
+        
+        animationTimer?.Change(500, Timeout.Infinite);
     }
 
     private async Task AnimateCell(int index, string symbol)
     {
+        if (index < 0 || index >= cells.Count) return;
+        
         cells[index].Symbol = symbol;
         cells[index].IsAnimating = true;
         StateHasChanged();
         
         await Task.Delay(300);
-        
         cells[index].IsAnimating = false;
         StateHasChanged();
     }
 
-    private async Task ShowWinLine(int[] lineIndices)
+    private async Task ShowWinLine(int startIdx, int endIdx)
     {
-        foreach (var index in lineIndices)
-        {
-            cells[index].HasWinLine = true;
-        }
+        if (startIdx < 0 || endIdx >= cells.Count) return;
         
-        var firstCell = lineIndices[0];
-        var lastCell = lineIndices[^1];
+        winLineStyle = "";
+        StateHasChanged();
+        
+        // Даем время Blazor обновить DOM
+        await Task.Delay(50);
         
         await JSRuntime.InvokeVoidAsync("ticTacAnimation.positionWinLine", 
-            boardElement, 
-            firstCell, 
-            lastCell, 
-            lineIndices.Length);
-        
-        StateHasChanged();
+            boardElement, winLineElement, startIdx, endIdx);
     }
 
     public async ValueTask DisposeAsync()
     {
         animationTimer?.Dispose();
-        dotNetHelper?.Dispose();
-        await JSRuntime.InvokeVoidAsync("ticTacAnimation.dispose");
+        await JSRuntime.InvokeVoidAsync("eval", "delete window.ticTacAnimation");
     }
 
     private class CellData
@@ -132,8 +131,6 @@
         public int Index { get; }
         public string? Symbol { get; set; }
         public bool IsAnimating { get; set; }
-        public bool HasWinLine { get; set; }
-        public string WinLineStyle { get; set; } = string.Empty;
 
         public CellData(int index)
         {
