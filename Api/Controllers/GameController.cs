@@ -22,7 +22,7 @@ public class GameController : ControllerBase
     [HttpPost("{sessionId}/click")]
     public IActionResult ClickCell(string sessionId, [FromBody] CellClickRequest request)
     {
-        var session = _sessionRepository.GetSessionById(sessionId);
+        var session = _sessionRepository.GetDomainSessionById(sessionId);
         if (session == null) return NotFound("Session not found");
 
         var brain = new GameBrain(session.GameConfiguration, session.GameState);
@@ -41,7 +41,7 @@ public class GameController : ControllerBase
     [HttpPost("{sessionId}/move")]
     public IActionResult MoveBoard(string sessionId, [FromBody] MoveRequest request)
     {
-        var session = _sessionRepository.GetSessionById(sessionId);
+        var session = _sessionRepository.GetDomainSessionById(sessionId);
         if (session == null) return NotFound("Session not found");
 
         var brain = new GameBrain(session.GameConfiguration, session.GameState);

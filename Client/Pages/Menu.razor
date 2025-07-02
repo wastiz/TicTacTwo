@@ -91,14 +91,14 @@
     GameConfigs
   }
   
-  private List<GameConfig> GameConfigs = new List<GameConfig>();
+  private List<GameConfigDto> GameConfigs = new List<GameConfigDto>();
 
   protected override async Task OnInitializedAsync()
   {
     var token = await localStorage.GetItemAsync<string>("accessToken");
     Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-    var configs = await Http.GetFromJsonAsync<List<GameConfig>>("http://localhost:5192/api/game-configs/user");
+    var configs = await Http.GetFromJsonAsync<List<GameConfigDto>>("http://localhost:5192/api/game-configs/user");
     if (configs != null) GameConfigs = configs;
     
     Console.WriteLine(configs);

@@ -1,6 +1,6 @@
 ﻿namespace Shared.GameConfigDtos;
 
-public class GameConfig
+public class GameConfigDto
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = default!;

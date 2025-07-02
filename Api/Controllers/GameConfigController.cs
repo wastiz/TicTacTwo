@@ -30,7 +30,7 @@ public class GameConfigController : ControllerBase
     }
 
     [HttpGet("user")]
-    public async Task<ActionResult<List<GameConfig>>> GetAllConfigsByUserId()
+    public async Task<ActionResult<List<GameConfigDto>>> GetAllConfigsByUserId()
     {
         var userId = GetUserIdFromToken();
         if (userId == null) return Ok("User ID not found in token.");
@@ -40,7 +40,7 @@ public class GameConfigController : ControllerBase
     }
 
     [HttpGet("{configId}")]
-    public async Task<ActionResult<GameConfig>> GetConfigById(string configId)
+    public async Task<ActionResult<GameConfigDto>> GetConfigById(string configId)
     {
         try
         {
@@ -54,12 +54,12 @@ public class GameConfigController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Response>> CreateConfig([FromBody] GameConfig config)
+    public async Task<ActionResult<Response>> CreateConfig([FromBody] GameConfigDto configDto)
     {
         var userId = GetUserIdFromToken();
         if (userId == null) return Unauthorized("User ID not found in token.");
 
-        var response = await _repository.CreateGameConfiguration(userId, config);
+        var response = await _repository.CreateGameConfiguration(userId, configDto);
         if (!response.Success)
             return BadRequest(response);
 
@@ -67,12 +67,12 @@ public class GameConfigController : ControllerBase
     }
 
     [HttpPut("{configId}")]
-    public async Task<ActionResult<Response>> UpdateConfig(string configId, [FromBody] GameConfig config)
+    public async Task<ActionResult<Response>> UpdateConfig(string configId, [FromBody] GameConfigDto configDto)
     {
-        if (configId != config.Id)
+        if (configId != configDto.Id)
             return BadRequest("Config ID in URL does not match ID in body.");
 
-        var response = await _repository.UpdateConfiguration(configId, config);
+        var response = await _repository.UpdateConfiguration(configId, configDto);
         if (!response.Success)
             return NotFound(response);
 

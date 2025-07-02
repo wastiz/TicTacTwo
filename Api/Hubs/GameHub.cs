@@ -25,7 +25,7 @@ namespace Api.Hubs
         {
             if (!Games.ContainsKey(sessionId))
             {
-                Session = _sessionRepository.GetSessionById(sessionId);
+                Session = _sessionRepository.GetDomainSessionById(sessionId);
                 if (Session == null)
                 {
                     await Clients.Caller.SendAsync("Error", "Game session not found.");

@@ -32,32 +32,32 @@
         </ul>
     }
     <h3>Create New Configuration</h3>
-    <EditForm Model="newConfig" OnValidSubmit="CreateConfiguration">
+    <EditForm Model="_newConfigDto" OnValidSubmit="CreateConfiguration">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="mb-3">
             <label class="form-label">Configuration Name</label>
-            <InputText class="form-control" @bind-Value="newConfig.Name" />
+            <InputText class="form-control" @bind-Value="_newConfigDto.Name" />
         </div>
         <div class="mb-3">
             <label class="form-label">Board Width</label>
-            <InputNumber class="form-control" @bind-Value="newConfig.BoardSizeWidth" />
+            <InputNumber class="form-control" @bind-Value="_newConfigDto.BoardSizeWidth" />
         </div>
         <div class="mb-3">
             <label class="form-label">Board Height</label>
-            <InputNumber class="form-control" @bind-Value="newConfig.BoardSizeHeight" />
+            <InputNumber class="form-control" @bind-Value="_newConfigDto.BoardSizeHeight" />
         </div>
         <div class="mb-3">
             <label class="form-label">Win Condition</label>
-            <InputNumber class="form-control" @bind-Value="newConfig.WinCondition" />
+            <InputNumber class="form-control" @bind-Value="_newConfigDto.WinCondition" />
         </div>
         <div class="mb-3">
             <label class="form-label">Options After N Moves</label>
-            <InputNumber class="form-control" @bind-Value="newConfig.OptionsAfterNMoves" />
+            <InputNumber class="form-control" @bind-Value="_newConfigDto.OptionsAfterNMoves" />
         </div>
         <div class="mb-3">
             <label class="form-label">Chips Count</label>
-            <InputNumber class="form-control" @bind-Value="newConfig.Player1Chips" />
+            <InputNumber class="form-control" @bind-Value="_newConfigDto.Player1Chips" />
         </div>
         <button class="btn btn-primary" type="submit">Create Configuration</button>
     </EditForm>
@@ -74,34 +74,34 @@
                 <button type="button" class="btn-close" @onclick="CloseModal"></button>
             </div>
             <div class="modal-body">
-                <EditForm Model="editConfig" OnValidSubmit="UpdateConfiguration">
+                <EditForm Model="_editConfigDto" OnValidSubmit="UpdateConfiguration">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
-                    <input type="hidden" @bind="editConfig.Id" />
+                    <input type="hidden" @bind="_editConfigDto.Id" />
 
                     <div class="mb-3">
                         <label class="form-label">Configuration Name</label>
-                        <InputText class="form-control" @bind-Value="editConfig.Name" />
+                        <InputText class="form-control" @bind-Value="_editConfigDto.Name" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Board Width</label>
-                        <InputNumber class="form-control" @bind-Value="editConfig.BoardSizeWidth" />
+                        <InputNumber class="form-control" @bind-Value="_editConfigDto.BoardSizeWidth" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Board Height</label>
-                        <InputNumber class="form-control" @bind-Value="editConfig.BoardSizeHeight" />
+                        <InputNumber class="form-control" @bind-Value="_editConfigDto.BoardSizeHeight" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Win Condition</label>
-                        <InputNumber class="form-control" @bind-Value="editConfig.WinCondition" />
+                        <InputNumber class="form-control" @bind-Value="_editConfigDto.WinCondition" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Options After N Moves</label>
-                        <InputNumber class="form-control" @bind-Value="editConfig.OptionsAfterNMoves" />
+                        <InputNumber class="form-control" @bind-Value="_editConfigDto.OptionsAfterNMoves" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Chips Count (for both players)</label>
-                        <InputNumber class="form-control" @bind-Value="editConfig.Player1Chips" />
+                        <InputNumber class="form-control" @bind-Value="_editConfigDto.Player1Chips" />
                     </div>
 
                     <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -114,16 +114,16 @@
 
 @code {
     [Parameter] public EventCallback OnMainOptions { get; set; }
-    [Parameter] public List<GameConfig> ConfigList { get; set; }
+    [Parameter] public List<GameConfigDto> ConfigList { get; set; }
     private Task OnNewGameClicked() => OnMainOptions.InvokeAsync();
 
-    private GameConfig newConfig = new();
-    private GameConfig editConfig = new();
+    private GameConfigDto _newConfigDto = new();
+    private GameConfigDto _editConfigDto = new();
     private bool showEditModal = false;
     
-    private void OpenModal(GameConfig config)
+    private void OpenModal(GameConfigDto configDto)
     {
-        editConfig = config;
+        _editConfigDto = configDto;
         showEditModal = true;
         StateHasChanged();
     }
@@ -143,14 +143,14 @@
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         
-        var response = await Http.PostAsJsonAsync("http://localhost:5192/api/game-configs", newConfig);
+        var response = await Http.PostAsJsonAsync("http://localhost:5192/api/game-configs", _newConfigDto);
         if (response.IsSuccessStatusCode)
         {
-            var createdConfig = await response.Content.ReadFromJsonAsync<GameConfig>();
+            var createdConfig = await response.Content.ReadFromJsonAsync<GameConfigDto>();
             if (createdConfig != null)
             {
                 ConfigList.Add(createdConfig);
-                newConfig = new GameConfig();
+                _newConfigDto = new GameConfigDto();
             }
         }
         else
@@ -168,24 +168,24 @@
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         
-        var response = await Http.PutAsJsonAsync($"http://localhost:5192/api/game-configs/{editConfig.Id}", editConfig);
+        var response = await Http.PutAsJsonAsync($"http://localhost:5192/api/game-configs/{_editConfigDto.Id}", _editConfigDto);
         if (response.IsSuccessStatusCode)
         {
-            var index = ConfigList.FindIndex(c => c.Id == editConfig.Id);
+            var index = ConfigList.FindIndex(c => c.Id == _editConfigDto.Id);
             if (index >= 0)
             {
-                ConfigList[index] = new GameConfig
+                ConfigList[index] = new GameConfigDto
                 {
-                    Id = editConfig.Id,
-                    Name = editConfig.Name,
-                    BoardSizeWidth = editConfig.BoardSizeWidth,
-                    BoardSizeHeight = editConfig.BoardSizeHeight,
-                    MovableBoardWidth = editConfig.MovableBoardWidth,
-                    MovableBoardHeight = editConfig.MovableBoardHeight,
-                    Player1Chips = editConfig.Player1Chips,
-                    Player2Chips = editConfig.Player2Chips,
-                    OptionsAfterNMoves = editConfig.OptionsAfterNMoves,
-                    WinCondition = editConfig.WinCondition
+                    Id = _editConfigDto.Id,
+                    Name = _editConfigDto.Name,
+                    BoardSizeWidth = _editConfigDto.BoardSizeWidth,
+                    BoardSizeHeight = _editConfigDto.BoardSizeHeight,
+                    MovableBoardWidth = _editConfigDto.MovableBoardWidth,
+                    MovableBoardHeight = _editConfigDto.MovableBoardHeight,
+                    Player1Chips = _editConfigDto.Player1Chips,
+                    Player2Chips = _editConfigDto.Player2Chips,
+                    OptionsAfterNMoves = _editConfigDto.OptionsAfterNMoves,
+                    WinCondition = _editConfigDto.WinCondition
                 };
             }
             showEditModal = false;

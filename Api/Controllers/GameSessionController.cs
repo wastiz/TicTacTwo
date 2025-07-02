@@ -5,6 +5,7 @@ using Shared.GameSessionDtos;
 using System.Security.Claims;
 using DAL;
 using Domain;
+using Shared.GameStateDtos;
 
 namespace WebAPI.Controllers;
 
@@ -32,7 +33,7 @@ public class GameSessionController : ControllerBase
     }
 
     [HttpGet("{sessionId}")]
-    public ActionResult<GameSession> GetSession(string sessionId)
+    public ActionResult<GameSessionDto> GetSession(string sessionId)
     {
         var session = _sessionRepository.GetSessionById(sessionId);
         if (session == null) return NotFound();
@@ -63,14 +64,7 @@ public class GameSessionController : ControllerBase
 
         if (session == null) return NotFound();
 
-        _sessionRepository.SaveSecondPlayer(session, userId);
-        return Ok();
-    }
-
-    [HttpPost("{sessionId}/save-game")]
-    public IActionResult SaveGameState(string sessionId, [FromBody] GameState state)
-    {
-        _sessionRepository.SaveGameState(state, sessionId);
+        _sessionRepository.SaveSecondPlayer(sessionId, userId);
         return Ok();
     }
 

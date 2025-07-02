@@ -6,6 +6,7 @@
 @using Shared.GameSessionDtos
 @using Shared.GameStateDtos
 @using Client.Components.Game
+@using Domain
 @attribute [Authorize]
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
@@ -190,47 +191,16 @@
         StateHasChanged();
     }
 
-    private async Task HandleCellClick(int x, int y)
+    private async Task HandleCellClick((int x, int y) pos)
     {
         if (GameSession.GameState.Win > 0) return;
 
-        await HubConnection.InvokeAsync("PlaceChip", SessionId, UserId, x, y);
+        await HubConnection.InvokeAsync("PlaceChip", SessionId, UserId, pos.x, pos.y);
     }
 
     private async Task HandleMoveBoard(string direction)
     {
         await HubConnection.InvokeAsync("MoveBoard", SessionId, UserId, direction);
-    }
-
-    private string GetCellContent(int x, int y)
-    {
-        return GameState.Board[x][y] switch
-        {
-            1 => "X",
-            2 => "O",
-            _ => ""
-        };
-    }
-
-    private string GetBoardStyle()
-    {
-        var boardSize = GameState.BoardWidth * GetCellSize();
-        return $"position: relative; width: {boardSize}px;";
-    }
-
-    private string GetMovableGridStyle()
-    {
-        var cellSize = GetCellSize();
-        return $"width: {GameState.MovableBoardWidth * cellSize}px; " +
-               $"height: {GameState.MovableBoardHeight * cellSize}px; " +
-               $"border: 3px solid red; position: absolute; " +
-               $"pointer-events: none; left: {GameState.GridX * cellSize}px; " +
-               $"top: {GameState.GridY * cellSize}px;";
-    }
-
-    private int GetCellSize()
-    {
-        return 80;
     }
 
     private void ShowSaveModal()
@@ -251,7 +221,6 @@
         { 
             SessionId, 
             Name = SaveName,
-            GameState 
         });
         
         if (response.IsSuccessStatusCode)

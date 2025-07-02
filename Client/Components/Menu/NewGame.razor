@@ -151,7 +151,7 @@
 }
 
 @code {
-    [Parameter] public List<GameConfig> ConfigList { get; set; }
+    [Parameter] public List<GameConfigDto> ConfigList { get; set; }
     [Parameter] public EventCallback OnMainOptions { get; set; }
 
     private GameModel _gameModel = new GameModel
@@ -206,10 +206,18 @@
             Password = null
         });
 
-        if (response.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode )
         {
             var result = await response.Content.ReadFromJsonAsync<CreateSessionResponse>();
-            Nav.NavigateTo($"/game/{result.SessionId}");
+            if (_gameModel.GameMode == "two-players")
+            {
+                Nav.NavigateTo($"/game/{result.SessionId}");
+            }
+
+            if (_gameModel.GameMode == "two-players-online")
+            {
+                Nav.NavigateTo($"/game-online/{result.SessionId}");
+            }
         }
         else
         {

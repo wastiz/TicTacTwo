@@ -1,4 +1,6 @@
 ﻿using Domain;
+using Shared.GameConfigDtos;
+using Shared.GameStateDtos;
 
 namespace Shared.GameSessionDtos;
 
@@ -6,8 +8,8 @@ public class GameSessionDto
 {
     public string? Id { get; set; }
     public string? Name { get; set; }
-    public GameConfiguration? GameConfiguration { get; set; }
-    public GameState? GameState { get; set; }
+    public GameConfigDto? GameConfiguration { get; set; }
+    public GameStateDto? GameState { get; set; }
     public string? Player1Id { get; set; }
     public string? Player1Username { get; set; }
     public string? Player2Id { get; set; } = null;

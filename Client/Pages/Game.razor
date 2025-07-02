@@ -4,29 +4,30 @@
 @using Shared.GameSessionDtos
 @using Client.Components.Game
 @using Shared.GameDtos
+@using Shared.GameStateDtos
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
-@if (Model is null)
+@if (GameSession is null)
 {
     <p>Loading...</p>
 }
 else
 {
     <div class="container mt-4">
-        @if (Model.GameState.Win == 3)
+        @if (GameSession.GameState.Win == 3)
         {
             <div class="text-center">
                 <h1>It's a draw</h1>
                 <button class="btn btn-primary" @onclick="OpenSaveModal">Save and back to Menu</button>
             </div>
         }
-        else if (Model.GameState.Win == 1 || Model.GameState.Win == 2)
+        else if (GameSession.GameState.Win == 1 || GameSession.GameState.Win == 2)
         {
             <div class="text-center">
-                <h1>Player @Model.GameState.Win wins!</h1>
+                <h1>Player @GameSession.GameState.Win wins!</h1>
                 <button class="btn btn-primary" @onclick="OpenSaveModal">Save and back to Menu</button>
             </div>
         }
@@ -34,10 +35,10 @@ else
         {
             <div class="row">
                 <div class="col-lg-8">
-                    <h4>Player @Model.GameState.PlayerNumber is thinking</h4>
-                    <GameBoard GameState="@Model.GameState"
-                               GameConfig="@Model.GameConfiguration"
-                               ShowMovementOptions="Model.GameState.Player1Options || Model.GameState.Player2Options"
+                    <h4>Player @GameSession.GameState.PlayerNumber is thinking</h4>
+                    <GameBoard GameState="@GameSession.GameState"
+                               GameConfig="@GameSession.GameConfiguration"
+                               ShowMovementOptions="GameSession.GameState.Player1Options || GameSession.GameState.Player2Options"
                                OnCellClick="HandleCellClick"
                                OnMoveBoard="HandleMoveBoard" />
                 </div>
@@ -45,10 +46,10 @@ else
                     <button class="btn btn-primary mb-3" @onclick="OpenSaveModal">Save and back to Menu</button>
                     <div>
                         <h5>Rules & Guide</h5>
-                        <p>The goal is to score @Model.GameConfiguration.WinCondition chips in a row</p>
-                        <p>Both players have @Model.GameConfiguration.Player1Chips chips</p>
+                        <p>The goal is to score @GameSession.GameConfiguration.WinCondition chips in a row</p>
+                        <p>Both players have @GameSession.GameConfiguration.Player1Chips chips</p>
                         <p>You can act only inside the red-bordered grid</p>
-                        <p>To unlock moves you must place @Model.GameConfiguration.OptionsAfterNMoves chips</p>
+                        <p>To unlock moves you must place @GameSession.GameConfiguration.OptionsAfterNMoves chips</p>
                     </div>
                 </div>
             </div>
@@ -79,7 +80,7 @@ else
 @code {
     [Parameter] public string SessionId { get; set; }
 
-    private GameSessionDto Model;
+    private GameSessionDto GameSession;
     private bool showSaveModal = false;
     private string SaveName = string.Empty;
 
@@ -92,7 +93,7 @@ else
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         
-        Model = await Http.GetFromJsonAsync<GameSessionDto>($"http://localhost:5192/api/game-sessions/{SessionId}");
+        GameSession = await Http.GetFromJsonAsync<GameSessionDto>($"http://localhost:5192/api/game-sessions/{SessionId}");
     }
     
     private async Task HandleCellClick((int x, int y) pos)
@@ -107,10 +108,10 @@ else
         Console.WriteLine($"{pos.x}, {pos.y}");
         
         var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/click", new CellClickRequest() { X = pos.x, Y = pos.y });
-        var data = await response.Content.ReadFromJsonAsync<GameState>();
+        var data = await response.Content.ReadFromJsonAsync<GameStateDto>();
         if (data is not null)
         {
-          Model.GameState = data;
+          GameSession.GameState = data;
         }
     }
 
@@ -123,10 +124,10 @@ else
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
       var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/move", new MoveRequest() { Direction = direction });
-      var data = await response.Content.ReadFromJsonAsync<GameState>();
+      var data = await response.Content.ReadFromJsonAsync<GameStateDto>();
       if (data is not null)
       {
-        Model.GameState = data;
+        GameSession.GameState = data;
       }
     }
 
@@ -140,10 +141,10 @@ else
         }
         
       var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/move-chip", new { startX, startY, endX, endY });
-      var data = await response.Content.ReadFromJsonAsync<GameState>();
+      var data = await response.Content.ReadFromJsonAsync<GameStateDto>();
       if (data is not null)
       {
-        Model.GameState = data;
+        GameSession.GameState = data;
       }
     }
 
