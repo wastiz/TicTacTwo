@@ -92,22 +92,17 @@ public class SessionRepository : ISessionRepository
         var session = _context.GameSessions
             .Include(s => s.GameConfiguration)
             .Include(s => s.GameState)
+            .Include(s => s.Player1)
+            .Include(s => s.Player2)
             .SingleOrDefault(s => s.Id == sessionId);
 
-        if (session == null)
-            return null;
-
-        if (session.GameState == null)
-        {
-            session.GameState = new GameState();
-            _context.SaveChanges();
-        }
+        if (session == null) return null;
 
         return new GameSessionDto
         {
             Id = session.Id,
             Name = session.Name,
-            GameConfiguration = session.GameConfiguration != null ? new GameConfigDto
+            GameConfiguration = new GameConfigDto
             {
                 Id = session.GameConfiguration.Id,
                 Name = session.GameConfiguration.Name,
@@ -119,8 +114,8 @@ public class SessionRepository : ISessionRepository
                 Player2Chips = session.GameConfiguration.Player2Chips,
                 WinCondition = session.GameConfiguration.WinCondition,
                 OptionsAfterNMoves = session.GameConfiguration.OptionsAfterNMoves
-            } : null,
-            GameState = session.GameState != null ? new GameStateDto
+            },
+            GameState = new GameStateDto
             {
                 Id = session.GameState.Id,
                 Board = session.GameState.Board,
@@ -132,7 +127,7 @@ public class SessionRepository : ISessionRepository
                 Player1Options = session.GameState.Player1Options,
                 Player2Options = session.GameState.Player2Options,
                 Win = session.GameState.Win
-            } : null,
+            },
             Player1Id = session.Player1Id,
             Player1Username = session.Player1.Username,
             Player2Id = session.Player2Id,
