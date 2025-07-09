@@ -129,9 +129,9 @@ public class SessionRepository : ISessionRepository
                 Win = session.GameState.Win
             },
             Player1Id = session.Player1Id,
-            Player1Username = session.Player1.Username,
+            Player1Username = session.Player1?.Username,
             Player2Id = session.Player2Id,
-            Player2Username = session.Player2.Username,
+            Player2Username = session.Player2?.Username,
             GameMode = session.GameMode,
             GamePassword = session.GamePassword,
             GameStatus = session.GameStatus,

@@ -13,9 +13,9 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-//For Authorization Provider
+//Authorization Provider
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
 
 //For local storage
 builder.Services.AddBlazoredLocalStorage();

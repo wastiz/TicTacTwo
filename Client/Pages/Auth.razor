@@ -56,6 +56,8 @@
 </div>
 
 @code {
+    [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
     private bool _isLoginView = true;
     private string _animationClass = "";
     private string _message = "";
@@ -78,6 +80,8 @@
             _isSuccess = true;
             _message = "Login successful!";
             await Task.Delay(1000);
+            var authProvider = (CustomAuthStateProvider)AuthenticationStateProvider;
+            authProvider.MarkUserAsAuthenticated(_loginModel.UsernameOrEmail);
             NavigationManager.NavigateTo("/");
         }
         catch (Exception ex)

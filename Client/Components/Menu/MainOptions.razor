@@ -1,4 +1,6 @@
 ﻿@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject NavigationManager Nav
 
 
 <div class="container">
@@ -20,7 +22,7 @@
             </button>
         </a>
         <a class="home-menu-link col-6 col-sm-6 col-md-12 col-lg-12">
-            <button type="button" class="home-menu-item btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="home-menu-item btn btn-primary mb-2" @onclick="() => IsModalOpen = true">
                 <span class="text-main">Connect to Game</span>
                 <div class="extra-content">
                     <span class="extra-text">Connect to game via session id</span>
@@ -38,14 +40,55 @@
     </div>
 </div>
 
+<!-- Modal for connecting to game -->
+@if (IsModalOpen)
+{
+<div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <EditForm Model="FormModel" OnValidSubmit="ConnectToSession">
+                <DataAnnotationsValidator />
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Enter Game Id to connect</h1>
+                    <button type="button" class="btn-close" @onclick="() => IsModalOpen = false" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <InputText @bind-Value="FormModel.SessionId" class="form-control" placeholder="Type here..." />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Continue</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+}
 
 @code {
-[Parameter] public EventCallback OnNewGame { get; set; }
-[Parameter] public EventCallback OnLoadGame { get; set; }
-[Parameter] public EventCallback OnGameConfigs { get; set; }
+    [Parameter] public EventCallback OnNewGame { get; set; }
+    [Parameter] public EventCallback OnLoadGame { get; set; }
+    [Parameter] public EventCallback OnGameConfigs { get; set; }
 
-private Task OnNewGameClicked() => OnNewGame.InvokeAsync();
-private Task OnLoadGameClicked() => OnLoadGame.InvokeAsync();
-private Task OnGameConfigsClicked() => OnGameConfigs.InvokeAsync();
+    private Task OnNewGameClicked() => OnNewGame.InvokeAsync();
+    private Task OnLoadGameClicked() => OnLoadGame.InvokeAsync();
+    private Task OnGameConfigsClicked() => OnGameConfigs.InvokeAsync();
+
+    private string SessionIdInput { get; set; } = "";
+    private bool IsModalOpen { get; set; } = false;
+    private ConnectModel FormModel = new();
+
+    private async Task ConnectToSession()
+    {
+        if (!string.IsNullOrWhiteSpace(FormModel.SessionId))
+        {
+            IsModalOpen = false;
+            Nav.NavigateTo($"/game-online/{FormModel.SessionId}");
+        }
+    }
+    
+    private class ConnectModel
+    {
+        public string SessionId { get; set; } = "";
+    }
 
 }

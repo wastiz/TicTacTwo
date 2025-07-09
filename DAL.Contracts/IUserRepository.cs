@@ -11,7 +11,7 @@ namespace DAL.Contracts.Interfaces
         Task<Response> UpdateUser(string userId, string newUsername, string newPassword);
         Task<User> GetUserById(string userId);
         Task<List<User>> GetAllUsers();
-        Task<string> GetUserNameById(string userId);
+        Task<string?> GetUsernameById(string userId);
         Task<Response<User>> CheckPassword(UserLogin dto);
     }
 }

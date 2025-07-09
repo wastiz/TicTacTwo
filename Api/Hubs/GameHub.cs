@@ -23,6 +23,12 @@ namespace Api.Hubs
 
         public async Task JoinGame(string sessionId, string userId)
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                await Clients.Caller.SendAsync("Error", "User ID is missing.");
+                return;
+            }
+
             if (!Games.ContainsKey(sessionId))
             {
                 Session = _sessionRepository.GetDomainSessionById(sessionId);
@@ -31,35 +37,34 @@ namespace Api.Hubs
                     await Clients.Caller.SendAsync("Error", "Game session not found.");
                     return;
                 }
-                
+
                 GameBrain = new GameBrain(Session.GameConfiguration, Session.GameState);
                 Games.TryAdd(sessionId, new GameState(sessionId, GameBrain));
             }
 
             var gameState = Games[sessionId];
-
+            
             if (gameState.Player1Id == userId || gameState.Player2Id == userId)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
-                await Clients.Caller.SendAsync("GameStarted", gameState.GetGameState(userId));
+                await Clients.Caller.SendAsync("GameStateUpdated", gameState.GetGameState(userId));
                 return;
             }
-
-            if (gameState.Player1Id != null && gameState.Player2Id != null)
-            {
-                await Clients.Group(sessionId).SendAsync("GameStarted", gameState.GetGameState(userId));
-            }
-
-
+            
             if (gameState.Player1Id == null)
             {
                 gameState.Player1Id = userId;
-                gameState.Player1Name = await _userRepository.GetUserNameById(userId);
+                gameState.Player1Name = await _userRepository.GetUsernameById(userId);
             }
             else if (gameState.Player2Id == null)
             {
                 gameState.Player2Id = userId;
-                gameState.Player2Name = await _userRepository.GetUserNameById(userId);
+                gameState.Player2Name = await _userRepository.GetUsernameById(userId);
+            }
+            else
+            {
+                await Clients.Caller.SendAsync("Error", "Game already has two players.");
+                return;
             }
 
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
@@ -70,8 +75,7 @@ namespace Api.Hubs
                 await Clients.Group(sessionId).SendAsync("GameStarted", gameState.GetGameState(userId));
             }
         }
-
-
+        
         public async Task PlaceChip(string sessionId, string userId, int x, int y)
         {
             if (!Games.TryGetValue(sessionId, out var gameState))

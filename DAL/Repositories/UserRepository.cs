@@ -85,10 +85,10 @@ namespace DAL
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<string> GetUserNameById(string userId)
+        public async Task<string?> GetUsernameById(string userId)
         {
-            var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-            return result.Username;
+            var user = await _context.Users.FindAsync(userId);
+            return user?.Username;
         }
 
         public async Task<Response<User>> CheckPassword(UserLogin dto)
