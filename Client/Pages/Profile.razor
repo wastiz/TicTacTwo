@@ -1,0 +1,41 @@
+﻿@page "/profile"
+<!-- Modal about deleting account -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete account</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete account?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form method="post">
+                    <button asp-page-handler="DeleteAccount" type="button" class="btn btn-primary">Yes, do it!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main role="main" class="pb-3">
+    <div class="container h-100">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-4 mt-5">
+                <form method="post" class="d-flex flex-column">
+                    <h4>What would you like to do?</h4>
+                    <p>For now you can only delete yourself or log out. But sooner, sooner, you will see your statistic here (probably not)</p>
+                    <button class="btn btn-primary w-50 mb-3">Change nickname</button>
+                    <button asp-page-handler="LogOut" class="btn btn-danger w-50 mb-3">Log out</button>
+                    <button type="button" class="btn btn-danger w-50 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+@code {
+    
+}

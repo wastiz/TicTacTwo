@@ -6,14 +6,14 @@
                     <RedirectToLogin />
                 </NotAuthorized>
                 <Authorizing>
-                    <p>Авторизация...</p>
+                    <p>Authorizing...</p>
                 </Authorizing>
             </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </Found>
         <NotFound>
             <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">Страница не найдена</p>
+                <p role="alert">Page not found</p>
             </LayoutView>
         </NotFound>
     </Router>

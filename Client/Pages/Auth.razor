@@ -73,8 +73,8 @@
             var response = await Http.PostAsJsonAsync("http://localhost:5192/api/auth/login", _loginModel);
             var result = await response.Content.ReadFromJsonAsync<AuthResponse>();
 
-            if (!response.IsSuccessStatusCode || result is null)
-                throw new Exception(result?.Message ?? "Login failed.");
+            if (!response.IsSuccessStatusCode || result is null) throw new Exception(result?.Message ?? "Login failed.");
+            
 
             await JS.InvokeVoidAsync("localStorage.setItem", "accessToken", result.AccessToken);
             _isSuccess = true;

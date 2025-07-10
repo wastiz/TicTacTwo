@@ -22,7 +22,7 @@ namespace DAL.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("DAL.GameConfiguration", b =>
+            modelBuilder.Entity("Domain.GameConfiguration", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -96,7 +96,7 @@ namespace DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DAL.GameSession", b =>
+            modelBuilder.Entity("Domain.GameSession", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -146,7 +146,7 @@ namespace DAL.Migrations
                     b.ToTable("GameSessions");
                 });
 
-            modelBuilder.Entity("DAL.GameState", b =>
+            modelBuilder.Entity("Domain.GameState", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -186,7 +186,7 @@ namespace DAL.Migrations
                     b.ToTable("GameStates");
                 });
 
-            modelBuilder.Entity("DAL.User", b =>
+            modelBuilder.Entity("Domain.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -220,32 +220,32 @@ namespace DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DAL.GameConfiguration", b =>
+            modelBuilder.Entity("Domain.GameConfiguration", b =>
                 {
-                    b.HasOne("DAL.User", "User")
+                    b.HasOne("Domain.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DAL.GameSession", b =>
+            modelBuilder.Entity("Domain.GameSession", b =>
                 {
-                    b.HasOne("DAL.GameConfiguration", "GameConfiguration")
+                    b.HasOne("Domain.GameConfiguration", "GameConfiguration")
                         .WithMany()
                         .HasForeignKey("GameConfigId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.GameState", "GameState")
+                    b.HasOne("Domain.GameState", "GameState")
                         .WithMany()
                         .HasForeignKey("GameStateId");
 
-                    b.HasOne("DAL.User", "Player1")
+                    b.HasOne("Domain.User", "Player1")
                         .WithMany()
                         .HasForeignKey("Player1Id");
 
-                    b.HasOne("DAL.User", "Player2")
+                    b.HasOne("Domain.User", "Player2")
                         .WithMany()
                         .HasForeignKey("Player2Id");
 
