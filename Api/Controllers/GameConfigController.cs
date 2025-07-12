@@ -1,8 +1,8 @@
 ﻿using DAL.Contracts;
-using DAL.Contracts.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Shared;
 using Shared.GameConfigDtos;
 
 namespace WebAPI.Controllers;
@@ -54,16 +54,17 @@ public class GameConfigController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Response>> CreateConfig([FromBody] GameConfigDto configDto)
+    public async Task<ActionResult<GameConfigDto>> CreateConfig([FromBody] GameConfigDto configDto)
     {
         var userId = GetUserIdFromToken();
         if (userId == null) return Unauthorized("User ID not found in token.");
 
         var response = await _repository.CreateGameConfiguration(userId, configDto);
-        if (!response.Success)
-            return BadRequest(response);
+    
+        if (!response.Success) 
+            return BadRequest(response.Message);
 
-        return Ok(response);
+        return Ok(response.Data);
     }
 
     [HttpPut("{configId}")]

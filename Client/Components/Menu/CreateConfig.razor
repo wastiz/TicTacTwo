@@ -1,0 +1,177 @@
+﻿@using System.Net
+@using System.Net.Http.Headers
+@using Client.Pages
+@using Shared
+@using Shared.GameConfigDtos
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject HttpClient Http
+
+
+<h3 class="mt-3 mb-2">Create New Configuration</h3>
+<EditForm Model="_newConfigDto" OnValidSubmit="CreateConfiguration" Context="editContext">
+    <DataAnnotationsValidator />
+    @if (!string.IsNullOrEmpty(_customValidationError))
+    {
+    <div class="alert alert-danger">@_customValidationError</div>
+    }
+
+    <div class="mb-3">
+        <label class="form-label">Configuration Name</label>
+        <InputText class="form-control" @bind-Value="_newConfigDto.Name" />
+        <ValidationMessage For="@(() => _newConfigDto.Name)" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Board Width</label>
+            <InputNumber class="form-control" @bind-Value="_newConfigDto.BoardSizeWidth" />
+            <ValidationMessage For="@(() => _newConfigDto.BoardSizeWidth)" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Board Height</label>
+            <InputNumber class="form-control" @bind-Value="_newConfigDto.BoardSizeHeight" />
+            <ValidationMessage For="@(() => _newConfigDto.BoardSizeHeight)" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Movable Board Width</label>
+            <InputNumber class="form-control" @bind-Value="_newConfigDto.MovableBoardWidth" />
+            <ValidationMessage For="@(() => _newConfigDto.MovableBoardWidth)" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Movable Board Height</label>
+            <InputNumber class="form-control" @bind-Value="_newConfigDto.MovableBoardHeight" />
+            <ValidationMessage For="@(() => _newConfigDto.MovableBoardHeight)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Win Condition</label>
+        <InputNumber class="form-control" @bind-Value="_newConfigDto.WinCondition" />
+        <ValidationMessage For="@(() => _newConfigDto.WinCondition)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Options After N Moves</label>
+        <InputNumber class="form-control" @bind-Value="_newConfigDto.AbilitiesAfterNMoves" />
+        <ValidationMessage For="@(() => _newConfigDto.AbilitiesAfterNMoves)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Chips Count (for both players)</label>
+        <InputNumber class="form-control" @bind-Value="_newConfigDto.Player1Chips" />
+        <ValidationMessage For="@(() => _newConfigDto.Player1Chips)" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Create Configuration</button>
+</EditForm>
+
+@code {
+    [Parameter] public List<GameConfigDto> ConfigList { get; set; }
+    [Parameter] public EventCallback<GameConfigDto> OnConfigCreated { get; set; }
+    private GameConfigDto _newConfigDto = new();
+    private string _customValidationError = string.Empty;
+    
+    protected override void OnInitialized()
+    {
+        _newConfigDto = new GameConfigDto
+        {
+            BoardSizeWidth = 8,
+            BoardSizeHeight = 8,
+            MovableBoardWidth = 3,
+            MovableBoardHeight = 3,
+            WinCondition = 4,
+            Player1Chips = 20,
+            Player2Chips = 20,
+            AbilitiesAfterNMoves = 5
+        };
+    }
+    
+    private async Task CreateConfiguration()
+    {
+        _customValidationError = string.Empty;
+    
+        if (!ValidateConfig(_newConfigDto))
+        {
+            return;
+        }
+
+        try
+        {
+            var token = await localStorage.GetItemAsync<string>("accessToken");
+            if (!string.IsNullOrEmpty(token))
+            {
+                Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+        
+            var response = await Http.PostAsJsonAsync("http://localhost:5192/api/game-configs", _newConfigDto);
+        
+            if (response.IsSuccessStatusCode)
+            {
+                var createdConfig = await response.Content.ReadFromJsonAsync<GameConfigDto>();
+            
+                if (createdConfig != null)
+                {
+                    await OnConfigCreated.InvokeAsync(createdConfig);
+                    ResetForm();
+                    StateHasChanged();
+                }
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                _customValidationError = $"Server error: {errorContent}";
+            }
+        }
+        catch (Exception ex)
+        {
+            _customValidationError = $"Request failed: {ex.Message}";
+        }
+    }
+
+    private void ResetForm()
+    {
+        _newConfigDto = new GameConfigDto
+        {
+            BoardSizeWidth = 8,
+            BoardSizeHeight = 8,
+            MovableBoardWidth = 3,
+            MovableBoardHeight = 3,
+            WinCondition = 4,
+            Player1Chips = 20,
+            Player2Chips = 20,
+            AbilitiesAfterNMoves = 5
+        };
+    }
+    
+    private bool ValidateConfig(GameConfigDto config)
+    {
+        if (config.MovableBoardWidth > config.BoardSizeWidth)
+        {
+            _customValidationError = "Movable board width cannot be larger than board width";
+            return false;
+        }
+
+        if (config.MovableBoardHeight > config.BoardSizeHeight)
+        {
+            _customValidationError = "Movable board height cannot be larger than board height";
+            return false;
+        }
+
+        if (config.WinCondition > Math.Min(config.BoardSizeWidth, config.BoardSizeHeight))
+        {
+            _customValidationError = "Win condition cannot be larger than board dimensions";
+            return false;
+        }
+
+        if (config.Player1Chips < config.WinCondition)
+        {
+            _customValidationError = "Chips count cannot be less than win condition";
+            return false;
+        }
+
+        return true;
+    }
+}

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250710133447_InitialCreate_16")]
-    partial class InitialCreate_16
+    [Migration("20250712114406_InitialCreate_17")]
+    partial class InitialCreate_17
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,9 @@ namespace DAL.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
+
+                    b.Property<int>("AbilitiesAfterNMoves")
+                        .HasColumnType("integer");
 
                     b.Property<int>("BoardSizeHeight")
                         .HasColumnType("integer");
@@ -48,9 +51,6 @@ namespace DAL.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("OptionsAfterNMoves")
-                        .HasColumnType("integer");
 
                     b.Property<int>("Player1Chips")
                         .HasColumnType("integer");
@@ -74,12 +74,12 @@ namespace DAL.Migrations
                         new
                         {
                             Id = "classic",
+                            AbilitiesAfterNMoves = 2,
                             BoardSizeHeight = 5,
                             BoardSizeWidth = 5,
                             MovableBoardHeight = 3,
                             MovableBoardWidth = 3,
                             Name = "Classical",
-                            OptionsAfterNMoves = 2,
                             Player1Chips = 4,
                             Player2Chips = 4,
                             WinCondition = 3
@@ -87,12 +87,12 @@ namespace DAL.Migrations
                         new
                         {
                             Id = "big-game",
+                            AbilitiesAfterNMoves = 3,
                             BoardSizeHeight = 10,
                             BoardSizeWidth = 10,
                             MovableBoardHeight = 5,
                             MovableBoardWidth = 5,
                             Name = "Big Game",
-                            OptionsAfterNMoves = 3,
                             Player1Chips = 6,
                             Player2Chips = 6,
                             WinCondition = 3
@@ -168,18 +168,14 @@ namespace DAL.Migrations
                     b.Property<int>("GridY")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("Player1Options")
+                    b.Property<bool>("Player1Abilities")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("Player2Options")
+                    b.Property<bool>("Player2Abilities")
                         .HasColumnType("boolean");
 
                     b.Property<int>("PlayerNumber")
                         .HasColumnType("integer");
-
-                    b.Property<string>("PlayersMovesJson")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<int>("Win")
                         .HasColumnType("integer");

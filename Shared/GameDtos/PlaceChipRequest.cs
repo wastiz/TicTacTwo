@@ -1,6 +1,6 @@
 ﻿namespace Shared.GameDtos;
 
-public class CellClickRequest
+public class PlaceChipRequest
 {
     public int X { get; set; }
     public int Y { get; set; }

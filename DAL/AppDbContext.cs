@@ -38,7 +38,7 @@ namespace DAL
                     Player1Chips = 6,
                     Player2Chips = 6,
                     WinCondition = 3,
-                    OptionsAfterNMoves = 3
+                    AbilitiesAfterNMoves = 3
                 }
             );
         }

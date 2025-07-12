@@ -26,7 +26,6 @@
     pointer-events: none;
 }
 
-
 .move-btn {
     position: absolute;
     z-index: 10;
@@ -84,4 +83,68 @@
     display: inline-block;
     font-size: calc(var(--font-size) * 0.75);
     line-height: 1;
+}
+
+.arrow-up-left { transform: rotate(-45deg); }
+.arrow-up-right { transform: rotate(45deg); }
+.arrow-down-left { transform: rotate(-135deg); }
+.arrow-down-right { transform: rotate(135deg); }
+
+/* For moving chip */
+.game-cell {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.game-cell.selected-piece {
+    background-color: #ffd54f !important;
+    border-color: #ff9800 !important;
+    border-width: 3px !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+}
+
+.game-cell.selectable-piece:hover {
+    background-color: #e8f5e8 !important;
+    border-color: #4caf50 !important;
+    transform: scale(1.02);
+}
+
+.game-cell.valid-move-target {
+    background-color: #e3f2fd !important;
+    border-color: #2196f3 !important;
+    border-style: dashed !important;
+    animation: pulse 1.5s infinite;
+}
+
+.game-cell.valid-move-target:hover {
+    background-color: #bbdefb !important;
+    border-color: #1976d2 !important;
+    border-style: solid !important;
+    transform: scale(1.05);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(33, 150, 243, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
+    }
+}
+
+.game-cell.selectable-piece {
+    cursor: pointer;
+}
+
+.game-cell.valid-move-target {
+    cursor: crosshair;
+}
+
+.game-cell:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }

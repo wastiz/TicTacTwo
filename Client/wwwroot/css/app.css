@@ -39,10 +39,6 @@ main {
   width: 100%;
 }
 
-.new-game-section button {
-  width: 100%;
-}
-
 .load-game-container {
   display: flex;
   flex-direction: column;

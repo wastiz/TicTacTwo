@@ -9,7 +9,7 @@ public class GameStateDto
     public int GridX { get; set; }
     public int GridY { get; set; }
     public int PlayerNumber { get; set; }
-    public bool Player1Options { get; set; }
-    public bool Player2Options { get; set; }
+    public bool Player1Abilities { get; set; }
+    public bool Player2Abilities { get; set; }
     public int Win { get; set; }
 }

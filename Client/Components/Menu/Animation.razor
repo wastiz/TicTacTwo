@@ -1,140 +1,256 @@
-﻿@implements IAsyncDisposable
-@inject IJSRuntime JSRuntime
+﻿@using Microsoft.AspNetCore.Components
+@using System.Timers
+@implements IDisposable
 
-<div class="tic-tac-container">
-    <div @ref="boardElement" class="board">
-        @foreach (var cell in cells)
+<div class="game-animation-container">
+    <div class="game-board">
+        @for (int row = 0; row < 5; row++)
         {
-            <div class="cell" @key="cell.Id">
-                @if (cell.Symbol != null)
-                {
-                    <div class="@cell.Symbol @(cell.IsAnimating ? "animating" : "")"></div>
-                }
-            </div>
+            @for (int col = 0; col < 5; col++)
+            {
+                int currentRow = row;
+                int currentCol = col;
+                <div class="cell @GetCellClass(currentRow, currentCol)" 
+                     style="@GetCellStyle(currentRow, currentCol)">
+                    @if (board[currentRow, currentCol] != ' ')
+                    {
+                        <span class="symbol @GetSymbolClass(currentRow, currentCol)">
+                            @board[currentRow, currentCol]
+                        </span>
+                    }
+                </div>
+            }
         }
-        <div @ref="winLineElement" class="win-line" style="@winLineStyle"></div>
     </div>
+    
+    @if (showWinLine)
+    {
+        <div class="win-line" style="@GetWinLineStyle()"></div>
+    }
 </div>
 
 @code {
-    private ElementReference boardElement;
-    private ElementReference winLineElement;
-    private readonly List<CellData> cells = new();
-    private string winLineStyle = "display: none;";
-    private Timer? animationTimer;
+    private char[,] board = new char[5, 5];
+    private Timer animationTimer;
     private int animationStep = 0;
+    private bool showWinLine = false;
+    private int[] winningCells = new int[0];
+    private string winDirection = "";
+    private bool isAnimating = false;
+    
+    private readonly (int row, int col, char symbol)[] moveSequence = new[]
+    {
+        (2, 2, 'X'),
+        (1, 1, 'O'),
+        (3, 1, 'X'),
+        (3, 3, 'O'), // Диагональ
+        (2, 3, 'X'), // Вправо от центра
+        (0, 0, 'O'), // Угол
+        (2, 0, 'X'), // Левый край
+        (4, 4, 'O'), // Угол
+        (2, 4, 'X'), // Правый край - победа!
+    };
 
     protected override void OnInitialized()
     {
-        // Инициализация 25 клеток (5x5)
-        for (int i = 0; i < 25; i++)
-        {
-            cells.Add(new CellData(i));
-        }
+        InitializeBoard();
+        StartAnimation();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private void InitializeBoard()
     {
-        if (firstRender)
+        for (int i = 0; i < 5; i++)
         {
-            // Инициализация JS функций
-            await JSRuntime.InvokeVoidAsync("eval", 
-                @"window.ticTacAnimation = {
-                    positionWinLine: function(board, winLine, startIdx, endIdx) {
-                        const cells = board.querySelectorAll('.cell');
-                        if (!cells[startIdx] || !cells[endIdx]) return;
-                        
-                        const startCell = cells[startIdx].getBoundingClientRect();
-                        const endCell = cells[endIdx].getBoundingClientRect();
-                        const boardRect = board.getBoundingClientRect();
-                        
-                        winLine.style.width = `${endCell.right - startCell.left}px`;
-                        winLine.style.height = '10px';
-                        winLine.style.left = `${startCell.left - boardRect.left}px`;
-                        winLine.style.top = `${startCell.top + startCell.height/2 - boardRect.top - 5}px`;
-                        winLine.style.display = 'block';
-                        winLine.style.transform = 'scaleX(0)';
-                        
-                        setTimeout(() => {
-                            winLine.style.transition = 'transform 0.8s ease-out';
-                            winLine.style.transform = 'scaleX(1)';
-                        }, 10);
-                    }
-                }");
-                
-            StartAnimation();
+            for (int j = 0; j < 5; j++)
+            {
+                board[i, j] = ' ';
+            }
         }
     }
 
     private void StartAnimation()
     {
-        animationTimer = new Timer(async _ => await NextAnimationStep(), 
-            null, 500, Timeout.Infinite);
+        animationTimer = new Timer(800);
+        animationTimer.Elapsed += OnAnimationTick;
+        animationTimer.Start();
     }
 
-    private async Task NextAnimationStep()
+    private async void OnAnimationTick(object sender, ElapsedEventArgs e)
     {
-        animationStep++;
+        if (isAnimating) return;
         
-        switch (animationStep)
+        isAnimating = true;
+        
+        await InvokeAsync(async () =>
         {
-            case 1: await AnimateCell(12, "x"); break; // Центр
-            case 2: await AnimateCell(13, "o"); break; // Право
-            case 3: await AnimateCell(11, "x"); break; // Лево
-            case 4: await AnimateCell(17, "o"); break; // Низ
-            case 5: await AnimateCell(7, "x"); break;  // Верх
-            case 6: 
-                await ShowWinLine(10, 14); // Горизонтальная линия
-                animationTimer?.Dispose();
-                return;
+            if (animationStep < moveSequence.Length)
+            {
+                var move = moveSequence[animationStep];
+                board[move.row, move.col] = move.symbol;
+                animationStep++;
+                
+                if (CheckWin())
+                {
+                    showWinLine = true;
+                    StateHasChanged();
+                    
+                    await Task.Delay(2000);
+                    RestartAnimation();
+                }
+                
+                StateHasChanged();
+            }
+            else
+            {
+                RestartAnimation();
+            }
+        });
+        
+        isAnimating = false;
+    }
+
+    private bool CheckWin()
+    {
+        for (int row = 0; row < 5; row++)
+        {
+            for (int col = 0; col <= 1; col++)
+            {
+                if (board[row, col] != ' ' && 
+                    board[row, col] == board[row, col + 1] && 
+                    board[row, col] == board[row, col + 2] && 
+                    board[row, col] == board[row, col + 3])
+                {
+                    winningCells = new int[] { row * 5 + col, row * 5 + col + 1, row * 5 + col + 2, row * 5 + col + 3 };
+                    winDirection = "horizontal";
+                    return true;
+                }
+            }
+        }
+
+        for (int col = 0; col < 5; col++)
+        {
+            for (int row = 0; row <= 1; row++)
+            {
+                if (board[row, col] != ' ' && 
+                    board[row, col] == board[row + 1, col] && 
+                    board[row, col] == board[row + 2, col] && 
+                    board[row, col] == board[row + 3, col])
+                {
+                    winningCells = new int[] { row * 5 + col, (row + 1) * 5 + col, (row + 2) * 5 + col, (row + 3) * 5 + col };
+                    winDirection = "vertical";
+                    return true;
+                }
+            }
         }
         
-        animationTimer?.Change(500, Timeout.Infinite);
+        for (int row = 0; row <= 1; row++)
+        {
+            for (int col = 0; col <= 1; col++)
+            {
+                if (board[row, col] != ' ' && 
+                    board[row, col] == board[row + 1, col + 1] && 
+                    board[row, col] == board[row + 2, col + 2] && 
+                    board[row, col] == board[row + 3, col + 3])
+                {
+                    winningCells = new int[] { row * 5 + col, (row + 1) * 5 + col + 1, (row + 2) * 5 + col + 2, (row + 3) * 5 + col + 3 };
+                    winDirection = "diagonal";
+                    return true;
+                }
+            }
+        }
+        
+        for (int row = 0; row <= 1; row++)
+        {
+            for (int col = 3; col < 5; col++)
+            {
+                if (board[row, col] != ' ' && 
+                    board[row, col] == board[row + 1, col - 1] && 
+                    board[row, col] == board[row + 2, col - 2] && 
+                    board[row, col] == board[row + 3, col - 3])
+                {
+                    winningCells = new int[] { row * 5 + col, (row + 1) * 5 + col - 1, (row + 2) * 5 + col - 2, (row + 3) * 5 + col - 3 };
+                    winDirection = "anti-diagonal";
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
-    private async Task AnimateCell(int index, string symbol)
+    private void RestartAnimation()
     {
-        if (index < 0 || index >= cells.Count) return;
-        
-        cells[index].Symbol = symbol;
-        cells[index].IsAnimating = true;
-        StateHasChanged();
-        
-        await Task.Delay(300);
-        cells[index].IsAnimating = false;
-        StateHasChanged();
+        InitializeBoard();
+        animationStep = 0;
+        showWinLine = false;
+        winningCells = new int[0];
+        winDirection = "";
     }
 
-    private async Task ShowWinLine(int startIdx, int endIdx)
+    private string GetCellClass(int row, int col)
     {
-        if (startIdx < 0 || endIdx >= cells.Count) return;
-        
-        winLineStyle = "";
-        StateHasChanged();
-        
-        // Даем время Blazor обновить DOM
-        await Task.Delay(50);
-        
-        await JSRuntime.InvokeVoidAsync("ticTacAnimation.positionWinLine", 
-            boardElement, winLineElement, startIdx, endIdx);
+        int cellIndex = row * 5 + col;
+        if (winningCells.Contains(cellIndex))
+        {
+            return "winning";
+        }
+        return "";
     }
 
-    public async ValueTask DisposeAsync()
+    private string GetCellStyle(int row, int col)
+    {
+        return $"grid-row: {row + 1}; grid-column: {col + 1};";
+    }
+
+    private string GetSymbolClass(int row, int col)
+    {
+        var symbol = board[row, col];
+        var baseClass = symbol == 'X' ? "x" : "o";
+        return $"{baseClass} show";
+    }
+
+    private string GetWinLineStyle()
+    {
+        if (winningCells.Length == 0) return "";
+
+        var firstCell = winningCells[0];
+        var lastCell = winningCells[winningCells.Length - 1];
+        
+        int firstRow = firstCell / 5;
+        int firstCol = firstCell % 5;
+        int lastRow = lastCell / 5;
+        int lastCol = lastCell % 5;
+
+        var cellSize = 52;
+        var gap = 3;
+
+        var startX = 30 + firstCol * (cellSize + gap) + cellSize / 2;
+        var startY = 30 + firstRow * (cellSize + gap) + cellSize / 2;
+        var endX = 30 + lastCol * (cellSize + gap) + cellSize / 2;
+        var endY = 30 + lastRow * (cellSize + gap) + cellSize / 2;
+
+        var width = Math.Abs(endX - startX);
+        var height = Math.Abs(endY - startY);
+
+        if (winDirection == "horizontal")
+        {
+            return $"left: {Math.Min(startX, endX) - width/2}px; top: {startY - 3}px; --line-width: {width}px; --line-height: 6px; width: {width}px; height: 6px;";
+        }
+        else if (winDirection == "vertical")
+        {
+            return $"left: {startX - 3}px; top: {Math.Min(startY, endY) - height/2}px; --line-width: 6px; --line-height: {height}px; width: 6px; height: {height}px;";
+        }
+        else
+        {
+            var length = Math.Sqrt(width * width + height * height);
+            var angle = Math.Atan2(endY - startY, endX - startX) * 180 / Math.PI;
+            
+            return $"left: {startX}px; top: {startY - 3}px; --line-width: {length}px; --line-height: 6px; width: {length}px; height: 6px; transform-origin: 0 50%; transform: rotate({angle}deg);";
+        }
+    }
+
+    public void Dispose()
     {
         animationTimer?.Dispose();
-        await JSRuntime.InvokeVoidAsync("eval", "delete window.ticTacAnimation");
-    }
-
-    private class CellData
-    {
-        public string Id { get; } = Guid.NewGuid().ToString();
-        public int Index { get; }
-        public string? Symbol { get; set; }
-        public bool IsAnimating { get; set; }
-
-        public CellData(int index)
-        {
-            Index = index;
-        }
     }
 }

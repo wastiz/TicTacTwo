@@ -4,6 +4,7 @@
 @using Domain
 @using Shared.GameSessionDtos
 @using Client.Components.Game
+@using Shared
 @using Shared.GameDtos
 @using Shared.GameStateDtos
 @inject HttpClient Http
@@ -22,36 +23,38 @@ else
         {
             <div class="text-center">
                 <h1>It's a draw</h1>
-                <button class="btn btn-primary" @onclick="OpenSaveModal">Save and back to Menu</button>
+                <button class="btn btn-primary" @onclick="HandleOpenSaveModal">Save and back to Menu</button>
             </div>
         }
         else if (GameSession.GameState.Win == 1 || GameSession.GameState.Win == 2)
         {
             <div class="text-center">
                 <h1>Player @GameSession.GameState.Win wins!</h1>
-                <button class="btn btn-primary" @onclick="OpenSaveModal">Save and back to Menu</button>
+                <button class="btn btn-primary" @onclick="HandleOpenSaveModal">Save and back to Menu</button>
             </div>
         }
         else
         {
             <div class="row">
-                <div class="col-lg-8">
-                    <h4>Player @GameSession.GameState.PlayerNumber is thinking</h4>
+                <div class="col-12 col-lg-8">
+                    <div class="d-flex flex-row justify-content-between">
+                        <h4>Player @GameSession.GameState.PlayerNumber 's turn</h4>
+                        <p class="text-danger">@ErrorMessage</p>
+                    </div>
                     <GameBoard GameState="@GameSession.GameState"
                                GameConfig="@GameSession.GameConfiguration"
-                               ShowMovementOptions="GameSession.GameState.Player1Options || GameSession.GameState.Player2Options"
-                               OnCellClick="HandleCellClick"
-                               OnMoveBoard="HandleMoveBoard" />
+                               ShowMovementOptions="GameSession.GameState.PlayerNumber == 1 && GameSession.GameState.Player1Abilities || GameSession.GameState.PlayerNumber == 2 && GameSession.GameState.Player2Abilities"
+                               OnCellClick="HandlePlaceChip"
+                               OnMoveBoard="HandleMoveBoard"
+                               OnMoveChip="HandleMoveChip"
+                               />
                 </div>
-                <div class="col-lg-4 mt-4">
-                    <button class="btn btn-primary mb-3" @onclick="OpenSaveModal">Save and back to Menu</button>
-                    <div>
-                        <h5>Rules & Guide</h5>
-                        <p>The goal is to score @GameSession.GameConfiguration.WinCondition chips in a row</p>
-                        <p>Both players have @GameSession.GameConfiguration.Player1Chips chips</p>
-                        <p>You can act only inside the red-bordered grid</p>
-                        <p>To unlock moves you must place @GameSession.GameConfiguration.OptionsAfterNMoves chips</p>
-                    </div>
+                <div class="col-12 col-lg-4 mt-4">
+                    <GameInfo
+                        GameConfig="@GameSession.GameConfiguration"
+                        GameState="@GameSession.GameState"
+                        OnOpenSaveModal="HandleOpenSaveModal"
+                        />
                 </div>
             </div>
         }
@@ -65,7 +68,7 @@ else
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Would you like to give a name for save?</h5>
-                    <button type="button" class="btn-close" @onclick="CloseSaveModal"></button>
+                    <button type="button" class="btn-close" @onclick="HandleCloseSaveModal"></button>
                 </div>
                 <div class="modal-body">
                     <input type="text" class="form-control" @bind="SaveName" placeholder="Type name..." />
@@ -84,6 +87,7 @@ else
     private GameSessionDto GameSession;
     private bool showSaveModal = false;
     private string SaveName = string.Empty;
+    private string ErrorMessage = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -97,56 +101,122 @@ else
         GameSession = await Http.GetFromJsonAsync<GameSessionDto>($"http://localhost:5192/api/game-sessions/{SessionId}");
     }
     
-    private async Task HandleCellClick((int x, int y) pos)
+    private async Task HandlePlaceChip(PlaceChipRequest request)
     {
-        var token = await localStorage.GetItemAsync<string>("accessToken");
-
-        if (token != null)
+        ErrorMessage = string.Empty;
+    
+        try
         {
-            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var token = await localStorage.GetItemAsync<string>("accessToken");
+            if (token != null)
+            {
+                Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+        
+            var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/place-chip", request);
+        
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadFromJsonAsync<GameStateDto>();
+                if (data is not null)
+                {
+                    GameSession.GameState = data;
+                }
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errorContent = await response.Content.ReadFromJsonAsync<Response>();
+                ErrorMessage = errorContent?.Message ?? "Invalid request";
+            }
+            else
+            {
+                ErrorMessage = $"Error: {response.StatusCode}";
+            }
         }
-        
-        Console.WriteLine($"{pos.x}, {pos.y}");
-        
-        var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/click", new CellClickRequest() { X = pos.x, Y = pos.y });
-        var data = await response.Content.ReadFromJsonAsync<GameStateDto>();
-        if (data is not null)
+        catch (Exception ex)
         {
-          GameSession.GameState = data;
+            ErrorMessage = $"Request failed: {ex.Message}";
         }
+    
+        StateHasChanged();
     }
 
-    private async Task HandleMoveBoard(string direction)
+    private async Task HandleMoveBoard(MoveBoardRequest request)
     {
-        var token = await localStorage.GetItemAsync<string>("accessToken");
-
-        if (token != null)
+        ErrorMessage = string.Empty;
+        try
         {
-            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var token = await localStorage.GetItemAsync<string>("accessToken");
+            if (token != null)
+            {
+                Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+        
+            var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/move-board", request);
+        
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadFromJsonAsync<GameStateDto>();
+                if (data is not null)
+                {
+                    GameSession.GameState = data;
+                }
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errorContent = await response.Content.ReadFromJsonAsync<Response>();
+                ErrorMessage = errorContent?.Message ?? "Invalid request";
+            }
+            else
+            {
+                ErrorMessage = $"Error: {response.StatusCode}";
+            }
+            
         }
-      var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/move", new MoveRequest() { Direction = direction });
-      var data = await response.Content.ReadFromJsonAsync<GameStateDto>();
-      if (data is not null)
-      {
-        GameSession.GameState = data;
-      }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Network error: {ex.Message}";
+        }
+        StateHasChanged();
     }
 
-    private async Task MoveChip(int startX, int startY, int endX, int endY)
+    private async Task HandleMoveChip(MoveChipRequest request)
     {
-        var token = await localStorage.GetItemAsync<string>("accessToken");
-
-        if (token != null)
+        ErrorMessage = string.Empty;
+        try
         {
-            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        }
+            var token = await localStorage.GetItemAsync<string>("accessToken");
+            if (token != null)
+            {
+                Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
         
-      var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/move-chip", new { startX, startY, endX, endY });
-      var data = await response.Content.ReadFromJsonAsync<GameStateDto>();
-      if (data is not null)
-      {
-        GameSession.GameState = data;
-      }
+            var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/move-chip", request);
+        
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadFromJsonAsync<GameStateDto>();
+                if (data is not null)
+                {
+                    GameSession.GameState = data;
+                }
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errorContent = await response.Content.ReadFromJsonAsync<Response>();
+                ErrorMessage = errorContent?.Message ?? "Invalid request";
+            }
+            else
+            {
+                ErrorMessage = $"Error: {response.StatusCode}";
+            }
+            
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Network error: {ex.Message}";
+        }
+        StateHasChanged();
     }
 
     private async Task SaveGame()
@@ -158,10 +228,10 @@ else
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         
-      await Http.PostAsJsonAsync("http://localhost:5192/api/game/save", new { SessionId, Name = SaveName });
-      Navigation.NavigateTo("/");
+        await Http.PostAsJsonAsync($"http://localhost:5192/api/game-sessions/{SessionId}/name", new RenameDto() { Name = SaveName });
+        Navigation.NavigateTo("/");
     }
 
-    private void OpenSaveModal() => showSaveModal = true;
-    private void CloseSaveModal() => showSaveModal = false;
+    private void HandleOpenSaveModal() => showSaveModal = true;
+    private void HandleCloseSaveModal() => showSaveModal = false;
 }

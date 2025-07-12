@@ -1,4 +1,4 @@
-﻿using DAL.Contracts.DTO;
+﻿using Shared;
 using Shared.GameConfigDtos;
 
 namespace DAL.Contracts
@@ -7,7 +7,7 @@ namespace DAL.Contracts
     {
         Task<List<GameConfigDto>> GetAllUserConfigDto(string userId);
         Task<GameConfigDto> GetConfigurationById(string id);
-        Task<Response> CreateGameConfiguration(string userId, GameConfigDto configDto);
+        Task<Response<GameConfigDto>> CreateGameConfiguration(string userId, GameConfigDto configDto);
         Task<Response> UpdateConfiguration(string configId, GameConfigDto gameConfiguration);
         Task<Response> DeleteConfiguration(string configId);
     }

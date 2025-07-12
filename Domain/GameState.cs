@@ -11,7 +11,6 @@ public class GameState
 
   public string BoardJson { get; set; } = default!;
   public string ChipsLeftJson { get; set; } = default!;
-  public string PlayersMovesJson { get; set; } = default!;
 
   [NotMapped]
   public int[][] Board
@@ -27,17 +26,10 @@ public class GameState
     set => ChipsLeftJson = JsonSerializer.Serialize(value);
   }
 
-  [NotMapped]
-  public int[] PlayersMoves
-  {
-    get => JsonSerializer.Deserialize<int[]>(PlayersMovesJson)!;
-    set => PlayersMovesJson = JsonSerializer.Serialize(value);
-  }
-
   public int GridX { get; set; }
   public int GridY { get; set; }
   public int PlayerNumber { get; set; }
-  public bool Player1Options { get; set; }
-  public bool Player2Options { get; set; }
+  public bool Player1Abilities { get; set; }
+  public bool Player2Abilities { get; set; }
   public int Win { get; set; }
 }

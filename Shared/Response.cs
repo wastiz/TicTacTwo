@@ -1,4 +1,4 @@
-﻿namespace DAL.Contracts.DTO;
+﻿namespace Shared;
 
 public class Response
 {

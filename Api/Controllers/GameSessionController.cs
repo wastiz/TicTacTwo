@@ -67,11 +67,11 @@ public class GameSessionController : ControllerBase
         _sessionRepository.SaveSecondPlayer(sessionId, userId);
         return Ok();
     }
-
+    
     [HttpPost("{sessionId}/name")]
-    public IActionResult SaveSessionName(string sessionId, [FromBody] string name)
+    public IActionResult SaveSessionName(string sessionId, [FromBody] RenameDto dto)
     {
-        _sessionRepository.SaveSessionName(sessionId, name);
+        _sessionRepository.SaveSessionName(sessionId, dto.Name);
         return Ok();
     }
 

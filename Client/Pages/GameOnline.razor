@@ -7,19 +7,20 @@
 @using Shared.GameSessionDtos
 @using Shared.GameStateDtos
 @using Client.Components.Game
+@using Shared.GameDtos
 @using Domain
 @attribute [Authorize]
 @inject IJSRuntime JSRuntime
-@inject NavigationManager NavigationManager
 @inject HttpClient Http
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager Navigation
 
 <div class="container mt-4">
     @if (GameSession.GameState.Win == 3)
     {
         <div class="col-12 d-flex flex-column align-items-center justify-content-center">
             <h1 class="mb-3">It's a draw</h1>
-            <button class="btn btn-primary" @onclick="ShowSaveModal">
+            <button class="btn btn-primary" @onclick="HandleOpenSaveModal">
                 Save and back to Menu
             </button>
         </div>
@@ -28,7 +29,7 @@
     {
         <div class="col-12 d-flex flex-column align-items-center justify-content-center">
             <h1>Player @GameSession.GameState.Win wins!</h1>
-            <button class="btn btn-primary" @onclick="ShowSaveModal">
+            <button class="btn btn-primary" @onclick="HandleOpenSaveModal">
                 Save and back to Menu
             </button>
         </div>
@@ -41,8 +42,8 @@
                 {
                     <div id="waiting-screen">
                         <h1>Waiting for a player to join...</h1>
+                        <p id="waiting-message">Send id below to a player</p>
                         <p><strong>@SessionId</strong></p>
-                        <p id="waiting-message">Waiting for another player to join...</p>
                     </div>
                 }
                 else
@@ -54,69 +55,45 @@
 
                         <GameBoard GameState="@GameSession.GameState"
                                    GameConfig="@GameSession.GameConfiguration"
-                                   ShowMovementOptions="GameSession.GameState.Player1Options || GameSession.GameState.Player2Options"
-                                   OnCellClick="HandleCellClick"
-                                   OnMoveBoard="HandleMoveBoard" />
+                                   ShowMovementOptions="GameSession.GameState.Player1Abilities || GameSession.GameState.Player2Abilities"
+                                   OnCellClick="HandlePlaceChip"
+                                   OnMoveBoard="HandleMoveBoard"
+                                   OnMoveChip="HandleMoveChip"
+                                   />
                     </div>
                 }
             </div>
 
             <div class="col-12 col-lg-4 mt-5">
-                <button class="btn btn-primary mb-2" @onclick="ShowSaveModal" 
-                        disabled="@(UserNumber == 2)">
-                    Save and back to Menu
-                </button>
-
-                <div class="accordion accordion-flush" id="accordionRules">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" 
-                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
-                                <b>Rules & Guide</b>
-                            </button>
-                        </h2>
-                        <div id="flush-collapseOne" class="accordion-collapse collapse" 
-                             data-bs-parent="#accordionRules">
-                            <div class="accordion-body">
-                                The goal is to score @GameSession.GameConfiguration.WinCondition chips in a row
-                                <br>
-                                Both players have @GameSession.GameConfiguration.Player1Chips chips to make this
-                                <br>
-                                You can place/move chips only in grid @GameSession.GameConfiguration.MovableBoardWidth x @GameSession.GameConfiguration.MovableBoardHeight (it's bordered by red line)
-                                <br>
-                                To move board or your chip you have to place @GameSession.GameConfiguration.OptionsAfterNMoves chips firstly
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <GameInfo
+                    GameConfig="@GameSession.GameConfiguration"
+                    GameState="@GameSession.GameState"
+                    OnOpenSaveModal="HandleOpenSaveModal"
+                />
             </div>
         </div>
     }
 </div>
 
-<!-- Save Game Modal -->
-@if (ShowModal)
+@if (showSaveModal)
 {
-    <div class="modal-backdrop show"></div>
-    <div class="modal show d-block" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Would you like to give a name for save?</h5>
-                    <button type="button" class="btn-close" @onclick="CloseSaveModal"></button>
-                </div>
-                <div class="modal-body">
-                    <input @bind="SaveName" class="form-control" placeholder="Type here..." />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @onclick="CloseSaveModal">Cancel</button>
-                    <button type="button" class="btn btn-primary" @onclick="SaveGame">Save</button>
-                </div>
+<div class="modal show d-block" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Would you like to give a name for save?</h5>
+                <button type="button" class="btn-close" @onclick="HandleCloseSaveModal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" @bind="SaveName" placeholder="Type name..." />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" @onclick="SaveGame">Continue</button>
             </div>
         </div>
     </div>
+</div>
 }
-
 @code {
     [Parameter] public string SessionId { get; set; }
     
@@ -124,7 +101,7 @@
     private ElementReference BoardElement;
     private HubConnection HubConnection;
     private bool GameStarted = false;
-    private bool ShowModal = false;
+    private bool showSaveModal = false;
     private string SaveName = string.Empty;
     private string UserId = string.Empty;
     private int UserNumber = 0;
@@ -192,46 +169,37 @@
         StateHasChanged();
     }
 
-    private async Task HandleCellClick((int x, int y) pos)
+    private async Task HandlePlaceChip(PlaceChipRequest request)
     {
         if (GameSession.GameState.Win > 0) return;
 
-        await HubConnection.InvokeAsync("PlaceChip", SessionId, UserId, pos.x, pos.y);
+        await HubConnection.InvokeAsync("PlaceChip", SessionId, UserId, request);
     }
 
-    private async Task HandleMoveBoard(string direction)
+    private async Task HandleMoveBoard(MoveBoardRequest request)
     {
-        await HubConnection.InvokeAsync("MoveBoard", SessionId, UserId, direction);
+        await HubConnection.InvokeAsync("MoveBoard", SessionId, UserId, request);
+    }
+    
+    private async Task HandleMoveChip(MoveChipRequest request)
+    {
+        await HubConnection.InvokeAsync("MoveBoard", SessionId, UserId, request);
     }
 
-    private void ShowSaveModal()
-    {
-        ShowModal = true;
-        StateHasChanged();
-    }
-
-    private void CloseSaveModal()
-    {
-        ShowModal = false;
-        StateHasChanged();
-    }
+    private void HandleOpenSaveModal() => showSaveModal = true;
+    private void HandleCloseSaveModal() => showSaveModal = false;
 
     private async Task SaveGame()
     {
-        var response = await Http.PostAsJsonAsync("/api/game/save", new 
-        { 
-            SessionId, 
-            Name = SaveName,
-        });
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
         
-        if (response.IsSuccessStatusCode)
-        {
-            NavigationManager.NavigateTo("/");
-        }
-        else
-        {
-            await JSRuntime.InvokeVoidAsync("alert", "Error saving game");
-        }
+        await Http.PostAsJsonAsync($"http://localhost:5192/api/game-sessions/{SessionId}/name", new RenameDto() { Name = SaveName });
+        Navigation.NavigateTo("/");
     }
 
     public async ValueTask DisposeAsync()

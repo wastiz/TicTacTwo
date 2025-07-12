@@ -5,16 +5,16 @@
 @using Microsoft.AspNetCore.Authorization
 @using Client.Components.Menu
 @using Shared.GameConfigDtos
-@attribute [Authorize]
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject HttpClient Http
+@inject IHttpClientFactory HttpClientFactory
 
 <PageTitle>Menu</PageTitle>
 
 <div class="container h-100">
   <div class="row left-panel h-100">
-    <div class="col-12 col-sm-12 col-md-4 col-lg-4 d-flex flex-column new-game-section mt-5">
-      <div class="@transitionClass">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex flex-column mt-5 left-menu">
+      <div class="@leftTransitionClass w-100 h-100">
         @switch (currentScreen)
         {
           case MenuScreen.MainOptions:
@@ -36,31 +36,49 @@
             break;
 
           case MenuScreen.GameConfigs:
-            <GameConfigs 
+            <GameConfigs
               OnMainOptions="() => SetScreen(MenuScreen.MainOptions)"
-              ConfigList="@GameConfigs"
-              />
+              ConfigList="@GameConfigs"/>
             break;
         }
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-8 col-lg-8 d-flex align-items-center justify-content-center">
-        Here will be animation
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex align-items-center justify-content-center">
+        @if (currentScreen == MenuScreen.GameConfigs)
+        {
+            <div class="@rightTransitionClass">
+              <CreateConfig 
+                ConfigList="@GameConfigs"
+                OnConfigCreated="async (config) => await HandleConfigCreated(config)"
+                />
+            </div>
+        }
+        else
+        {
+            <Animation></Animation>
+        }
     </div>
   </div>
 </div>
 
 @code {
   private MenuScreen currentScreen = MenuScreen.MainOptions;
-  private string transitionClass = "fade-in";
+  private string leftTransitionClass = "left-fade-in";
+  private string rightTransitionClass = "right-fade-in";
+  
+  private List<GameConfigDto> GameConfigs = new List<GameConfigDto>();
 
   private async Task SetScreen(MenuScreen newScreen)
   {
-    transitionClass = "fade-out";
+    leftTransitionClass = "fade-out";
+    rightTransitionClass = "fade-out";
     StateHasChanged();
-    await Task.Delay(400);
+    
+    await Task.Delay(300);
+    
     currentScreen = newScreen;
-    transitionClass = "fade-in";
+    leftTransitionClass = "left-fade-in";
+    rightTransitionClass = "right-fade-in";
     StateHasChanged();
   }
 
@@ -71,8 +89,6 @@
     LoadGame,
     GameConfigs
   }
-  
-  private List<GameConfigDto> GameConfigs = new List<GameConfigDto>();
 
   protected override async Task OnInitializedAsync()
   {
@@ -82,8 +98,12 @@
     var configs = await Http.GetFromJsonAsync<List<GameConfigDto>>("http://localhost:5192/api/game-configs/user");
     if (configs != null) GameConfigs = configs;
     
-    Console.WriteLine(configs);
+    StateHasChanged();
+  }
 
+  private async Task HandleConfigCreated(GameConfigDto config)
+  {
+    GameConfigs.Add(config);
     StateHasChanged();
   }
 }

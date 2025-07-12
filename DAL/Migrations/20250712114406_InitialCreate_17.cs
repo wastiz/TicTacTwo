@@ -7,7 +7,7 @@
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate_16 : Migration
+    public partial class InitialCreate_17 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,8 +21,27 @@ namespace DAL.Migrations
                 table: "GameSessions");
 
             migrationBuilder.DropColumn(
+                name: "PlayersMovesJson",
+                table: "GameStates");
+
+            migrationBuilder.DropColumn(
                 name: "GameConfigurationId",
                 table: "GameSessions");
+
+            migrationBuilder.RenameColumn(
+                name: "Player2Options",
+                table: "GameStates",
+                newName: "Player2Abilities");
+
+            migrationBuilder.RenameColumn(
+                name: "Player1Options",
+                table: "GameStates",
+                newName: "Player1Abilities");
+
+            migrationBuilder.RenameColumn(
+                name: "OptionsAfterNMoves",
+                table: "GameConfigurations",
+                newName: "AbilitiesAfterNMoves");
 
             migrationBuilder.AlterColumn<string>(
                 name: "GameConfigId",
@@ -36,11 +55,11 @@ namespace DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "GameConfigurations",
-                columns: new[] { "Id", "BoardSizeHeight", "BoardSizeWidth", "CreatedBy", "MovableBoardHeight", "MovableBoardWidth", "Name", "OptionsAfterNMoves", "Player1Chips", "Player2Chips", "UserId", "WinCondition" },
+                columns: new[] { "Id", "AbilitiesAfterNMoves", "BoardSizeHeight", "BoardSizeWidth", "CreatedBy", "MovableBoardHeight", "MovableBoardWidth", "Name", "Player1Chips", "Player2Chips", "UserId", "WinCondition" },
                 values: new object[,]
                 {
-                    { "big-game", 10, 10, null, 5, 5, "Big Game", 3, 6, 6, null, 3 },
-                    { "classic", 5, 5, null, 3, 3, "Classical", 2, 4, 4, null, 3 }
+                    { "big-game", 3, 10, 10, null, 5, 5, "Big Game", 6, 6, null, 3 },
+                    { "classic", 2, 5, 5, null, 3, 3, "Classical", 4, 4, null, 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -77,6 +96,28 @@ namespace DAL.Migrations
                 table: "GameConfigurations",
                 keyColumn: "Id",
                 keyValue: "classic");
+
+            migrationBuilder.RenameColumn(
+                name: "Player2Abilities",
+                table: "GameStates",
+                newName: "Player2Options");
+
+            migrationBuilder.RenameColumn(
+                name: "Player1Abilities",
+                table: "GameStates",
+                newName: "Player1Options");
+
+            migrationBuilder.RenameColumn(
+                name: "AbilitiesAfterNMoves",
+                table: "GameConfigurations",
+                newName: "OptionsAfterNMoves");
+
+            migrationBuilder.AddColumn<string>(
+                name: "PlayersMovesJson",
+                table: "GameStates",
+                type: "text",
+                nullable: false,
+                defaultValue: "");
 
             migrationBuilder.AlterColumn<string>(
                 name: "GameConfigId",

@@ -1,111 +1,241 @@
-﻿    @using Domain
+﻿@using Domain
 @using Shared.GameConfigDtos
 @using Shared.GameStateDtos
-    @inject IJSRuntime JS
+@inject IJSRuntime JS
+@using Microsoft.AspNetCore.Components.Web
+@using Shared.GameDtos
 
-    <div class="d-flex justify-content-center">
-        <div class="board"
-             style="grid-template-columns: repeat(@GameConfig.BoardSizeWidth, var(--cell-size));
-                 grid-template-rows: repeat(@GameConfig.BoardSizeHeight, var(--cell-size));">   
-            @for (int i = 0; i < GameConfig.BoardSizeHeight; i++)
+<div class="d-flex justify-content-center">
+    <div class="board"
+         style="@GetBoardStyle()">   
+        @for (int i = 0; i < GameConfig.BoardSizeHeight; i++)
+        {
+            for (int j = 0; j < GameConfig.BoardSizeWidth; j++)
             {
-                for (int j = 0; j < GameConfig.BoardSizeWidth; j++)
-                {
-                    bool isInsideMovableGrid = i >= GameState.GridY && i < GameState.GridY + GameConfig.MovableBoardHeight && j >= GameState.GridY && j < GameState.GridY + GameConfig.MovableBoardWidth;
-                    int x = i;
-                    int y = j;
+                bool isInsideMovableGrid = i >= GameState.GridY && i < GameState.GridY + GameConfig.MovableBoardHeight && j >= GameState.GridX && j < GameState.GridX + GameConfig.MovableBoardWidth;
+                int x = i;
+                int y = j;
 
-                    <button type="button"
-                            class="btn btn-outline-primary border game-cell"
-                            data-x="@i"
-                            data-y="@j"
-                            data-number="@GameState.Board[i][j]"
-                            id="piece-@i-@j"
-                            @onclick="() => OnCellClick.InvokeAsync((x, y))"
-                            disabled="@(!isInsideMovableGrid)">
-                        @if (GameState.Board[i][j] == 1)
-                        {
-                            @:X
-                        }
-                        else if (GameState.Board[i][j] == 2)
-                        {
-                            @:O
-                        }
-                    </button>
-                }
-            }
-
-            <div class="movable-grid" style="width:@(GameConfig.MovableBoardWidth * 80)px;height:@(GameConfig.MovableBoardHeight * 80)px;left:@(GameState.GridX * 80)px;top:@(GameState.GridY * 80)px;"></div>
-
-            @foreach (var direction in Directions)
-            {
-                var (label, className) = direction.Value;
-                <button class="move-btn btn btn-outline-primary border @className game-cell"
-                        data-direction="@direction.Key"
-                        disabled="@(!ShowMovementOptions)"
-                        @onclick="() => OnMoveBoard.InvokeAsync(direction.Key)">
-                    <i class="fa-regular fa-arrow-@label"></i>
+                <button type="button"
+                        class="btn btn-outline-primary border game-cell @GetCellCssClass(i, j)"
+                        data-x="@i"
+                        data-y="@j"
+                        data-number="@GameState.Board[i][j]"
+                        id="piece-@i-@j"
+                        @onclick="() => OnCellClickInternal(x, y)"
+                        disabled="@(!isInsideMovableGrid)">
+                    @if (GameState.Board[i][j] == 1)
+                    {
+                        @:X
+                    }
+                    else if (GameState.Board[i][j] == 2)
+                    {
+                        @:O
+                    }
                 </button>
             }
-        </div>
+        }
+
+        <div class="movable-grid" style="@GetMovableGridStyle()"></div>
+
+        @foreach (var direction in Directions)
+        {
+            var (label, className) = direction.Value;
+            <button class="move-btn btn btn-outline-primary border @className game-cell"
+                    data-direction="@direction.Key"
+                    disabled="@(!ShowMovementOptions)"
+                    @onclick="() => OnMoveBoard.InvokeAsync(new MoveBoardRequest { Direction = direction.Key })">
+                <i class="fas fa-@GetArrowIcon(direction.Key) arrow-@direction.Key"></i>
+            </button>
+        }
     </div>
+</div>
 
-    @code {
-        [Parameter]
-        public GameStateDto GameState { get; set; }
-        
-        [Parameter]
-        public GameConfigDto GameConfig { get; set; }
+@code {
+    [Parameter]
+    public GameStateDto GameState { get; set; }
+    
+    [Parameter]
+    public GameConfigDto GameConfig { get; set; }
 
-        [Parameter]
-        public bool ShowMovementOptions { get; set; }
+    [Parameter]
+    public bool ShowMovementOptions { get; set; }
 
-        [Parameter]
-        public EventCallback<(int x, int y)> OnCellClick { get; set; }
+    [Parameter]
+    public EventCallback<PlaceChipRequest> OnCellClick { get; set; }
 
-        [Parameter]
-        public EventCallback<string> OnMoveBoard { get; set; }
-        
-        private string GetCellContent(int x, int y)
+    [Parameter]
+    public EventCallback<MoveBoardRequest> OnMoveBoard { get; set; }
+    
+    [Parameter]
+    public EventCallback<MoveChipRequest> OnMoveChip { get; set; }
+    
+    private int? SelectedPieceX;
+    private int? SelectedPieceY;
+    
+    private string GetCellContent(int x, int y)
+    {
+        return GameState.Board[x][y] switch
         {
-            return GameState.Board[x][y] switch
-            {
-                1 => "X",
-                2 => "O",
-                _ => ""
-            };
-        }
-        
-        private int GetCellSize()
-        {
-            return 80;
-        }
-
-        private string GetBoardStyle()
-        {
-            var boardSize = GameConfig.BoardSizeWidth * GetCellSize();
-            return $"position: relative; width: {boardSize}px;";
-        }
-
-        private string GetMovableGridStyle()
-        {
-            var cellSize = GetCellSize();
-            return $"width: {GameConfig.MovableBoardWidth * cellSize}px; " +
-                   $"height: {GameConfig.MovableBoardHeight * cellSize}px; " +
-                   $"border: 3px solid red; position: absolute; " +
-                   $"pointer-events: none; left: {GameState.GridX * cellSize}px; " +
-                   $"top: {GameState.GridY * cellSize}px;";
-        }
-
-        private Dictionary<string, (string icon, string className)> Directions = new()
-        {
-            ["up"] = ("up", "move-up"),
-            ["down"] = ("down", "move-down"),
-            ["left"] = ("left", "move-left"),
-            ["right"] = ("right", "move-right"),
-            ["up-left"] = ("up-left", "move-up-left"),
-            ["up-right"] = ("up-right", "move-up-right"),
-            ["down-left"] = ("down-left", "move-down-left"),
-            ["down-right"] = ("down-right", "move-down-right"),
+            1 => "X",
+            2 => "O",
+            _ => ""
         };
     }
+    
+    private int GetCellSize()
+    {
+        int maxBoardSize = Math.Max(GameConfig.BoardSizeWidth, GameConfig.BoardSizeHeight);
+    
+        return maxBoardSize switch
+        {
+            <= 7 => 80,
+            <= 8 => 60,
+            <= 10 => 40,
+            _ => 30 
+        };
+    }
+    
+    private string GetArrowIcon(string direction)
+    {
+        return direction switch
+        {
+            "up" => "arrow-up",
+            "down" => "arrow-down", 
+            "left" => "arrow-left",
+            "right" => "arrow-right",
+            "up-left" => "arrow-up",
+            "up-right" => "arrow-up",
+            "down-left" => "arrow-up",
+            "down-right" => "arrow-up",
+            _ => "arrow-up"
+        };
+    }
+
+    private int GetFontSize()
+    {
+        int cellSize = GetCellSize();
+        return cellSize == 80 ? 24 : 18;
+    }
+
+    private string GetBoardStyle()
+    {
+        var cellSize = GetCellSize();
+        var fontSize = GetFontSize();
+        
+        return $"--cell-size: {cellSize}px; " +
+               $"--font-size: {fontSize}px; " +
+               $"--negative-cell-size: -{cellSize}px; " +
+               $"grid-template-columns: repeat({GameConfig.BoardSizeWidth}, {cellSize}px); " +
+               $"grid-template-rows: repeat({GameConfig.BoardSizeHeight}, {cellSize}px);";
+    }
+
+    private string GetMovableGridStyle()
+    {
+        var cellSize = GetCellSize();
+        return $"width: {GameConfig.MovableBoardWidth * cellSize}px; " +
+               $"height: {GameConfig.MovableBoardHeight * cellSize}px; " +
+               $"left: {GameState.GridX * cellSize}px; " +
+               $"top: {GameState.GridY * cellSize}px;";
+    }
+
+    private Dictionary<string, (string icon, string className)> Directions = new()
+    {
+        ["up"] = ("up", "move-up"),
+        ["down"] = ("down", "move-down"),
+        ["left"] = ("left", "move-left"),
+        ["right"] = ("right", "move-right"),
+        ["up-left"] = ("up-left", "move-up-left"),
+        ["up-right"] = ("up-right", "move-up-right"),
+        ["down-left"] = ("down-left", "move-down-left"),
+        ["down-right"] = ("down-right", "move-down-right"),
+    };
+    
+    private async Task OnCellClickInternal(int x, int y)
+    {
+        var cellValue = GameState.Board[x][y];
+        
+        if (SelectedPieceX == null || SelectedPieceY == null)
+        {
+            if (CanSelectPiece(x, y))
+            {
+                SelectedPieceX = x;
+                SelectedPieceY = y;
+                StateHasChanged();
+            }
+            else
+            {
+                await OnCellClick.InvokeAsync(new PlaceChipRequest() {X = x, Y = y});
+            }
+        }
+        else
+        {
+            if (x == SelectedPieceX && y == SelectedPieceY)
+            {
+                SelectedPieceX = null;
+                SelectedPieceY = null;
+                StateHasChanged();
+            }
+            else if (CanSelectPiece(x, y))
+            {
+                SelectedPieceX = x;
+                SelectedPieceY = y;
+                StateHasChanged();
+            }
+            else if (cellValue == 0)
+            {
+                await OnMoveChip.InvokeAsync(new MoveChipRequest
+                {
+                    StartX = SelectedPieceX.Value,
+                    StartY = SelectedPieceY.Value,
+                    EndX = x,
+                    EndY = y
+                });
+                
+                SelectedPieceX = null;
+                SelectedPieceY = null;
+                StateHasChanged();
+            }
+            else
+            {
+                SelectedPieceX = null;
+                SelectedPieceY = null;
+                StateHasChanged();
+                await OnCellClick.InvokeAsync(new PlaceChipRequest() {X = x, Y = y});
+            }
+        }
+    }
+    
+    private bool CanSelectPiece(int x, int y)
+    {
+        var cellValue = GameState.Board[x][y];
+        return IsInsideMovableGrid(x, y) &&
+               ((GameState.PlayerNumber == 1 && cellValue == 1) || 
+                (GameState.PlayerNumber == 2 && cellValue == 2));
+    }
+    
+    private string GetCellCssClass(int x, int y)
+    {
+        var classes = new List<string>();
+        
+        if (SelectedPieceX == x && SelectedPieceY == y)
+            classes.Add("selected-piece");
+        
+        if (SelectedPieceX != null && SelectedPieceY != null && 
+            GameState.Board[x][y] == 0 && IsInsideMovableGrid(x, y))
+            classes.Add("valid-move-target");
+        
+        if (CanSelectPiece(x, y))
+            classes.Add("selectable-piece");
+        
+        return string.Join(" ", classes);
+    }
+
+    private bool IsInsideMovableGrid(int x, int y)
+    {
+        return x >= GameState.GridY &&
+               x < GameState.GridY + GameConfig.MovableBoardHeight &&
+               y >= GameState.GridX &&
+               y < GameState.GridX + GameConfig.MovableBoardWidth;
+    }
+}

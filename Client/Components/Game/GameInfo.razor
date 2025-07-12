@@ -1,0 +1,75 @@
+﻿@using Domain
+@using Shared.GameConfigDtos
+@using Shared.GameStateDtos
+<button class="btn btn-primary mb-3" @onclick="OnOpenSaveModal">Save and back to Menu</button>
+<div class="chips-container mb-2">
+    <b>Player 1 Chips: </b>
+    @for (int i = 0; i < GameState.ChipsLeft[1]; i++)
+    {
+    <span class="chip"><b style="color: red">X </b></span>
+    }
+</div>
+<div class="chips-container mb-3">
+    <b>Player 2 Chips: </b>
+    @for (int i = 0; i < GameState.ChipsLeft[2]; i++)
+    {
+    <span class="chip"><b style="color: blue">O </b></span>
+    }
+</div>
+<div class="accordion" id="gameAccordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRules">
+                Rules & Guide
+            </button>
+        </h2>
+        <div id="collapseRules" class="accordion-collapse collapse show" data-bs-parent="#gameAccordion">
+            <div class="accordion-body">
+                <p>The goal is to score @GameConfig.WinCondition chips in a row</p>
+                <p>Both players have @GameConfig.Player1Chips chips</p>
+                <p>You can act only inside the red-bordered grid</p>
+                <p>To unlock abilities you must place @GameConfig.AbilitiesAfterNMoves chips</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMoveBoard">
+                How to move red board?
+            </button>
+        </h2>
+        <div id="collapseMoveBoard" class="accordion-collapse collapse" data-bs-parent="#gameAccordion">
+            <div class="accordion-body">
+                <p>Place @GameConfig.AbilitiesAfterNMoves chips at first</p>
+                <p>Then you will be able to move board by arrows around the board</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMoveChip">
+                How to move chip?
+            </button>
+        </h2>
+        <div id="collapseMoveChip" class="accordion-collapse collapse" data-bs-parent="#gameAccordion">
+            <div class="accordion-body">
+                <p>Place @GameConfig.AbilitiesAfterNMoves chips at first</p>
+                <p>Then you will be able to move YOUR OWN chip</p>
+                <p>Click on your chip and then select new position for it</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] 
+    public GameStateDto GameState { get; set; }
+    
+    [Parameter]
+    public GameConfigDto GameConfig { get; set; }
+    
+    [Parameter]
+    public EventCallback OnOpenSaveModal { get; set; }
+}

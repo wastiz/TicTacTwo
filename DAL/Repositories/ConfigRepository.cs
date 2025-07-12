@@ -1,7 +1,7 @@
 ﻿using DAL.Contracts;
-using DAL.Contracts.DTO;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Shared;
 using Shared.GameConfigDtos;
 
 namespace DAL
@@ -31,7 +31,7 @@ namespace DAL
                     Player1Chips = gc.Player1Chips,
                     Player2Chips = gc.Player2Chips,
                     WinCondition = gc.WinCondition,
-                    OptionsAfterNMoves = gc.OptionsAfterNMoves
+                    AbilitiesAfterNMoves = gc.AbilitiesAfterNMoves
                 })
                 .ToListAsync();
         }
@@ -53,11 +53,11 @@ namespace DAL
                 Player1Chips = config.Player1Chips,
                 Player2Chips = config.Player2Chips,
                 WinCondition = config.WinCondition,
-                OptionsAfterNMoves = config.OptionsAfterNMoves
+                AbilitiesAfterNMoves = config.AbilitiesAfterNMoves
             };
         }
 
-        public async Task<Response> CreateGameConfiguration(string userId, GameConfigDto configDtoDto)
+        public async Task<Response<GameConfigDto>> CreateGameConfiguration(string userId, GameConfigDto configDtoDto)
         {
             try
             {
@@ -73,17 +73,34 @@ namespace DAL
                     Player1Chips = configDtoDto.Player1Chips,
                     Player2Chips = configDtoDto.Player2Chips,
                     WinCondition = configDtoDto.WinCondition,
-                    OptionsAfterNMoves = configDtoDto.OptionsAfterNMoves
+                    AbilitiesAfterNMoves = configDtoDto.AbilitiesAfterNMoves
                 };
 
                 await _context.GameConfigurations.AddAsync(config);
                 await _context.SaveChangesAsync();
 
-                return Response.Ok("Game configuration created");
+                return new Response<GameConfigDto>()
+                {
+                    Success = true,
+                    Message = "Game configuration created successfully.",
+                    Data = new GameConfigDto
+                    {
+                        Id = config.Id,
+                        Name = configDtoDto.Name,
+                        BoardSizeWidth = configDtoDto.BoardSizeWidth,
+                        BoardSizeHeight = configDtoDto.BoardSizeHeight,
+                        MovableBoardWidth = configDtoDto.MovableBoardWidth,
+                        MovableBoardHeight = configDtoDto.MovableBoardHeight,
+                        Player1Chips = configDtoDto.Player1Chips,
+                        Player2Chips = configDtoDto.Player2Chips,
+                        WinCondition = configDtoDto.WinCondition,
+                        AbilitiesAfterNMoves = configDtoDto.AbilitiesAfterNMoves
+                    }
+                };
             }
             catch (Exception ex)
             {
-                return Response.Fail($"Error creating game configuration: {ex.Message}");
+                return Response<GameConfigDto>.Fail($"Error creating game configuration: {ex.Message}");
             }
         }
 
@@ -103,7 +120,7 @@ namespace DAL
             existingConfig.Player1Chips = dto.Player1Chips;
             existingConfig.Player2Chips = dto.Player2Chips;
             existingConfig.WinCondition = dto.WinCondition;
-            existingConfig.OptionsAfterNMoves = dto.OptionsAfterNMoves;
+            existingConfig.AbilitiesAfterNMoves = dto.AbilitiesAfterNMoves;
 
             await _context.SaveChangesAsync();
             return Response.Ok("Configuration updated");

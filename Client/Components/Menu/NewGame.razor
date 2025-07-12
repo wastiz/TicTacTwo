@@ -13,7 +13,7 @@
 
 <EditForm Model="@_gameModel" OnValidSubmit="HandleValidSubmit" class="container h-100 d-flex flex-column">
     <div class="row">
-        <div class="col-3 mb-5">
+        <div class="col-3 mb-4">
             <button type="button" @onclick="OnMainOptions" class="btn btn-primary">Back</button>
         </div>
     </div>
@@ -137,7 +137,7 @@
                 <ul>
                     <li>Board: @config.BoardSizeWidth x @config.BoardSizeHeight</li>
                     <li>Win condition: @config.WinCondition in a row</li>
-                    <li>Options after @config.OptionsAfterNMoves chips are placed</li>
+                    <li>Options after @config.AbilitiesAfterNMoves chips are placed</li>
                 </ul>
                 }
                 }

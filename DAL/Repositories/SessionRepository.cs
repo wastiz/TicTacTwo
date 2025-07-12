@@ -58,12 +58,11 @@ public class SessionRepository : ISessionRepository
         {
             Board = board,
             ChipsLeft = new int[] { 0, config.Player1Chips, config.Player2Chips },
-            PlayersMoves = new int[] { 0, 0, 0 },
             GridX = (config.BoardSizeWidth - config.MovableBoardWidth) / 2,
             GridY = (config.BoardSizeHeight - config.MovableBoardHeight) / 2,
             PlayerNumber = 1,
-            Player1Options = false,
-            Player2Options = false,
+            Player1Abilities = false,
+            Player2Abilities = false,
             Win = 0
         };
         
@@ -113,19 +112,18 @@ public class SessionRepository : ISessionRepository
                 Player1Chips = session.GameConfiguration.Player1Chips,
                 Player2Chips = session.GameConfiguration.Player2Chips,
                 WinCondition = session.GameConfiguration.WinCondition,
-                OptionsAfterNMoves = session.GameConfiguration.OptionsAfterNMoves
+                AbilitiesAfterNMoves = session.GameConfiguration.AbilitiesAfterNMoves
             },
             GameState = new GameStateDto
             {
                 Id = session.GameState.Id,
                 Board = session.GameState.Board,
                 ChipsLeft = session.GameState.ChipsLeft,
-                PlayersMoves = session.GameState.PlayersMoves,
                 GridX = session.GameState.GridX,
                 GridY = session.GameState.GridY,
                 PlayerNumber = session.GameState.PlayerNumber,
-                Player1Options = session.GameState.Player1Options,
-                Player2Options = session.GameState.Player2Options,
+                Player1Abilities = session.GameState.Player1Abilities,
+                Player2Abilities = session.GameState.Player2Abilities,
                 Win = session.GameState.Win
             },
             Player1Id = session.Player1Id,
@@ -154,6 +152,8 @@ public class SessionRepository : ISessionRepository
             .Where(session => session.Player1Id == userId)
             .Include(s => s.GameConfiguration)
             .Include(s => s.GameState)
+            .Include(s => s.Player1)
+            .Include(s => s.Player2)
             .ToList();
 
         var result = new List<GameSessionDto>();
@@ -181,25 +181,24 @@ public class SessionRepository : ISessionRepository
                     Player1Chips = session.GameConfiguration.Player1Chips,
                     Player2Chips = session.GameConfiguration.Player2Chips,
                     WinCondition = session.GameConfiguration.WinCondition,
-                    OptionsAfterNMoves = session.GameConfiguration.OptionsAfterNMoves
+                    AbilitiesAfterNMoves = session.GameConfiguration.AbilitiesAfterNMoves
                 } : null,
                 GameState = session.GameState != null ? new GameStateDto
                 {
                     Id = session.GameState.Id,
                     Board = session.GameState.Board,
                     ChipsLeft = session.GameState.ChipsLeft,
-                    PlayersMoves = session.GameState.PlayersMoves,
                     GridX = session.GameState.GridX,
                     GridY = session.GameState.GridY,
                     PlayerNumber = session.GameState.PlayerNumber,
-                    Player1Options = session.GameState.Player1Options,
-                    Player2Options = session.GameState.Player2Options,
+                    Player1Abilities = session.GameState.Player1Abilities,
+                    Player2Abilities = session.GameState.Player2Abilities,
                     Win = session.GameState.Win
                 } : null,
                 Player1Id = session.Player1Id,
-                Player1Username = session.Player1.Username,
+                Player1Username = session.Player1?.Username,
                 Player2Id = session.Player2Id,
-                Player2Username = session.Player2.Username,
+                Player2Username = session.Player2?.Username,
                 GameMode = session.GameMode,
                 GamePassword = session.GamePassword,
                 GameStatus = session.GameStatus,

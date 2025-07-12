@@ -4,6 +4,8 @@ using System.Collections.Concurrent;
 using DAL.Contracts;
 using DAL.Contracts.Interfaces;
 using Domain;
+using Shared;
+using Shared.GameDtos;
 
 namespace Api.Hubs
 { 
@@ -76,7 +78,7 @@ namespace Api.Hubs
             }
         }
         
-        public async Task PlaceChip(string sessionId, string userId, int x, int y)
+        public async Task PlaceChip(string sessionId, string userId, PlaceChipRequest request)
         {
             if (!Games.TryGetValue(sessionId, out var gameState))
             {
@@ -84,18 +86,18 @@ namespace Api.Hubs
                 return;
             }
 
-            var response = gameState.PlaceChip(userId, x, y);
+            var response = gameState.PlaceChip(userId, request.X, request.Y);
             if (!response.Success)
             {
                 await Clients.Caller.SendAsync("Error", response.Message);
                 return;
             }
-            
+    
             await Clients.Group(sessionId).SendAsync("GameStateUpdated", response.GameState);
         }
 
 
-        public async Task MoveChip(string sessionId, string userId, int startX, int startY, int endX, int endY)
+        public async Task MoveChip(string sessionId, string userId, MoveChipRequest request)
         {
             if (!Games.TryGetValue(sessionId, out var gameState))
             {
@@ -103,7 +105,7 @@ namespace Api.Hubs
                 return;
             }
 
-            var response = gameState.MoveChip(userId, startX, startY, endX, endY);
+            var response = gameState.MoveChip(userId, request.StartX, request.StartY, request.EndX, request.EndY);
             if (!response.Success)
             {
                 await Clients.Caller.SendAsync("Error", response.Message);
@@ -113,9 +115,9 @@ namespace Api.Hubs
             await Clients.Group(sessionId).SendAsync("GameStateUpdated", response.GameState);
         }
         
-        public async Task MoveBoard(string sessionId, string userId, string direction)
+        public async Task MoveBoard(string sessionId, string userId, MoveBoardRequest request)
         {
-            Console.WriteLine($"MoveBoard: userId={userId}, direction={direction}");
+            Console.WriteLine($"MoveBoard: userId={userId}, direction={request.Direction}");
             
             if (!Games.TryGetValue(sessionId, out var gameState))
             {
@@ -123,7 +125,7 @@ namespace Api.Hubs
                 return;
             }
 
-            var response = gameState.MoveBoard(userId, direction);
+            var response = gameState.MoveBoard(userId, request.Direction);
             if (!response.Success)
             {
                 await Clients.Caller.SendAsync("Error", response.Message);
@@ -164,12 +166,11 @@ namespace Api.Hubs
         public string Message {get; set;}
         public bool IsPlayerTurn(string userId)
         {
-            return (userId == Player1Id && GameBrain.playerNumber == 1) || 
-                   (userId == Player2Id && GameBrain.playerNumber == 2);
+            if (Player1Id == userId && GameBrain.PlayerNumber == 1) return true;
+            if (Player2Id == userId && GameBrain.PlayerNumber == 2) return true;
+            return false;
         }
         
-
-
         public GameState(string sessionId, GameBrain gameBrain)
         {
             SessionId = sessionId;
@@ -183,10 +184,10 @@ namespace Api.Hubs
                 return (false, "It's not your turn!", null);
             }
 
-            bool moveSuccess = GameBrain.placeChip(x, y);
-            if (!moveSuccess)
+            Response response = GameBrain.PlaceChip(x, y);
+            if (!response.Success)
             {
-                return (false, "Invalid move.", null);
+                return (response.Success, response.Message, null);
             }
             
             return (true, "Move successful.", GetGameState(userId));
@@ -199,10 +200,10 @@ namespace Api.Hubs
                 return (false, "It's not your turn!", null);
             }
 
-            bool moveSuccess = GameBrain.moveChip(startX, startY, endX, endY);
-            if (!moveSuccess)
+            Response response = GameBrain.MoveChip(startX, startY, endX, endY);
+            if (!response.Success)
             {
-                return (false, "Invalid move.", null);
+                return (response.Success, response.Message, null);
             }
             
             return (true, "Move successful.", GetGameState(userId));
@@ -215,10 +216,10 @@ namespace Api.Hubs
                 return (false, "It's not your turn!", null);
             }
 
-            bool moveSuccess = GameBrain.moveMovableBoard(direction);
-            if (!moveSuccess)
+            Response response = GameBrain.MoveMovableBoard(direction);
+            if (!response.Success)
             {
-                return (false, "Invalid move.", null);
+                return (response.Success, response.Message, null);
             }
             
             
@@ -227,11 +228,11 @@ namespace Api.Hubs
     
         private void UpdateMessage()
         {
-            if (GameBrain.playerNumber == 1)
+            if (GameBrain.PlayerNumber == 1)
             {
                 Message = $"Player {Player1Name} is thinking.";
             }
-            else if (GameBrain.playerNumber == 2)
+            else if (GameBrain.PlayerNumber == 2)
             {
                 Message = $"Player {Player2Name} is thinking.";
             }
@@ -243,13 +244,13 @@ namespace Api.Hubs
             UpdateMessage();
             return new
             {
-                board = ConvertToList(GameBrain.board),
+                board = ConvertToList(GameBrain.Board),
                 IsPlayerTurn = IsPlayerTurn(userId),
-                gridX = GameBrain.gridX,
-                gridY = GameBrain.gridY,
-                player1Options = GameBrain.player1Options,
-                player2Options = GameBrain.player2Options,
-                win = GameBrain.win,
+                gridX = GameBrain.GridX,
+                gridY = GameBrain.GridY,
+                player1Options = GameBrain.Player1Abilities,
+                player2Options = GameBrain.Player2Abilities,
+                win = GameBrain.Win,
                 message = Message,
             };
         }

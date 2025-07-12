@@ -1,5 +1,6 @@
 ﻿@page "/configs"
 @using System.Net.Http.Headers
+@using System.ComponentModel.DataAnnotations
 @using Shared.GameConfigDtos
 @inject HttpClient Http
 @inject IJSRuntime JS
@@ -11,61 +12,31 @@
             <button type="button" @onclick="OnMainOptions" class="btn btn-primary">Back</button>
         </div>
     </div>
+    
     @if (ConfigList == null)
     {
         <p>Loading...</p>
     }
     else
     {
-        <h3>Available Configurations</h3>
+        <h3 class="mb-3">Available Configurations</h3>
         <ul class="list-group mb-4">
             @foreach (var config in ConfigList)
             {
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <strong>@config.Name</strong>
                     <div class="d-flex flex-row gap-2">
-                        <button class="btn btn-info btn-sm text-white" @onclick="() => OpenModal(config)">View</button>
+                        <button class="btn btn-info btn-sm text-white" @onclick="() => OpenModal(config)">View/Edit</button>
                         <button class="btn btn-danger btn-sm" @onclick="() => DeleteConfiguration(config.Id)">Delete</button>
                     </div>
                 </li>
             }
         </ul>
     }
-    <h3>Create New Configuration</h3>
-    <EditForm Model="_newConfigDto" OnValidSubmit="CreateConfiguration">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="mb-3">
-            <label class="form-label">Configuration Name</label>
-            <InputText class="form-control" @bind-Value="_newConfigDto.Name" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Board Width</label>
-            <InputNumber class="form-control" @bind-Value="_newConfigDto.BoardSizeWidth" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Board Height</label>
-            <InputNumber class="form-control" @bind-Value="_newConfigDto.BoardSizeHeight" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Win Condition</label>
-            <InputNumber class="form-control" @bind-Value="_newConfigDto.WinCondition" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Options After N Moves</label>
-            <InputNumber class="form-control" @bind-Value="_newConfigDto.OptionsAfterNMoves" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Chips Count</label>
-            <InputNumber class="form-control" @bind-Value="_newConfigDto.Player1Chips" />
-        </div>
-        <button class="btn btn-primary" type="submit">Create Configuration</button>
-    </EditForm>
 </div>
 
 @if (showEditModal)
 {
-<div class="modal-backdrop show"></div>
 <div class="modal show d-block" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -74,34 +45,63 @@
                 <button type="button" class="btn-close" @onclick="CloseModal"></button>
             </div>
             <div class="modal-body">
-                <EditForm Model="_editConfigDto" OnValidSubmit="UpdateConfiguration">
+                <EditForm Model="_editConfigDto" OnValidSubmit="UpdateConfiguration" Context="editContext">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
+                    @if (!string.IsNullOrEmpty(_customValidationError))
+                    {
+                        <div class="alert alert-danger">@_customValidationError</div>
+                    }
                     <input type="hidden" @bind="_editConfigDto.Id" />
 
                     <div class="mb-3">
                         <label class="form-label">Configuration Name</label>
                         <InputText class="form-control" @bind-Value="_editConfigDto.Name" />
+                        <ValidationMessage For="@(() => _editConfigDto.Name)" />
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Board Width</label>
-                        <InputNumber class="form-control" @bind-Value="_editConfigDto.BoardSizeWidth" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Board Width</label>
+                            <InputNumber class="form-control" @bind-Value="_editConfigDto.BoardSizeWidth" />
+                            <ValidationMessage For="@(() => _editConfigDto.BoardSizeWidth)" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Board Height</label>
+                            <InputNumber class="form-control" @bind-Value="_editConfigDto.BoardSizeHeight" />
+                            <ValidationMessage For="@(() => _editConfigDto.BoardSizeHeight)" />
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Board Height</label>
-                        <InputNumber class="form-control" @bind-Value="_editConfigDto.BoardSizeHeight" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Movable Board Width</label>
+                            <InputNumber class="form-control" @bind-Value="_editConfigDto.MovableBoardWidth" />
+                            <ValidationMessage For="@(() => _editConfigDto.MovableBoardWidth)" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Movable Board Height</label>
+                            <InputNumber class="form-control" @bind-Value="_editConfigDto.MovableBoardHeight" />
+                            <ValidationMessage For="@(() => _editConfigDto.MovableBoardHeight)" />
+                        </div>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Win Condition</label>
                         <InputNumber class="form-control" @bind-Value="_editConfigDto.WinCondition" />
+                        <ValidationMessage For="@(() => _editConfigDto.WinCondition)" />
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Options After N Moves</label>
-                        <InputNumber class="form-control" @bind-Value="_editConfigDto.OptionsAfterNMoves" />
+                        <InputNumber class="form-control" @bind-Value="_editConfigDto.AbilitiesAfterNMoves" />
+                        <ValidationMessage For="@(() => _editConfigDto.AbilitiesAfterNMoves)" />
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Chips Count (for both players)</label>
                         <InputNumber class="form-control" @bind-Value="_editConfigDto.Player1Chips" />
+                        <ValidationMessage For="@(() => _editConfigDto.Player1Chips)" />
                     </div>
 
                     <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -116,53 +116,44 @@
     [Parameter] public EventCallback OnMainOptions { get; set; }
     [Parameter] public List<GameConfigDto> ConfigList { get; set; }
     private Task OnNewGameClicked() => OnMainOptions.InvokeAsync();
-
-    private GameConfigDto _newConfigDto = new();
     private GameConfigDto _editConfigDto = new();
     private bool showEditModal = false;
+    private string _customValidationError = string.Empty;
     
     private void OpenModal(GameConfigDto configDto)
     {
-        _editConfigDto = configDto;
+        _editConfigDto = new GameConfigDto
+        {
+            Id = configDto.Id,
+            Name = configDto.Name,
+            BoardSizeWidth = configDto.BoardSizeWidth,
+            BoardSizeHeight = configDto.BoardSizeHeight,
+            MovableBoardWidth = configDto.MovableBoardWidth,
+            MovableBoardHeight = configDto.MovableBoardHeight,
+            WinCondition = configDto.WinCondition,
+            Player1Chips = configDto.Player1Chips,
+            Player2Chips = configDto.Player2Chips,
+            AbilitiesAfterNMoves = configDto.AbilitiesAfterNMoves
+        };
         showEditModal = true;
-        StateHasChanged();
     }
 
     private void CloseModal()
     {
         showEditModal = false;
-        StateHasChanged();
-    }
-    
-    private async Task CreateConfiguration()
-    {
-        var token = await localStorage.GetItemAsync<string>("accessToken");
-
-        if (token != null)
-        {
-            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        }
-        
-        var response = await Http.PostAsJsonAsync("http://localhost:5192/api/game-configs", _newConfigDto);
-        if (response.IsSuccessStatusCode)
-        {
-            var createdConfig = await response.Content.ReadFromJsonAsync<GameConfigDto>();
-            if (createdConfig != null)
-            {
-                ConfigList.Add(createdConfig);
-                _newConfigDto = new GameConfigDto();
-            }
-        }
-        else
-        {
-            Console.WriteLine("Error creating config");
-        }
+        _customValidationError = string.Empty;
     }
 
     private async Task UpdateConfiguration()
     {
-        var token = await localStorage.GetItemAsync<string>("accessToken");
+        _customValidationError = string.Empty;
+        
+        if (!ValidateConfig(_editConfigDto))
+        {
+            return;
+        }
 
+        var token = await localStorage.GetItemAsync<string>("accessToken");
         if (token != null)
         {
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -171,36 +162,27 @@
         var response = await Http.PutAsJsonAsync($"http://localhost:5192/api/game-configs/{_editConfigDto.Id}", _editConfigDto);
         if (response.IsSuccessStatusCode)
         {
-            var index = ConfigList.FindIndex(c => c.Id == _editConfigDto.Id);
-            if (index >= 0)
+            var updatedConfig = await response.Content.ReadFromJsonAsync<GameConfigDto>();
+            if (updatedConfig != null)
             {
-                ConfigList[index] = new GameConfigDto
+                var index = ConfigList.FindIndex(c => c.Id == updatedConfig.Id);
+                if (index >= 0)
                 {
-                    Id = _editConfigDto.Id,
-                    Name = _editConfigDto.Name,
-                    BoardSizeWidth = _editConfigDto.BoardSizeWidth,
-                    BoardSizeHeight = _editConfigDto.BoardSizeHeight,
-                    MovableBoardWidth = _editConfigDto.MovableBoardWidth,
-                    MovableBoardHeight = _editConfigDto.MovableBoardHeight,
-                    Player1Chips = _editConfigDto.Player1Chips,
-                    Player2Chips = _editConfigDto.Player2Chips,
-                    OptionsAfterNMoves = _editConfigDto.OptionsAfterNMoves,
-                    WinCondition = _editConfigDto.WinCondition
-                };
+                    ConfigList[index] = updatedConfig;
+                }
             }
             showEditModal = false;
-            CloseModal();
         }
         else
         {
-            Console.WriteLine("Error updating config");
+            var errorContent = await response.Content.ReadAsStringAsync();
+            _customValidationError = $"Server error: {errorContent}";
         }
     }
 
     private async Task DeleteConfiguration(string configId)
     {
         var token = await localStorage.GetItemAsync<string>("accessToken");
-
         if (token != null)
         {
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -215,9 +197,34 @@
                 ConfigList.RemoveAt(index);
             }
         }
-        else
+    }
+
+    private bool ValidateConfig(GameConfigDto config)
+    {
+        if (config.MovableBoardWidth > config.BoardSizeWidth)
         {
-            Console.WriteLine("Error deleting config");
+            _customValidationError = "Movable board width cannot be larger than board width";
+            return false;
         }
+
+        if (config.MovableBoardHeight > config.BoardSizeHeight)
+        {
+            _customValidationError = "Movable board height cannot be larger than board height";
+            return false;
+        }
+
+        if (config.WinCondition > Math.Min(config.BoardSizeWidth, config.BoardSizeHeight))
+        {
+            _customValidationError = "Win condition cannot be larger than board dimensions";
+            return false;
+        }
+
+        if (config.Player1Chips < config.WinCondition)
+        {
+            _customValidationError = "Chips count cannot be less than win condition";
+            return false;
+        }
+
+        return true;
     }
 }

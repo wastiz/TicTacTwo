@@ -1,14 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Authorization
+@using Shared.GameSessionDtos
 @inject HttpClient Http
 @attribute [Authorize]
 
 <PageTitle>Load Game</PageTitle>
 
-<div class="container h-100">
+<div class="container">
     <button class="btn btn-primary" @onclick="OnMainOptions">Back</button>
-    <div class="row h-100">
-        <div class="col-12 col-sm-12 col-md-4 mt-5">
-            <EditForm OnValidSubmit="StartGame">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 mt-12">
+            <EditForm Model="@this" OnValidSubmit="StartGame">
                 <h1>Select Game Session:</h1>
                 <div class="load-game-container overflow-auto p-3" style="max-height: 400px; border: 1px solid #ddd; border-radius: 5px;">
                     <InputRadioGroup @bind-Value="SelectedSessionId">
@@ -16,13 +17,13 @@
                         {
                             <div class="session-item d-flex align-items-center justify-content-between w-100 mb-3">
                                 <div>
-                                    <InputRadio class="btn-check" Value="@session.SessionId" id=@($"game-{session.SessionId}") />
-                                    <label class="btn btn-outline-primary btn-sm" for="game-@session.SessionId">
-                                        @session.SessionName
+                                    <InputRadio class="btn-check" Value="@session.Id" id=@($"game-{session.Id}") />
+                                    <label class="btn btn-outline-primary btn-sm" for="game-@session.Id">
+                                        @session.Name
                                     </label>
                                 </div>
                                 <button type="button" class="btn btn-danger btn-sm"
-                                        @onclick="@(() => DeleteSession(session.SessionId))">
+                                        @onclick="@(() => DeleteSession(session.Id))">
                                     Delete
                                 </button>
                             </div>
@@ -60,7 +61,7 @@
         var response = await Http.DeleteAsync($"http://localhost:5192/api/game-sessions/{sessionId}");
         if (response.IsSuccessStatusCode)
         {
-            Games = Games.Where(g => g.SessionId != sessionId).ToList();
+            Games = Games.Where(g => g.Id != sessionId).ToList();
             StateHasChanged();
         }
         else
@@ -79,10 +80,4 @@
 
     [Inject] NavigationManager Navigation { get; set; }
     [Inject] IJSRuntime JS { get; set; }
-
-    public class GameSessionDto
-    {
-        public string SessionId { get; set; }
-        public string SessionName { get; set; }
-    }
 }

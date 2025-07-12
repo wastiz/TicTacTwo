@@ -1,36 +1,40 @@
 ﻿
 using DAL;
 using Domain;
+using Shared;
 
 public class GameBrain
 {
-    public int[,] board;
-    public int boardWidth;
-    public int boardHeight;
-    public int[,] movableBoard;
-    public int movableBoardWidth;
-    public int movableBoardHeight;
-    public int gridX;
-    public int gridY;
-    public int[] chipsLeft; //chipsLeft[1] - player 1 chips, chipsLeft[2] - player 2 chips
-    public int[] playersMoves;
-    public int playerNumber;
-    public int chipsToOptions; // How many chips have player to place to get options
-    public bool player1Options; // player 1 have more options
-    public bool player2Options; // player 2 have more options
+    public int[,] Board;
+    public int BoardWidth;
+    public int BoardHeight;
+    public int[,] MovableBoard;
+    public int MovableBoardWidth;
+    public int MovableBoardHeight;
+    public int GridX;
+    public int GridY;
+    public int PlayerNumber; //current player's turn (1 or 2)
+    public int[] ChipsLeft; //chipsLeft[1] - player 1 chips, chipsLeft[2] - player 2 chips
+    public int Player1InitialChips;
+    public int Player2InitialChips;
+    public int AbilitiesAfterNMoves; // How many chips have player to place to get abilities. 0 - from start abilities are available
+    public bool Player1Abilities; // player 1 have abilities?
+    public bool Player2Abilities; // player 2 have abilities?
     public int WinCondition;
-    public int win = 0; //0 - nothing, 1 - player 1 won, 2 - player 2 won, 3 - draw
+    public int Win = 0; //0 - nothing, 1 - player 1 won, 2 - player 2 won, 3 - draw
     
     public GameBrain(GameConfiguration config, GameState state)
     {
-        board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
-        boardWidth = config.BoardSizeWidth;
-        boardHeight = config.BoardSizeHeight;
-        movableBoard = new int[config.MovableBoardHeight, config.MovableBoardWidth];
-        movableBoardWidth = config.MovableBoardWidth;
-        movableBoardHeight = config.MovableBoardHeight;
+        Board = new int[config.BoardSizeHeight, config.BoardSizeWidth];
+        BoardWidth = config.BoardSizeWidth;
+        BoardHeight = config.BoardSizeHeight;
+        MovableBoard = new int[config.MovableBoardHeight, config.MovableBoardWidth];
+        MovableBoardWidth = config.MovableBoardWidth;
+        MovableBoardHeight = config.MovableBoardHeight;
         WinCondition = config.WinCondition;
-        chipsToOptions = config.OptionsAfterNMoves;
+        AbilitiesAfterNMoves = config.AbilitiesAfterNMoves;
+        Player1InitialChips = config.Player1Chips;
+        Player2InitialChips = config.Player2Chips;
         
         int rows = state.Board.Length;
         int cols = state.Board[0].Length;
@@ -44,33 +48,32 @@ public class GameBrain
           }
         }
         
-        board = mappedBoard;
-        gridX = state.GridX;
-        gridY = state.GridY;
-        playerNumber = state.PlayerNumber;
-        player1Options = state.Player1Options;
-        player2Options = state.Player2Options;
-        chipsLeft = state.ChipsLeft;
-        playersMoves = state.PlayersMoves;
-        win = state.Win;
+        Board = mappedBoard;
+        GridX = state.GridX;
+        GridY = state.GridY;
+        PlayerNumber = state.PlayerNumber;
+        Player1Abilities = state.Player1Abilities;
+        Player2Abilities = state.Player2Abilities;
+        ChipsLeft = state.ChipsLeft;
+        Win = state.Win;
     }
     
-    public void CheckForWinner()
+    private void CheckForWinner()
     {
         
-        if (WinCondition > boardHeight || WinCondition > boardWidth)
+        if (WinCondition > BoardHeight || WinCondition > BoardWidth)
         {
             return;
         }
         
-        for (int i = 0; i < boardHeight; i++)
+        for (int i = 0; i < BoardHeight; i++)
         {
-            for (int j = 0; j <= boardWidth - WinCondition; j++)
+            for (int j = 0; j <= BoardWidth - WinCondition; j++)
             {
                 bool winConditionMet = true;
                 for (int k = 1; k < WinCondition; k++)
                 {
-                    if (board[i, j] == 0 || board[i, j] != board[i, j + k])
+                    if (Board[i, j] == 0 || Board[i, j] != Board[i, j + k])
                     {
                         winConditionMet = false;
                         break;
@@ -78,20 +81,20 @@ public class GameBrain
                 }
                 if (winConditionMet)
                 {
-                    win = playerNumber;
+                    Win = PlayerNumber;
                     return;
                 }
             }
         }
         
-        for (int j = 0; j < boardWidth; j++)
+        for (int j = 0; j < BoardWidth; j++)
         {
-            for (int i = 0; i <= boardHeight - WinCondition; i++)
+            for (int i = 0; i <= BoardHeight - WinCondition; i++)
             {
                 bool winConditionMet = true;
                 for (int k = 1; k < WinCondition; k++)
                 {
-                    if (board[i, j] == 0 || board[i, j] != board[i + k, j])
+                    if (Board[i, j] == 0 || Board[i, j] != Board[i + k, j])
                     {
                         winConditionMet = false;
                         break;
@@ -99,20 +102,20 @@ public class GameBrain
                 }
                 if (winConditionMet)
                 {
-                    win = playerNumber;
+                    Win = PlayerNumber;
                     return;
                 }
             }
         }
         
-        for (int i = 0; i <= boardHeight - WinCondition; i++)
+        for (int i = 0; i <= BoardHeight - WinCondition; i++)
         {
-            for (int j = 0; j <= boardWidth - WinCondition; j++)
+            for (int j = 0; j <= BoardWidth - WinCondition; j++)
             {
                 bool winConditionMet = true;
                 for (int k = 1; k < WinCondition; k++)
                 {
-                    if (board[i, j] == 0 || board[i, j] != board[i + k, j + k])
+                    if (Board[i, j] == 0 || Board[i, j] != Board[i + k, j + k])
                     {
                         winConditionMet = false;
                         break;
@@ -120,20 +123,20 @@ public class GameBrain
                 }
                 if (winConditionMet)
                 {
-                    win = playerNumber;
+                    Win = PlayerNumber;
                     return;
                 }
             }
         }
         
-        for (int i = 0; i <= boardHeight - WinCondition; i++)
+        for (int i = 0; i <= BoardHeight - WinCondition; i++)
         {
-            for (int j = WinCondition - 1; j < boardWidth; j++)
+            for (int j = WinCondition - 1; j < BoardWidth; j++)
             {
                 bool winConditionMet = true;
                 for (int k = 1; k < WinCondition; k++)
                 {
-                    if (board[i, j] == 0 || board[i, j] != board[i + k, j - k])
+                    if (Board[i, j] == 0 || Board[i, j] != Board[i + k, j - k])
                     {
                         winConditionMet = false;
                         break;
@@ -141,74 +144,107 @@ public class GameBrain
                 }
                 if (winConditionMet)
                 {
-                    win = playerNumber;
+                    Win = PlayerNumber;
                     return;
                 }
             }
         }
     }
     
-    public void CheckForOptions()
+    private void CheckForAbilities()
     {
-        if (playersMoves[1] == chipsToOptions)
+        if (Player1InitialChips - ChipsLeft[1] == AbilitiesAfterNMoves)
         {
-            player1Options = true;
+            Player1Abilities = true;
         }
 
-        if (playersMoves[2] == chipsToOptions)
+        if (Player2InitialChips - ChipsLeft[2] == AbilitiesAfterNMoves)
         {
-            player2Options = true;
+            Player2Abilities = true;
         }
     }
 
-    public bool placeChip(int x, int y)
+    private bool IsInsideMovableBoard(int x, int y)
     {
-        if (board[x, y] == 0 && chipsLeft[playerNumber] > 0)
-        {
-            board[x, y] = playerNumber;
-            CheckForWinner();
-            chipsLeft[playerNumber]--;
-            CheckForOptions();
-            playersMoves[playerNumber] += 1;
-            playerNumber = playerNumber == 1 ? 2 : 1;
-            return true;
-        }
-        return false;
+        return x >= GridY && x < GridY + MovableBoardHeight && y >= GridX && y < GridX + MovableBoardWidth;
     }
 
-    public bool moveChip(int sourceX, int sourceY, int targetX, int targetY)
+    public Response PlaceChip(int x, int y)
     {
-        if (board[sourceX, sourceY] == playerNumber && board[targetX, targetY] == 0)
+        bool isInsideMovableBoard = IsInsideMovableBoard(x, y);
+    
+        if (!isInsideMovableBoard)
         {
-            board[targetX, targetY] = playerNumber;
-            board[sourceX, sourceY] = 0;
-            CheckForWinner();
-            playersMoves[playerNumber] += 1;
-            playerNumber = playerNumber == 1 ? 2 : 1;
-            return true;
+            return new Response(){ Success = false, Message = "You can only place chips inside the movable board area" };
         }
-        return false;
+
+        if (Board[x, y] != 0)
+        {
+            return new Response(){ Success = false, Message = "You cannot place chip here" };
+        }
+
+        if (ChipsLeft[PlayerNumber] <= 0)
+        {
+            return new Response(){ Success = false, Message = "You have ran out of chips" };
+        }
+    
+        Board[x, y] = PlayerNumber;
+        CheckForWinner();
+        ChipsLeft[PlayerNumber]--;
+        CheckForAbilities();
+        PlayerNumber = PlayerNumber == 1 ? 2 : 1;
+        return new Response(){ Success = true, Message = "Chip placed" };
+    }
+
+    public Response MoveChip(int sourceX, int sourceY, int targetX, int targetY)
+    {
+        if (PlayerNumber == 1 && !Player1Abilities || PlayerNumber == 2 && !Player2Abilities)
+        {
+            return new Response(){ Success = false, Message = $"Place {AbilitiesAfterNMoves} to unlock abilities" };
+        }
+        
+        if (Board[sourceX, sourceY] != PlayerNumber)
+        {
+            return new Response() { Success = false, Message = "You cannot move enemy's chips" };
+        }
+        
+        bool isInsideMovableBoard = IsInsideMovableBoard(targetX, targetY);
+        
+        if (Board[targetX, targetY] != 0 || !isInsideMovableBoard)
+        {
+            return new Response() { Success = false, Message = "You cannot move chip there" };
+        }
+        
+        Board[targetX, targetY] = PlayerNumber;
+        Board[sourceX, sourceY] = 0;
+        CheckForWinner();
+        PlayerNumber = PlayerNumber == 1 ? 2 : 1;
+        return new Response() { Success = true, Message = "Chip moved" };
     }
     
-    public bool takeOutChip(int x, int y)
+    public bool TakeOutChip(int x, int y)
     {
-        if (board[x, y] != 0)
+        if (Board[x, y] != 0)
         {
-            board[x, y] = 0;
+            Board[x, y] = 0;
             CheckForWinner();
-            chipsLeft[board[x, y]]++;
-            playersMoves[playerNumber] += 1;
-            playerNumber = playerNumber == 1 ? 2 : 1;
+            ChipsLeft[Board[x, y]]++;
+            PlayerNumber = PlayerNumber == 1 ? 2 : 1;
             return true;
         }
 
         return false;
     }
 
-    public bool moveMovableBoard(string direction)
+    public Response MoveMovableBoard(string direction)
     {
-        int newGridX = gridX;
-        int newGridY = gridY;
+        if (PlayerNumber == 1 && !Player1Abilities || PlayerNumber == 2 && !Player2Abilities)
+        {
+            return new Response(){ Success = false, Message = $"Place {AbilitiesAfterNMoves} to unlock abilities" };
+        }
+        
+        int newGridX = GridX;
+        int newGridY = GridY;
         
         switch (direction)
         {
@@ -216,13 +252,13 @@ public class GameBrain
                 if (newGridY - 1 >= 0) newGridY--;
                 break;
             case "down":
-                if (newGridY + movableBoardHeight < boardHeight) newGridY++;
+                if (newGridY + MovableBoardHeight < BoardHeight) newGridY++;
                 break;
             case "left":
                 if (newGridX - 1 >= 0) newGridX--;
                 break;
             case "right":
-                if (newGridX + movableBoardWidth < boardWidth) newGridX++;
+                if (newGridX + MovableBoardWidth < BoardWidth) newGridX++;
                 break;
             case "up-left":
                 if (newGridY - 1 >= 0 && newGridX - 1 >= 0)
@@ -232,43 +268,42 @@ public class GameBrain
                 }
                 break;
             case "up-right":
-                if (newGridY - 1 >= 0 && newGridX + movableBoardWidth < boardWidth)
+                if (newGridY - 1 >= 0 && newGridX + MovableBoardWidth < BoardWidth)
                 {
                     newGridY--;
                     newGridX++;
                 }
                 break;
             case "down-left":
-                if (newGridY + movableBoardHeight < boardHeight && newGridX - 1 >= 0)
+                if (newGridY + MovableBoardHeight < BoardHeight && newGridX - 1 >= 0)
                 {
                     newGridY++;
                     newGridX--;
                 }
                 break;
             case "down-right":
-                if (newGridY + movableBoardHeight < boardHeight && newGridX + movableBoardWidth < boardWidth)
+                if (newGridY + MovableBoardHeight < BoardHeight && newGridX + MovableBoardWidth < BoardWidth)
                 {
                     newGridY++;
                     newGridX++;
                 }
                 break;
             default:
-                return false;
+                return new Response() { Success = false, Message = "You cannot move board there" };
         }
         
-        gridX = newGridX;
-        gridY = newGridY;
+        GridX = newGridX;
+        GridY = newGridY;
         
-        playersMoves[playerNumber] += 1;
-        playerNumber = playerNumber == 1 ? 2 : 1;
+        PlayerNumber = PlayerNumber == 1 ? 2 : 1;
         
-        return true;
+        return new Response() { Success = true, Message = "Board moved" };
     }
 
     public GameState SaveGame()
     {
-        int rows = board.GetLength(0);
-        int cols = board.GetLength(1);
+        int rows = Board.GetLength(0);
+        int cols = Board.GetLength(1);
         var jagged = new int[rows][];
 
         for (int i = 0; i < rows; i++)
@@ -276,21 +311,20 @@ public class GameBrain
             jagged[i] = new int[cols];
             for (int j = 0; j < cols; j++)
             {
-              jagged[i][j] = board[i, j];
+              jagged[i][j] = Board[i, j];
             }
         }
         
         var state = new GameState()
         {
             Board = jagged,
-            GridX = gridX,
-            GridY = gridY,
-            ChipsLeft = chipsLeft,
-            PlayerNumber = playerNumber,
-            PlayersMoves = playersMoves,
-            Player1Options = player1Options,
-            Player2Options = player2Options,
-            Win = win
+            GridX = GridX,
+            GridY = GridY,
+            ChipsLeft = ChipsLeft,
+            PlayerNumber = PlayerNumber,
+            Player1Abilities = Player1Abilities,
+            Player2Abilities = Player2Abilities,
+            Win = Win
         };
 
         return state;
@@ -301,29 +335,29 @@ public class GameBrain
         var sb = new System.Text.StringBuilder();
 
         sb.AppendLine("Game Board:");
-        for (int i = 0; i < boardHeight; i++)
+        for (int i = 0; i < BoardHeight; i++)
         {
-            for (int j = 0; j < boardWidth; j++)
+            for (int j = 0; j < BoardWidth; j++)
             {
-                sb.Append(board[i, j] + " ");
+                sb.Append(Board[i, j] + " ");
             }
             sb.AppendLine();
         }
 
         sb.AppendLine("Movable Board:");
-        for (int i = 0; i < movableBoardHeight; i++)
+        for (int i = 0; i < MovableBoardHeight; i++)
         {
-            for (int j = 0; j < movableBoardWidth; j++)
+            for (int j = 0; j < MovableBoardWidth; j++)
             {
-                sb.Append(movableBoard[i, j] + " ");
+                sb.Append(MovableBoard[i, j] + " ");
             }
             sb.AppendLine();
         }
 
-        sb.AppendLine($"Grid Position: ({gridX}, {gridY})");
-        sb.AppendLine($"Chips Left: Player 1 = {chipsLeft[0]}, Player 2 = {chipsLeft[1]}");
-        sb.AppendLine($"Current Player: {playerNumber}");
-        sb.AppendLine($"Winner: {(win == null ? "None" : win == 0 ? "Draw" : $"Player {win}")}");
+        sb.AppendLine($"Grid Position: ({GridX}, {GridY})");
+        sb.AppendLine($"Chips Left: Player 1 = {ChipsLeft[0]}, Player 2 = {ChipsLeft[1]}");
+        sb.AppendLine($"Current Player: {PlayerNumber}");
+        sb.AppendLine($"Winner: {(Win == null ? "None" : Win == 0 ? "Draw" : $"Player {Win}")}");
 
         return sb.ToString();
     }

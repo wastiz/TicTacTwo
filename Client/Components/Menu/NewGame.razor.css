@@ -1,5 +1,5 @@
 .config-list-container {
-    max-height: 400px;
+    max-height: 350px;
     overflow-y: auto;
     border: 1px solid #dee2e6;
     border-radius: 0.25rem;

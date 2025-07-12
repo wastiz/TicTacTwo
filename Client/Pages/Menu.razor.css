@@ -1,25 +1,59 @@
-﻿.fade-in {
+﻿.left-menu {
+    position: relative;
+    overflow: hidden;
+}
+
+.left-fade-in {
     opacity: 0;
-    animation: fadeIn 0.3s ease-in-out forwards;
+    transform: translateX(-100px);
+    animation: leftFadeIn 0.3s ease-in-out forwards;
+}
+
+.right-fade-in {
+    opacity: 0;
+    transform: translateX(100px);
+    animation: rightFadeIn 0.3s ease-in-out forwards;
 }
 
 .fade-out {
     opacity: 1;
+    transform: translateY(0);
     animation: fadeOut 0.3s ease-in-out forwards;
 }
 
-.hidden {
-    display: none;
+@keyframes leftFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
-@keyframes fadeIn {
-    to {
+@keyframes rightFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    100% {
         opacity: 1;
+        transform: translateX(0);
     }
 }
 
 @keyframes fadeOut {
-    to {
-        opacity: 0;
+    0% {
+        opacity: 1;
+        transform: translateY(0);
     }
+    100% {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+}
+
+.hidden {
+    display: none;
 }
