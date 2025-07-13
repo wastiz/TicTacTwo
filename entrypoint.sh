@@ -1,15 +1,17 @@
 #!/bin/bash
 
-set -e
-
-# Wait for PostgreSQL to be ready
-until PGPASSWORD=$DB_PASSWORD psql -h "$DB_HOST" -U "$DB_USER" -d "$DB_NAME" -c '\q'; do
-  >&2 echo "PostgreSQL is unavailable - sleeping"
-  sleep 1
+# Wait for database to be ready
+echo "Waiting for database to be ready..."
+until pg_isready -h db -p 5432 -U postgres; do
+    echo "Database is not ready yet. Waiting..."
+    sleep 2
 done
 
-# Apply migrations
-dotnet Api.dll --migrate
+echo "Database is ready!"
+
+# Run migrations (if you have them)
+# dotnet ef database update --no-build
 
 # Start the application
-exec dotnet Api.dll
+echo "Starting the application..."
+dotnet Api.dll
