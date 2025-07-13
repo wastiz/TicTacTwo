@@ -183,7 +183,7 @@
     
     private async Task HandleMoveChip(MoveChipRequest request)
     {
-        await HubConnection.InvokeAsync("MoveBoard", SessionId, UserId, request);
+        await HubConnection.InvokeAsync("MoveChip", SessionId, UserId, request);
     }
 
     private void HandleOpenSaveModal() => showSaveModal = true;

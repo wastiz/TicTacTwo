@@ -6,6 +6,7 @@ using DAL.Contracts.Interfaces;
 using Domain;
 using Shared;
 using Shared.GameDtos;
+using Shared.GameStateDtos;
 
 namespace Api.Hubs
 { 
@@ -239,36 +240,41 @@ namespace Api.Hubs
         }
 
 
-        public object GetGameState(string userId)
+        public GameStateDto GetGameState(string userId)
         {
             UpdateMessage();
-            return new
+            return new GameStateDto()
             {
-                board = ConvertToList(GameBrain.Board),
-                IsPlayerTurn = IsPlayerTurn(userId),
-                gridX = GameBrain.GridX,
-                gridY = GameBrain.GridY,
-                player1Options = GameBrain.Player1Abilities,
-                player2Options = GameBrain.Player2Abilities,
-                win = GameBrain.Win,
-                message = Message,
+                Board = ConvertToList(GameBrain.Board),
+                //IsPlayerTurn = IsPlayerTurn(userId),
+                PlayerNumber = GameBrain.PlayerNumber,
+                GridX = GameBrain.GridX,
+                GridY = GameBrain.GridY,
+                Player1Abilities = GameBrain.Player1Abilities,
+                Player2Abilities = GameBrain.Player2Abilities,
+                Win = GameBrain.Win,
+                Message = Message,
             };
         }
 
         
-        public List<List<int>> ConvertToList(int[,] matrix)
+        public int[][] ConvertToList(int[,] matrix)
         {
-            var list = new List<List<int>>();
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            int rows = matrix.GetLength(0);
+            int cols = matrix.GetLength(1);
+    
+            int[][] result = new int[rows][];
+    
+            for (int i = 0; i < rows; i++)
             {
-                var row = new List<int>();
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                result[i] = new int[cols];
+                for (int j = 0; j < cols; j++)
                 {
-                    row.Add(matrix[i, j]);
+                    result[i][j] = matrix[i, j];
                 }
-                list.Add(row);
             }
-            return list;
+    
+            return result;
         }
     }
 }

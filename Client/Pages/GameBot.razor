@@ -1,0 +1,203 @@
+﻿@page "/bot-game/{SessionId}"
+@attribute [Authorize]
+@using System.Net.Http.Headers
+@using Domain
+@using Shared.GameSessionDtos
+@using Client.Components.Game
+@using Shared
+@using Shared.GameDtos
+@using Shared.GameStateDtos
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+@if (GameSession is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="container mt-4">
+        @if (GameSession.GameState.Win == 3)
+        {
+            <div class="text-center">
+                <h1>It's a draw</h1>
+                <button class="btn btn-primary" @onclick="HandleOpenSaveModal">Save and back to Menu</button>
+            </div>
+        }
+        else if (GameSession.GameState.Win == 1 || GameSession.GameState.Win == 2)
+        {
+            <div class="text-center">
+                <h1>Player @GameSession.GameState.Win wins!</h1>
+                <button class="btn btn-primary" @onclick="HandleOpenSaveModal">Save and back to Menu</button>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <div class="d-flex flex-row justify-content-between">
+                        @if (isBotThinking)
+                        {
+                            <div class="d-flex align-items-center">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                <h4>Bot is thinking...</h4>
+                            </div>
+                        }
+                        else
+                        {
+                            <h4>Your turn</h4>
+                        }
+                        <p class="text-danger">@ErrorMessage</p>
+                    </div>
+                    
+                    <GameBoard GameState="@GameSession.GameState"
+                               GameConfig="@GameSession.GameConfiguration"
+                               ShowMovementOptions="GameSession.GameState.Player1Abilities"
+                               OnCellClick="HandlePlaceChip"
+                               OnMoveBoard="HandleMoveBoard"
+                               OnMoveChip="HandleMoveChip"
+                               />
+                </div>
+                <div class="col-12 col-lg-4 mt-4">
+                    <GameInfo
+                        GameConfig="@GameSession.GameConfiguration"
+                        GameState="@GameSession.GameState"
+                        OnOpenSaveModal="HandleOpenSaveModal"
+                        />
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (showSaveModal)
+{
+    <div class="modal show d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Would you like to give a name for save?</h5>
+                    <button type="button" class="btn-close" @onclick="HandleCloseSaveModal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" @bind="SaveName" placeholder="Type name..." />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" @onclick="SaveGame">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string SessionId { get; set; }
+
+    private GameSessionDto GameSession;
+    private bool showSaveModal = false;
+    private string SaveName = string.Empty;
+    private string ErrorMessage = string.Empty;
+    private bool isBotThinking = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+        
+        GameSession = await Http.GetFromJsonAsync<GameSessionDto>($"http://localhost:5192/api/game-sessions/{SessionId}");
+    }
+    
+    private async Task HandlePlaceChip(PlaceChipRequest request)
+    {
+        await MakePlayerMove(() => 
+            Http.PostAsJsonAsync($"http://localhost:5192/api/bot-game/{SessionId}/place-chip", request)
+        );
+    }
+
+    private async Task HandleMoveBoard(MoveBoardRequest request)
+    {
+        await MakePlayerMove(() => 
+            Http.PostAsJsonAsync($"http://localhost:5192/api/bot-game/{SessionId}/move-board", request)
+        );
+    }
+
+    private async Task HandleMoveChip(MoveChipRequest request)
+    {
+        await MakePlayerMove(() => 
+            Http.PostAsJsonAsync($"http://localhost:5192/api/bot-game/{SessionId}/move-chip", request)
+        );
+    }
+
+    private async Task MakePlayerMove(Func<Task<HttpResponseMessage>> action)
+    {
+        if (isBotThinking) return;
+        
+        ErrorMessage = string.Empty;
+        isBotThinking = true;
+        StateHasChanged();
+        
+        try
+        {
+            var token = await localStorage.GetItemAsync<string>("accessToken");
+            if (token != null)
+            {
+                Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+        
+            var response = await action();
+        
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadFromJsonAsync<GameStateDto>();
+                if (data != null)
+                {
+                    GameSession.GameState = data;
+                    
+                    // Обновляем сессию после хода бота
+                    await Task.Delay(500); // Небольшая задержка для визуализации
+                    GameSession = await Http.GetFromJsonAsync<GameSessionDto>(
+                        $"http://localhost:5192/api/game-sessions/{SessionId}");
+                }
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errorContent = await response.Content.ReadFromJsonAsync<Response>();
+                ErrorMessage = errorContent?.Message ?? "Invalid request";
+            }
+            else
+            {
+                ErrorMessage = $"Error: {response.StatusCode}";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Request failed: {ex.Message}";
+        }
+        finally
+        {
+            isBotThinking = false;
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task SaveGame()
+    {
+        var token = await localStorage.GetItemAsync<string>("accessToken");
+        if (token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+        
+        await Http.PostAsJsonAsync($"http://localhost:5192/api/game-sessions/{SessionId}/name", new RenameDto() { Name = SaveName });
+        Navigation.NavigateTo("/");
+    }
+
+    private void HandleOpenSaveModal() => showSaveModal = true;
+    private void HandleCloseSaveModal() => showSaveModal = false;
+}

@@ -330,6 +330,30 @@ public class GameBrain
         return state;
     }
     
+    public void LoadState(GameState state)
+    {
+        int rows = state.Board.Length;
+        int cols = state.Board[0].Length;
+        var mappedBoard = new int[rows, cols];
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                mappedBoard[i, j] = state.Board[i][j];
+            }
+        }
+
+        Board = mappedBoard;
+        GridX = state.GridX;
+        GridY = state.GridY;
+        PlayerNumber = state.PlayerNumber;
+        Player1Abilities = state.Player1Abilities;
+        Player2Abilities = state.Player2Abilities;
+        ChipsLeft = state.ChipsLeft;
+        Win = state.Win;
+    }
+    
     public override string ToString()
     {
         var sb = new System.Text.StringBuilder();

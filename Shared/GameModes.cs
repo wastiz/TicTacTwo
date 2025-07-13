@@ -2,18 +2,18 @@
 
 public class GameMode
 {
-    public string Value { get; set; } = default!;
-    public string Label { get; set; } = default!;
+    public string Value { get; init; } = default!;
+    public string Label { get; init; } = default!;
+    public bool Disabled { get; init; }
 }
-
 
 public static class GameModes
 {
-    public static readonly List<GameMode> All = new()
+    public static readonly IReadOnlyList<GameMode> All = new List<GameMode>
     {
-        new GameMode { Value = "two-players", Label = "Local Game" },
-        new GameMode { Value = "two-players-online", Label = "Online Game" },
-        new GameMode { Value = "vs-ai", Label = "vs AI (coming soon)" },
-        new GameMode { Value = "ai-vs-ai", Label = "AI vs AI (coming soon)" }
+        new() { Value = "two-players", Label = "Local Game" },
+        new() { Value = "two-players-online", Label = "Online Game (Beta)" },
+        new() { Value = "vs-ai", Label = "vs AI (broken, bot cheats)" },
+        new() { Value = "ai-vs-ai", Label = "AI vs AI (coming soon)", Disabled = true }
     };
 }

@@ -21,11 +21,12 @@
     <div class="row">
         <h3>Choose Game Mode:</h3>
         <div class="btn-group d-flex flex-column" role="group">
-            @foreach (var mode in _gameModeList)
+            @foreach (var mode in _gameModeList.Where(m => m != null))
             {
             <button type="button"
                     class="btn @(_gameModel.GameMode == mode.Value ? "btn-primary" : "btn-outline-primary") mb-2"
-                    @onclick="() => ToggleSelection(mode.Value)">
+                    @onclick="() => { if (!mode.Disabled) ToggleSelection(mode.Value); }"
+                    disabled="@mode.Disabled">
                 @mode.Label
             </button>
             }
@@ -40,7 +41,7 @@
                 <div class="config-item @(_gameModel.ConfigId == "classic" ? "selected" : "")">
                     <div class="config-info">
                         <h5>Classical</h5>
-                        <p>Standard 3x3 game</p>
+                        <p>Standard 5x5 game</p>
                     </div>
                     <div class="config-actions">
                         <button type="button" class="btn btn-sm btn-info" @onclick='() => ShowConfigPreview("classic")'>
@@ -58,7 +59,7 @@
                 <div class="config-item @(_gameModel.ConfigId == "big-game" ? "selected" : "")">
                     <div class="config-info">
                         <h5>Big Game</h5>
-                        <p>Extended 5x5 game</p>
+                        <p>Extended 10x10 game</p>
                     </div>
                     <div class="config-actions">
                         <button type="button" class="btn btn-sm btn-info" @onclick='() => ShowConfigPreview("big-game")'>
@@ -116,16 +117,18 @@
                 {
                 <p><strong>Classical Configuration</strong></p>
                 <ul>
-                    <li>Board: 3x3</li>
+                    <li>Board: 5x5</li>
                     <li>Win condition: 3 in a row</li>
+                    <li>Abilities after 2 chips are placed</li>
                 </ul>
                 }
                 else if (_previewConfigId == "big-game")
                 {
                 <p><strong>Big Game Configuration</strong></p>
                 <ul>
-                    <li>Board: 5x5</li>
+                    <li>Board: 10x10</li>
                     <li>Win condition: 4 in a row</li>
+                    <li>Abilities after 2 chips are placed</li>
                 </ul>
                 }
                 else
@@ -137,7 +140,7 @@
                 <ul>
                     <li>Board: @config.BoardSizeWidth x @config.BoardSizeHeight</li>
                     <li>Win condition: @config.WinCondition in a row</li>
-                    <li>Options after @config.AbilitiesAfterNMoves chips are placed</li>
+                    <li>Abilities after @config.AbilitiesAfterNMoves chips are placed</li>
                 </ul>
                 }
                 }
@@ -160,7 +163,7 @@
         ConfigId = "classic"
     };
 
-    private List<GameMode> _gameModeList = GameModes.All;
+    private IReadOnlyList<GameMode> _gameModeList = GameModes.All;
     private bool _showPreview = false;
     private string _previewConfigId = string.Empty;
 
@@ -217,6 +220,11 @@
             if (_gameModel.GameMode == "two-players-online")
             {
                 Nav.NavigateTo($"/game-online/{result.SessionId}");
+            }
+
+            if (_gameModel.GameMode == "vs-ai")
+            {
+                Nav.NavigateTo($"/bot-game/{result.SessionId}");
             }
         }
         else
