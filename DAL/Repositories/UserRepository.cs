@@ -10,9 +10,9 @@ namespace DAL
     {
         private readonly AppDbContext _context;
 
-        public UserRepository()
+        public UserRepository(AppDbContext context)
         {
-            _context = new AppDbContext();
+            _context = context;
         }
         
         public async Task<Response<User>> CreateUser(UserRegister dto)

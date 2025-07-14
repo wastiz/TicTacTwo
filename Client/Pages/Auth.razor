@@ -126,10 +126,14 @@
     private async Task ToggleAuthView()
     {
         _animationClass = _isLoginView ? "slide-out-left" : "slide-out-right";
-        await Task.Delay(300);
+        StateHasChanged();
+        await Task.Delay(500);
+        
         _isLoginView = !_isLoginView;
         _animationClass = _isLoginView ? "slide-in-right" : "slide-in-left";
-        await Task.Delay(300);
+        StateHasChanged();
+        await Task.Delay(500);
+        
         _animationClass = "";
         _message = "";
     }

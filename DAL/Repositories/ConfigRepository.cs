@@ -10,10 +10,9 @@ namespace DAL
     {
         private readonly AppDbContext _context;
 
-        public ConfigRepository()
+        public ConfigRepository(AppDbContext context)
         {
-            _context = new AppDbContext();
-            _context.Database.EnsureCreated();
+            _context = context;
         }
 
         public async Task<List<GameConfigDto>> GetAllUserConfigDto(string userId)

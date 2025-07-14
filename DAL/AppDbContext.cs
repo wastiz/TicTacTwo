@@ -10,10 +10,8 @@ namespace DAL
         public DbSet<GameState> GameStates { get; set; } = default!;
         public DbSet<User> Users { get; set; } = default!;
 
-        public AppDbContext(DbContextOptions<AppDbContext>? options = null)
-            : base(options ?? new DbContextOptionsBuilder<AppDbContext>()
-                .UseNpgsql($"Host=db;Database=tictactwo;Username=postgres;Password=postgres")
-                .Options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options)
         {
         }
         

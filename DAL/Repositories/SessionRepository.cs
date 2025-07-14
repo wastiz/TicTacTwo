@@ -11,10 +11,9 @@ public class SessionRepository : ISessionRepository
 {
     private readonly AppDbContext _context;
     
-    public SessionRepository()
+    public SessionRepository(AppDbContext context)
     {
-        _context = new AppDbContext();
-        _context.Database.EnsureCreated();
+        _context = context;
     }
 
     public GameSession CreateGameSession(string configId, string gameMode, string player1Id, string? password = null)
