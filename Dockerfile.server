@@ -1,50 +1,21 @@
-# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Copy solution and project files
-COPY *.sln .
-COPY Api/*.csproj ./Api/
-COPY Client/*.csproj ./Client/
-COPY DAL/*.csproj ./DAL/
-COPY Domain/*.csproj ./Domain/
-COPY Shared/*.csproj ./Shared/
-COPY GameBrain/*.csproj ./GameBrain/
-COPY DAL.Contracts/*.csproj ./DAL.Contracts/
+COPY TicTacTwo.sln ./
+COPY Api/Api.csproj ./Api/
+COPY DAL/DAL.csproj ./DAL/
+COPY DAL.Contracts/DAL.Contracts.csproj ./DAL.Contracts/
+COPY GameBrain/GameBrain.csproj ./GameBrain/
+COPY Shared/Shared.csproj ./Shared/
+COPY Domain/Domain.csproj ./Domain/
 
-# Restore packages
-RUN dotnet restore
-
-# Copy all source code
+RUN dotnet restore Api/Api.csproj
 COPY . .
+RUN dotnet publish Api/Api.csproj -c Release -o /app/publish
 
-# Build and publish only the API project
-RUN dotnet publish Api/Api.csproj -c Release -o /app/publish /p:UseAppHost=false
-
-# Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+# Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
-
-# Copy published output
 COPY --from=build /app/publish .
-
-# Install necessary tools
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    curl \
-    postgresql-client \
-    dos2unix && \
-    rm -rf /var/lib/apt/lists/*
-
-# Copy and prepare entrypoint script
-COPY entrypoint.sh .
-RUN dos2unix entrypoint.sh && \
-    chmod +x entrypoint.sh
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=5s \
-    CMD curl -f http://localhost/health || exit 1
-
-EXPOSE 80
-
-ENTRYPOINT ["./entrypoint.sh"]
+EXPOSE 5000
+ENTRYPOINT ["dotnet", "Api.dll"]

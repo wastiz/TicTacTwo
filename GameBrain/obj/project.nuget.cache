@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "D6e6xSGttJU=",
+  "dgSpecHash": "qHKAbQxM15Y=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\GameBrain\\GameBrain.csproj",
+  "projectFilePath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\GameBrain\\GameBrain.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Valer4ik\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.6\\microsoft.entityframeworkcore.9.0.6.nupkg.sha512",
     "C:\\Users\\Valer4ik\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.6\\microsoft.entityframeworkcore.abstractions.9.0.6.nupkg.sha512",

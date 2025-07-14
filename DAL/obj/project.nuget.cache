@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5ulGL2YE5iM=",
+  "dgSpecHash": "Z0MPfhpScug=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL\\DAL.csproj",
+  "projectFilePath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL\\DAL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Valer4ik\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Valer4ik\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",

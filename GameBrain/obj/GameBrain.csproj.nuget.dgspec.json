@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\GameBrain\\GameBrain.csproj": {}
+    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\GameBrain\\GameBrain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL.Contracts\\DAL.Contracts.csproj": {
+    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL.Contracts\\DAL.Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL.Contracts\\DAL.Contracts.csproj",
+        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL.Contracts\\DAL.Contracts.csproj",
         "projectName": "DAL.Contracts",
-        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL.Contracts\\DAL.Contracts.csproj",
+        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL.Contracts\\DAL.Contracts.csproj",
         "packagesPath": "C:\\Users\\Valer4ik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL.Contracts\\obj\\",
+        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL.Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Valer4ik\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -26,11 +26,11 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj"
+              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Shared\\Shared.csproj": {
-                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Shared\\Shared.csproj"
+              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Shared\\Shared.csproj": {
+                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Shared\\Shared.csproj"
               }
             }
           }
@@ -69,14 +69,14 @@
         }
       }
     },
-    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL\\DAL.csproj": {
+    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL\\DAL.csproj",
+        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL\\DAL.csproj",
+        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL\\DAL.csproj",
         "packagesPath": "C:\\Users\\Valer4ik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL\\obj\\",
+        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Valer4ik\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -91,11 +91,11 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL.Contracts\\DAL.Contracts.csproj": {
-                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL.Contracts\\DAL.Contracts.csproj"
+              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL.Contracts\\DAL.Contracts.csproj": {
+                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL.Contracts\\DAL.Contracts.csproj"
               },
-              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj"
+              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj"
               }
             }
           }
@@ -150,14 +150,14 @@
         }
       }
     },
-    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj": {
+    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\Valer4ik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Valer4ik\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -208,14 +208,14 @@
         }
       }
     },
-    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\GameBrain\\GameBrain.csproj": {
+    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\GameBrain\\GameBrain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\GameBrain\\GameBrain.csproj",
+        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\GameBrain\\GameBrain.csproj",
         "projectName": "GameBrain",
-        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\GameBrain\\GameBrain.csproj",
+        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\GameBrain\\GameBrain.csproj",
         "packagesPath": "C:\\Users\\Valer4ik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\GameBrain\\obj\\",
+        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\GameBrain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Valer4ik\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -230,11 +230,11 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL\\DAL.csproj": {
-                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\DAL\\DAL.csproj"
+              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL\\DAL.csproj": {
+                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL\\DAL.csproj"
               },
-              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj"
+              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj"
               }
             }
           }
@@ -273,14 +273,14 @@
         }
       }
     },
-    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Shared\\Shared.csproj": {
+    "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Shared\\Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Shared\\Shared.csproj",
+        "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Shared\\Shared.csproj",
         "projectName": "Shared",
-        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Shared\\Shared.csproj",
+        "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Shared\\Shared.csproj",
         "packagesPath": "C:\\Users\\Valer4ik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Shared\\obj\\",
+        "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Valer4ik\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -295,8 +295,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo-Blazor\\Domain\\Domain.csproj"
+              "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj"
               }
             }
           }

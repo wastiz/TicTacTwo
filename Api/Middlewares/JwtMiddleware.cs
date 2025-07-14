@@ -38,19 +38,19 @@ public class JwtMiddleware
                 context.User = claimsPrincipal;
                 if (path == "/")
                 {
-                    context.Response.Redirect("/Home");
+                    context.Response.Redirect("/");
                     return;
                 }
             }
             else
             {
-                context.Response.Redirect("/Index");
+                context.Response.Redirect("/login");
                 return;
             }
         }
         else
         {
-            context.Response.Redirect("/Index");
+            context.Response.Redirect("/login");
             return;
         }
 
