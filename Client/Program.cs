@@ -10,8 +10,6 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5000") });
-
 //Authorization Provider
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddAuthorizationCore();
@@ -25,13 +23,13 @@ builder.Services.AddOidcAuthentication(options =>
 builder.Services.AddScoped<AuthHeaderHandler>();
 builder.Services.AddHttpClient("AuthHttpClient", client => 
     {
-        client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+        client.BaseAddress = new Uri("http://localhost:3005");
     })
     .AddHttpMessageHandler<AuthHeaderHandler>();
 
 builder.Services.AddScoped(sp => 
     new HttpClient { 
-        BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) 
+        BaseAddress = new Uri("http://localhost:3005") 
     });
 
 

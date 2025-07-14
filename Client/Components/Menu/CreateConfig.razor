@@ -106,7 +106,7 @@
                 Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
         
-            var response = await Http.PostAsJsonAsync("http://localhost:5192/api/game-configs", _newConfigDto);
+            var response = await Http.PostAsJsonAsync("api/game-configs", _newConfigDto);
         
             if (response.IsSuccessStatusCode)
             {

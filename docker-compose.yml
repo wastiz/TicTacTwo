@@ -2,19 +2,21 @@ version: '3.8'
 
 services:
   server:
+    container_name: server
+    image: tictactwo-server
     build:
       context: .
       dockerfile: Dockerfile.server
     ports:
-      - "5000:5000"
+      - "3005:3005"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=http://+:3005
       - ConnectionStrings__DefaultConnection=Host=db;Database=tictactwo;Username=postgres;Password=postgres
     depends_on:
       - db
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3005/health"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -24,7 +26,7 @@ services:
       context: .
       dockerfile: Dockerfile.client
     ports:
-      - "3000:8080"
+      - "3004:80"
     depends_on:
       - server
 

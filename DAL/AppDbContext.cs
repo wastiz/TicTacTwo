@@ -12,7 +12,7 @@ namespace DAL
 
         public AppDbContext(DbContextOptions<AppDbContext>? options = null)
             : base(options ?? new DbContextOptionsBuilder<AppDbContext>()
-                .UseNpgsql($"Host=localhost;Database=tic_tac_two;Username=postgres;Password=admin")
+                .UseNpgsql($"Host=db;Database=tictactwo;Username=postgres;Password=postgres")
                 .Options)
         {
         }

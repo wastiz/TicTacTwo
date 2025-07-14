@@ -202,7 +202,7 @@
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        var response = await Http.PostAsJsonAsync("http://localhost:5192/api/game-sessions/create", new CreateSessionRequest
+        var response = await Http.PostAsJsonAsync("api/game-sessions/create", new CreateSessionRequest
         {
             ConfigId = _gameModel.ConfigId,
             GameMode = _gameModel.GameMode,

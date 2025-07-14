@@ -116,7 +116,7 @@
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         
-        GameSession = await Http.GetFromJsonAsync<GameSessionDto>($"http://localhost:5192/api/game-sessions/{SessionId}");
+        GameSession = await Http.GetFromJsonAsync<GameSessionDto>($"api/game-sessions/{SessionId}");
         
         DotNetRef = DotNetObjectReference.Create(this);
         UserId = await localStorage.GetItemAsync<string>("accessToken");
@@ -129,7 +129,7 @@
         var token = await localStorage.GetItemAsync<string>("accessToken");
 
         HubConnection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:5192/gameHub", options =>
+            .WithUrl("http://localhost:3005/gameHub", options =>
             {
                 options.AccessTokenProvider = async () => await localStorage.GetItemAsync<string>("accessToken");
             })
@@ -198,7 +198,7 @@
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         
-        await Http.PostAsJsonAsync($"http://localhost:5192/api/game-sessions/{SessionId}/name", new RenameDto() { Name = SaveName });
+        await Http.PostAsJsonAsync($"api/game-sessions/{SessionId}/name", new RenameDto() { Name = SaveName });
         Navigation.NavigateTo("/");
     }
 

@@ -98,7 +98,7 @@ else
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         
-        GameSession = await Http.GetFromJsonAsync<GameSessionDto>($"http://localhost:5192/api/game-sessions/{SessionId}");
+        GameSession = await Http.GetFromJsonAsync<GameSessionDto>($"api/game-sessions/{SessionId}");
     }
     
     private async Task HandlePlaceChip(PlaceChipRequest request)
@@ -113,7 +113,7 @@ else
                 Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
         
-            var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/place-chip", request);
+            var response = await Http.PostAsJsonAsync($"api/game/{SessionId}/place-chip", request);
         
             if (response.IsSuccessStatusCode)
             {
@@ -152,7 +152,7 @@ else
                 Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
         
-            var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/move-board", request);
+            var response = await Http.PostAsJsonAsync($"api/game/{SessionId}/move-board", request);
         
             if (response.IsSuccessStatusCode)
             {
@@ -191,7 +191,7 @@ else
                 Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
         
-            var response = await Http.PostAsJsonAsync($"http://localhost:5192/api/game/{SessionId}/move-chip", request);
+            var response = await Http.PostAsJsonAsync($"api/game/{SessionId}/move-chip", request);
         
             if (response.IsSuccessStatusCode)
             {
@@ -228,7 +228,7 @@ else
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         
-        await Http.PostAsJsonAsync($"http://localhost:5192/api/game-sessions/{SessionId}/name", new RenameDto() { Name = SaveName });
+        await Http.PostAsJsonAsync($"api/game-sessions/{SessionId}/name", new RenameDto() { Name = SaveName });
         Navigation.NavigateTo("/");
     }
 

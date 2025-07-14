@@ -9,37 +9,6 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// For automat migrating
-if (args.Contains("--migrate"))
-{
-    Console.WriteLine("Applying database migrations...");
-    
-    // Создаем минимальное приложение для миграций
-    var migrationBuilder = WebApplication.CreateBuilder(args);
-    
-    // Конфигурация DbContext
-    migrationBuilder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseNpgsql(migrationBuilder.Configuration.GetConnectionString("DefaultConnection")));
-    
-    var migrationApp = migrationBuilder.Build();
-    
-    using (var scope = migrationApp.Services.CreateScope())
-    {
-        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        try
-        {
-            db.Database.Migrate();
-            Console.WriteLine("Migrations applied successfully!");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error applying migrations: {ex.Message}");
-            throw;
-        }
-    }
-    return;
-}
-
 // Other Services Configuration
 builder.Services.AddControllers();
 
@@ -79,7 +48,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazorClient", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "https://localhost:3000")
+        policy.WithOrigins("http://localhost:3004", "https://localhost:3004")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -87,6 +56,13 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// For automat migrating
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 // Middleware
 app.UseRouting();

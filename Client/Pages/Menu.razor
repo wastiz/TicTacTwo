@@ -95,7 +95,7 @@
     var token = await localStorage.GetItemAsync<string>("accessToken");
     Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-    var configs = await Http.GetFromJsonAsync<List<GameConfigDto>>("http://localhost:5192/api/game-configs/user");
+    var configs = await Http.GetFromJsonAsync<List<GameConfigDto>>("api/game-configs/user");
     if (configs != null) GameConfigs = configs;
     
     StateHasChanged();

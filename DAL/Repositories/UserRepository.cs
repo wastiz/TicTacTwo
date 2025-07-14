@@ -13,7 +13,6 @@ namespace DAL
         public UserRepository()
         {
             _context = new AppDbContext();
-            _context.Database.EnsureCreated();
         }
         
         public async Task<Response<User>> CreateUser(UserRegister dto)

@@ -159,7 +159,7 @@
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         
-        var response = await Http.PutAsJsonAsync($"http://localhost:5192/api/game-configs/{_editConfigDto.Id}", _editConfigDto);
+        var response = await Http.PutAsJsonAsync($"api/game-configs/{_editConfigDto.Id}", _editConfigDto);
         if (response.IsSuccessStatusCode)
         {
             var updatedConfig = await response.Content.ReadFromJsonAsync<GameConfigDto>();
@@ -188,7 +188,7 @@
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         
-        var response = await Http.DeleteAsync($"http://localhost:5192/api/game-configs/{configId}");
+        var response = await Http.DeleteAsync($"api/game-configs/{configId}");
         if (response.IsSuccessStatusCode)
         {
             var index = ConfigList.FindIndex(c => c.Id == configId);

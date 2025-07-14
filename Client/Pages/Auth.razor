@@ -70,7 +70,7 @@
     {
         try
         {
-            var response = await Http.PostAsJsonAsync("http://localhost:5192/api/auth/login", _loginModel);
+            var response = await Http.PostAsJsonAsync("api/auth/login", _loginModel);
             var result = await response.Content.ReadFromJsonAsync<AuthResponse>();
 
             if (!response.IsSuccessStatusCode || result is null) throw new Exception(result?.Message ?? "Login failed.");
@@ -105,7 +105,7 @@
                 Password = _registerModel.Password
             };
 
-            var response = await Http.PostAsJsonAsync("http://localhost:5192/api/auth/register", registerDto);
+            var response = await Http.PostAsJsonAsync("api/auth/register", registerDto);
             var result = await response.Content.ReadFromJsonAsync<AuthResponse>();
 
             if (!response.IsSuccessStatusCode || result is null)
