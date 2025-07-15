@@ -12,10 +12,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:3005
-      - ConnectionStrings__DefaultConnection=Host=db;Database=tictactwo;Username=postgres;Password=postgres
-    depends_on:
-      db:
-        condition: service_healthy
+      - ConnectionStrings__DefaultConnection=postgresql://postgres:postgres@tictactwo-database-jmvncl:5432/tictactwo
     restart: on-failure
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3005/health"]
@@ -31,22 +28,3 @@ services:
       - "3004:80"
     depends_on:
       - server
-
-  db:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: tictactwo
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-volumes:
-  postgres_data:
