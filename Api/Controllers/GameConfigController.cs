@@ -61,8 +61,7 @@ public class GameConfigController : ControllerBase
 
         var response = await _repository.CreateGameConfiguration(userId, configDto);
     
-        if (!response.Success) 
-            return BadRequest(response.Message);
+        if (!response.Success) return BadRequest(response.Message);
 
         return Ok(response.Data);
     }
@@ -74,10 +73,9 @@ public class GameConfigController : ControllerBase
             return BadRequest("Config ID in URL does not match ID in body.");
 
         var response = await _repository.UpdateConfiguration(configId, configDto);
-        if (!response.Success)
-            return NotFound(response);
+        if (!response.Success) return NotFound(response);
 
-        return Ok(response);
+        return Ok(response.Data);
     }
 
     [HttpDelete("{configId}")]

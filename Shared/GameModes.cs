@@ -13,7 +13,7 @@ public static class GameModes
     {
         new() { Value = "two-players", Label = "Local Game" },
         new() { Value = "two-players-online", Label = "Online Game (Beta)" },
-        new() { Value = "vs-ai", Label = "vs AI (broken, bot cheats)" },
+        new() { Value = "vs-ai", Label = "vs AI (you won't win him)" },
         new() { Value = "ai-vs-ai", Label = "AI vs AI (coming soon)", Disabled = true }
     };
 }

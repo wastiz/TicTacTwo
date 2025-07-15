@@ -39,15 +39,6 @@ main {
   width: 100%;
 }
 
-.load-game-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  max-height: 400px;
-  overflow-y: scroll;
-}
-
 h1:focus {
     outline: none;
 }

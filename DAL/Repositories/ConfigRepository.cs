@@ -1,4 +1,5 @@
 ﻿using DAL.Contracts;
+using DAL.Mappers;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Shared;
@@ -56,24 +57,12 @@ namespace DAL
             };
         }
 
-        public async Task<Response<GameConfigDto>> CreateGameConfiguration(string userId, GameConfigDto configDtoDto)
+        public async Task<Response<GameConfigDto>> CreateGameConfiguration(string userId, GameConfigDto configDto)
         {
             try
             {
-                var config = new GameConfiguration
-                {
-                    Id = configDtoDto.Id,
-                    Name = configDtoDto.Name,
-                    CreatedBy = userId,
-                    BoardSizeWidth = configDtoDto.BoardSizeWidth,
-                    BoardSizeHeight = configDtoDto.BoardSizeHeight,
-                    MovableBoardWidth = configDtoDto.MovableBoardWidth,
-                    MovableBoardHeight = configDtoDto.MovableBoardHeight,
-                    Player1Chips = configDtoDto.Player1Chips,
-                    Player2Chips = configDtoDto.Player2Chips,
-                    WinCondition = configDtoDto.WinCondition,
-                    AbilitiesAfterNMoves = configDtoDto.AbilitiesAfterNMoves
-                };
+                var config = ConfigMapper.ToDomain(configDto);
+                config.CreatedBy = userId;
 
                 await _context.GameConfigurations.AddAsync(config);
                 await _context.SaveChangesAsync();
@@ -82,19 +71,7 @@ namespace DAL
                 {
                     Success = true,
                     Message = "Game configuration created successfully.",
-                    Data = new GameConfigDto
-                    {
-                        Id = config.Id,
-                        Name = configDtoDto.Name,
-                        BoardSizeWidth = configDtoDto.BoardSizeWidth,
-                        BoardSizeHeight = configDtoDto.BoardSizeHeight,
-                        MovableBoardWidth = configDtoDto.MovableBoardWidth,
-                        MovableBoardHeight = configDtoDto.MovableBoardHeight,
-                        Player1Chips = configDtoDto.Player1Chips,
-                        Player2Chips = configDtoDto.Player2Chips,
-                        WinCondition = configDtoDto.WinCondition,
-                        AbilitiesAfterNMoves = configDtoDto.AbilitiesAfterNMoves
-                    }
+                    Data = configDto
                 };
             }
             catch (Exception ex)
@@ -103,26 +80,42 @@ namespace DAL
             }
         }
 
-        public async Task<Response> UpdateConfiguration(string id, GameConfigDto dto)
+        public async Task<Response<GameConfigDto>> UpdateConfiguration(string id, GameConfigDto dto)
         {
-            var existingConfig = await _context.GameConfigurations.SingleOrDefaultAsync(gc => gc.Id == id);
-            if (existingConfig == null)
+            if (string.IsNullOrEmpty(id))
+                return Response<GameConfigDto>.Fail("Id cannot be empty");
+    
+            if (dto == null)
+                return Response<GameConfigDto>.Fail("Configuration data is required");
+
+            try
             {
-                return Response.Fail($"Configuration '{id}' not found.");
+                var existingConfig = await _context.GameConfigurations
+                    .SingleOrDefaultAsync(gc => gc.Id == id);
+            
+                if (existingConfig == null)
+                {
+                    return Response<GameConfigDto>.Fail($"Configuration '{id}' not found.");
+                }
+                
+                existingConfig.Name = dto.Name;
+                existingConfig.BoardSizeWidth = dto.BoardSizeWidth;
+                existingConfig.BoardSizeHeight = dto.BoardSizeHeight;
+                existingConfig.MovableBoardWidth = dto.MovableBoardWidth;
+                existingConfig.MovableBoardHeight = dto.MovableBoardHeight;
+                existingConfig.Player1Chips = dto.Player1Chips;
+                existingConfig.Player2Chips = dto.Player2Chips;
+                existingConfig.WinCondition = dto.WinCondition;
+                existingConfig.AbilitiesAfterNMoves = dto.AbilitiesAfterNMoves;
+
+                await _context.SaveChangesAsync();
+                
+                return Response<GameConfigDto>.Ok(ConfigMapper.ToDto(existingConfig), "Configuration updated successfully");
             }
-
-            existingConfig.Name = dto.Name;
-            existingConfig.BoardSizeWidth = dto.BoardSizeWidth;
-            existingConfig.BoardSizeHeight = dto.BoardSizeHeight;
-            existingConfig.MovableBoardWidth = dto.MovableBoardWidth;
-            existingConfig.MovableBoardHeight = dto.MovableBoardHeight;
-            existingConfig.Player1Chips = dto.Player1Chips;
-            existingConfig.Player2Chips = dto.Player2Chips;
-            existingConfig.WinCondition = dto.WinCondition;
-            existingConfig.AbilitiesAfterNMoves = dto.AbilitiesAfterNMoves;
-
-            await _context.SaveChangesAsync();
-            return Response.Ok("Configuration updated");
+            catch (Exception ex)
+            {
+                return Response<GameConfigDto>.Fail($"Error updating configuration: {ex.Message}");
+            }
         }
 
         public async Task<Response> DeleteConfiguration(string configId)

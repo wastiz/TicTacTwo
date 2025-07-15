@@ -8,7 +8,7 @@ namespace DAL.Contracts
         Task<List<GameConfigDto>> GetAllUserConfigDto(string userId);
         Task<GameConfigDto> GetConfigurationById(string id);
         Task<Response<GameConfigDto>> CreateGameConfiguration(string userId, GameConfigDto configDto);
-        Task<Response> UpdateConfiguration(string configId, GameConfigDto gameConfiguration);
+        Task<Response<GameConfigDto>> UpdateConfiguration(string configId, GameConfigDto configDto);
         Task<Response> DeleteConfiguration(string configId);
     }
 }

@@ -4,7 +4,6 @@ WORKDIR /app
 COPY TicTacTwo.sln ./
 COPY Client/Client.csproj ./Client/
 COPY Shared/Shared.csproj ./Shared/
-COPY Domain/Domain.csproj ./Domain/
 
 RUN dotnet restore Client/Client.csproj
 COPY . .
