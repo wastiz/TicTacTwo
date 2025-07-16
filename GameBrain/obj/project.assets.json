@@ -759,19 +759,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Valer4ik\\.nuget\\packages\\": {}
+    "C:\\Users\\valno\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\GameBrain\\GameBrain.csproj",
+      "projectUniqueName": "C:\\Users\\valno\\Desktop\\TicTacTwo\\GameBrain\\GameBrain.csproj",
       "projectName": "GameBrain",
-      "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\GameBrain\\GameBrain.csproj",
-      "packagesPath": "C:\\Users\\Valer4ik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\GameBrain\\obj\\",
+      "projectPath": "C:\\Users\\valno\\Desktop\\TicTacTwo\\GameBrain\\GameBrain.csproj",
+      "packagesPath": "C:\\Users\\valno\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\valno\\Desktop\\TicTacTwo\\GameBrain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Valer4ik\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\valno\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -783,11 +783,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL\\DAL.csproj": {
-              "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\DAL\\DAL.csproj"
+            "C:\\Users\\valno\\Desktop\\TicTacTwo\\DAL\\DAL.csproj": {
+              "projectPath": "C:\\Users\\valno\\Desktop\\TicTacTwo\\DAL\\DAL.csproj"
             },
-            "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj": {
-              "projectPath": "C:\\Users\\Valer4ik\\Desktop\\TicTacTwo\\Domain\\Domain.csproj"
+            "C:\\Users\\valno\\Desktop\\TicTacTwo\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\Users\\valno\\Desktop\\TicTacTwo\\Domain\\Domain.csproj"
             }
           }
         }
