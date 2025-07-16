@@ -11,7 +11,7 @@ services:
             - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=http://+:3005
             - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=tic_tac_two;Username=postgres;Password=PGtitan4321
-            - API_BASE_URL=http://server:3005
+            - API_BASE_URL=http://localhost:3005
         depends_on:
             db:
                 condition: service_healthy
@@ -21,8 +21,6 @@ services:
             interval: 30s
             timeout: 10s
             retries: 5
-        networks:
-            - default
     
     client:
         build:

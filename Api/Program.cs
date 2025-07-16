@@ -51,6 +51,8 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(
                 "http://localhost:3004",
                 "https://localhost:3004",
+                "http://localhost:80",
+                "https://localhost:80",
                 "http://31.42.188.13:3004",
                 "https://31.42.188.13:3004",
                 "http://tic-tac-two.com",
