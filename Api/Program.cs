@@ -48,7 +48,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazorClient", policy =>
     {
-        policy.WithOrigins("http://localhost:3004", "https://localhost:3004")
+        policy.WithOrigins(
+                "http://localhost:3004",
+                "https://localhost:3004",
+                "http://31.42.188.13:3004",
+                "https://31.42.188.13:3004",
+                "http://tic-tac-two.com",
+                "http://www.tic-tac-two.com")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();

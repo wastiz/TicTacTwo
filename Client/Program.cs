@@ -15,6 +15,8 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>
 builder.Services.AddAuthorizationCore();
 
 //Header Handler
+var apiBaseUrl = Environment.GetEnvironmentVariable("API_BASE_URL") ?? "http://localhost:3005";
+
 builder.Services.AddOidcAuthentication(options =>
 {
     builder.Configuration.Bind("Local", options.ProviderOptions);
@@ -23,14 +25,15 @@ builder.Services.AddOidcAuthentication(options =>
 builder.Services.AddScoped<AuthHeaderHandler>();
 builder.Services.AddHttpClient("AuthHttpClient", client => 
     {
-        client.BaseAddress = new Uri("http://localhost:3005");
+        client.BaseAddress = new Uri(apiBaseUrl);
     })
     .AddHttpMessageHandler<AuthHeaderHandler>();
 
 builder.Services.AddScoped(sp => 
     new HttpClient { 
-        BaseAddress = new Uri("http://localhost:3005") 
+        BaseAddress = new Uri(apiBaseUrl) 
     });
+
 
 
 //For local storage

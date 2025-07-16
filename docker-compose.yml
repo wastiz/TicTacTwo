@@ -10,16 +10,19 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=http://+:3005
-            - ConnectionStrings__DefaultConnection=Host=db;Database=tic_tac_two;Username=postgres;Password=PGtitan4321
+            - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=tic_tac_two;Username=postgres;Password=PGtitan4321
+            - API_BASE_URL=http://server:3005
         depends_on:
             db:
                 condition: service_healthy
         restart: on-failure
         healthcheck:
-            test: ["CMD", "curl", "-f", "http://localhost:3005/health"]
+            test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3005/health" ]
             interval: 30s
             timeout: 10s
             retries: 5
+        networks:
+            - default
     
     client:
         build:
@@ -29,6 +32,8 @@ services:
             - "3004:80"
         depends_on:
             - server
+        networks:
+            - default
     
     db:
         image: postgres:15
@@ -39,12 +44,19 @@ services:
         volumes:
             - postgres_data:/var/lib/postgresql/data
         ports:
-            - "1231:1231"
+            - "5432:5432"
         healthcheck:
             test: [ "CMD-SHELL", "pg_isready -U postgres" ]
             interval: 5s
             timeout: 5s
             retries: 5
+        networks:
+            - default
 
 volumes:
     postgres_data:
+
+networks:
+    default:
+        name: tictactwo-network
+        external: false
