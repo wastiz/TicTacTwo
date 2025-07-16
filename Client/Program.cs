@@ -15,7 +15,9 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>
 builder.Services.AddAuthorizationCore();
 
 //Header Handler
-var apiBaseUrl = Environment.GetEnvironmentVariable("API_BASE_URL") ?? "http://localhost:3005";
+var apiBaseUrl = builder.HostEnvironment.IsDevelopment()
+    ? "http://localhost:3005"
+    : "";
 
 builder.Services.AddOidcAuthentication(options =>
 {
